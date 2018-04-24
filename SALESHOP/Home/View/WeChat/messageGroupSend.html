@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- BEGIN META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Olive Enterprise">
+    <!-- END META -->
+
+    <!-- BEGIN SHORTCUT ICON -->
+    <link rel="shortcut icon" href="__PUBLIC__/img/favicon.ico">
+    <!-- END SHORTCUT ICON -->
+    <title>
+        CES - 课程评价管理系统
+    </title>
+    <!-- BEGIN STYLESHEET-->
+    <link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="__PUBLIC__/css/bootstrap-reset.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="__PUBLIC__/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 -->
+    <link href="__PUBLIC__/css/style.css" rel="stylesheet"><!-- THEME BASIC CSS -->
+    <link href="__PUBLIC__/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/assets/nestable/jquery.nestable.css"><!-- NESTABLE CSS -->
+    <link href="__PUBLIC__/css/sco.message.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/bootstrap-table.min.css">
+
+    <!--[if lt IE 9]>
+    <script src="__PUBLIC__/js/html5shiv.js">
+    </script>
+    <script src="__PUBLIC__/js/respond.min.js">
+    </script>
+    <![endif]-->
+    <!-- END STYLESHEET-->
+</head>
+<script type="text/javascript">
+    var HOST = "__HOST__";
+</script>
+<body id="body">
+<!-- SECTION -->
+<section id="container">
+
+    <include file="Public/header"/>
+    <include file="Public/aside"/>
+
+    <!-- 主窗体 -->
+    <section id="main-content">
+
+        <!-- 主容器  -->
+        <section class="wrapper">
+
+
+            <!--微信群发消息注意事项-->
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h1 class="panel-title-red">
+                        微信消息发送注意事项：
+                    </h1>
+                </div>
+                <div class="panel-body" rows="10">
+                    1、消息发送可分为单用户和多用户发送。<br>
+                    2、本系统下消息发送模式支持纯文本或文本链接方式。<br>
+                    3、发大段文本时，因手机分辨率分布较则乱的原因，建议选择单个账号测试后再进行准确发送。<br>
+                    4、发送消息时请先编辑要发送的消息内容，在消息文本上方的表格中按照搜索条件搜索出人员信息，勾选后点击"增添发送"按钮将选中信息传送至文本下方的发送表格中，点击发送表格上方的"发送按钮"即可进行消息发送。<br>
+                    5、最终发送给的用户以下方表格中的数据为准，可对单条进行编辑，上方表格中的数据是否选中不影响下方数据发送。<br>
+                    6、最终发送的用户数据中若包含重复数据，则仅取一条用户信息进行发送。<br>
+                    7、点击下方表格上的"发送预览"按钮，可对单个用户进行发送预览操作，发送的消息可在微信客户端查看。<br>
+                    8、<span class="red">群发次数限制</span>:通过本系统向用户群发消息可多次群发，但群发的消息不会在历史记录中显示，且每个用户最多只可接受四条信息，<span
+                        class="red">单个用户超过四条无法获取</span>，故请勿过分浪费群发机会（当前的预览使用的是群发机会，会消耗群发次数，建议选择后在发送）。<br>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="panel-body">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading color-hui">查询条件</div>
+                        <div class="panel-body">
+                            <form id="formSearch" class="form-horizontal">
+                                <div class="form-group" style="margin-top:15px">
+
+                                    <label class="control-label col-sm-1 mar-left-10"
+                                           for="txt_search_graclass">年级</label>
+
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" id="txt_search_graclass">
+                                    </div>
+
+                                    <label class="control-label col-sm-1" for="txt_search_pro">专业</label>
+
+                                    <select class="dd3-content-et m-bot15 order-select col-lg-3" id="txt_search_pro"
+                                            style="margin-top:3px">
+                                        <option value="">无</option>
+                                        <option value="1">计算机科学与技术</option>
+                                        <option value="2">信息安全</option>
+                                        <option value="3">信息与计算科学</option>
+                                        <option value="4">计算机科学与技术（中加方向）</option>
+                                        <option value="5">网络工程</option>
+                                        <option value="6">物联网工程</option>
+                                        <option value="7">通信工程</option>
+                                    </select>
+
+                                    <label class="control-label col-sm-1 mar-left-10" for="txt_search_class">班级</label>
+
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" id="txt_search_class">
+                                    </div>
+
+                                    <div class="col-sm-1" style="text-align:left;">
+                                        <button type="button" style="margin-left:20px" onclick="show();" id="btn_query"
+                                                class="btn btn-primary">查询
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="toolbar" class="btn-group">
+                            <button id="btn_add" type="button" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>增添发送
+                            </button>
+                        </div>
+                        <table class="panel" id="tablelist" data-page-list="[10, 25, 50, 100, ALL]"></table>
+                    </div>
+
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h1 class="panel-title-red">
+                                请输入向信用户发送的文本：（输入前请阅读上方注意事项）
+                            </h1>
+                        </div>
+                        <textarea id="wechat_input" rows="10" class="form-control"
+                                  style="visibility:visible"></textarea>
+                    </div>
+
+                    <div>
+                        <div id="toolbarsend" class="btn-group">
+                            <div>
+                                <button id="btn_send" type="button" class="btn btn-primary">
+                                    发送
+                                </button>
+                                <button id="btn_delete" type="button" class="btn btn-danger" style="margin-left: 2px">
+                                    删除
+                                </button>
+                                <button id="btn_preview" type="button" class="btn btn-success" style="margin-left: 2px">
+                                    发送预览
+                                </button>
+                            </div>
+                        </div>
+                        <table class="panel panel-danger" id="tablelistsend"
+                               data-page-list="[10, 25, 50, 100, ALL]"></table>
+                    </div>
+                </div>
+            </div>
+
+            <!--测试用文本框-->
+            <textarea id="nestable_list_1_output" rows="3" class="form-control" style="visibility:hidden"></textarea>
+
+        </section>
+        <!-- 主容器  -->
+
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">消息发送提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        您选择发送的消息的用户中含有无效用户，无效用户将无法收到消息推送，是否继续发送？
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                        <button class="btn btn-warning" type="button" onclick="sendSubmit();">确认</button>
+                    </div>
+                </div>
+            </div>
+            <span style="display:none" id="myModalHide"></span>
+        </div>
+
+    </section>
+    <!-- 主窗体 -->
+
+    <include file="Public/footer-20"/>
+
+</section>
+<!-- SECTION -->
+
+<!-- JS -->
+
+<!--<script src="__PUBLIC__/js/jquery.js"></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
+<script src="__PUBLIC__/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
+<script src="__PUBLIC__/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
+<script src="__PUBLIC__/js/jquery.dcjqaccordion.2.7.js"></script><!-- 左侧子菜单栏显示 -->
+<script src="__PUBLIC__/js/jquery.scrollTo.min.js"></script><!-- SCROLLTO JS -->
+<script src="__PUBLIC__/js/jquery.nicescroll.js"></script><!-- NICESCROLL JS -->
+<script src="__PUBLIC__/js/respond.min.js"></script><!-- RESPOND JS -->
+<script src="__PUBLIC__/js/jquery.sparkline.js"></script><!-- SPARKLINE JS -->
+<script src="__PUBLIC__/js/sparkline-chart.js"></script><!-- SPARKLINE CHART JS -->
+<script src="__PUBLIC__/js/common-scripts.js"></script><!-- BASIC COMMON JS -->
+<script src="__PUBLIC__/assets/nestable/jquery.nestable.js"></script><!-- NESTABLE JS -->
+<script src="__PUBLIC__/js/nestable.js"></script><!-- NESTABLE FUNCTION JS -->
+<script src="__PUBLIC__/js/checkNestable.js"></script>
+<script src="__PUBLIC__/js/sco.message.js" type="text/javascript"></script>
+
+<script src="__PUBLIC__/js/bootstrap-table.min.js"></script>
+<script src="__PUBLIC__/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="__PUBLIC__/js/messageGroupSend/messageSend.js"></script>
+
+<!-- JS -->
+
+</body>
+</html>
+
+

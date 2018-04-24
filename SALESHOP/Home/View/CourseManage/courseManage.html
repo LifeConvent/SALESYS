@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- BEGIN META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Olive Enterprise">
+    <!-- END META -->
+
+    <!-- BEGIN SHORTCUT ICON -->
+    <link rel="shortcut icon" href="__PUBLIC__/img/favicon.ico">
+    <!-- END SHORTCUT ICON -->
+    <title>
+        SALE-SHOP  门店销售系统
+    </title>
+    <!-- BEGIN STYLESHEET-->
+    <link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="__PUBLIC__/css/bootstrap-reset.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="__PUBLIC__/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 -->
+    <link href="__PUBLIC__/css/style.css" rel="stylesheet"><!-- THEME BASIC CSS -->
+    <link href="__PUBLIC__/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/assets/nestable/jquery.nestable.css"><!-- NESTABLE CSS -->
+    <link href="__PUBLIC__/css/sco.message.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/userMAnage/modify-user.css">
+
+    <!--[if lt IE 9]>
+    <script src="__PUBLIC__/js/html5shiv.js">
+    </script>
+    <script src="__PUBLIC__/js/respond.min.js">
+    </script>
+    <![endif]-->
+    <!-- END STYLESHEET-->
+</head>
+<script type="text/javascript">
+    var HOST = "__HOST__";
+    var TITLE = "__TITLE__";
+</script>
+<body id="body">
+<!-- SECTION -->
+<section id="container">
+
+    <include file="Public/header"/>
+    <include file="Public/aside"/>
+
+    <!-- 主窗体 -->
+    <section id="main-content">
+
+        <!-- 主容器  -->
+        <section class="wrapper">
+
+            <!--微信菜单设置注意事项-->
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <h1 class="panel-title-red">
+                        课程信息管理注意事项：
+                    </h1>
+                </div>
+                <div class="panel-body" rows="8">
+                    1、本页面管理的课程信息为学工系统中的课程信息，而非个人课程信息。<br>
+                    2、可通过表格对课程数据进行查看编辑和删除操作。<br>
+                    3、课程信息的批量导入及导出请在数据管理模块中进行操作。<br><br>
+                </div>
+            </div>
+
+            <!--查询条件设置-->
+            <div class="row">
+                <div class="panel-body" style="padding-bottom:0px;">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading color-hui">查询条件</div>
+                        <div class="panel-body">
+                            <form id="formSearch" class="form-horizontal">
+                                <div class="form-group" style="margin-top:15px">
+
+                                    <label class="control-label left-f" for="search_course_num"
+                                           style="margin-left:30px;">课程号：</label>
+
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" id="search_course_num">
+                                    </div>
+
+                                    <label class="control-label left-f" for="search_teacher_name"
+                                           style="margin-left:10px;">教师名：</label>
+
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" id="search_teacher_name">
+                                    </div>
+
+                                    <label class="control-label left-f" for="search_course_name"
+                                           style="margin-left:10px;">课程名：</label>
+
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control" id="search_course_name">
+                                    </div>
+
+                                    <div class="col-sm-2" style="text-align:left;">
+                                        <button type="button" style="margin-left:10px" onclick="course_show();"
+                                                id="btn_query"
+                                                class="btn btn-primary">查询
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="toolbar" class="btn-group">
+                            <button id="btn_delete" type="button" class="btn btn-danger">
+                                <span class="glyphicon" aria-hidden="true"></span>全部删除
+                            </button>
+                        </div>
+                        <table class="panel" id="table_course" data-page-list="[10, 25, 50, 100, ALL]"></table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--测试用文本框-->
+            <textarea id="list_output" rows="3" class="form-control" style="visibility:hidden"></textarea>
+
+        </section>
+        <!-- 主容器  -->
+
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">删除自动回复提示</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <span class="left-30 red size-16">删除后将无法恢复！确认要删除自动回复吗？</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                        <button class="btn btn-warning" type="button" onclick="deleteCourse();">确认</button>
+                    </div>
+                </div>
+            </div>
+            <span style="display:none" id="myModalHide"></span>
+        </div>
+
+        <div class="modal fade" id="modifyCourse">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title center">修改课程信息</h4>
+                    </div>
+                    <div class="panel-body" style="margin-top:20px;">
+
+
+                        <div class="col-lg-12" style="margin-top:10px;">
+                            <section class="panel">
+                                <form class="form-horizontal tasi-form" method="get">
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">课程号：</label>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="modify_course_id" disabled="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">课程名：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="modify_course_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">教师名：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="modify_tea_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">学 期：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="modify_semester">
+                                        </div>
+                                    </div>
+                                </form>
+                            </section>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                        <button class="btn btn-warning" type="button" onclick="modifyCourse();">确认</button>
+                    </div>
+                </div>
+            </div>
+            <textarea style="display:none" id="txt_course_id"></textarea>
+            <textarea style="display:none" id="txt_course_name"></textarea>
+            <textarea style="display:none" id="txt_teacher_name"></textarea>
+            <textarea style="display:none" id="txt_course_semester"></textarea>
+        </div>
+
+        <div class="modal fade" id="lookCourse">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title center">查看课程信息</h4>
+                    </div>
+                    <div class="panel-body" style="margin-top:20px;">
+
+                        <div class="col-lg-12" style="margin-top:10px;">
+                            <section class="panel">
+                                <form class="form-horizontal tasi-form" method="get">
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">课程号：</label>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="look_course_id" disabled="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">课程名：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="look_course_name" disabled="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">教师名：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="look_tea_name" disabled="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">学 期：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="look_semester" disabled="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div1">
+                                            <label class="order-label modify-user-label1">课程性质：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="look_type" disabled="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div1">
+                                            <label class="order-label modify-user-label1">是否必修：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="look_is_must" disabled="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div1">
+                                            <label class="order-label modify-user-label1">上课人数：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="look_take_num" disabled="">
+                                        </div>
+                                    </div>
+                                </form>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+    <!-- 主窗体 -->
+
+    <include file="Public/footer-20"/>
+
+</section>
+<!-- SECTION -->
+
+<!-- JS -->
+
+<!--<script src="__PUBLIC__/js/jquery.js"></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
+<script src="__PUBLIC__/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
+<script src="__PUBLIC__/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
+<script src="__PUBLIC__/js/jquery.dcjqaccordion.2.7.js"></script><!-- 左侧子菜单栏显示 -->
+<script src="__PUBLIC__/js/jquery.scrollTo.min.js"></script><!-- SCROLLTO JS -->
+<script src="__PUBLIC__/js/jquery.nicescroll.js"></script><!-- NICESCROLL JS -->
+<script src="__PUBLIC__/js/respond.min.js"></script><!-- RESPOND JS -->
+<script src="__PUBLIC__/js/jquery.sparkline.js"></script><!-- SPARKLINE JS -->
+<script src="__PUBLIC__/js/common-scripts.js"></script><!-- BASIC COMMON JS -->
+<script src="__PUBLIC__/js/sco.message.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/bootstrap-table.min.js"></script>
+<script src="__PUBLIC__/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="__PUBLIC__/js/courseManage/courseInfo.js" type="text/javascript"></script>
+
+
+</body>
+</html>
+
+
