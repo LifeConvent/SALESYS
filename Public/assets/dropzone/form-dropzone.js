@@ -3,16 +3,16 @@ var FormDropzone = function () {
 
     return {
         //main function to initiate the module
-        init: function () {
+        init: function () {  
 
             Dropzone.options.myDropzone = {
-
-
+		
+	
                 init: function() {
                     this.on("addedfile", function(file) {
                         // Create the remove button
-                        var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-block'>删除文件</button>");
-
+                        var removeButton = Dropzone.createElement("<button class='btn btn-sm btn-block'>Remove file</button>");
+                        
                         // Capture the Dropzone instance as closure.
                         var _this = this;
 
@@ -31,7 +31,7 @@ var FormDropzone = function () {
                         // Add the button to the file preview element.
                         file.previewElement.appendChild(removeButton);
                     });
-                }
+                }            
             }
         }
     };

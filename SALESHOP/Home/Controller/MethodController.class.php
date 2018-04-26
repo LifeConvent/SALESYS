@@ -19,7 +19,7 @@ class MethodController extends Controller
      * @param String $skey 加密EKY
      * @return String
      */
-    public function encode($string = '', $skey = 'CESBackSYStem')
+    public function encode($string = '', $skey = 'SALESYStem-^@%$*#&^!(*')
     {
         $strArr = str_split(base64_encode($string));
         $strCount = count($strArr);
@@ -34,7 +34,7 @@ class MethodController extends Controller
      * @param String $skey 解密KEY
      * @return String
      */
-    public function decode($string = '', $skey = 'CESBackSYStem')
+    public function decode($string = '', $skey = 'SALESYStem-^@%$*#&^!(*')
     {
         $strArr = str_split(str_replace(array('O0O0O', 'o000o', 'oo00o'), array('=', '+', '/'), $string), 2);
         $strCount = count($strArr);
