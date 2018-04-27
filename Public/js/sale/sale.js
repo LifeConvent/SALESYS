@@ -197,9 +197,27 @@ function choice_select_level_one(temp) {
     $('#select_one_text').text(id_value[1]);
     debugger;
     if (add_pro_type_level == 3) {
-        getProTypeLevelTwoList();
+        getProTypeLevelTwoList('null');
     }
 }
+function choice_select_level_one_in(temp){
+    var id_value = temp.split('_');
+    $('#in_add_select_type_one').val(id_value[0]);
+    $('#in_select_one_text').text(id_value[1]);
+    getProTypeLevelTwoList('in');
+}
+function choice_select_level_two_in(temp){
+    var id_value = temp.split('_');
+    $('#in_add_select_type_two').val(id_value[0]);
+    $('#in_select_two_text').text(id_value[1]);
+    getProTypeLevelTwoList('in_three');
+}
+function choice_select_level_three_in(temp){
+    var id_value = temp.split('_');
+    $('#in_add_select_type_three').val(id_value[0]);
+    $('#in_select_three_text').text(id_value[1]);
+}
+
 
 function choice_select_level_two(temp) {
     var id_value = temp.split('_');
@@ -207,8 +225,17 @@ function choice_select_level_two(temp) {
     $('#select_two_text').text(id_value[1]);
 }
 
-function getProTypeLevelTwoList() {
+function getProTypeLevelTwoList(status) {
     var add_select_type_one = $('#add_select_type_one').val();
+    var in_add_select_type_one = $('#in_add_select_type_one').val();
+    var in_add_select_type_two = $('#in_add_select_type_two').val();
+    var level = 'null';
+    if(status=='in')
+        add_select_type_one = in_add_select_type_one;
+    else if(status=='in_three'){
+        add_select_type_one = in_add_select_type_two;
+        level = '3';
+    }
     if (add_select_type_one == null || add_select_type_one == "" || add_select_type_one == undefined) {
         $.scojs_message('系统异常！前台未获取到一级类型数据!', $.scojs_message.TYPE_ERROR);
         return;
@@ -220,13 +247,21 @@ function getProTypeLevelTwoList() {
         url: HOST + "index.php/Home/sale/getLevelTwo", //目标地址.
         dataType: "json", //数据格式:JSON
         data: {
-            'super': add_select_type_one
+            'super': add_select_type_one,
+            'level':level,
+            'status':status
         },
         success: function (result) {
             if (result.status == 'success') {
                 var data = result.data;
                 debugger;
-                $('#level_two_list_show').wrapAll(data);
+                if(status=='null')
+                    $('#level_two_list_show').wrapAll(data);
+                else if(status=='in')
+                    $('#in_level_two_list_show').wrapAll(data);
+                else if(status=='in_three'){
+                    $('#in_level_three_list_show').wrapAll(data);
+                }
             } else if (result.status == 'failed') {
                 $.scojs_message('系统异常！' + result.message, $.scojs_message.TYPE_ERROR);
             }
@@ -235,4 +270,21 @@ function getProTypeLevelTwoList() {
             $.scojs_message('网络连接发生未知错误，请稍后再试！' + errorThrown, $.scojs_message.TYPE_ERROR);
         }
     });
+}
+
+function showProTypeLevel(level) {
+    //选择商品类型等级
+    if (level == 1) {
+        $('#in_pro_select_one').show();
+        $('#in_pro_select_two').hide();
+        $('#in_pro_select_three').hide();
+    } else if (level == 2) {
+        $('#in_pro_select_one').show();
+        $('#in_pro_select_two').show();
+        $('#in_pro_select_three').hide();
+    } else if (level == 3) {
+        $('#in_pro_select_one').show();
+        $('#in_pro_select_two').show();
+        $('#in_pro_select_three').show();
+    }
 }

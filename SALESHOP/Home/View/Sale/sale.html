@@ -286,8 +286,27 @@
                                     </div>
                                     <!--日期跨度选择-->
 
-                                    <!--商品类型-->
                                     <div class="form-group">
+                                        <label class="col-sm-3">
+                                            <span class="star-red">*</span>商品类型等级:
+                                        </label>
+                                        <div class="panel-body col-sm-9" style="margin-top:-20px">
+                                            <div class="btn-group btn-group-justified">
+                                                <a class="btn btn-primary" onclick="showProTypeLevel(1)">
+                                                    一级
+                                                </a>
+                                                <a class="btn btn-success" onclick="showProTypeLevel(2)">
+                                                    二级
+                                                </a>
+                                                <a class="btn btn-info" onclick="showProTypeLevel(3)">
+                                                    三级
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--商品类型-->
+                                    <div class="form-group" style="display: none" >
                                         <label class="col-sm-3">
                                             <span class="star-red">*</span>商品类型:
                                         </label>
@@ -299,18 +318,77 @@
                                     </div>
                                     <!--商品类型-->
 
-                                    <!--商品类型 二级-->
-                                    <div class="form-group" style="display: none">
+                                    <!--商品类型一级列表-->
+                                    <div class="form-group" style="display: none" id="in_pro_select_one">
                                         <label class="col-sm-3">
-                                            <span class="star-red">*</span>商品类型:
+                                            <span class="star-red">*</span>商品一级类型:
                                         </label>
 
-                                        <div class="col-sm-9" style="margin-top:-8px;">
-                                            <select id="product_type_two" class="form-control">
-                                            </select>
+                                        <div class="btn-group col-sm-9" style="margin-top:-8px">
+                                            <button class="btn btn-white col-sm-2" type="button">
+                                                名称
+                                            </button>
+                                            <button data-toggle="dropdown" id="in_select_one_text"
+                                                    class="btn btn-white dropdown-toggle col-sm-10" type="button">
+                                                -- 请选择一级类型名称 --<span class="caret" style="margin-left: 60pt"></span>
+                                            </button>
+                                            <ul role="menu" class="dropdown-menu col-sm-11" style="margin-left: 12pt">
+                                                {$in_pro_select_one}
+                                                <!--<li class="divider">-->
+                                                <!--</li>-->
+                                                <!--<li>-->
+                                                <!--<a onclick="choice_select_level_one('4_Action')">-->
+                                                <!--Action-->
+                                                <!--</a>-->
+                                                <!--</li>-->
+                                            </ul>
                                         </div>
                                     </div>
-                                    <!--商品类型-->
+                                    <!--商品类型一级列表-->
+
+                                    <!--商品类型二级列表-->
+                                    <div class="form-group" style="display: none" id="in_pro_select_two">
+                                        <label class="col-sm-3">
+                                            <span class="star-red">*</span>商品二级类型:
+                                        </label>
+
+                                        <div class="btn-group col-sm-9" style="margin-top:-8px">
+                                            <button class="btn btn-white col-sm-2" type="button">
+                                                名称
+                                            </button>
+                                            <button data-toggle="dropdown" id="in_select_two_text"
+                                                    class="btn btn-white dropdown-toggle col-sm-10" type="button">
+                                                -- 请选择二级类型名称 --<span class="caret" style="margin-left: 60pt">
+                                                      </span>
+                                            </button>
+                                            <ul role="menu" id="in_level_two_list_show" class="dropdown-menu col-sm-11"
+                                                style="margin-left: 12pt">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--商品类型二级列表-->
+
+                                    <!--商品类型三级列表-->
+                                    <div class="form-group" style="display: none" id="in_pro_select_three">
+                                        <label class="col-sm-3">
+                                            <span class="star-red">*</span>商品三级类型:
+                                        </label>
+
+                                        <div class="btn-group col-sm-9" style="margin-top:-8px">
+                                            <button class="btn btn-white col-sm-2" type="button">
+                                                名称
+                                            </button>
+                                            <button data-toggle="dropdown" id="in_select_three_text"
+                                                    class="btn btn-white dropdown-toggle col-sm-10" type="button">
+                                                -- 请选择三级类型名称 --<span class="caret" style="margin-left: 60pt">
+                                                      </span>
+                                            </button>
+                                            <ul role="menu" id="in_level_three_list_show" class="dropdown-menu col-sm-11"
+                                                style="margin-left: 12pt">
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--商品类型三级列表-->
 
                                     <!--商品名称-->
                                     <div class="form-group">
@@ -619,6 +697,9 @@
                                     <!--商品类型码值存储-->
                                     <input type="text" id="add_select_type_one" value="-1" style="display: none">
                                     <input type="text" id="add_select_type_two" value="-1" style="display: none">
+                                    <input type="text" id="in_add_select_type_one" value="-1" style="display: none">
+                                    <input type="text" id="in_add_select_type_two" value="-1" style="display: none">
+                                    <input type="text" id="in_add_select_type_three" value="-1" style="display: none">
                                     <!--商品类型码值存储-->
 
                                     <!--商品类型一级列表-->
@@ -664,7 +745,8 @@
                                                 -- 请选择二级类型名称 --<span class="caret" style="margin-left: 60pt">
                                                       </span>
                                             </button>
-                                            <ul role="menu" id="level_two_list_show" class="dropdown-menu col-sm-11" style="margin-left: 12pt">
+                                            <ul role="menu" id="level_two_list_show" class="dropdown-menu col-sm-11"
+                                                style="margin-left: 12pt">
                                             </ul>
                                         </div>
                                     </div>
@@ -675,6 +757,7 @@
                                         <label class="col-sm-3">
                                             <span class="star-red">*</span>商品一级类型名称:
                                         </label>
+
                                         <div class="col-sm-9" style="margin-top: 0pt;">
                                             <input type="text" placeholder="请输入商品一级类型名称" id="add_product_type_one"
                                                    class="form-control">

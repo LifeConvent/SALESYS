@@ -23,11 +23,14 @@ class SaleController extends Controller
             $proType = M('pro_type');
             $select = $proType->where('TYPE_LEVEL = \'1\'')->select();
             $content = '';
+            $content_in = '';
             for ($i = 0; $i < sizeof($select); $i++) {
                 $content .= '<li><a style="text-align: center" onclick="choice_select_level_one(\'' . $select[$i]['type_id'] . '_' . $select[$i]['type_name'] . '\')">' . $select[$i]['type_name'] . '</a></li>';
+                $content_in .= '<li><a style="text-align: center" onclick="choice_select_level_one_in(\'' . $select[$i]['type_id'] . '_' . $select[$i]['type_name'] . '\')">' . $select[$i]['type_name'] . '</a></li>';
             }
             $this->assign('username', $username);
             $this->assign('pro_select_one', $content);
+            $this->assign('in_pro_select_one', $content_in);
             $this->assign('TITLE', TITLE);
             $this->display();
         } else {
@@ -69,6 +72,8 @@ class SaleController extends Controller
     public function getLevelTwo()
     {
         $super_type = I('post.super');
+        $level = I('post.level');
+        $status = I('post.status');
         if ($super_type == "" || $super_type == null) {
             $result['status'] = 'failed';
             $result['message'] = '后台暂时无法获取二级类型数据!';
@@ -78,11 +83,22 @@ class SaleController extends Controller
         $proType = M('pro_type');
         //需要查询上级ID
         $sign = '';
-        $select = $proType->where('TYPE_LEVEL = \'2\' AND SUPER_TYPE = ' . $super_type)->select();
         $content = '<ul role="menu" id="level_two_list_show" class="dropdown-menu col-sm-11" style="margin-left: 12pt">';
-        for ($i = 0; $i < sizeof($select); $i++) {
-            $content .= '<li><a style="text-align: center" onclick="choice_select_level_two(\'' . $select[$i]['type_id'] . '_' . $select[$i]['type_name'] . '\')">' . $select[$i]['type_name'] . '</a></li>';
-            $sign .= '1';
+        if ($level == '3') {
+            $select = $proType->where('TYPE_LEVEL = \'3\' AND SUPER_TYPE = ' . $super_type)->select();
+            for ($i = 0; $i < sizeof($select); $i++) {
+                $content .= '<li><a style="text-align: center" onclick="choice_select_level_three_in(\'' . $select[$i]['type_id'] . '_' . $select[$i]['type_name'] . '\')">' . $select[$i]['type_name'] . '</a></li>';
+                $sign .= '1';
+            }
+        } else {
+            $select = $proType->where('TYPE_LEVEL = \'2\' AND SUPER_TYPE = ' . $super_type)->select();
+            for ($i = 0; $i < sizeof($select); $i++) {
+                if ($status == 'in')
+                    $content .= '<li><a style="text-align: center" onclick="choice_select_level_two_in(\'' . $select[$i]['type_id'] . '_' . $select[$i]['type_name'] . '\')">' . $select[$i]['type_name'] . '</a></li>';
+                else
+                    $content .= '<li><a style="text-align: center" onclick="choice_select_level_two(\'' . $select[$i]['type_id'] . '_' . $select[$i]['type_name'] . '\')">' . $select[$i]['type_name'] . '</a></li>';
+                $sign .= '1';
+            }
         }
         $content .= '</ul>';
         if ($sign != "") {
