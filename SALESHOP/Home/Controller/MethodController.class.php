@@ -13,6 +13,14 @@ use Think\Controller;
 class MethodController extends Controller
 {
 
+    public function getUserID(&$ID){
+        $token = $_SESSION['token'];
+        $token = $this->decode($token);
+        $info = explode('-', $token);
+        if ($info[2] == 'success') {
+            $ID = $info[3];
+        }
+    }
     /**
      * 简单对称加密算法之加密
      * @param String $string 需要加密的字串

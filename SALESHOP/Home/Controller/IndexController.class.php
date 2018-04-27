@@ -21,8 +21,8 @@ class IndexController extends Controller
         }else{
             $res = $this->searchUser($user,$pass);
             $method = new MethodController();
-            if($res){
-                $temp = $user.'-'.time().'-'.'success';
+            if($res!=null){
+                $temp = $user.'-'.time().'-'.'success'.'-'.$res;
                 $token = $method->encode($temp);
                 $_SESSION["token"] = $token;
                 $result['status'] = 'success';
@@ -55,17 +55,17 @@ class IndexController extends Controller
             if($result[0]['user_account']==$user&&$sqlPass[0]['user_pass']==$pass){
                 $data = array('LG_TYPE'=>'2','LG_STATE'=>'1');
                 $userAccount->where("USER_ACCOUNT='$user'")->setField($data);
-                return true;
+                return $user_id;
             }else if($result[0]['phone']==$user&&$sqlPass[0]['user_pass']==$pass){
                 $data = array('LG_TYPE'=>'1','LG_STATE'=>'1');
                 $userAccount->where("PHONE='$user'")->setField($data);
-                return true;
+                return $user_id;
             }else if($result[0]['email']==$user&&$sqlPass[0]['user_pass']==$pass){
                 $data = array('LG_TYPE'=>'0','LG_STATE'=>'1');
                 $userAccount->where("EMAIL='$user'")->setField($data);
-                return true;
+                return $user_id;
             }
-            return false;
+            return null;
         }
     }
 
