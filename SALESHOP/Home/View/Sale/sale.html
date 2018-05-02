@@ -292,14 +292,14 @@
                                         </label>
                                         <div class="panel-body col-sm-9" style="margin-top:-20px">
                                             <div class="btn-group btn-group-justified">
-                                                <a class="btn btn-primary" onclick="showProTypeLevel(1)">
-                                                    一级
+                                                <a class="btn btn-primary" id="level_text_one" onclick="showProTypeLevel(1)">
+                                                    <span >一级</span>
                                                 </a>
-                                                <a class="btn btn-success" onclick="showProTypeLevel(2)">
-                                                    二级
+                                                <a class="btn btn-primary" id="level_text_two" onclick="showProTypeLevel(2)">
+                                                    <span >二级</span>
                                                 </a>
-                                                <a class="btn btn-info" onclick="showProTypeLevel(3)">
-                                                    三级
+                                                <a class="btn btn-primary" id="level_text_three" onclick="showProTypeLevel(3)">
+                                                    <span >三级</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -312,7 +312,7 @@
                                         </label>
 
                                         <div class="col-sm-9" style="margin-top:-8px">
-                                            <select id="product_type" class="form-control">
+                                            <select class="form-control">
                                             </select>
                                         </div>
                                     </div>
@@ -328,9 +328,9 @@
                                             <button class="btn btn-white col-sm-2" type="button">
                                                 名称
                                             </button>
-                                            <button data-toggle="dropdown" id="in_select_one_text"
+                                            <button data-toggle="dropdown"
                                                     class="btn btn-white dropdown-toggle col-sm-10" type="button">
-                                                -- 请选择一级类型名称 --<span class="caret" style="margin-left: 60pt"></span>
+                                                <span id="in_select_one_text">-- 请选择一级类型名称 --</span><span class="caret" style="margin-left: 60pt"></span>
                                             </button>
                                             <ul role="menu" class="dropdown-menu col-sm-11" style="margin-left: 12pt">
                                                 {$in_pro_select_one}
@@ -356,9 +356,9 @@
                                             <button class="btn btn-white col-sm-2" type="button">
                                                 名称
                                             </button>
-                                            <button data-toggle="dropdown" id="in_select_two_text"
+                                            <button data-toggle="dropdown"
                                                     class="btn btn-white dropdown-toggle col-sm-10" type="button">
-                                                -- 请选择二级类型名称 --<span class="caret" style="margin-left: 60pt">
+                                                <span id="in_select_two_text">-- 请选择二级类型名称 --</span><span class="caret" style="margin-left: 60pt">
                                                       </span>
                                             </button>
                                             <ul role="menu" id="in_level_two_list_show" class="dropdown-menu col-sm-11"
@@ -378,9 +378,9 @@
                                             <button class="btn btn-white col-sm-2" type="button">
                                                 名称
                                             </button>
-                                            <button data-toggle="dropdown" id="in_select_three_text"
+                                            <button data-toggle="dropdown"
                                                     class="btn btn-white dropdown-toggle col-sm-10" type="button">
-                                                -- 请选择三级类型名称 --<span class="caret" style="margin-left: 60pt">
+                                                <span id="in_select_three_text">-- 请选择三级类型名称 --</span><span class="caret" style="margin-left: 60pt">
                                                       </span>
                                             </button>
                                             <ul role="menu" id="in_level_three_list_show" class="dropdown-menu col-sm-11"
@@ -640,10 +640,7 @@
 
                 </div>
             </div>
-            <textarea style="display:none" id="res_id"></textarea>
-            <textarea style="display:none" id="res_user_input"></textarea>
-            <textarea style="display:none" id="res_sys_response"></textarea>
-            <textarea style="display:none" id="res_sys_response_type"></textarea>
+            <textarea style="display:none" id="product_type"></textarea>
         </div>
         <!--进货商品添加模态-->
 

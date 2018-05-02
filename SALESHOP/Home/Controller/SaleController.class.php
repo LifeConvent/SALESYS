@@ -83,8 +83,14 @@ class SaleController extends Controller
         $proType = M('pro_type');
         //需要查询上级ID
         $sign = '';
-        $content = '<ul role="menu" id="level_two_list_show" class="dropdown-menu col-sm-11" style="margin-left: 12pt">';
-        if ($level == '3') {
+        if ($status == 'in') {
+            $content = '<ul role="menu" id="in_level_two_list_show" class="dropdown-menu col-sm-11" style="margin-left: 12pt">';
+        } else if ($status == 'in_three') {
+            $content =  '<ul role="menu" id="in_level_three_list_show" class="dropdown-menu col-sm-11" style="margin-left: 12pt">';
+        } else {
+            $content = '<ul role="menu" id="level_two_list_show" class="dropdown-menu col-sm-11" style="margin-left: 12pt">';
+        }
+        if ($level == '3' && $status == 'in_three') {
             $select = $proType->where('TYPE_LEVEL = \'3\' AND SUPER_TYPE = ' . $super_type)->select();
             for ($i = 0; $i < sizeof($select); $i++) {
                 $content .= '<li><a style="text-align: center" onclick="choice_select_level_three_in(\'' . $select[$i]['type_id'] . '_' . $select[$i]['type_name'] . '\')">' . $select[$i]['type_name'] . '</a></li>';
@@ -107,9 +113,30 @@ class SaleController extends Controller
             $result['data'] = $content;
         } else {
             $result['status'] = 'failed';
-            $result['message'] = '暂时无法获取数据!';
+            $result['message'] = '该商品类型下不具有子类型!';
+            $result['level'] = $level;
         }
         exit(json_encode($result));
+    }
+
+    public function submitProductInfo(){
+        $date_in= I('post.date_in');//进货日期
+        $date_sale_start = I('post.date_sale_start');//开始销售日期
+        $type_id = I('post.type_id');//商品类型ID
+        $pro_name = I('post.pro_name');//商品名称
+        $pro_code = I('post.pro_code');//商品条形码
+        $pro_sum = I('post.pro_sum');//进货商品数量
+        $pro_price = I('post.pro_price');//商品售价
+        $pro_sale_sum = I('post.pro_sale_sum');//批次商品总价
+        //非必填
+        $pro_shelf_code = I('post.pro_shelf_code');//商品货架编码
+        $shelf_in_num = I('post.shelf_in_num');//货架补货数量
+        $can_dis = I('post.can_dis');//可折扣金额
+        $pro_hint = I('post.pro_hint');//备注
+        //获取当前操作用户
+        $method = new MethodController();
+        $method->getUserID($user_id);
+
     }
 
     public function test()
