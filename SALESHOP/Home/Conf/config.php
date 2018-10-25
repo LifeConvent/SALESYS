@@ -2,13 +2,13 @@
 return array(
 	//'配置项'=>'配置值'
     //'本地数据库
-    'DB_TYPE'=>'mysql',
-    'DB_HOST'=>'localhost',
-    'DB_NAME'=>'SALESYS',
-    'DB_USER'=>'root',
-    'DB_PWD'=>'scce317ces/back.',
+    'DB_TYPE'=>'Oracle',
+    'DB_HOST'=>'10.1.168.5',
+    'DB_NAME'=>'DMGdb',
+    'DB_USER'=>'ncl_1',
+    'DB_PWD'=>'ncl_1',
     // 'DB_PORT'=>,
-    'DB_PREFIX'=>'T_',
+    'DB_PREFIX'=>'',
     'DB_CHARSET'=>'utf8',
     'DB_DEBUG'=> TRUE,
     'URL_HTML_SUFFIX'=>''

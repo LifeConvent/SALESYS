@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="/Public/img/favicon.ico">
     <!-- END SHORTCUT ICON -->
     <title>
-        <?php echo ($TITLE); ?>
+        CES - 课程评价管理系统
     </title>
     <!-- BEGIN STYLESHEET-->
     <link href="/Public/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
@@ -20,11 +20,11 @@
     <link href="/Public/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 -->
     <link href="/Public/css/style.css" rel="stylesheet"><!-- THEME BASIC CSS -->
     <link href="/Public/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
-    <link href="/Public/assets/morris.js-0.4.3/morris.css" rel="stylesheet"><!-- MORRIS CHART CSS -->
-    <link href="/Public/css/bootstrap-table.min.css" rel="stylesheet">
-    <link href="/Public/js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <!--dashboard calendar-->
-    <link href="/Public/css/clndr.css" rel="stylesheet"><!-- CALENDER CSS -->
+    <link rel="stylesheet" type="text/css" href="/Public/assets/nestable/jquery.nestable.css"><!-- NESTABLE CSS -->
+    <link href="/Public/css/sco.message.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/Public/css/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/css/userManage/modify-user.css">
+
     <!--[if lt IE 9]>
     <script src="/Public/js/html5shiv.js">
     </script>
@@ -535,182 +535,250 @@
         <!-- 主容器  -->
         <section class="wrapper">
 
-            <div class="container-fluid" >
-                <section class="panel">
-                    <header class="panel-heading">
-                        <div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>
-                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt">导出日报</button></div>
-                        <div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>
-                        <div class="tools" style="float:left;margin-left: 10pt">
-                            <div style="width:250px;" class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                <input class="form-control" size="16" type="text" value="" readonly>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
-                        </div>
-                        <input style="visibility:hidden" id="dtp_input2" value=""/>
-                    </header>
-                    <div style="margin:0 5px">
-                        <table id="daily_report"></table>
-                    </div>
-                </section>
+            <!--用户信息管理注意事项-->
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h1 class="panel-title-red">
+                        用户信息管理注意事项：
+                    </h1>
+                </div>
+                <div class="panel-body" rows="8">
+                    1、用户信息管理是指在本系统数据库中存储的可使用课程评价的用户信息。<br>
+                    2、搜索条件中姓名搜索方式支持模糊搜索，其他搜索条件仅支持精确搜索。<br>
+                    <br><br><br>
+                </div>
             </div>
 
-            <!-- 第一行数据统计  -->
-            <div class="row state-overview" style="visibility:hidden">
+            <!--微信菜单设置-->
+            <div class="row">
 
-                <!--四个统计框-->
-                <div class="col-lg-3 col-sm-6">
+                <div class="panel-body" style="padding-bottom:0px;">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading color-lv">查询条件</div>
+                        <div class="panel-body">
+                            <form id="formSearch" class="form-horizontal">
+                                <div class="form-group" style="margin-top:15px">
 
-                    <section class="panel">
+                                    <label class="control-label mar-left-10 left-f"
+                                           for="txt_search_graclass">年级：</label>
 
-                        <div class="symbol">
-                            <i class="fa fa-tags blue">
-                            </i>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" id="txt_search_graclass">
+                                    </div>
+
+                                    <label class="control-label left-f" for="txt_search_pro">专业：</label>
+
+                                    <select class="dd3-content-et m-bot15 order-select col-lg-2" id="txt_search_pro"
+                                            style="margin-top:3px">
+                                        <option value="">无</option>
+                                        <option value="1">计算机科学与技术</option>
+                                        <option value="2">信息安全</option>
+                                        <option value="3">信息与计算科学</option>
+                                        <option value="4">计算机科学与技术（中加方向）</option>
+                                        <option value="5">网络工程</option>
+                                        <option value="6">物联网工程</option>
+                                        <option value="7">通信工程</option>
+                                    </select>
+
+                                    <label class="control-label mar-left-10 left-f"
+                                           for="txt_search_class">班级：</label>
+
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" id="txt_search_class">
+                                    </div>
+
+                                    <label class="control-label mar-left-10 left-f"
+                                           for="txt_search_class">姓名：</label>
+
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control" id="txt_search_name">
+                                    </div>
+
+                                    <div class="col-sm-1" style="text-align:left;">
+                                        <button type="button" style="margin-left:20px" onclick="show();"
+                                                id="btn_query"
+                                                class="btn btn-primary">查询
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
+                    </div>
 
-                        <div class="value">
-                            <h1 class="count" style="display:none"><?php echo ($count); ?></h1>
-
-                            <h1 class=" show_count">
-                                0
-                            </h1>
-
-                            <p>
-                                微信匹配用户总量
-                            </p>
+                    <div>
+                        <div id="toolbar" class="btn-group">
+                            <button id="btn_delete" type="button" class="btn btn-danger">
+                                <span class="glyphicon" aria-hidden="true"></span>全部删除
+                            </button>
                         </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-tasks red">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class="count1" style="display:none"><?php echo ($count1); ?></h1>
-
-                            <h1 class=" show_count1">
-                                0
-                            </h1>
-
-                            <p>
-                                课程评价总数
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-user yellow">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class=" count2" style="display:none"><?php echo ($count2); ?></h1>
-
-                            <h1 class=" show_count2">0</h1>
-
-                            <p>
-                                微信关注量
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-plus purple">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class=" count3" style="display:none"><?php echo ($count3); ?></h1>
-
-                            <h1 class=" show_count3">
-                                0
-                            </h1>
-
-                            <p>
-                                新增用户数量
-                            </p>
-                        </div>
-
-                    </section>
-
+                        <table class="panel" id="table_user" data-page-list="[10, 25, 50, 100, ALL]"></table>
+                    </div>
                 </div>
 
             </div>
-             <!--第一行数据统计-->
 
-            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信匹配数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        课程评价数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="ce-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信关注量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-sub-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!--<div class="col-lg-12" style="color:#a560f8">-->
-                <!--<section class="panel">-->
-                    <!--<header class="panel-heading">-->
-                        <!--新增用户数量变化趋势-->
-                    <!--</header>-->
-                    <!--<div class="panel-body">-->
-                        <!--<div id="weixin-new-num" class="graph">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</section>-->
-            <!--</div>-->
+            <!--测试用文本框-->
+            <textarea id="list_output" rows="3" class="form-control" style="visibility:hidden"></textarea>
 
         </section>
         <!-- 主容器  -->
+
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">删除用户信息提示</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <span class="left-30 red size-16">删除数据库中数据后无法恢复！确认要删除该用户信息吗？</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                        <button class="btn btn-warning" type="button" onclick="deleteUser();">确认</button>
+                    </div>
+                </div>
+            </div>
+            <span style="display:none" id="myModalHide"></span>
+        </div>
+
+        <div class="modal fade" id="modifyUser">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title center">修改用户信息</h4>
+                    </div>
+                    <div class="panel-body" style="margin-top:20px;">
+
+                        <div class="col-lg-12" style="margin-top:10px;">
+                            <section class="panel">
+                                <form class="form-horizontal tasi-form" method="get">
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">学 号：</label>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="modify_stu_num" disabled="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">姓 名：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="modify_stu_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">性 别：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="modify_stu_sex">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">年 级：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="modify_stu_graclass">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">专 业：</label>
+                                        </div>
+                                        <select class="dd3-content-et m-bot15 order-select col-lg-9"
+                                                style="margin-left:20px;"
+                                                id="modify_stu_pro">
+                                            <option value="">无</option>
+                                            <option value="1">计算机科学与技术</option>
+                                            <option value="2">信息安全</option>
+                                            <option value="3">信息与计算科学</option>
+                                            <option value="4">计算机科学与技术（中加方向）</option>
+                                            <option value="5">网络工程</option>
+                                            <option value="6">物联网工程</option>
+                                            <option value="7">通信工程</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-red">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">班 级：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="modify_stu_class">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-white">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">电 话：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="modify_stu_phone">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div>
+                                            <span class="star-white">*</span>
+                                        </div>
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label">QQ 号：</label>
+                                        </div>
+
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="modify_stu_qq">
+                                        </div>
+                                    </div>
+                                </form>
+                            </section>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                        <button class="btn btn-warning" type="button" onclick="modifyUser();">确认</button>
+                    </div>
+                </div>
+            </div>
+            <textarea style="display:none" id="user_stu_num"></textarea>
+            <textarea style="display:none" id="user_stu_name"></textarea>
+            <textarea style="display:none" id="user_stu_graclass"></textarea>
+            <textarea style="display:none" id="user_stu_pro"></textarea>
+            <textarea style="display:none" id="user_stu_class"></textarea>
+            <textarea style="display:none" id="user_stu_phone"></textarea>
+            <textarea style="display:none" id="user_stu_sex"></textarea>
+            <textarea style="display:none" id="user_stu_qq"></textarea>
+        </div>
+
 
     </section>
     <!-- 主窗体 -->
@@ -718,7 +786,7 @@
     <!-- 尾 -->
 <footer class="site-footer">
     <div class="text-center" style="margin-left:20%">
-        2018 &copy; DAY-POST by
+        2016 &copy; CES by
         <a href="" target="_blank">
             高彪
         </a>
@@ -730,17 +798,12 @@
 </footer>
 <!-- 尾 -->
 
-    <p id="weChatMatch" style="display:none"><?php echo ($weChatMatch); ?></p>
-
-    <p id="weChatSub" style="display:none"><?php echo ($weChatSub); ?></p>
-
-    <p id="weChatNum" style="display:none"><?php echo ($weChatNum); ?></p>
-
-    <p id="weCESNum" style="display:none"><?php echo ($weCESNum); ?></p>
 </section>
 <!-- SECTION -->
 
 <!-- JS -->
+
+<!--<script src="/Public/js/jquery.js"></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
 <script src="/Public/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
 <script src="/Public/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
 <script src="/Public/js/jquery.dcjqaccordion.2.7.js"></script><!-- 左侧子菜单栏显示 -->
@@ -748,24 +811,13 @@
 <script src="/Public/js/jquery.nicescroll.js"></script><!-- NICESCROLL JS -->
 <script src="/Public/js/respond.min.js"></script><!-- RESPOND JS -->
 <script src="/Public/js/jquery.sparkline.js"></script><!-- SPARKLINE JS -->
-<script src="/Public/js/sparkline-chart.js"></script><!-- SPARKLINE CHART JS -->
 <script src="/Public/js/common-scripts.js"></script><!-- BASIC COMMON JS -->
-<script src="/Public/js/bootstrap-table.min.js"></script><!-- SPARKLINE CHART JS -->
-<script src="/Public/js/bootstrap-table-zh-CN.min.js"></script><!-- BASIC COMMON JS -->
+<script src="/Public/js/sco.message.js" type="text/javascript"></script>
+<script src="/Public/js/bootstrap-table.min.js"></script>
+<script src="/Public/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="/Public/js/userManage/userManage.js" type="text/javascript"></script>
 
-<!--统计框Morris-->
-<script src="/Public/assets/morris.js-0.4.3/morris.min.js"></script><!-- MORRIS JS -->
-<script src="/Public/assets/morris.js-0.4.3/raphael-min.js"></script><!-- MORRIS  JS -->
-<script src="/Public/js/chart.js"></script><!-- CHART JS -->
 
-<script src="/Public/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/Public/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
-<!--自定义-->
-<script src="/Public/js/Home/count.js"></script>
-<script src="/Public/js/Home/get-time.js"></script>
-<script src="/Public/js/Home/charts-home.js"></script>
-<script src="/Public/js/Home/home.js"></script>
-<script src="/Public/js/Home/home_day.js"></script>
 <script>
 
 </script>

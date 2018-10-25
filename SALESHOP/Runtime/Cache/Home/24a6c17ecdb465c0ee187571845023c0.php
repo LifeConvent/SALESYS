@@ -9,30 +9,30 @@
     <!-- END META -->
 
     <!-- BEGIN SHORTCUT ICON -->
-    <link rel="shortcut icon" href="/SALESYS/Public/img/favicon.ico">
+    <link rel="shortcut icon" href="/Public/img/favicon.ico">
     <!-- END SHORTCUT ICON -->
     <title>
         CES - 课程评价管理系统
     </title>
     <!-- BEGIN STYLESHEET-->
-    <link href="/SALESYS/Public/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
-    <link href="/SALESYS/Public/css/bootstrap-reset.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
-    <link href="/SALESYS/Public/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 -->
-    <link href="/SALESYS/Public/css/style.css" rel="stylesheet"><!-- THEME BASIC CSS -->
-    <link href="/SALESYS/Public/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
-    <link rel="stylesheet" type="text/css" href="/SALESYS/Public/assets/nestable/jquery.nestable.css"><!-- NESTABLE CSS -->
-    <link href="/SALESYS/Public/css/sco.message.css" rel="stylesheet">
+    <link href="/Public/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="/Public/css/bootstrap-reset.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="/Public/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 -->
+    <link href="/Public/css/style.css" rel="stylesheet"><!-- THEME BASIC CSS -->
+    <link href="/Public/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
+    <link rel="stylesheet" type="text/css" href="/Public/assets/nestable/jquery.nestable.css"><!-- NESTABLE CSS -->
+    <link href="/Public/css/sco.message.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
-    <script src="/SALESYS/Public/js/html5shiv.js">
+    <script src="/Public/js/html5shiv.js">
     </script>
-    <script src="/SALESYS/Public/js/respond.min.js">
+    <script src="/Public/js/respond.min.js">
     </script>
     <![endif]-->
     <!-- END STYLESHEET-->
 </head>
 <script type="text/javascript">
-    var HOST = "http://localhost/SALESYS/";
+    var HOST = "http://localhost/";
 </script>
 <body id="body">
 <!-- SECTION -->
@@ -50,9 +50,9 @@
     <!-- SIDEBAR TOGGLE BUTTON  END-->
 
     <a href="" class="logo">
-        CES
+        SALE - SHOP
           <span>
-            课程评价管理系统
+            门店销售系统
           </span>
     </a>
 
@@ -339,10 +339,10 @@
 
             <!--主菜单-->
             <li>
-                <a href="<?php echo U('Home/Home/home');?>" id="home">
+                <a href="<?php echo U('Home/Sale/sale');?>" id="sale">
                     <i class="fa fa-dashboard"></i>
                         <span style="font-size: 14px;">
-                          统计分析
+                          商品销售
                         </span>
                 </a>
             </li>
@@ -419,7 +419,7 @@
                     <i class="fa fa-cogs">
                     </i>
                             <span style="font-size: 14px;">
-                              课程管理
+                              货品管理
                             </span>
                             <span class="label label-primary span-sidebar">
                               5
@@ -429,7 +429,7 @@
                 <ul class="sub" id="course_sub">
                     <li id="course_info">
                         <a href="<?php echo U('Home/CourseManage/courseManage');?>" style="font-size: 12px;">
-                            课程信息管理
+                            商品进货
                         </a>
                     </li>
                     <li id="course_survey">
@@ -500,6 +500,16 @@
                         </a>
                     </li>
                 </ul>
+            </li>
+
+            <!--主菜单-->
+            <li>
+                <a href="<?php echo U('Home/Home/home');?>" id="home">
+                    <i class="fa fa-dashboard"></i>
+                        <span style="font-size: 14px;">
+                          统计分析
+                        </span>
+                </a>
             </li>
 
             <!--登陆界面-->
@@ -1335,21 +1345,21 @@
 
 <!-- JS -->
 
-<!--<script src="/SALESYS/Public/js/jquery.js"></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
-<script src="/SALESYS/Public/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
-<script src="/SALESYS/Public/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
-<script src="/SALESYS/Public/js/jquery.dcjqaccordion.2.7.js"></script><!-- 左侧子菜单栏显示 -->
-<script src="/SALESYS/Public/js/jquery.scrollTo.min.js"></script><!-- SCROLLTO JS -->
-<script src="/SALESYS/Public/js/jquery.nicescroll.js"></script><!-- NICESCROLL JS -->
-<script src="/SALESYS/Public/js/respond.min.js"></script><!-- RESPOND JS -->
-<script src="/SALESYS/Public/js/jquery.sparkline.js"></script><!-- SPARKLINE JS -->
-<script src="/SALESYS/Public/js/sparkline-chart.js"></script><!-- SPARKLINE CHART JS -->
-<script src="/SALESYS/Public/js/common-scripts.js"></script><!-- BASIC COMMON JS -->
-<script src="/SALESYS/Public/assets/nestable/jquery.nestable.js"></script><!-- NESTABLE JS -->
-<script src="/SALESYS/Public/js/nestable.js"></script><!-- NESTABLE FUNCTION JS -->
-<script src="/SALESYS/Public/js/checkNestable.js"></script>
-<script src="/SALESYS/Public/js/sco.message.js" type="text/javascript"></script>
-<script src="/SALESYS/Public/js/WeChat/setWeChatMenu.js" type="text/javascript"></script>
+<!--<script src="/Public/js/jquery.js"></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
+<script src="/Public/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
+<script src="/Public/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
+<script src="/Public/js/jquery.dcjqaccordion.2.7.js"></script><!-- 左侧子菜单栏显示 -->
+<script src="/Public/js/jquery.scrollTo.min.js"></script><!-- SCROLLTO JS -->
+<script src="/Public/js/jquery.nicescroll.js"></script><!-- NICESCROLL JS -->
+<script src="/Public/js/respond.min.js"></script><!-- RESPOND JS -->
+<script src="/Public/js/jquery.sparkline.js"></script><!-- SPARKLINE JS -->
+<script src="/Public/js/sparkline-chart.js"></script><!-- SPARKLINE CHART JS -->
+<script src="/Public/js/common-scripts.js"></script><!-- BASIC COMMON JS -->
+<script src="/Public/assets/nestable/jquery.nestable.js"></script><!-- NESTABLE JS -->
+<script src="/Public/js/nestable.js"></script><!-- NESTABLE FUNCTION JS -->
+<script src="/Public/js/checkNestable.js"></script>
+<script src="/Public/js/sco.message.js" type="text/javascript"></script>
+<script src="/Public/js/WeChat/setWeChatMenu.js" type="text/javascript"></script>
 
 
 <!-- JS -->

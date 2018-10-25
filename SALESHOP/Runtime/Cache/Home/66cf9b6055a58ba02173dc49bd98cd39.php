@@ -6,33 +6,33 @@
     <meta name="description" content="">
     <meta name="author" content="Custom Theme">
     <!-- BEGIN SHORTCUT ICON -->
-    <link rel="shortcut icon" href="/SALESYS/Public/img/favicon.ico">
+    <link rel="shortcut icon" href="/Public/img/favicon.ico">
     <!-- END SHORTCUT ICON -->
     <title>
         <?php echo ($TITLE); ?>
     </title>
 
-    <link href="/SALESYS/Public/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
-    <link href="/SALESYS/Public/css/bootstrap-reset.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
-    <link href="/SALESYS/Public/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 CSS -->
-    <link href="/SALESYS/Public/css/style.css" rel="stylesheet"><!-- 主题 CSS -->
-    <link href="/SALESYS/Public/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
-    <link href="/SALESYS/Public/css/sco.message.css" rel="stylesheet">
+    <link href="/Public/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="/Public/css/bootstrap-reset.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="/Public/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 CSS -->
+    <link href="/Public/css/style.css" rel="stylesheet"><!-- 主题 CSS -->
+    <link href="/Public/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
+    <link href="/Public/css/sco.message.css" rel="stylesheet">
 
-    <script src="/SALESYS/Public/js/md5.js" type="text/javascript"></script>
-    <script src="/SALESYS/Public/js/jquery-3.1.1.min.js" type="text/javascript"></script>
-    <script src="/SALESYS/Public/js/sco.message.js" type="text/javascript"></script>
-    <script src="/SALESYS/Public/js/index/login.js"></script>
+    <script src="/Public/js/md5.js" type="text/javascript"></script>
+    <script src="/Public/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="/Public/js/sco.message.js" type="text/javascript"></script>
+    <script src="/Public/js/index/login.js"></script>
     <!--[if lt IE 9]>
-    <script src="/SALESYS/Public/js/html5shiv.js"></script>
-    <script src="/SALESYS/Public/js/respond.min.js"></script>
+    <script src="/Public/js/html5shiv.js"></script>
+    <script src="/Public/js/respond.min.js"></script>
     <![endif]-->
     <script type="text/javascript">
 
     </script>
 </head>
 <script type="text/javascript">
-    var HOST = "http://localhost/SALESYS/";
+    var HOST = "http://localhost/";
 </script>
 
 <body class="login-screen">
@@ -88,7 +88,7 @@
         </div>
     </form>
 </div>
-<!--<script src="/SALESYS/Public/js/jquery.js" ></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
-<script src="/SALESYS/Public/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
+<!--<script src="/Public/js/jquery.js" ></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
+<script src="/Public/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
 </body>
 </html>

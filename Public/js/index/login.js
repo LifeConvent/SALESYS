@@ -11,6 +11,7 @@ function login() {
         $.scojs_message('密码不能为空！', $.scojs_message.TYPE_ERROR);
     } else {
         userPass = hex_md5(userPass);
+        // alert(HOST);
         $.ajax({
             type: "POST", //用POST方式传输
             url: HOST + "index.php/Home/Index/login", //目标地址.
