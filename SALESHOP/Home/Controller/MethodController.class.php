@@ -175,6 +175,735 @@ class MethodController extends Controller
         }
     }
 
+    public function getDictArry(){
+        $org = array("本部","李沧","平度","胶南","即墨","胶州","城阳","莱西","开发区","市南","小计","分公司核保室","分公司保全室","分公司理赔室","总公司作业中心","合计");
+        return $org;
+    }
+
+    public function getOrgName()
+    {
+        $org_name = array(
+            "8647" => "本部",
+            "864700" => "本部",
+            "86470000" => "市南",
+            "86470003" => "李沧",//李沧
+            "86470004" => "平度",
+            "86470005" => "胶南",
+            "86470006" => "即墨",
+            "86470007" => "胶州",
+            "86470008" => "城阳",
+            "86470009" => "莱西",
+            "86470010" => "开发区",
+            "86470013" => "市南");
+        return $org_name;
+    }
+
+    public function getUserDictArray(){
+        $user_dict = array("yangyxit"=>"分公司核保室",
+            "tangjia"=>"分公司保全室",
+            "tjpmoqd"=>"分公司保全室",
+            "heyuanhp"=>"分公司理赔室",
+            "hypmoqd"=>"分公司理赔室",
+            "lizr_qd"=>"本部",
+            "liujie_qd"=>"本部",
+            "wangxh_qd"=>"本部",
+            "wangxh1_qd"=>"本部",
+            "zhangnn_qd"=>"本部",
+            "zhuxj_qd"=>"本部",
+            "zhuxj_qd00"=>"本部",
+            "zhangjieqd"=>"李沧",//李沧
+            "wangyingqd"=>"平度",
+            "wangyqd00"=>"平度",
+            "weils_qd"=>"平度",
+            "weilsqd00"=>"平度",
+            "zongxz_qd"=>"平度",
+            "zongxzqd00"=>"平度",
+            "wqpmoqd"=>"平度",
+            "xypmoqd"=>"平度",
+            "muxy_qd"=>"胶南",
+            "muxyqd00"=>"胶南",
+            "liuyy_qd"=>"胶南",
+            "liuyyqd00"=>"胶南",
+            "zxpmoqd"=>"胶南",
+            "zhangxuan9"=>"胶南",
+            "ningxy_qd"=>"即墨",
+            "nxyqd00"=>"即墨",
+            "wangjuan2"=>"即墨",
+            "wjpmoqd"=>"即墨",
+            "lishan_qd"=>"即墨",
+            "lishanqd00"=>"即墨",
+            "yucx_qd"=>"即墨",
+            "yucxqd00"=>"即墨",
+            "wangx_qd"=>"胶州",
+            "wangxqd00"=>"胶州",
+            "yangt_qd"=>"胶州",
+            "yangtqd00"=>"胶州",
+            "songdan_qd"=>"胶州",
+            "songdanqd00"=>"胶州",
+            "guoyx2"=>"胶州",
+            "gyxpmoqd"=>"胶州",
+            "zhaojiasc"=>"胶州",
+            "zjpmoqd"=>"胶州",
+            "wangyf_qd"=>"城阳",
+            "wangyfqd00"=>"城阳",
+            "wangmx_qd"=>"城阳",
+            "zhanyh_qd"=>"莱西",
+            "zhanyhqd00"=>"莱西",
+            "xusy_qd"=>"莱西",
+            "xusyqd00"=>"莱西",
+            "gcpmoqd"=>"莱西",
+            "gengkl_qd"=>"开发区",
+            "gkl_qd00"=>"开发区",
+            "likn_qd"=>"开发区",
+            "liknqd00"=>"开发区",
+            "wangkk_qd"=>"开发区",
+            "wangkkqd00"=>"开发区",
+            "jiangzm_qd"=>"开发区",
+            "xinwei_qd"=>"开发区",
+            "liyansd"=>"开发区",
+            "lypmoqd"=>"开发区",
+            "wanghx9"=>"开发区",
+            "whxpmoqd"=>"开发区",
+            "lhxpmoqd"=>"市南",
+            "liulu_qd"=>"市南",
+            "liuluqd00"=>"市南",
+            "liuxn_qd"=>"市南",
+            "liuxn_qd12"=>"市南",
+            "yuyang_qd"=>"市南");
+        return $user_dict;
+    }
+
+    public function getDataObject(){
+        $data_object = array(
+//            "org"=>"o",
+                                "nb_old_count",
+                                "nb_new_count",
+//                                "nb_cannt_count",
+                                "nb_fix_count",
+                                "nb_pro_count",
+                                "nb_profix_count",
+                                "nb_besame_count",
+                                "nb_bfsame_count",
+                                "cs_old_count",
+                                "cs_new_count",
+//                                "cs_cannt_count",
+                                "cs_fix_count",
+                                "cs_pro_count",
+                                "cs_profix_count",
+                                "cs_fysame_count",
+                                "clm_old_count",
+                                "clm_new_count",
+//                                "clm_cannt_count",
+                                "clm_fix_count",
+                                "clm_pro_count",
+                                "clm_profix_count",
+                                "clm_fysame_count");
+        return $data_object;
+    }
+
+    public function search_short($sql){
+        $conn = $this->OracleOldDBCon();
+        $result_rows = oci_parse($conn, $sql); // 配置SQL语句，执行SQL
+        oci_execute($result_rows, OCI_DEFAULT); // 行数  OCI_DEFAULT表示不要自动commit
+        oci_fetch_array($result_rows,OCI_RETURN_NULLS);
+        //封装函数
+        while($row = oci_fetch_array($result_rows, OCI_RETURN_NULLS))
+            $result[] = $row;
+        //关闭释放
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result;
+    }
+
+    public function search_long($result_rows){
+        oci_execute($result_rows, OCI_DEFAULT); // 行数  OCI_DEFAULT表示不要自动commit
+        oci_fetch_array($result_rows,OCI_RETURN_NULLS);
+        //封装函数
+        while($row = oci_fetch_array($result_rows, OCI_RETURN_NULLS))
+            $result[] = $row;
+        return $result;
+    }
+
+    public function loadDayPostData(){
+        $licang = 1;
+        $xiaoji = 10;
+        $fenOrganfh = 12;
+        $zuoYeZhongXin = 14;
+        $heji = 15;
+        $queryDate = I('get.queryDate');
+        //表格区域赋值
+        if(empty($queryDate)){
+            $queryDate = date(‘yyyy-mm-dd’,time());
+        }
+//        $queryDate = "2018-09-05";
+        $org = $this->getDictArry();
+        $userDire =  $this->getUserDictArray();
+        for($i = 0;$i<=sizeof($org);$i++){
+            $result[$i]['org'] = $org[$i];
+        }
+        //连接数据库
+        $conn = $this->OracleOldDBCon();
+        //契约数据赋值
+        for($i = 0;$i<=sizeof($org);$i++){
+            $result[$i]['nb_old_count'] =0;
+            $result[$i]['nb_new_count'] =0;
+//            $result[$i]['nb_cannt_count'] =0;
+            $result[$i]['nb_fix_count'] =0;
+            $result[$i]['nb_pro_count'] =0;
+            $result[$i]['nb_profix_count'] =0;
+            $result[$i]['nb_besame_count'] =0;
+            $result[$i]['nb_bfsame_count'] =0;
+        }
+
+        #################################################################   保全受理  ######################################################################
+        //保全数据查询
+        $where_OLD_time_query = "OLD_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd')";
+        $where_new_time_query = "NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
+        //#001 保全受理老核心当天
+        $where_old_time  = "SELECT USER_NAME,count(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query." GROUP BY USER_NAME ORDER BY USER_NAME";
+        $result_rows = oci_parse($conn, $where_old_time); // 配置SQL语句，执行SQL
+        $result_old_time = $this->search_long($result_rows);
+
+        #002 保全受理新老核心当天
+        $where_new_old_time  = "SELECT user_name,count(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query." and ".$where_new_time_query."  GROUP BY USER_NAME";
+        $result_rows = oci_parse($conn, $where_new_old_time); // 配置SQL语句，执行SQL
+        $result_new_old_time = $this->search_long($result_rows);
+
+        #003 保全受理老核心当天<>新核心,且新核心不为空
+        $where_new_no_old_time  = "SELECT user_name,count(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY USER_NAME";
+        $result_rows = oci_parse($conn, $where_new_no_old_time); // 配置SQL语句，执行SQL
+        $result_new_no_old_time = $this->search_long($result_rows);
+
+        #004 保全受理老核心当天且新核心为空
+        $where_new_null  = "SELECT user_name,count(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query." and NEW_INSERT_TIME IS NULL GROUP BY USER_NAME";
+        $result_rows = oci_parse($conn, $where_new_null); // 配置SQL语句，执行SQL
+        $result_new_null = $this->search_long($result_rows);
+
+        #005 保全受理老核心当天且TC不为空
+        $where_tc_no_null  = "SELECT user_name,count(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query." and TC_ID IS NOT NULL GROUP BY USER_NAME";
+        $result_rows = oci_parse($conn, $where_tc_no_null); // 配置SQL语句，执行SQL
+        $result_tc_no_null = $this->search_long($result_rows);
+
+        #006 保全受理新老核心金额一致数量
+        $where_new_old_money  = "SELECT user_name,count(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query." and ".$where_new_time_query."and abs(NEW_GET_MONEY-OLD_GET_MONEY)<=0.01 GROUP BY USER_NAME";
+        $result_rows = oci_parse($conn, $where_new_old_money); // 配置SQL语句，执行SQL
+        $result_new_old_money = $this->search_long($result_rows);
+
+        #011 保全受理老核心异地作业分李沧
+        $where_old_noqd  = "SELECT * FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query."and OLD_ORGAN_CODE NOT LIKE '8647%'";
+        $result_rows = oci_parse($conn, $where_old_noqd); // 配置SQL语句，执行SQL
+        $result_old_noqd = $this->search_long($result_rows);
+
+        $temp[][] = 0;
+        //保全数据赋值
+        for($i = 0;$i<=sizeof($org);$i++){//分支机构
+            $result[$i]['cs_old_count'] =0;//老核心当天插入
+            $result[$i]['cs_new_count'] =0;//老核心新核心当天插入
+//            $result[$i]['cs_cannt_count'] =0;//老核心当天插入新核心无插入日期
+            $result[$i]['cs_fix_count'] =0;//老核心当天插入，新核心非当天插入
+            $result[$i]['cs_pro_count'] =0;//老核心当天插入，TC不为空
+            $result[$i]['cs_profix_count'] =0;//当天插入，TC状态为已关闭，分机构TC数据库直接获取
+            $result[$i]['cs_fysame_count'] =0;//新老核心均为当天且金额一致
+            //除小计之外单个计算，小计通过计数累加
+            #001
+            foreach ($result_old_time as &$value) {
+                if($userDire[$value['USER_NAME']]===$org[$i]&&$org[$i]!='小计'){
+                    $result[$i]['cs_old_count'] += (int)($value['NUM']);
+                    $temp[$xiaoji]['cs_old_count'] += (int)($value['NUM']);
+                }
+            }
+            #002
+            foreach ($result_new_old_time as &$value) {
+                if($userDire[$value['USER_NAME']]==$org[$i]&&$org[$i]!='小计'){
+                    $result[$i]['cs_new_count'] += (int)$value['NUM'];
+                    $temp[$xiaoji]['cs_new_count'] += (int)$value['NUM'];
+                }
+            }
+            #004
+//            foreach ($result_new_null as &$value) {
+//                if($userDire[$value['USER_NAME']]==$org[$i]&&$org[$i]!='小计'){
+//                    $result[$i]['cs_cannt_count'] += (int)$value['NUM'];
+//                    $temp['cs_cannt_count'] += (int)$value['NUM'];
+//                }
+//            }
+            #003
+            foreach ($result_new_no_old_time as &$value) {
+                if($userDire[$value['USER_NAME']]==$org[$i]&&$org[$i]!='小计'){
+                    $result[$i]['cs_fix_count'] += (int)$value['NUM'];
+                    $temp[$xiaoji]['cs_fix_count'] += (int)$value['NUM'];
+                }
+            }
+            #005
+            foreach ($result_tc_no_null as &$value) {
+                if($userDire[$value['USER_NAME']]==$org[$i]&&$org[$i]!='小计'){
+                    $result[$i]['cs_pro_count'] += (int)$value['NUM'];
+                    $temp[$xiaoji]['cs_pro_count'] += (int)$value['NUM'];
+                }
+            }
+            #TC数据库待定-问题单解决数量
+            #006
+            foreach ($result_new_old_money as &$value) {
+                if($userDire[$value['USER_NAME']]==$org[$i]&&$org[$i]!='小计'){
+                    $result[$i]['cs_fysame_count'] += (int)$value['NUM'];
+                    $temp[$xiaoji]['cs_fysame_count'] +=(int)$value['NUM'];
+                }
+            }
+        }
+        #011 异地作业单独处理
+        $result[$licang]["cs_old_count"] += sizeof($result_old_noqd);
+        $temp[$xiaoji]["cs_old_count"] += sizeof($result_old_noqd);
+        foreach ($result_old_noqd as &$value) {
+            if(!empty($value["NEW_ORGAN_CODE"])){
+                $result[$licang]["cs_new_count"] ++;
+                $temp[$xiaoji]['cs_new_count'] ++;
+            }
+            if($value["NEW_INSERI_TIME"]!=$value["OLD_INSERI_TIME"]){
+                $result[$licang]["cs_fix_count"] ++;
+                $temp[$xiaoji]['cs_fix_count'] ++;
+            }
+            if(!empty($value["TC_ID"])){
+                $result[$licang]["cs_pro_count"] ++;
+                $temp[$xiaoji]['cs_pro_count'] ++;
+            }
+            if(abs((float)$value["OLD_GET_MONEY"]-(float)$value["NEW_GET_MONEY"])<=0.01){
+                $result[$licang]["cs_fysame_count"] ++;
+                $temp[$xiaoji]['cs_fysame_count'] ++;
+            }
+        }
+        #######################################################################################################################################
+
+        #################################################################   保全复核  ######################################################################
+        //保全数据查询
+        $where_OLD_time_query = "OLD_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd')";
+        $where_new_time_query = "NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
+        $userOne = "tangjia_bx";
+        $userTwo = "tangjia2_bx";
+
+        #007 保全复核老核心当天
+        $where_old_time_fh  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQFH_BD WHERE ".$where_OLD_time_query." GROUP BY NEW_USER_NAME";
+        $result_rows_fh = oci_parse($conn, $where_old_time_fh); // 配置SQL语句，执行SQL
+        $result_old_time_fh = $this->search_long($result_rows_fh);
+
+        #008 保全复核新老核心当天
+        $where_new_old_time_fh  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQFH_BD WHERE ".$where_OLD_time_query." and ".$where_new_time_query."  GROUP BY NEW_USER_NAME";
+        $result_rows_fh = oci_parse($conn, $where_new_old_time_fh); // 配置SQL语句，执行SQL
+        $result_new_old_time_fh = $this->search_long($result_rows_fh);
+
+        #009 保全复核老核心当天<>新核心,且新核心不为空
+        $where_new_no_old_time_fh  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQFH_BD WHERE ".$where_OLD_time_query." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_USER_NAME";
+        $result_rows_fh = oci_parse($conn, $where_new_no_old_time_fh); // 配置SQL语句，执行SQL
+        $result_new_no_old_time_fh = $this->search_long($result_rows_fh);
+
+        #010 保全受理老核心当天且TC不为空
+        $where_tc_no_null_fh  = "SELECT OLD_ORGAN_CODE,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQFH_BD WHERE ".$where_OLD_time_query." and TC_ID IS NOT NULL GROUP BY OLD_ORGAN_CODE";
+        $result_rows_fh = oci_parse($conn, $where_tc_no_null_fh); // 配置SQL语句，执行SQL
+        $result_tc_no_null_fh = $this->search_long($result_rows_fh);
+
+        //保全数据赋值
+            #007
+        $result[$fenOrganfh][] = 0;
+        $result[$zuoYeZhongXin][] = 0;
+            foreach ($result_old_time_fh as &$value) {
+                if($value['NEW_USER_NAME']==$userOne||$value['NEW_USER_NAME']==$userTwo){
+                    $result[$fenOrganfh]['cs_old_count'] += (int)($value['NUM']);
+                }else{
+                    $result[$zuoYeZhongXin]['cs_old_count'] += (int)($value['NUM']);
+                }
+            }
+        $temp[$heji]['cs_old_count'] = $temp[$xiaoji]['cs_old_count'] + $result[$zuoYeZhongXin]['cs_old_count'] + $result[$fenOrganfh]['cs_old_count'];
+            #008
+            foreach ($result_new_old_time_fh as &$value) {
+                if($value['NEW_USER_NAME']==$userOne||$value['NEW_USER_NAME']==$userTwo){
+                    $result[$fenOrganfh]['cs_new_count'] += (int)($value['NUM']);
+                    $result[$fenOrganfh]['cs_fysame_count'] += (int)($value['NUM']);
+                }else{
+                    $result[$zuoYeZhongXin]['cs_new_count'] += (int)($value['NUM']);
+                    $result[$zuoYeZhongXin]['cs_fysame_count'] += (int)($value['NUM']);
+                }
+            }
+        $temp[$heji]['cs_fysame_count'] = $temp[$xiaoji]['cs_fysame_count'] + $result[$zuoYeZhongXin]['cs_fysame_count'] + $result[$fenOrganfh]['cs_fysame_count'];
+        $temp[$heji]['cs_new_count'] = $temp[$xiaoji]['cs_new_count'] + $result[$zuoYeZhongXin]['cs_new_count'] + $result[$fenOrganfh]['cs_new_count'];
+        #009
+        foreach ($result_new_no_old_time_fh as &$value) {
+            if($value['NEW_USER_NAME']==$userOne||$value['NEW_USER_NAME']==$userTwo){
+                $result[$fenOrganfh]['cs_fix_count'] += (int)($value['NUM']);
+            }else{
+                $result[$zuoYeZhongXin]['cs_fix_count'] += (int)($value['NUM']);
+            }
+        }
+        $temp[$heji]['cs_fix_count'] = $temp[$xiaoji]['cs_fix_count'] + $result[$zuoYeZhongXin]['cs_fix_count'] + $result[$fenOrganfh]['cs_fix_count'];
+        #010
+        foreach ($result_tc_no_null_fh as &$value) {
+            //作业中心不提交BUG
+            $result[$fenOrganfh]['cs_pro_count'] += (int)($value['NUM']);
+        }
+        $temp[$heji]['cs_pro_count'] = $temp[$xiaoji]['cs_pro_count'] + $result[$fenOrganfh]['cs_pro_count'];
+        #TC数据库待定-问题单解决数量
+        #######################################################################################################################################
+
+        //理赔数据赋值
+        for($i = 0;$i<=sizeof($org);$i++){
+            $result[$i]['clm_old_count'] =0;
+            $result[$i]['clm_new_count'] =0;
+//            $result[$i]['clm_cannt_count'] =0;
+            $result[$i]['clm_fix_count'] =0;
+            $result[$i]['clm_pro_count'] =0;
+            $result[$i]['clm_profix_count'] =0;
+            $result[$i]['clm_fysame_count'] =0;
+        }
+        //默认不加载TC数据，通过申请队列加载
+        //小计
+        $dataObject = $this->getDataObject();
+        foreach ($dataObject as &$value) {
+            if(empty($temp[$xiaoji][$value]))
+                $result[$xiaoji][$value] = 0;
+            else
+                $result[$xiaoji][$value] = $temp[$xiaoji][$value];
+            if(empty($temp[$heji][$value]))
+                $result[$heji][$value] = 0;
+            else
+                $result[$heji][$value] = $temp[$heji][$value];
+        }
+
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+//
+//    print("查询数据"+bx_sql)
+//    bx_cursor.execute(bx_sql)
+//    # 输出信息
+//    ro = bx_cursor.fetchall()
+//    print(str(len(ro)))
+//    for v in ro:
+//
+//        currentorg = '本部'
+//        if v[0] in user_dict:
+//            currentorg = user_dict[v[0]]
+//        currentResult = result[currentorg]
+//        currentResult['cs_old_count'] = currentResult['cs_old_count'] + 1
+//        if  v[6] =='是':
+//            currentResult['cs_fysame_count'] = currentResult['cs_fysame_count'] + 1
+//        if  v[1] =='是':
+//            if queryDate is None and v[4]!=v[5]:
+//                currentResult['cs_fix_count'] = currentResult['cs_fix_count'] + 1
+//            else:
+//                currentResult['cs_new_count'] = currentResult['cs_new_count'] + 1
+//        else:
+//            currentResult['cs_cannt_count'] = currentResult['cs_cannt_count'] + 1
+//        if  not v[3] is None :
+//            for id in v[3].split(','):
+//                #因总公司不提bug，故不统计总公司，只统计分公司
+//                if tc_status[id]['id']!='787':
+//                    currentResult['cs_pro_count'] = currentResult['cs_pro_count'] + 1
+//                    if(tc_status[id]['state']=='8' or tc_status[id]['state']=='11'):
+//                        currentResult['cs_profix_count'] = currentResult['cs_profix_count'] + 1
+//    if not queryDate is None:
+//        print("查询新核心处理既往数据"+bxfix_sql)
+//        bx_cursor.execute(bxfix_sql)
+//        # 输出信息
+//        ro = bx_cursor.fetchall()
+//        for v in ro:
+//            if v[0] in user_dict:
+//                currentorg = user_dict[v[0]]
+//                currentResult = result[currentorg]
+//                currentResult['cs_fix_count'] = currentResult['cs_fix_count'] + 1
+//
+//
+//
+//
+//
+//
+//    '''
+//    新契约
+//    '''
+//    where = ""
+//    wherefix = ""
+//    if not queryDate is None:
+//        where  = "where OLD_INSERT_TIME = to_date('"+queryDate+"','yyyy-mm-dd')"
+//        wherefix  = "where NEW_INSERT_TIME = to_date('"+queryDate+"','yyyy-mm-dd') and OLD_INSERT_TIME <> to_date('"+queryDate+"','yyyy-mm-dd')"
+//    else:
+//        wherefix = "where NEW_INSERT_TIME <> OLD_INSERT_TIME"
+//    bx_sql = "select TRIM(OLD_USER_NAME),TRIM(IS_ACCORDANCE),TRIM(OLD_APPLE_CODE),TRIM(TC_ID),to_char(OLD_INSERT_TIME,'yyyymmdd'),to_char(NEW_INSERT_TIME,'yyyymmdd'),case when abs(OLD_PREM-NEW_PREM)<0.02 then '是' else '否' end, case when abs(OLD_AMNT-NEW_AMNT)<0.02 then '是' else '否' end  from tmp_bx_old_cdqcb " + where
+//    bxfix_sql = "select TRIM(OLD_USER_NAME),TRIM(IS_ACCORDANCE),TRIM(OLD_APPLE_CODE),TRIM(TC_ID),to_char(OLD_INSERT_TIME,'yyyymmdd'),to_char(NEW_INSERT_TIME,'yyyymmdd'),case when abs(OLD_PREM-NEW_PREM)<0.02 then '是' else '否' end,case when abs(OLD_AMNT-NEW_AMNT)<0.02 then '是' else '否' end  from tmp_bx_old_cdqcb " + wherefix
+//
+//    print("查询数据"+bx_sql)
+//    bx_cursor.execute(bx_sql)
+//    # 输出信息
+//    ro = bx_cursor.fetchall()
+//    for v in ro:
+//        if v[0] in user_dict:
+//            currentorg = user_dict[v[0]]
+//            currentResult = result[currentorg]
+//            currentResult['nb_old_count'] = currentResult['nb_old_count'] + 1
+//            if v[6] =='是':
+//                currentResult['nb_bfsame_count'] = currentResult['nb_bfsame_count'] + 1
+//            if v[7] =='是':
+//                currentResult['nb_besame_count'] = currentResult['nb_besame_count'] + 1
+//            if v[1] =='是':
+//                if queryDate is None and v[4]!=v[5]:
+//                    currentResult['nb_fix_count'] = currentResult['nb_fix_count'] + 1
+//                else:
+//                    currentResult['nb_new_count'] = currentResult['nb_new_count'] + 1
+//            else:
+//                currentResult['nb_cannt_count'] = currentResult['nb_cannt_count'] + 1
+//            if  not v[3] is None :
+//                for id in v[3].split(','):
+//                    if not tc_status[id]['id'] in ['462','1201','1504','844']:
+//                        currentResult['nb_pro_count'] = currentResult['nb_pro_count'] + 1
+//                        if(tc_status[id]['state']=='8' or tc_status[id]['state']=='11'):
+//                            currentResult['nb_profix_count'] = currentResult['nb_profix_count'] + 1
+//    if not queryDate is None:
+//        print("查询新核心处理既往数据"+bxfix_sql)
+//        bx_cursor.execute(bxfix_sql)
+//        # 输出信息
+//        ro = bx_cursor.fetchall()
+//        for v in ro:
+//            if v[0] in user_dict:
+//                currentorg = user_dict[v[0]]
+//                currentResult = result[currentorg]
+//                currentResult['nb_fix_count'] = currentResult['nb_fix_count'] + 1
+//
+//
+//    '''
+//    核保
+//    '''
+//    where = ""
+//    wherefix = ""
+//    if not queryDate is None:
+//        where  = "where OLD_INSERT_TIME = to_date('"+queryDate+"','yyyy-mm-dd')"
+//        wherefix  = "where NEW_INSERT_TIME = to_date('"+queryDate+"','yyyy-mm-dd') and OLD_INSERT_TIME <> to_date('"+queryDate+"','yyyy-mm-dd')"
+//    else:
+//        wherefix = "where NEW_INSERT_TIME <> OLD_INSERT_TIME"
+//    bx_sql = "select TRIM(new_user_name),TRIM(IS_ACCORDANCE),TRIM(OLD_APPLE_CODE),TRIM(TC_ID),to_char(OLD_INSERT_TIME,'yyyymmdd'),to_char(NEW_INSERT_TIME,'yyyymmdd') from TMP_UW_LIST " + where
+//    bxfix_sql = "select TRIM(new_user_name),TRIM(IS_ACCORDANCE),TRIM(OLD_APPLE_CODE),TRIM(TC_ID),to_char(OLD_INSERT_TIME,'yyyymmdd'),to_char(NEW_INSERT_TIME,'yyyymmdd')  from TMP_UW_LIST " + wherefix
+//
+//    print("查询数据"+bx_sql)
+//    bx_cursor.execute(bx_sql)
+//    # 输出信息
+//    ro = bx_cursor.fetchall()
+//    for v in ro:
+//        currentorg = '分公司核保室'
+//        if (v[1] =='是'
+//            and v[0] in ['wu123','zhangxi_bx','wanglz_bx','taoli_bx','zhangys_bx','xielc_bx']):
+//            currentorg = '总公司作业中心'
+//        currentResult = result[currentorg]
+//
+//        currentResult['nb_old_count'] = currentResult['nb_old_count'] + 1
+//        if  v[1] =='是':
+//            if queryDate is None and v[4]!=v[5]:
+//                currentResult['nb_fix_count'] = currentResult['nb_fix_count'] + 1
+//                currentResult['nb_bfsame_count'] = currentResult['nb_bfsame_count'] + 1
+//                currentResult['nb_besame_count'] = currentResult['nb_besame_count'] + 1
+//            else:
+//                currentResult['nb_new_count'] = currentResult['nb_new_count'] + 1
+//                currentResult['nb_bfsame_count'] = currentResult['nb_bfsame_count'] + 1
+//                currentResult['nb_besame_count'] = currentResult['nb_besame_count'] + 1
+//
+//        else:
+//            currentResult['nb_cannt_count'] = currentResult['nb_cannt_count'] + 1
+//        if  not v[3] is None :
+//            for id in v[3].split(','):
+//                if tc_status[id]['id'] in ['462','1201','1504']:
+//                    currentResult['nb_pro_count'] = currentResult['nb_pro_count'] + 1
+//                    if(tc_status[id]['state']=='8' or tc_status[id]['state']=='11'):
+//                        currentResult['nb_profix_count'] = currentResult['nb_profix_count'] + 1
+//    if not queryDate is None:
+//        print("查询新核心处理既往数据"+bxfix_sql)
+//        bx_cursor.execute(bxfix_sql)
+//        # 输出信息
+//        ro = bx_cursor.fetchall()
+//        for v in ro:
+//            currentorg = '分公司核保室'
+//            if ( v[1] =='是'
+//                and  v[0] in ['wu123','zhangxi_bx','wanglz_bx','taoli_bx','zhangys_bx','xielc_bx']):
+//                currentorg = '总公司作业中心'
+//            currentResult = result[currentorg]
+//            currentResult['nb_fix_count'] = currentResult['nb_fix_count'] + 1
+//
+//
+//    '''
+//    理赔受理
+//    '''
+//    where = ""
+//    wherefix = ""
+//    if not queryDate is None:
+//        where  = "where OLD_INSERT_TIME = to_date('"+queryDate+"','yyyy-mm-dd')"
+//        wherefix  = "where NEW_INSERT_TIME = to_date('"+queryDate+"','yyyy-mm-dd') and OLD_INSERT_TIME <> to_date('"+queryDate+"','yyyy-mm-dd')"
+//    else:
+//        wherefix = "where NEW_INSERT_TIME <> OLD_INSERT_TIME"
+//    bx_sql = "select TRIM(OLD_ORGAN_CODE),TRIM(IS_ACCORDANCE),TRIM(OLD_CASE_CODE),TRIM(TC_ID),to_char(OLD_INSERT_TIME,'yyyymmdd'),to_char(NEW_INSERT_TIME,'yyyymmdd'),case when abs(OLD_GET_MONEY-NEW_GET_MONEY)<0.02 then '是' else '否' end from TMP_NCS_QD_BX_LPBA_BD " + where
+//    bxfix_sql = "select TRIM(OLD_ORGAN_CODE),TRIM(IS_ACCORDANCE),TRIM(OLD_CASE_CODE),TRIM(TC_ID),to_char(OLD_INSERT_TIME,'yyyymmdd'),to_char(NEW_INSERT_TIME,'yyyymmdd'),case when abs(OLD_GET_MONEY-NEW_GET_MONEY)<0.02 then '是' else '否' end from TMP_NCS_QD_BX_LPBA_BD " + wherefix
+//
+//    print("查询数据"+bx_sql)
+//    bx_cursor.execute(bx_sql)
+//    # 输出信息
+//    ro = bx_cursor.fetchall()
+//    for v in ro:
+//        if v[0] in org_name:
+//            currentorg = org_name[v[0]]
+//        else:
+//            currentorg = '本部'
+//        currentResult = result[currentorg]
+//        currentResult['clm_old_count'] = currentResult['clm_old_count'] + 1
+//        if  v[1] =='是':
+//            if queryDate is None and v[4]!=v[5]:
+//                currentResult['clm_fix_count'] = currentResult['clm_fix_count'] + 1
+//            else:
+//                currentResult['clm_new_count'] = currentResult['clm_new_count'] + 1
+//        else:
+//            currentResult['clm_cannt_count'] = currentResult['clm_cannt_count'] + 1
+//        if  v[6] =='是':
+//            currentResult['clm_fysame_count'] = currentResult['clm_fysame_count'] + 1
+//        if  not v[3] is None :
+//            for id in v[3].split(','):
+//                #因总公司不提bug，故不统计总公司，只统计分公司
+//                if tc_status[id]['id']!='1617':
+//                    currentResult['clm_pro_count'] = currentResult['clm_pro_count'] + 1
+//                    if(tc_status[id]['state']=='8' or tc_status[id]['state']=='11'):
+//                        currentResult['clm_profix_count'] = currentResult['clm_profix_count'] + 1
+//    if not queryDate is None:
+//        print("查询新核心处理既往数据"+bxfix_sql)
+//        bx_cursor.execute(bxfix_sql)
+//        # 输出信息
+//        ro = bx_cursor.fetchall()
+//        for v in ro:
+//            currentorg = org_name[v[0]]
+//            currentResult = result[currentorg]
+//            currentResult['clm_fix_count'] = currentResult['clm_fix_count'] + 1
+//
+//    '''
+//    理赔审批
+//    '''
+//    where = ""
+//    wherefix = ""
+//    if not queryDate is None:
+//        where  = "where OLD_INSERT_TIME = to_date('"+queryDate+"','yyyy-mm-dd')"
+//        wherefix  = "where NEW_INSERT_TIME = to_date('"+queryDate+"','yyyy-mm-dd') and OLD_INSERT_TIME <> to_date('"+queryDate+"','yyyy-mm-dd')"
+//    else:
+//        wherefix = "where NEW_INSERT_TIME <> OLD_INSERT_TIME"
+//    bx_sql = "select trim(NEW_ORGAN_CODE),TRIM(IS_ACCORDANCE),TRIM(OLD_CASE_CODE),TRIM(TC_ID),TRIM(NEW_USER_NAME),to_char(OLD_INSERT_TIME,'yyyymmdd'),to_char(NEW_INSERT_TIME,'yyyymmdd')  from TMP_NCS_QD_BX_LPSHSP_BD " + where
+//    bxfix_sql = "select TRIM(NEW_ORGAN_CODE ),TRIM(IS_ACCORDANCE),TRIM(OLD_CASE_CODE),TRIM(TC_ID),TRIM(NEW_USER_NAME),to_char(OLD_INSERT_TIME,'yyyymmdd'),to_char(NEW_INSERT_TIME,'yyyymmdd')  from TMP_NCS_QD_BX_LPSHSP_BD " + wherefix
+//
+//    print("查询数据"+bx_sql)
+//    bx_cursor.execute(bx_sql)
+//    # 输出信息
+//    ro = bx_cursor.fetchall()
+//
+//    for v in ro:
+//        currentorg = '分公司理赔室'
+//        if v[1] =='是' and not v[4] in ['heyuan','heyuan_bx','SYSADMIN'] and not v[4] is None :
+//            currentorg = '总公司作业中心'
+//        currentResult = result[currentorg]
+//        currentResult['clm_old_count'] = currentResult['clm_old_count'] + 1
+//        if v[1] =='是':
+//            if queryDate is None and v[5]!=v[6]:
+//                currentResult['clm_fix_count'] = currentResult['clm_fix_count'] + 1
+//                currentResult['clm_fysame_count'] = currentResult['clm_fysame_count'] + 1
+//            else:
+//                currentResult['clm_fysame_count'] = currentResult['clm_fysame_count'] + 1
+//                currentResult['clm_new_count'] = currentResult['clm_new_count'] + 1
+//        else:
+//            currentResult['clm_cannt_count'] = currentResult['clm_cannt_count'] + 1
+//        if  not v[3] is None :
+//            for id in v[3].split(','):
+//                #因总公司不提bug，故不统计总公司，只统计分公司
+//                if not id in tc_status:
+//                    continue
+//                if tc_status[id]['id']=='1617':
+//                    currentResult['clm_pro_count'] = currentResult['clm_pro_count'] + 1
+//                    if(id!='0' and (tc_status[id]['state']=='8' or tc_status[id]['state']=='11')):
+//                        currentResult['clm_profix_count'] = currentResult['clm_profix_count'] + 1
+//    if not queryDate is None:
+//        print("查询新核心处理既往数据"+bxfix_sql)
+//        bx_cursor.execute(bxfix_sql)
+//        # 输出信息
+//        ro = bx_cursor.fetchall()
+//        for v in ro:
+//            currentorg = '分公司理赔室'
+//            if v[1] =='是' and not v[4] in ['heyuan','heyuan_bx','SYSADMIN'] and not v[4] is None :
+//                currentorg = '总公司作业中心'
+//            currentResult = result[currentorg]
+//            currentResult['clm_fix_count'] = currentResult['clm_fix_count'] + 1
+//            #currentResult['clm_fysame_count'] = currentResult['clm_fysame_count'] + 1
+//
+//
+//    '''
+//    保全复合
+//   '''
+//    where = ""
+//    wherefix = ""
+//    if not queryDate is None:
+//        where  = "where OLD_INSERT_TIME = to_date('"+queryDate+"','yyyy-mm-dd')"
+//        wherefix  = "where NEW_INSERT_TIME = to_date('"+queryDate+"','yyyy-mm-dd') and OLD_INSERT_TIME <> to_date('"+queryDate+"','yyyy-mm-dd')"
+//    else:
+//        wherefix = "where NEW_INSERT_TIME <> OLD_INSERT_TIME"
+//    bx_sql = "select TRIM(NEW_USER_NAME),TRIM(IS_ACCORDANCE),TRIM(OLD_ACCEPT_CODE),TRIM(TC_ID),to_char(OLD_INSERT_TIME,'yyyymmdd'),to_char(NEW_INSERT_TIME,'yyyymmdd'),OLD_ORGAN_CODE from TMP_NCS_QD_BX_BQFH_BD " + where
+//    bxfix_sql = "select TRIM(NEW_USER_NAME),TRIM(IS_ACCORDANCE),TRIM(OLD_ACCEPT_CODE),TRIM(TC_ID),to_char(OLD_INSERT_TIME,'yyyymmdd'),to_char(NEW_INSERT_TIME,'yyyymmdd'),OLD_ORGAN_CODE  from TMP_NCS_QD_BX_BQFH_BD " + wherefix
+//
+//    print("查询数据"+bx_sql)
+//    bx_cursor.execute(bx_sql)
+//    # 输出信息
+//    ro = bx_cursor.fetchall()
+//    print(str(len(ro)))
+//    for v in ro:
+//        currentorg = '分公司保全室'
+//        if v[1] =='是' and not v[0] in ['tangjia2_bx','tangjia_bx']:
+//            currentorg = '总公司作业中心'
+//        currentResult = result[currentorg]
+//        currentResult['cs_old_count'] = currentResult['cs_old_count'] + 1
+//        if  v[1] =='是':
+//            #没有日期代表全部统计，此时需要统计既往数据处理，否则不统计处理既往
+//            if queryDate is None and v[4]!=v[5]:
+//                currentResult['cs_fix_count'] = currentResult['cs_fix_count'] + 1
+//                currentResult['cs_fysame_count'] = currentResult['cs_fysame_count'] + 1
+//            else:
+//                currentResult['cs_new_count'] = currentResult['cs_new_count'] + 1
+//                currentResult['cs_fysame_count'] = currentResult['cs_fysame_count'] + 1
+//        else:
+//            currentResult['cs_cannt_count'] = currentResult['cs_cannt_count'] + 1
+//        if  not v[3] is None :
+//            for id in v[3].split(','):
+//                #因总公司不提bug，故不统计总公司，只统计分公司
+//                if tc_status[id]['id']=='787':
+//                    currentResult['cs_pro_count'] = currentResult['cs_pro_count'] + 1
+//                    if(tc_status[id]['state']=='8' or tc_status[id]['state']=='11'):
+//                        currentResult['cs_profix_count'] = currentResult['cs_profix_count'] + 1
+//    if not queryDate is None:
+//        print("查询新核心处理既往数据"+bxfix_sql)
+//        bx_cursor.execute(bxfix_sql)
+//        # 输出信息
+//        ro = bx_cursor.fetchall()
+//        for v in ro:
+//            currentorg = '分公司保全室'
+//            if v[1] =='是' and not v[0] in ['tangjia2_bx','tangjia_bx']:
+//                currentorg = '总公司作业中心'
+//                currentResult = result[currentorg]
+//                currentResult['cs_fix_count'] = currentResult['cs_fix_count'] + 1
+//                #currentResult['cs_fysame_count'] = currentResult['cs_fysame_count'] + 1
+//
+//
+//    bx_cursor.close()
+//    bx_conn.close()
+//    arr_result = []
+//    for key in result:
+//        arr_result.append(result[key])
+//        if(not key in ['小计','分公司核保室','分公司保全室','分公司理赔室','总公司作业中心','合计']):
+//            for col in result[key]:
+//                if col =='org':
+//                    continue
+//                    result['小计'][col] = result['小计'][col] +result[key][col]
+//        if(not key in ['小计','合计']):
+//            for col in result[key]:
+//                if col =='org':
+//                    continue
+//                    result['合计'][col] = result['合计'][col] +result[key][col]
+//    #arr_result.append(result['小计'])
+//    return arr_result
+//    }
+
     public function getSurveyDemo()
     {
         $survey = M('survey');

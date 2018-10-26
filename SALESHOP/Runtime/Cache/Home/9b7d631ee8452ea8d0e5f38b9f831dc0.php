@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="/Public/img/favicon.ico">
     <!-- END SHORTCUT ICON -->
     <title>
-        CES - 课程评价管理系统
+        <?php echo ($TITLE); ?>
     </title>
     <!-- BEGIN STYLESHEET-->
     <link href="/Public/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
@@ -20,11 +20,11 @@
     <link href="/Public/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 -->
     <link href="/Public/css/style.css" rel="stylesheet"><!-- THEME BASIC CSS -->
     <link href="/Public/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
-    <link rel="stylesheet" type="text/css" href="/Public/assets/nestable/jquery.nestable.css"><!-- NESTABLE CSS -->
-    <link href="/Public/css/sco.message.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/Public/css/bootstrap-table.min.css">
-    <link rel="stylesheet" type="text/css" href="/Public/css/setAutoRes/set-auto-list.css">
-
+    <link href="/Public/assets/morris.js-0.4.3/morris.css" rel="stylesheet"><!-- MORRIS CHART CSS -->
+    <link href="/Public/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="/Public/js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <!--dashboard calendar-->
+    <link href="/Public/css/clndr.css" rel="stylesheet"><!-- CALENDER CSS -->
     <!--[if lt IE 9]>
     <script src="/Public/js/html5shiv.js">
     </script>
@@ -545,213 +545,182 @@
         <!-- 主容器  -->
         <section class="wrapper">
 
-            <!--微信菜单设置注意事项-->
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                    <h1 class="panel-title-red">
-                        微信消息自动回复设置注意事项：
-                    </h1>
-                </div>
-                <div class="panel-body" rows="8">
-                    1、消息自动回复是指用户在公众平台输入文本后获取的自动复。<br>
-                    2、消息自动回复可选择类型为文本、链接、图文消息转URL链接跳转等。<br>
-                    3、消息自动回复一经存储成功发布即可使用，建议确定客户端回复样式内容后完成配置。<br>
-                    4、消息自动回复默认类型为文本类型，暂不可用类型请等待开发。<br>
-                    5、消息自动回复类型：text／文本类型、text-url／文本链接类型、new／单图文消息类型、news／多图文消息类型。<br>
-                    <br><br><br>
-                </div>
+            <div class="container-fluid" >
+                <section class="panel">
+                    <header class="panel-heading">
+                        <div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>
+                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt">导出日报</button></div>
+                        <div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>
+                        <div class="tools" style="float:left;margin-left: 10pt">
+                            <div style="width:250px;" class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                <input class="form-control" size="16" type="text" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <input style="visibility:hidden" id="dtp_input2" value=""/>
+                    </header>
+                    <div style="margin:0 5px">
+                        <table id="daily_report"></table>
+                    </div>
+                </section>
             </div>
 
-            <!--微信菜单设置-->
-            <div class="row">
+            <!-- 第一行数据统计  -->
+            <div class="row state-overview" style="visibility:hidden">
 
-                <div class="col-lg-12">
+                <!--四个统计框-->
+                <div class="col-lg-3 col-sm-6">
+
                     <section class="panel">
-                        <header class="panel-heading">
-                            添加微信消息自动回复
 
-                            <span class="tools pull-right">
-
-                                <div class="data-action-div" style="margin-right:-100px;">
-                                    <a href="javascript:;" class="data-action-a" onclick="setRes();">
-                                        提交设置
-                                    </a>
-                                </div>
-                                <div class="right">
-                                    <a href="javascript:;" onclick="refreshRequset();"
-                                       class="fa fa-rotate-right data-action-refresh">
-                                    </a>
-                                </div>
-
-                            </span>
-                        </header>
-                        <div class="col-lg-12 set_auto_list">
-                            <div class="order-left-10">
-                                <label class="order-label">1</label>
-                            </div>
-                            <p class="sar-label-p">
-                                请选择消息类型：</p>
-                            <select class="dd3-content-et m-bot15 order-select col-lg-3" id="response_type"
-                                    style="float:left;">
-                                <option value="text">纯文本</option>
-                                <option value="text_url">文本（含链接）</option>
-                                <option value="new">单图文消息跳转链接--暂不可用</option>
-                                <option value="news">多图文消息跳转多链接--暂不可用</option>
-                            </select>
-                        </div>
-                        <div class="panel-body" style="margin-top:60px;">
-
-                            <div class="col-lg-6">
-                                <section class="panel">
-                                    <div class="order-left-10">
-                                        <label class="order-label">2</label>
-                                    </div>
-                                    <p class="sar-label-p">
-                                        微信用户输入消息内容:</p>
-                                    <textarea rows="8" id="user_input" class="form-control"
-                                              style="margin-top:10px;"></textarea>
-                                </section>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <section class="panel">
-                                    <div class="order-left-10">
-                                        <label class="order-label">3</label>
-                                    </div>
-                                    <p class="sar-label-p">系统回复消息内容:</p>
-                                    <textarea rows="8" id="sys_response" class="form-control"
-                                              style="margin-top:10px;"></textarea>
-                                </section>
-                            </div>
+                        <div class="symbol">
+                            <i class="fa fa-tags blue">
+                            </i>
                         </div>
 
+                        <div class="value">
+                            <h1 class="count" style="display:none"><?php echo ($count); ?></h1>
+
+                            <h1 class=" show_count">
+                                0
+                            </h1>
+
+                            <p>
+                                微信匹配用户总量
+                            </p>
+                        </div>
 
                     </section>
-                </div>
-            </div>
-            <div class="row">
-                <div class="panel-body">
 
-                    <div class="panel panel-primary">
-                        <div class="panel-heading color-hui">查询条件</div>
-                        <div class="panel-body">
-                            <form id="formSearch" class="form-horizontal">
-                                <div class="form-group" style="margin-top:15px">
-
-                                    <label class="control-label col-sm-3" for="txt_search_user_input"
-                                           style="margin-left:30px;">用户输入的文本信息：</label>
-
-                                    <div class="col-sm-5">
-                                        <input type="text" class="form-control" id="txt_search_user_input">
-                                    </div>
-
-                                    <div class="col-sm-3" style="text-align:left;">
-                                        <button type="button" style="margin-left:10px" onclick="show();"
-                                                id="btn_query"
-                                                class="btn btn-primary">查询
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div id="toolbar" class="btn-group">
-                            <button id="btn_delete" type="button" class="btn btn-danger">
-                                <span class="glyphicon" aria-hidden="true"></span>全部删除
-                            </button>
-                        </div>
-                        <table class="panel" id="tablelist" data-page-list="[10, 25, 50, 100, ALL]"></table>
-                    </div>
                 </div>
 
+                <div class="col-lg-3 col-sm-6">
+
+                    <section class="panel">
+
+                        <div class="symbol">
+                            <i class="fa fa-tasks red">
+                            </i>
+                        </div>
+
+                        <div class="value">
+                            <h1 class="count1" style="display:none"><?php echo ($count1); ?></h1>
+
+                            <h1 class=" show_count1">
+                                0
+                            </h1>
+
+                            <p>
+                                课程评价总数
+                            </p>
+                        </div>
+
+                    </section>
+
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+
+                    <section class="panel">
+
+                        <div class="symbol">
+                            <i class="fa fa-user yellow">
+                            </i>
+                        </div>
+
+                        <div class="value">
+                            <h1 class=" count2" style="display:none"><?php echo ($count2); ?></h1>
+
+                            <h1 class=" show_count2">0</h1>
+
+                            <p>
+                                微信关注量
+                            </p>
+                        </div>
+
+                    </section>
+
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+
+                    <section class="panel">
+
+                        <div class="symbol">
+                            <i class="fa fa-plus purple">
+                            </i>
+                        </div>
+
+                        <div class="value">
+                            <h1 class=" count3" style="display:none"><?php echo ($count3); ?></h1>
+
+                            <h1 class=" show_count3">
+                                0
+                            </h1>
+
+                            <p>
+                                新增用户数量
+                            </p>
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+             <!--第一行数据统计-->
+
+            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        微信匹配数量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="weixin-num" class="graph">
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <!--测试用文本框-->
-            <textarea id="list_output" rows="3" class="form-control" style="visibility:hidden"></textarea>
+            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        课程评价数量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="ce-num" class="graph">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        微信关注量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="weixin-sub-num" class="graph">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!--<div class="col-lg-12" style="color:#a560f8">-->
+                <!--<section class="panel">-->
+                    <!--<header class="panel-heading">-->
+                        <!--新增用户数量变化趋势-->
+                    <!--</header>-->
+                    <!--<div class="panel-body">-->
+                        <!--<div id="weixin-new-num" class="graph">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</section>-->
+            <!--</div>-->
 
         </section>
         <!-- 主容器  -->
-
-        <div class="modal fade" id="myModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">删除自动回复提示</h4>
-                    </div>
-                    <div class="modal-body text-center">
-                        <span class="left-30 red size-16">删除后将无法恢复！确认要删除自动回复吗？</span>
-                    </div>
-                    <div class="modal-footer">
-                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-                        <button class="btn btn-warning" type="button" onclick="deleteSub();">确认</button>
-                    </div>
-                </div>
-            </div>
-            <span style="display:none" id="myModalHide"></span>
-        </div>
-
-        <div class="modal fade" id="modifyResponse">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">修改自动回复消息</h4>
-                    </div>
-                    <div class="col-lg-12 set_auto_list">
-                        <div class="order-left-10">
-                            <label class="order-label">1</label>
-                        </div>
-                        <p class="sar-label-p">
-                            请选择消息类型：</p>
-                        <select class="dd3-content-et m-bot15 order-select col-lg-3" id="response_type_modify"
-                                style="float:left;">
-                            <option value="text">纯文本</option>
-                            <option value="text_url">文本（含链接）</option>
-                            <option value="new">单图文消息跳转链接--暂不可用</option>
-                            <option value="news">多图文消息跳转多链接--暂不可用</option>
-                        </select>
-                    </div>
-                    <div class="panel-body" style="margin-top:60px;">
-
-                        <div class="col-lg-12">
-                            <section class="panel">
-                                <div class="order-left-10">
-                                    <label class="order-label">2</label>
-                                </div>
-                                <p class="sar-label-p">
-                                    微信用户输入消息内容:</p>
-                                    <textarea rows="8" id="user_input_modify" class="form-control"
-                                              style="margin-top:10px;"></textarea>
-                            </section>
-                        </div>
-
-                        <div class="col-lg-12">
-                            <section class="panel">
-                                <div class="order-left-10">
-                                    <label class="order-label">3</label>
-                                </div>
-                                <p class="sar-label-p">系统回复消息内容:</p>
-                                    <textarea rows="8" id="sys_response_modify" class="form-control"
-                                              style="margin-top:10px;"></textarea>
-                            </section>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-                        <button class="btn btn-warning" type="button" onclick="modifySub();">确认</button>
-                    </div>
-                </div>
-            </div>
-            <textarea style="display:none" id="res_id"></textarea>
-            <textarea style="display:none" id="res_user_input"></textarea>
-            <textarea style="display:none" id="res_sys_response"></textarea>
-            <textarea style="display:none" id="res_sys_response_type"></textarea>
-        </div>
-
 
     </section>
     <!-- 主窗体 -->
@@ -771,12 +740,17 @@
 </footer>
 <!-- 尾 -->
 
+    <p id="weChatMatch" style="display:none"><?php echo ($weChatMatch); ?></p>
+
+    <p id="weChatSub" style="display:none"><?php echo ($weChatSub); ?></p>
+
+    <p id="weChatNum" style="display:none"><?php echo ($weChatNum); ?></p>
+
+    <p id="weCESNum" style="display:none"><?php echo ($weCESNum); ?></p>
 </section>
 <!-- SECTION -->
 
 <!-- JS -->
-
-<!--<script src="/Public/js/jquery.js"></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
 <script src="/Public/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
 <script src="/Public/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
 <script src="/Public/js/jquery.dcjqaccordion.2.7.js"></script><!-- 左侧子菜单栏显示 -->
@@ -784,13 +758,24 @@
 <script src="/Public/js/jquery.nicescroll.js"></script><!-- NICESCROLL JS -->
 <script src="/Public/js/respond.min.js"></script><!-- RESPOND JS -->
 <script src="/Public/js/jquery.sparkline.js"></script><!-- SPARKLINE JS -->
+<script src="/Public/js/sparkline-chart.js"></script><!-- SPARKLINE CHART JS -->
 <script src="/Public/js/common-scripts.js"></script><!-- BASIC COMMON JS -->
-<script src="/Public/js/sco.message.js" type="text/javascript"></script>
-<script src="/Public/js/bootstrap-table.min.js"></script>
-<script src="/Public/js/bootstrap-table-zh-CN.min.js"></script>
-<script src="/Public/js/setAutoRes/setResponse.js" type="text/javascript"></script>
+<script src="/Public/js/bootstrap-table.min.js"></script><!-- SPARKLINE CHART JS -->
+<script src="/Public/js/bootstrap-table-zh-CN.min.js"></script><!-- BASIC COMMON JS -->
 
+<!--统计框Morris-->
+<script src="/Public/assets/morris.js-0.4.3/morris.min.js"></script><!-- MORRIS JS -->
+<script src="/Public/assets/morris.js-0.4.3/raphael-min.js"></script><!-- MORRIS  JS -->
+<script src="/Public/js/chart.js"></script><!-- CHART JS -->
 
+<script src="/Public/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/Public/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<!--自定义-->
+<script src="/Public/js/Home/count.js"></script>
+<script src="/Public/js/Home/get-time.js"></script>
+<script src="/Public/js/Home/charts-home.js"></script>
+<script src="/Public/js/Home/home.js"></script>
+<script src="/Public/js/Home/home_day.js"></script>
 <script>
 
 </script>

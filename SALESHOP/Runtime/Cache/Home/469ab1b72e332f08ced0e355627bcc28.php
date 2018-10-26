@@ -51,9 +51,9 @@
     <!-- SIDEBAR TOGGLE BUTTON  END-->
 
     <a href="" class="logo">
-        SALE - SHOP
+        DAY - POST
           <span>
-            门店销售系统
+           日报系统
           </span>
     </a>
 
@@ -343,7 +343,7 @@
                 <a href="<?php echo U('Home/Sale/sale');?>" id="sale">
                     <i class="fa fa-dashboard"></i>
                         <span style="font-size: 14px;">
-                          商品销售
+                          TC实时监控
                         </span>
                 </a>
             </li>
@@ -353,7 +353,7 @@
                 <a href="javascript:;" id="weChat">
                     <i class="fa fa-laptop"></i>
                             <span style="font-size: 14px;">
-                              微信服务
+                              日报查询
                             </span>
                             <span class="label label-success span-sidebar">
                               3
@@ -362,22 +362,17 @@
                 <ul class="sub" id="weChat_sub">
                     <li id="weChat_menu">
                         <a href="<?php echo U('Home/WeChat/setWeChatMenu');?>" style="font-size: 12px;">
-                            公众号菜单设置
+                            单日日报查询
                         </a>
                     </li>
                     <li id="weChat_groupSend">
                         <a href="<?php echo U('Home/WeChat/messageGroupSend');?>" style="font-size: 12px;">
-                            公众号消息群发
+                            区间日报查询
                         </a>
                     </li>
                     <li id="weChat_autoSend">
                         <a href="<?php echo U('Home/WeChat/setAutoRes');?>" style="font-size: 12px;">
-                            用户消息回复设置
-                        </a>
-                    </li>
-                    <li class="dis-none">
-                        <a href="" target="_blank" style="font-size: 12px;">
-                            用户标签管理
+                            整体日报查询
                         </a>
                     </li>
                 </ul>
@@ -398,7 +393,7 @@
                 <ul class="sub" id="user_sub">
                     <li id="user_manager">
                         <a href="<?php echo U('Home/UserManage/userManage');?>" style="font-size: 12px;">
-                            用户信息管理
+                            登录用户管理
                         </a>
                     </li>
                     <li class="dis-none">
@@ -420,39 +415,39 @@
                     <i class="fa fa-cogs">
                     </i>
                             <span style="font-size: 14px;">
-                              货品管理
+                              TC请求
                             </span>
                             <span class="label label-primary span-sidebar">
-                              5
+                              1
                             </span>
                 </a>
 
                 <ul class="sub" id="course_sub">
                     <li id="course_info">
                         <a href="<?php echo U('Home/CourseManage/courseManage');?>" style="font-size: 12px;">
-                            商品进货
+                            TC刷新队列
                         </a>
                     </li>
-                    <li id="course_survey">
-                        <a href="<?php echo U('Home/CourseManage/surveyManage');?>" style="font-size: 12px;">
-                            课程问卷管理
-                        </a>
-                    </li>
-                    <li id="course_survey_publish">
-                        <a href="<?php echo U('Home/CourseManage/surveyPublish');?>" style="font-size: 12px;">
-                            课程问卷发布
-                        </a>
-                    </li>
-                    <li id="course_count">
-                        <a href="<?php echo U('Home/CourseManage/surveyCondition');?>" style="font-size: 12px;">
-                            问卷完成情况
-                        </a>
-                    </li>
-                    <li id="course_survey_demo_publish">
-                        <a href="<?php echo U('Home/CourseManage/coursePublish');?>" style="font-size: 12px;">
-                            按课程发布模版问卷
-                        </a>
-                    </li>
+                    <!--<li id="course_survey">-->
+                        <!--<a href="<?php echo U('Home/CourseManage/surveyManage');?>" style="font-size: 12px;">-->
+                            <!--课程问卷管理-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li id="course_survey_publish">-->
+                        <!--<a href="<?php echo U('Home/CourseManage/surveyPublish');?>" style="font-size: 12px;">-->
+                            <!--课程问卷发布-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li id="course_count">-->
+                        <!--<a href="<?php echo U('Home/CourseManage/surveyCondition');?>" style="font-size: 12px;">-->
+                            <!--问卷完成情况-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li id="course_survey_demo_publish">-->
+                        <!--<a href="<?php echo U('Home/CourseManage/coursePublish');?>" style="font-size: 12px;">-->
+                            <!--按课程发布模版问卷-->
+                        <!--</a>-->
+                    <!--</li>-->
                 </ul>
             </li>
 
@@ -462,7 +457,7 @@
                     <i class="fa fa-tasks">
                     </i>
                             <span style="font-size: 14px;">
-                              数据管理
+                              完成申请
                             </span>
                             <span class="label label-info span-sidebar">
                               2
@@ -472,7 +467,7 @@
                 <ul class="sub" id="data_sub">
                     <li id="data_course">
                         <a href="<?php echo U('Home/DataManage/userCourse');?>" style="font-size: 12px;">
-                             系统数据维护
+                             待处理完成申请
                         </a>
                     </li>
                     <!--<li id="data_sys_course">-->
@@ -487,30 +482,45 @@
                     <!--</li>-->
                     <li id="data_count">
                         <a href="<?php echo U('Home/DataManage/surveyCount');?>" style="font-size: 12px;">
-                            评价结果统计
+                            提交完成申请
                         </a>
                     </li>
-                    <li class="dis-none">
-                        <a href="">
-                            子菜单
-                        </a>
-                    </li>
-                    <li class="dis-none">
-                        <a href="">
-                            子菜单
-                        </a>
-                    </li>
+                    <!--<li class="dis-none">-->
+                        <!--<a href="">-->
+                            <!--子菜单-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li class="dis-none">-->
+                        <!--<a href="">-->
+                            <!--子菜单-->
+                        <!--</a>-->
+                    <!--</li>-->
                 </ul>
             </li>
 
             <!--主菜单-->
-            <li>
+            <li class="sub-menu">
                 <a href="<?php echo U('Home/Home/home');?>" id="home">
                     <i class="fa fa-dashboard"></i>
                         <span style="font-size: 14px;">
-                          统计分析
+                          待确认队列
+                        </span>
+                        <span class="label label-info span-sidebar">
+                            2
                         </span>
                 </a>
+                <ul class="sub" id="data_ub">
+                    <li id="data_ount">
+                        <a href="<?php echo U('Home/DataManage/surveyCount');?>" style="font-size: 12px;">
+                            个人待确认
+                        </a>
+                    </li>
+                    <li id="data_unt">
+                        <a href="<?php echo U('Home/DataManage/surveyCount');?>" style="font-size: 12px;">
+                            机构待确认队列
+                        </a>
+                    </li>
+                </ul>
             </li>
 
             <!--登陆界面-->
@@ -670,7 +680,7 @@
     <!-- 尾 -->
 <footer class="site-footer">
     <div class="text-center" style="margin-left:20%">
-        2016 &copy; CES by
+        2018 &copy; DAY-POST by
         <a href="" target="_blank">
             高彪
         </a>
