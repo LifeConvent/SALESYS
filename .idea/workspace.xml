@@ -3,16 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="61a72a7f-4413-48c4-b95e-8110e40ce586" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Public/js/Home/home_day.js" beforeDir="false" afterPath="$PROJECT_DIR$/Public/js/Home/home_day.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SALESHOP/Home/Controller/IndexController.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/SALESHOP/Home/Controller/IndexController.class.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SALESHOP/Home/Controller/MethodController.class.php" beforeDir="false" afterPath="$PROJECT_DIR$/SALESHOP/Home/Controller/MethodController.class.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SALESHOP/Home/View/Home/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/SALESHOP/Home/View/Home/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SALESHOP/Runtime/Cache/Home/12ffe10a9851230db94678a08a17063c.php" beforeDir="false" afterPath="$PROJECT_DIR$/SALESHOP/Runtime/Cache/Home/12ffe10a9851230db94678a08a17063c.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SALESHOP/Runtime/Cache/Home/24a6c17ecdb465c0ee187571845023c0.php" beforeDir="false" afterPath="$PROJECT_DIR$/SALESHOP/Runtime/Cache/Home/24a6c17ecdb465c0ee187571845023c0.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SALESHOP/Runtime/Cache/Home/469ab1b72e332f08ced0e355627bcc28.php" beforeDir="false" afterPath="$PROJECT_DIR$/SALESHOP/Runtime/Cache/Home/469ab1b72e332f08ced0e355627bcc28.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SALESHOP/Runtime/Cache/Home/7a7c9da6fde4d022c98cd58879b38b70.php" beforeDir="false" afterPath="$PROJECT_DIR$/SALESHOP/Runtime/Cache/Home/7a7c9da6fde4d022c98cd58879b38b70.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SALESHOP/Runtime/Cache/Home/fbbd54deb8aa3f75d3b6cfee5078c850.php" beforeDir="false" afterPath="$PROJECT_DIR$/SALESHOP/Runtime/Cache/Home/fbbd54deb8aa3f75d3b6cfee5078c850.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SALESHOP/Runtime/Logs/Home/18_10_25.log" beforeDir="false" afterPath="$PROJECT_DIR$/SALESHOP/Runtime/Logs/Home/18_10_25.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SALESHOP/Runtime/Logs/Home/18_10_26.log" beforeDir="false" afterPath="$PROJECT_DIR$/SALESHOP/Runtime/Logs/Home/18_10_26.log" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,7 +25,7 @@
         <counts>
           <entry key="html" value="9" />
           <entry key="js" value="9" />
-          <entry key="php" value="19" />
+          <entry key="php" value="20" />
           <entry key="rnc" value="1" />
         </counts>
       </usages-collector>
@@ -41,7 +33,7 @@
         <counts>
           <entry key="HTML" value="9" />
           <entry key="JavaScript" value="9" />
-          <entry key="PHP" value="19" />
+          <entry key="PHP" value="20" />
           <entry key="RNG Compact" value="1" />
         </counts>
       </usages-collector>
@@ -49,14 +41,14 @@
         <counts>
           <entry key="html" value="304" />
           <entry key="js" value="182" />
-          <entry key="php" value="3163" />
+          <entry key="php" value="3414" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="304" />
           <entry key="JavaScript" value="182" />
-          <entry key="PHP" value="3163" />
+          <entry key="PHP" value="3414" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.php.new.class">
@@ -137,8 +129,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SALESHOP/Home/Controller/MethodController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="389">
-              <caret line="417" column="70" selection-start-line="417" selection-start-column="70" selection-end-line="417" selection-end-column="70" />
+            <state relative-caret-position="617">
+              <caret line="541" column="24" selection-start-line="541" selection-start-column="24" selection-end-line="541" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -412,12 +404,12 @@
       <option name="presentableId" value="Default" />
       <updated>1540360621253</updated>
       <workItem from="1540360639474" duration="1386000" />
-      <workItem from="1540445903585" duration="42690000" />
+      <workItem from="1540445903585" duration="46278000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44076000" />
+    <option name="totallyTimeSpent" value="47664000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1592" y="-8" width="1936" height="1096" extended-state="6" />
@@ -706,10 +698,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/stubs/oci8/oci8.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="311">
+          <caret line="819" column="9" selection-start-line="819" selection-start-column="9" selection-end-line="819" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SALESHOP/Home/Controller/MethodController.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="417" column="70" selection-start-line="417" selection-start-column="70" selection-end-line="417" selection-end-column="70" />
+        <state relative-caret-position="617">
+          <caret line="541" column="24" selection-start-line="541" selection-start-column="24" selection-end-line="541" selection-end-column="24" />
         </state>
       </provider>
     </entry>

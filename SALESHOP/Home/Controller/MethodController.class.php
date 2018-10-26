@@ -7,7 +7,6 @@
  */
 
 namespace Home\Controller;
-
 use Think\Controller;
 
 class MethodController extends Controller
@@ -317,10 +316,10 @@ class MethodController extends Controller
 
     public function search_long($result_rows){
         oci_execute($result_rows, OCI_DEFAULT); // 行数  OCI_DEFAULT表示不要自动commit
-        oci_fetch_array($result_rows,OCI_RETURN_NULLS);
         //封装函数
-        while($row = oci_fetch_array($result_rows, OCI_RETURN_NULLS))
+        while($row = oci_fetch_array($result_rows, OCI_RETURN_NULLS)){
             $result[] = $row;
+        }
         return $result;
     }
 
@@ -390,8 +389,9 @@ class MethodController extends Controller
         $result_new_old_money = $this->search_long($result_rows);
 
         #011 保全受理老核心异地作业分李沧
-        $where_old_noqd  = "SELECT * FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query."and OLD_ORGAN_CODE NOT LIKE '8647%'";
+        $where_old_noqd  = "SELECT OLD_ORGAN_CODE,NEW_ORGAN_CODE,NEW_INSERT_TIME,OLD_INSERT_TIME,TC_ID,OLD_GET_MONEY,NEW_GET_MONEY FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query."and OLD_ORGAN_CODE NOT LIKE '8647%'";
         $result_rows = oci_parse($conn, $where_old_noqd); // 配置SQL语句，执行SQL
+        //封装函数
         $result_old_noqd = $this->search_long($result_rows);
 
         $temp[][] = 0;
@@ -407,14 +407,14 @@ class MethodController extends Controller
             //除小计之外单个计算，小计通过计数累加
             #001
             foreach ($result_old_time as &$value) {
-                if($userDire[$value['USER_NAME']]===$org[$i]&&$org[$i]!='小计'){
+                if(strcmp($userDire[$value['USER_NAME']],$org[$i])==0&&!empty($userDire[$value['USER_NAME']])){
                     $result[$i]['cs_old_count'] += (int)($value['NUM']);
                     $temp[$xiaoji]['cs_old_count'] += (int)($value['NUM']);
                 }
             }
             #002
             foreach ($result_new_old_time as &$value) {
-                if($userDire[$value['USER_NAME']]==$org[$i]&&$org[$i]!='小计'){
+                if(strcmp($userDire[$value['USER_NAME']],$org[$i])==0&&!empty($userDire[$value['USER_NAME']])){
                     $result[$i]['cs_new_count'] += (int)$value['NUM'];
                     $temp[$xiaoji]['cs_new_count'] += (int)$value['NUM'];
                 }
@@ -428,14 +428,14 @@ class MethodController extends Controller
 //            }
             #003
             foreach ($result_new_no_old_time as &$value) {
-                if($userDire[$value['USER_NAME']]==$org[$i]&&$org[$i]!='小计'){
+                if(strcmp($userDire[$value['USER_NAME']],$org[$i])==0&&!empty($userDire[$value['USER_NAME']])){
                     $result[$i]['cs_fix_count'] += (int)$value['NUM'];
                     $temp[$xiaoji]['cs_fix_count'] += (int)$value['NUM'];
                 }
             }
             #005
             foreach ($result_tc_no_null as &$value) {
-                if($userDire[$value['USER_NAME']]==$org[$i]&&$org[$i]!='小计'){
+                if(strcmp($userDire[$value['USER_NAME']],$org[$i])==0&&!empty($userDire[$value['USER_NAME']])){
                     $result[$i]['cs_pro_count'] += (int)$value['NUM'];
                     $temp[$xiaoji]['cs_pro_count'] += (int)$value['NUM'];
                 }
@@ -443,7 +443,7 @@ class MethodController extends Controller
             #TC数据库待定-问题单解决数量
             #006
             foreach ($result_new_old_money as &$value) {
-                if($userDire[$value['USER_NAME']]==$org[$i]&&$org[$i]!='小计'){
+                if(strcmp($userDire[$value['USER_NAME']],$org[$i])==0&&!empty($userDire[$value['USER_NAME']])){
                     $result[$i]['cs_fysame_count'] += (int)$value['NUM'];
                     $temp[$xiaoji]['cs_fysame_count'] +=(int)$value['NUM'];
                 }
@@ -457,7 +457,7 @@ class MethodController extends Controller
                 $result[$licang]["cs_new_count"] ++;
                 $temp[$xiaoji]['cs_new_count'] ++;
             }
-            if($value["NEW_INSERI_TIME"]!=$value["OLD_INSERI_TIME"]){
+            if($value["NEW_INSERT_TIME"]!=$value["OLD_INSERT_TIME"]){
                 $result[$licang]["cs_fix_count"] ++;
                 $temp[$xiaoji]['cs_fix_count'] ++;
             }
@@ -500,11 +500,12 @@ class MethodController extends Controller
         $result_tc_no_null_fh = $this->search_long($result_rows_fh);
 
         //保全数据赋值
-            #007
+        #007
         $result[$fenOrganfh][] = 0;
         $result[$zuoYeZhongXin][] = 0;
-            foreach ($result_old_time_fh as &$value) {
-                if($value['NEW_USER_NAME']==$userOne||$value['NEW_USER_NAME']==$userTwo){
+        #老核心复核数量一新核心为准进行计算
+            foreach ($result_new_old_time_fh as &$value) {
+                if(strcmp($value['NEW_USER_NAME'],$userOne)==0||strcmp($value['NEW_USER_NAME'],$userTwo)==0){
                     $result[$fenOrganfh]['cs_old_count'] += (int)($value['NUM']);
                 }else{
                     $result[$zuoYeZhongXin]['cs_old_count'] += (int)($value['NUM']);
@@ -513,7 +514,7 @@ class MethodController extends Controller
         $temp[$heji]['cs_old_count'] = $temp[$xiaoji]['cs_old_count'] + $result[$zuoYeZhongXin]['cs_old_count'] + $result[$fenOrganfh]['cs_old_count'];
             #008
             foreach ($result_new_old_time_fh as &$value) {
-                if($value['NEW_USER_NAME']==$userOne||$value['NEW_USER_NAME']==$userTwo){
+                if(strcmp($value['NEW_USER_NAME'],$userOne)==0||strcmp($value['NEW_USER_NAME'],$userTwo)==0){
                     $result[$fenOrganfh]['cs_new_count'] += (int)($value['NUM']);
                     $result[$fenOrganfh]['cs_fysame_count'] += (int)($value['NUM']);
                 }else{
@@ -525,7 +526,7 @@ class MethodController extends Controller
         $temp[$heji]['cs_new_count'] = $temp[$xiaoji]['cs_new_count'] + $result[$zuoYeZhongXin]['cs_new_count'] + $result[$fenOrganfh]['cs_new_count'];
         #009
         foreach ($result_new_no_old_time_fh as &$value) {
-            if($value['NEW_USER_NAME']==$userOne||$value['NEW_USER_NAME']==$userTwo){
+            if(strcmp($value['NEW_USER_NAME'],$userOne)==0||strcmp($value['NEW_USER_NAME'],$userTwo)==0){
                 $result[$fenOrganfh]['cs_fix_count'] += (int)($value['NUM']);
             }else{
                 $result[$zuoYeZhongXin]['cs_fix_count'] += (int)($value['NUM']);
