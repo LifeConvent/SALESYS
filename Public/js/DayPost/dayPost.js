@@ -1,24 +1,14 @@
-
-//重新加载TC
-// function reloadTc(){
-//     $('.fade').show();
-//     $.ajax({
-//         type : "get",
-//         url :  'api/ReloadTc',
-//         dataType : 'json',
-//         async : true,
-//         success : function(data) {
-//             if(data){
-//                 BootstrapDialog.alert("TC重加载成功")
-//             }
-//             $('.fade').hide()
-//         }
-//     });
-// }
+/**
+ * Created by lawrance on 2017/1/11.
+ */
 
 $(function () {
 
-    $('.form_date').datetimepicker({
+    $('#weChat').attr('class','active');
+    $('#weChat_sub').css('display','block');
+    $('#weChat_groupSend').attr('class','active');
+
+    $('#form_date1').datetimepicker({
         language:  'zh-CN',
         weekStart: 1,
         todayBtn:  1,
@@ -28,7 +18,27 @@ $(function () {
         minView: 2,
         forceParse: 0
     }).on('changeDate', function(ev){
-        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1"});
+        if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
+            $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
+            return;
+        }
+        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2"});
+    });
+    $('#form_date2').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    }).on('changeDate', function(ev){
+        if($('#dtp_input2').val()==null||$('#dtp_input2').val()==''||$('#dtp_input2').val()=='undefined'){
+            $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
+            return;
+        }
+        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2"});
     });
 
     //1.初始化Table
@@ -63,8 +73,8 @@ var TableInit = function () {
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
-        $('#daily_report').bootstrapTable({
-            url: HOST + "index.php/Home/Method/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1",   //请求后台的URL（*）
+        $('#daily_report2').bootstrapTable({
+            url: HOST + "index.php/Home/Method/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             // toolbar: '#toolbar',    //工具按钮用哪个容器
             striped: true,      //是否显示行间隔色
@@ -175,22 +185,22 @@ var TableInit = function () {
                         if(row.nb_old_count==0){
                             return '100.00%'
                         }
-                        if($("#dtp_input2").val() ==''){
-                            return ((row.nb_old_count)*100/row.nb_old_count).toFixed(2)+"%";
-                        }
-                        return ((row.nb_old_count - row.nb_new_count + row.nb_new_count)*100/row.nb_old_count).toFixed(2)+"%";
+                        // if($("#dtp_input2").val() ==''){
+                        return "100.00%";
+                        // }
+                        // return ((row.nb_old_count - row.nb_new_count + row.nb_new_count)*100/row.nb_old_count).toFixed(2)+"%";
                     },
                     align : 'center'
                 },{
-                    title : '当日<br>一致率',
+                    title : '累计<br>一致率',
                     align : 'center',
                     formatter:function(value, row, index){
                         if(row.nb_old_count==0){
                             return '100.00%'
                         }
-                        if($("#dtp_input2").val()!=''){
-                            return ((row.nb_new_count)*100/row.nb_old_count).toFixed(2)+"%";
-                        }
+                        // if($("#dtp_input2").val()!=''){
+                        //     return ((row.nb_new_count)*100/row.nb_old_count).toFixed(2)+"%";
+                        // }
                         return ((row.nb_new_count+row.nb_fix_count)*100/row.nb_old_count).toFixed(2)+"%";
                     },
                     align : 'center'
@@ -258,22 +268,22 @@ var TableInit = function () {
                         if(row.cs_old_count==0){
                             return '100.00%'
                         }
-                        if($("#dtp_input2").val() ==''){
-                            return ((row.cs_old_count)*100/row.cs_old_count).toFixed(2)+"%";
-                        }
-                        return ((row.cs_old_count - row.cs_new_count + row.cs_new_count)*100/row.cs_old_count).toFixed(2)+"%";
+                        // if($("#dtp_input2").val() ==''){
+                        return ((row.cs_old_count)*100/row.cs_old_count).toFixed(2)+"%";
+                        // }
+                        // return ((row.cs_old_count - row.cs_new_count + row.cs_new_count)*100/row.cs_old_count).toFixed(2)+"%";
                     },
                     align : 'center'
                 },{
-                    title : '当日<br>一致率',
+                    title : '累计<br>一致率',
                     align : 'center',
                     formatter:function(value, row, index){
                         if(row.cs_old_count==0){
                             return '100.00%'
                         }
-                        if($("#dtp_input2").val()!=''){
-                            return ((row.cs_new_count)*100/row.cs_old_count).toFixed(2)+"%";
-                        }
+                        // if($("#dtp_input2").val()!=''){
+                        //     return ((row.cs_new_count)*100/row.cs_old_count).toFixed(2)+"%";
+                        // }
                         return ((row.cs_new_count+row.cs_fix_count)*100/row.cs_old_count).toFixed(2)+"%";
                     },
                     align : 'center'
@@ -331,22 +341,22 @@ var TableInit = function () {
                         if(row.clm_old_count==0){
                             return '100.00%'
                         }
-                        if($("#dtp_input2").val() ==''){
-                            return ((row.clm_old_count)*100/row.clm_old_count).toFixed(2)+"%";
-                        }
-                        return ((row.clm_old_count - row.clm_new_count + row.clm_new_count)*100/row.clm_old_count).toFixed(2)+"%";
+                        // if($("#dtp_input2").val() ==''){
+                        return ((row.clm_old_count)*100/row.clm_old_count).toFixed(2)+"%";
+                        // }
+                        // return ((row.clm_old_count - row.clm_new_count + row.clm_new_count)*100/row.clm_old_count).toFixed(2)+"%";
                     },
                     align : 'center'
                 },{
-                    title : '当日<br>一致率',
+                    title : '累计<br>一致率',
                     align : 'center',
                     formatter:function(value, row, index){
                         if(row.clm_old_count==0){
                             return '100.00%'
                         }
-                        if($("#dtp_input2").val()!=''){
-                            return ((row.clm_new_count)*100/row.clm_old_count).toFixed(2)+"%";
-                        }
+                        // if($("#dtp_input2").val()!=''){
+                        //     return ((row.clm_new_count)*100/row.clm_old_count).toFixed(2)+"%";
+                        // }
                         return ((row.clm_new_count+row.clm_fix_count)*100/row.clm_old_count).toFixed(2)+"%";
                     },
                     align : 'center'
@@ -376,67 +386,3 @@ var TableInit = function () {
 
     return oTableInit;
 };
-
-// function sumColCount(value){
-//     var count = 0;
-//     for (var i in value) {
-//         count += value[i][this.field];
-//     }
-//     $('th[data-field='+this.field+'] div:first-child').html(this.title+"<span style='color:red'>&nbsp;"+count+"&nbsp;</span>");
-//     return count+'';
-// }
-// function Log(info){
-// 	setTimeout(function(){
-// 		$('.progress-bar').html(info);
-// 	},100);
-// }
-// (function(){
-//     // $('.fade').show();
-//     // initTable();
-//     // // loadData(1);初始加载数据
-
-//     //请求刷新TC
-//     // $('.reloadtc').click(function(){
-//     //     BootstrapDialog.confirm('刷新TC比较耗时，且会有多次数据库的读取，确认是否继续？', function(result){
-//     //         if(result) {
-//     //             reloadTc()
-//     //         }
-    //     });
-    // });
-
-
-    //刷新数据
-    // $('.loadbxdata').click(function(){
-    //     BootstrapDialog.confirm('生成数据会耗时较久，且影响历史数据，确认是否继续', function(result){
-    //         if(result) {
-    //             $('.fade').show();
-    //             $.ajax({
-    //                 type : "get",
-    //                 url :  'api/ReloadTc',
-    //                 dataType : 'json',
-    //                 async : true,
-    //                 success : function(data) {
-    //                     if(data){
-    //                         $('.fade').hide();
-    //                         BootstrapDialog.alert("已经提交请求，稍等片刻后再此查询数据。")
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //     });
-//     // });
-//     $('.exportreport').click(function(){
-//         alert($("#dtp_input2").val());
-//          window.open(""+$("#dtp_input2").val());
-//     });
-//     $('.exportdetail').click(function(){
-//         alert($("#dtp_input2").val());
-//          window.open(""+$("#dtp_input2").val());
-//     });
-//     setTimeout(function(){$('.fade').hide()},4000)
-// })();
-
-
-$('.exportreport').click(function () {
-    alert($("#dtp_input2").val());
-});

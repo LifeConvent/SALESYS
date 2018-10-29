@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="/Public/img/favicon.ico">
     <!-- END SHORTCUT ICON -->
     <title>
-        CES - 课程评价管理系统
+        <?php echo ($TITLE); ?>
     </title>
     <!-- BEGIN STYLESHEET-->
     <link href="/Public/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
@@ -20,10 +20,12 @@
     <link href="/Public/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 -->
     <link href="/Public/css/style.css" rel="stylesheet"><!-- THEME BASIC CSS -->
     <link href="/Public/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
-    <link rel="stylesheet" type="text/css" href="/Public/assets/nestable/jquery.nestable.css"><!-- NESTABLE CSS -->
+    <link href="/Public/assets/morris.js-0.4.3/morris.css" rel="stylesheet"><!-- MORRIS CHART CSS -->
+    <link href="/Public/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="/Public/js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link href="/Public/css/sco.message.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/Public/css/bootstrap-table.min.css">
-
+    <!--dashboard calendar-->
+    <link href="/Public/css/clndr.css" rel="stylesheet"><!-- CALENDER CSS -->
     <!--[if lt IE 9]>
     <script src="/Public/js/html5shiv.js">
     </script>
@@ -544,138 +546,215 @@
         <!-- 主容器  -->
         <section class="wrapper">
 
-
-            <!--微信群发消息注意事项-->
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                    <h1 class="panel-title-red">
-                        微信消息发送注意事项：
-                    </h1>
-                </div>
-                <div class="panel-body" rows="10">
-                    1、消息发送可分为单用户和多用户发送。<br>
-                    2、本系统下消息发送模式支持纯文本或文本链接方式。<br>
-                    3、发大段文本时，因手机分辨率分布较则乱的原因，建议选择单个账号测试后再进行准确发送。<br>
-                    4、发送消息时请先编辑要发送的消息内容，在消息文本上方的表格中按照搜索条件搜索出人员信息，勾选后点击"增添发送"按钮将选中信息传送至文本下方的发送表格中，点击发送表格上方的"发送按钮"即可进行消息发送。<br>
-                    5、最终发送给的用户以下方表格中的数据为准，可对单条进行编辑，上方表格中的数据是否选中不影响下方数据发送。<br>
-                    6、最终发送的用户数据中若包含重复数据，则仅取一条用户信息进行发送。<br>
-                    7、点击下方表格上的"发送预览"按钮，可对单个用户进行发送预览操作，发送的消息可在微信客户端查看。<br>
-                    8、<span class="red">群发次数限制</span>:通过本系统向用户群发消息可多次群发，但群发的消息不会在历史记录中显示，且每个用户最多只可接受四条信息，<span
-                        class="red">单个用户超过四条无法获取</span>，故请勿过分浪费群发机会（当前的预览使用的是群发机会，会消耗群发次数，建议选择后在发送）。<br>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="panel-body">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading color-hui">查询条件</div>
-                        <div class="panel-body">
-                            <form id="formSearch" class="form-horizontal">
-                                <div class="form-group" style="margin-top:15px">
-
-                                    <label class="control-label col-sm-1 mar-left-10"
-                                           for="txt_search_graclass">年级</label>
-
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control" id="txt_search_graclass">
-                                    </div>
-
-                                    <label class="control-label col-sm-1" for="txt_search_pro">专业</label>
-
-                                    <select class="dd3-content-et m-bot15 order-select col-lg-3" id="txt_search_pro"
-                                            style="margin-top:3px">
-                                        <option value="">无</option>
-                                        <option value="1">计算机科学与技术</option>
-                                        <option value="2">信息安全</option>
-                                        <option value="3">信息与计算科学</option>
-                                        <option value="4">计算机科学与技术（中加方向）</option>
-                                        <option value="5">网络工程</option>
-                                        <option value="6">物联网工程</option>
-                                        <option value="7">通信工程</option>
-                                    </select>
-
-                                    <label class="control-label col-sm-1 mar-left-10" for="txt_search_class">班级</label>
-
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control" id="txt_search_class">
-                                    </div>
-
-                                    <div class="col-sm-1" style="text-align:left;">
-                                        <button type="button" style="margin-left:20px" onclick="show();" id="btn_query"
-                                                class="btn btn-primary">查询
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div id="toolbar" class="btn-group">
-                            <button id="btn_add" type="button" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>增添发送
-                            </button>
-                        </div>
-                        <table class="panel" id="tablelist" data-page-list="[10, 25, 50, 100, ALL]"></table>
-                    </div>
-
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">
-                            <h1 class="panel-title-red">
-                                请输入向信用户发送的文本：（输入前请阅读上方注意事项）
-                            </h1>
-                        </div>
-                        <textarea id="wechat_input" rows="10" class="form-control"
-                                  style="visibility:visible"></textarea>
-                    </div>
-
-                    <div>
-                        <div id="toolbarsend" class="btn-group">
-                            <div>
-                                <button id="btn_send" type="button" class="btn btn-primary">
-                                    发送
-                                </button>
-                                <button id="btn_delete" type="button" class="btn btn-danger" style="margin-left: 2px">
-                                    删除
-                                </button>
-                                <button id="btn_preview" type="button" class="btn btn-success" style="margin-left: 2px">
-                                    发送预览
-                                </button>
+            <div class="container-fluid" >
+                <section class="panel">
+                    <header class="panel-heading">
+                        <div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>
+                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt">导出日报</button></div>
+                        <div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>
+                        <div class="tools" style="float:left;margin-left: 10pt">
+                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                <input class="form-control" size="16" type="text" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            <div style="width:50px;float:left;padding-left: 15px;margin-top: 5px"><strong>至</strong></div>
+                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date2" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
+                                <input class="form-control" size="16" type="text" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </div>
-                        <table class="panel panel-danger" id="tablelistsend"
-                               data-page-list="[10, 25, 50, 100, ALL]"></table>
+                        <input style="visibility:hidden" id="dtp_input2" value=""/>
+                        <input style="visibility:hidden" id="dtp_input3" value=""/>
+                    </header>
+                    <div style="margin:0 5px">
+                        <table id="daily_report2"></table>
                     </div>
-                </div>
+                </section>
             </div>
 
-            <!--测试用文本框-->
-            <textarea id="nestable_list_1_output" rows="3" class="form-control" style="visibility:hidden"></textarea>
+            <!-- 第一行数据统计  -->
+            <div class="row state-overview" style="visibility:hidden">
+
+                <!--四个统计框-->
+                <div class="col-lg-3 col-sm-6">
+
+                    <section class="panel">
+
+                        <div class="symbol">
+                            <i class="fa fa-tags blue">
+                            </i>
+                        </div>
+
+                        <div class="value">
+                            <h1 class="count" style="display:none"><?php echo ($count); ?></h1>
+
+                            <h1 class=" show_count">
+                                0
+                            </h1>
+
+                            <p>
+                                微信匹配用户总量
+                            </p>
+                        </div>
+
+                    </section>
+
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+
+                    <section class="panel">
+
+                        <div class="symbol">
+                            <i class="fa fa-tasks red">
+                            </i>
+                        </div>
+
+                        <div class="value">
+                            <h1 class="count1" style="display:none"><?php echo ($count1); ?></h1>
+
+                            <h1 class=" show_count1">
+                                0
+                            </h1>
+
+                            <p>
+                                课程评价总数
+                            </p>
+                        </div>
+
+                    </section>
+
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+
+                    <section class="panel">
+
+                        <div class="symbol">
+                            <i class="fa fa-user yellow">
+                            </i>
+                        </div>
+
+                        <div class="value">
+                            <h1 class=" count2" style="display:none"><?php echo ($count2); ?></h1>
+
+                            <h1 class=" show_count2">0</h1>
+
+                            <p>
+                                微信关注量
+                            </p>
+                        </div>
+
+                    </section>
+
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+
+                    <section class="panel">
+
+                        <div class="symbol">
+                            <i class="fa fa-plus purple">
+                            </i>
+                        </div>
+
+                        <div class="value">
+                            <h1 class=" count3" style="display:none"><?php echo ($count3); ?></h1>
+
+                            <h1 class=" show_count3">
+                                0
+                            </h1>
+
+                            <p>
+                                新增用户数量
+                            </p>
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </div>
+             <!--第一行数据统计-->
+
+            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        微信匹配数量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="weixin-num" class="graph">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        课程评价数量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="ce-num" class="graph">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        微信关注量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="weixin-sub-num" class="graph">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!--<div class="col-lg-12" style="color:#a560f8">-->
+                <!--<section class="panel">-->
+                    <!--<header class="panel-heading">-->
+                        <!--新增用户数量变化趋势-->
+                    <!--</header>-->
+                    <!--<div class="panel-body">-->
+                        <!--<div id="weixin-new-num" class="graph">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</section>-->
+            <!--</div>-->
 
         </section>
         <!-- 主容器  -->
 
-        <div class="modal fade" id="myModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">消息发送提示</h4>
-                    </div>
-                    <div class="modal-body">
-                        您选择发送的消息的用户中含有无效用户，无效用户将无法收到消息推送，是否继续发送？
-                    </div>
-                    <div class="modal-footer">
-                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-                        <button class="btn btn-warning" type="button" onclick="sendSubmit();">确认</button>
-                    </div>
-                </div>
-            </div>
-            <span style="display:none" id="myModalHide"></span>
-        </div>
-
     </section>
     <!-- 主窗体 -->
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">删除自动回复提示</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <span class="left-30 red size-16">删除后将无法恢复！确认要删除自动回复吗？</span>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                    <button class="btn btn-warning" type="button" onclick="deleteSub();">确认</button>
+                </div>
+            </div>
+        </div>
+        <span style="display:none" id="myModalHide"></span>
+    </div>
+
+    <!--<div class="zfb modal fade in">-->
+        <!--<img src="zfb.png"  alt="扫描领红包" />-->
+    <!--</div>-->
 
     <!-- 尾 -->
 <footer class="site-footer">
@@ -692,12 +771,17 @@
 </footer>
 <!-- 尾 -->
 
+    <p id="weChatMatch" style="display:none"><?php echo ($weChatMatch); ?></p>
+
+    <p id="weChatSub" style="display:none"><?php echo ($weChatSub); ?></p>
+
+    <p id="weChatNum" style="display:none"><?php echo ($weChatNum); ?></p>
+
+    <p id="weCESNum" style="display:none"><?php echo ($weCESNum); ?></p>
 </section>
 <!-- SECTION -->
 
 <!-- JS -->
-
-<!--<script src="/Public/js/jquery.js"></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
 <script src="/Public/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
 <script src="/Public/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
 <script src="/Public/js/jquery.dcjqaccordion.2.7.js"></script><!-- 左侧子菜单栏显示 -->
@@ -707,15 +791,24 @@
 <script src="/Public/js/jquery.sparkline.js"></script><!-- SPARKLINE JS -->
 <script src="/Public/js/sparkline-chart.js"></script><!-- SPARKLINE CHART JS -->
 <script src="/Public/js/common-scripts.js"></script><!-- BASIC COMMON JS -->
-<script src="/Public/assets/nestable/jquery.nestable.js"></script><!-- NESTABLE JS -->
-<script src="/Public/js/nestable.js"></script><!-- NESTABLE FUNCTION JS -->
-<script src="/Public/js/checkNestable.js"></script>
+<script src="/Public/js/bootstrap-table.min.js"></script><!-- SPARKLINE CHART JS -->
+<script src="/Public/js/bootstrap-table-zh-CN.min.js"></script><!-- BASIC COMMON JS -->
 <script src="/Public/js/sco.message.js" type="text/javascript"></script>
+<!--统计框Morris-->
+<script src="/Public/assets/morris.js-0.4.3/morris.min.js"></script><!-- MORRIS JS -->
+<script src="/Public/assets/morris.js-0.4.3/raphael-min.js"></script><!-- MORRIS  JS -->
+<script src="/Public/js/chart.js"></script><!-- CHART JS -->
 
-<script src="/Public/js/bootstrap-table.min.js"></script>
-<script src="/Public/js/bootstrap-table-zh-CN.min.js"></script>
-<script src="/Public/js/messageGroupSend/messageSend.js"></script>
+<script src="/Public/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/Public/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<!--自定义-->
+<script src="/Public/js/Home/count.js"></script>
+<script src="/Public/js/Home/get-time.js"></script>
+<script src="/Public/js/Home/charts-home.js"></script>
+<script src="/Public/js/DayPost/dayPost.js"></script>
+<script>
 
+</script>
 <!-- JS -->
 
 </body>

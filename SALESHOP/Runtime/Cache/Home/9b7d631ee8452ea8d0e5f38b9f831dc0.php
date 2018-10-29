@@ -367,7 +367,7 @@
                         </a>
                     </li>
                     <li id="weChat_groupSend">
-                        <a href="<?php echo U('Home/WeChat/messageGroupSend');?>" style="font-size: 12px;">
+                        <a href="<?php echo U('Home/DayPost/dayPost');?>" style="font-size: 12px;">
                             区间日报查询
                         </a>
                     </li>
@@ -724,6 +724,29 @@
 
     </section>
     <!-- 主窗体 -->
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">删除自动回复提示</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <span class="left-30 red size-16">删除后将无法恢复！确认要删除自动回复吗？</span>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                    <button class="btn btn-warning" type="button" onclick="deleteSub();">确认</button>
+                </div>
+            </div>
+        </div>
+        <span style="display:none" id="myModalHide"></span>
+    </div>
+
+    <!--<div class="zfb modal fade in">-->
+        <!--<img src="zfb.png"  alt="扫描领红包" />-->
+    <!--</div>-->
 
     <!-- 尾 -->
 <footer class="site-footer">

@@ -367,7 +367,7 @@
                         </a>
                     </li>
                     <li id="weChat_groupSend">
-                        <a href="<?php echo U('Home/WeChat/messageGroupSend');?>" style="font-size: 12px;">
+                        <a href="<?php echo U('Home/DayPost/dayPost');?>" style="font-size: 12px;">
                             区间日报查询
                         </a>
                     </li>
