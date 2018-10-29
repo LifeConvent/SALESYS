@@ -19,10 +19,9 @@ $(function () {
         forceParse: 0
     }).on('changeDate', function(ev){
         if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
-            $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
             return;
         }
-        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2"});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2"});
     });
     $('#form_date2').datetimepicker({
         language:  'zh-CN',
@@ -38,7 +37,7 @@ $(function () {
             $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
             return;
         }
-        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2"});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2"});
     });
 
     //1.初始化Table

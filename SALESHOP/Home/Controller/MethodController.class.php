@@ -344,7 +344,7 @@ class MethodController extends Controller
             $where_OLD_time_query = " OLD_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
             $where_new_time_query = " NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') AND OLD_INSERT_TIME = NEW_INSERT_TIME ";
         }
-        if(empty($queryDate)){
+        if(empty($queryDate)&&strcmp($queryType,"1")==0){
             $queryDate = date(‘yyyy-mm-dd’,time());
             $where_OLD_time_query = " 1=1 ";
             $where_new_time_query = " 1=1 AND OLD_INSERT_TIME = NEW_INSERT_TIME ";

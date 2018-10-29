@@ -19,10 +19,6 @@
     <link href="/Public/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
     <link href="/Public/css/sco.message.css" rel="stylesheet">
 
-    <script src="/Public/js/md5.js" type="text/javascript"></script>
-    <script src="/Public/js/jquery-3.1.1.min.js" type="text/javascript"></script>
-    <script src="/Public/js/sco.message.js" type="text/javascript"></script>
-    <script src="/Public/js/index/login.js"></script>
     <!--[if lt IE 9]>
     <script src="/Public/js/html5shiv.js"></script>
     <script src="/Public/js/respond.min.js"></script>
@@ -90,5 +86,9 @@
 </div>
 <!--<script src="/Public/js/jquery.js" ></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
 <script src="/Public/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
+<script src="/Public/js/md5.js" type="text/javascript"></script>
+<script src="/Public/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+<script src="/Public/js/sco.message.js" type="text/javascript"></script>
+<script src="/Public/js/index/login.js"></script>
 </body>
 </html>

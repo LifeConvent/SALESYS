@@ -1,64 +1,698 @@
-[ 2018-10-29T15:25:46+08:00 ] ::1 /index.php/Home/DayPost/dayPost
-INFO: [ app_init ] --START--
-INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
-INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
-INFO: [ app_begin ] --START--
-INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
-INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
-NOTIC: [8] session_start(): A session had already been started - ignoring E:\GITDOC\ThinkPHP\Common\functions.php 第 1263 行.
-INFO: [ view_parse ] --START--
-INFO: [ template_filter ] --START--
-INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.016000s ]
-INFO: [ template_filter ] --END-- [ RunTime:0.016000s ]
-NOTIC: [8] Undefined variable: TITLE E:\GITDOC\SALESHOP\Runtime\Cache\Home\621c615d05d10b8691ae4b6278718915.php 第 15 行.
-NOTIC: [8] Undefined variable: username E:\GITDOC\SALESHOP\Runtime\Cache\Home\621c615d05d10b8691ae4b6278718915.php 第 296 行.
-NOTIC: [8] Undefined variable: count E:\GITDOC\SALESHOP\Runtime\Cache\Home\621c615d05d10b8691ae4b6278718915.php 第 591 行.
-NOTIC: [8] Undefined variable: count1 E:\GITDOC\SALESHOP\Runtime\Cache\Home\621c615d05d10b8691ae4b6278718915.php 第 616 行.
-NOTIC: [8] Undefined variable: count2 E:\GITDOC\SALESHOP\Runtime\Cache\Home\621c615d05d10b8691ae4b6278718915.php 第 641 行.
-NOTIC: [8] Undefined variable: count3 E:\GITDOC\SALESHOP\Runtime\Cache\Home\621c615d05d10b8691ae4b6278718915.php 第 664 行.
-NOTIC: [8] Undefined variable: weChatMatch E:\GITDOC\SALESHOP\Runtime\Cache\Home\621c615d05d10b8691ae4b6278718915.php 第 774 行.
-NOTIC: [8] Undefined variable: weChatSub E:\GITDOC\SALESHOP\Runtime\Cache\Home\621c615d05d10b8691ae4b6278718915.php 第 776 行.
-NOTIC: [8] Undefined variable: weChatNum E:\GITDOC\SALESHOP\Runtime\Cache\Home\621c615d05d10b8691ae4b6278718915.php 第 778 行.
-NOTIC: [8] Undefined variable: weCESNum E:\GITDOC\SALESHOP\Runtime\Cache\Home\621c615d05d10b8691ae4b6278718915.php 第 780 行.
-INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.045000s ]
-INFO: [ view_parse ] --END-- [ RunTime:0.045000s ]
-INFO: [ view_filter ] --START--
-INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001000s ]
-INFO: [ view_filter ] --END-- [ RunTime:0.001000s ]
-INFO: [ app_end ] --START--
-INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002000s ]
-INFO: [ app_end ] --END-- [ RunTime:0.002000s ]
-
-[ 2018-10-29T15:26:05+08:00 ] ::1 /index.php/Home/Home/home
+[ 2018-10-29T15:50:52+08:00 ] ::1 /index.php/Home/Method/loadDayPostData?queryDateStart=2018-08-30&queryDateEnd=2018-08-31&type=2&limit=16&offset=0&_=1540799438203
 INFO: [ app_init ] --START--
 INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
 INFO: [ app_init ] --END-- [ RunTime:0.000000s ]
 INFO: [ app_begin ] --START--
-INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.002000s ]
-INFO: [ app_begin ] --END-- [ RunTime:0.002000s ]
-NOTIC: [8] session_start(): A session had already been started - ignoring E:\GITDOC\ThinkPHP\Common\functions.php 第 1263 行.
-NOTIC: [8] Undefined index: token E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 55 行.
-NOTIC: [8] Uninitialized string offset: 1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 49 行.
-NOTIC: [8] Undefined offset: 2 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 58 行.
-
-[ 2018-10-29T15:26:05+08:00 ] ::1 /index.php/Home/Index/index
-INFO: [ app_init ] --START--
-INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000000s ]
-INFO: [ app_init ] --END-- [ RunTime:0.001000s ]
-INFO: [ app_begin ] --START--
 INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000000s ]
 INFO: [ app_begin ] --END-- [ RunTime:0.000000s ]
 NOTIC: [8] session_start(): A session had already been started - ignoring E:\GITDOC\ThinkPHP\Common\functions.php 第 1263 行.
-INFO: [ view_parse ] --START--
-INFO: [ template_filter ] --START--
-INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.000000s ]
-INFO: [ template_filter ] --END-- [ RunTime:0.000000s ]
-INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.014000s ]
-INFO: [ view_parse ] --END-- [ RunTime:0.014000s ]
-INFO: [ view_filter ] --START--
-INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.000000s ]
-INFO: [ view_filter ] --END-- [ RunTime:0.000000s ]
-INFO: [ app_end ] --START--
-INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000000s ]
-INFO: [ app_end ] --END-- [ RunTime:0.000000s ]
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 355 行.
+NOTIC: [8] Undefined variable: result E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 323 行.
+NOTIC: [8] Undefined offset: 10 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 418 行.
+NOTIC: [8] Undefined index: nb_old_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 418 行.
+NOTIC: [8] Undefined index: nb_new_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 425 行.
+NOTIC: [8] Undefined index: nb_fix_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 432 行.
+NOTIC: [8] Undefined index: nb_pro_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 439 行.
+NOTIC: [8] Undefined index: nb_besame_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 446 行.
+NOTIC: [8] Undefined index: nb_bfsame_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 453 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 416 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 423 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 430 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 437 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 437 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 437 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 437 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 437 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 437 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 437 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 437 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 437 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 437 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 444 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 451 行.
+NOTIC: [2] sizeof(): Parameter must be an array or an object that implements Countable E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 458 行.
+NOTIC: [2] sizeof(): Parameter must be an array or an object that implements Countable E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 459 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 460 行.
+NOTIC: [8] Undefined variable: result E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 323 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 533 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: cs_old_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 608 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: cs_new_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 615 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: cs_fix_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 629 行.
+NOTIC: [8] Undefined index: cs_pro_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 636 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: cs_fysame_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 644 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 606 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 613 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 627 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 627 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 627 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 627 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 627 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 627 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 627 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 627 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 627 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 634 行.
+NOTIC: [8] Undefined index: qiyue1 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhoulylc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: liusc E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: zhangzlrz E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: dangli E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wuhyxj E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: wangjy02 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 642 行.
+NOTIC: [8] Undefined index: cs_old_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 708 行.
+NOTIC: [8] Undefined index: cs_fysame_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 719 行.
+NOTIC: [8] Undefined index: cs_new_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 720 行.
+NOTIC: [8] Undefined index: cs_fix_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 729 行.
+NOTIC: [8] Undefined index: cs_pro_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 735 行.
+NOTIC: [8] Undefined variable: result E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 323 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined index: clm_old_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 786 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [8] Undefined index: clm_new_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 793 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined index: clm_fysame_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 814 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined index: clm_pro_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 807 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 784 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 791 行.
+NOTIC: [2] Invalid argument supplied for foreach() E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 797 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 805 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 805 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 86261104 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined offset: 16 E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 812 行.
+NOTIC: [8] Undefined index: clm_fix_count E:\GITDOC\SALESHOP\Home\Controller\MethodController.class.php 第 900 行.
 
