@@ -65,6 +65,16 @@ class MethodController extends Controller
         }
     }
 
+    public function getUserType()
+    {
+        $token = $_SESSION['token'];
+        $token = $this->decode($token);
+        $info = explode('-', $token);
+        if ($info[2] == 'success') {
+            return $info[3];
+        }
+    }
+
     public function back()
     {
         $_SESSION['token'] = '';
@@ -174,9 +184,99 @@ class MethodController extends Controller
         }
     }
 
+    public function getFuheUser(){
+        $org = array("tangjia_bx","tangjia2_bx");
+        return $org;
+    }
+
     public function getDictArry(){
         $org = array("本部","李沧","平度","胶南","即墨","胶州","城阳","莱西","开发区","市南","小计","分公司核保室","分公司保全室","分公司理赔室","总公司作业中心","合计");
         return $org;
+    }
+
+    public function reloadTc(){
+        //重加载TC数据
+        $queryTc = "select b.bug_new_id,b.date_submitted, u.id,b.severity,b.`status`,c.value15,c.value16,c.value17,c.value18 from bug_table b ,custom_field_value_table c,`user_table` u  where u.id = b.reporter_id and b.id = c.bug_id";
+        //查询TC数据
+        $tc_cursor = M();
+        $res = $tc_cursor->query($queryTc);
+        for($i=0;$i<=sizeof($res);$i++){
+            $result[$i]['ID'] = $res[$i]['bug_new_id'];
+            $result[$i]['CREATE_TIME'] = $res[$i]['date_submitted'];
+            $result[$i]['PONDERANCE'] = $res[$i]['severity'];
+            $result[$i]['STATE'] = $res[$i]['status'];
+            $result[$i]['LOCAL'] = $res[$i]['value16'];
+            $result[$i]['FIND_NODE'] = $res[$i]['value17'];
+            $result[$i]['POLICY_CODE'] = $res[$i]['value18'];
+        }
+        //连接数据库
+        $conn = $this->OracleOldDBCon();
+        $statement = oci_parse($conn,"delete from tmp_tc_cdqcb");
+        //清空TC
+        oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        foreach ($result as &$value) {
+            $ID = $value['ID'];
+            $CREAT_TIME = $value['CREATE_TIME'];
+            $PONDERANCE = $value['PONDERANCE'];
+            $STATE = $value['STATE'];
+            $LOCAL = $value['LOCAL'];
+            $FIND_NODE = $value['FIND_NODE'];
+            $POLICY_CODE = $value['POLICY_CODE'];
+            $query_insert = "INSERT INTO TMP_TC_CDQCB(ID,CREAT_TIME,PONDERANCE,STATE,LOCAL,FIND_NODE,POLICY_CODE) VALUES('".$ID."',to_date('".$CREAT_TIME."','YYYY/MM/DD hh24:mi:ss'),'".$PONDERANCE."','".$STATE."','".$LOCAL."','".$FIND_NODE."','".$POLICY_CODE."')";
+//          echo $query_insert;
+            $statement = oci_parse($conn,$query_insert);
+            oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        }
+        oci_free_statement($statement);
+        oci_close($conn);
+        //加载TC数据
+        $this->getImpTc();
+    }
+
+    public function getImpTc(){
+        $conn = $this->OracleOldDBCon();
+        //回写TC数据
+        $update_nb_sql = "update tmp_bx_old_cdqcb  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null  group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_APPL_CODE))";
+        $update_uw_sql = "update TMP_UW_LIST  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_APPLE_CODE))";
+        $update_clm_sl_sql = "update TMP_NCS_QD_BX_LPBA_BD  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null  group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_CASE_CODE))";
+        $update_clm_sp_sql = "update TMP_NCS_QD_BX_LPSHSP_BD  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null  group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_CASE_CODE))";
+        $update_cs_sl_sql = "update TMP_NCS_QD_BX_BQSL_BD  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null  group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_ACCEPT_CODE))";
+        $update_cs_sp_sql = "update TMP_NCS_QD_BX_BQFH_BD  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null  group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_ACCEPT_CODE))";
+        $statement = oci_parse($conn,$update_nb_sql);
+        //增加日志记录节点（所有无输出的数据库查询）
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        $statement = oci_parse($conn,$update_uw_sql);
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        $statement = oci_parse($conn,$update_clm_sl_sql);
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        $statement = oci_parse($conn,$update_clm_sp_sql);
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        $statement = oci_parse($conn,$update_cs_sl_sql);
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        $statement = oci_parse($conn,$update_cs_sp_sql);
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        //释放资源
+        oci_free_statement($statement);
+        oci_close($conn);
+    }
+
+    public function loadDate(){
+        $conn = $this->OracleOldDBCon();
+        //灌数脚本--存储过程调用
+        $update_data = '';
+        $statement = oci_parse($conn,$update_data);
+        oci_free_statement($statement);
+        oci_close($conn);
+
+    }
+
+
+    public function getUserOrganCode(){
+        $org_code = array(
+            "gaobiao_bx" => "86470005",
+            "tangjia_bx" => "86470005",
+            "zhaoran_bx" => "86470005");
+        return $org_code;
     }
 
     public function getOrgName()
@@ -918,7 +1018,9 @@ class MethodController extends Controller
                 $result[$heji][$value] = $temp[$heji][$value];
         }
         #######################################################################################################################################
-
+        oci_free_statement($result_rows);
+        oci_free_statement($result_rows_fh);
+        oci_close($conn);
         if ($result) {
             exit(json_encode($result));
         } else {
@@ -1575,6 +1677,630 @@ class MethodController extends Controller
 //        $userid = 'test';
         $result = file_get_contents("Public/file/" . $userid . ".txt");
         return $result;
+    }
+
+
+    public function getBQFH_SQL(){
+        $BQFH_SQL = "/******************************************************************************************************************************************** 
+                                                               新核心SQL   
+                 ********************************************************************************************************************************************/
+                --DROP TABLE TMP_NCS_QD_BX_BQFH_TJ;
+                --COMMIT;
+                /*create table TMP_NCS_QD_BX_BQFH_TJ
+                (
+                  organ_code     VARCHAR2(16),
+                  user_name      VARCHAR2(60) not null,
+                  insert_time    DATE not null,
+                  policy_code    VARCHAR2(40),
+                  accept_code    VARCHAR2(60) not null,
+                  service_code   CHAR(4) not null,
+                  business_type  CHAR(8),
+                  review_result  VARCHAR2(6),
+                  insert_sysdate DATE not null
+                )*/
+                --DELETE FROM TMP_NCS_QD_BX_BQFH_TJ
+                DELETE FROM TMP_NCS_QD_BX_BQFH_TJ;
+                COMMIT;
+                INSERT INTO TMP_NCS_QD_BX_BQFH_TJ
+                --CREATE TABLE TMP_NCS_QD_BX_BQFH_TJ  AS
+                SELECT B.ORGAN_CODE AS ORGAN_CODE,
+                        B.USER_NAME AS USER_NAME,
+                        TRUNC(TCAC.REVIEW_TIME) AS INSERT_TIME,
+                        TCPC.POLICY_CODE AS POLICY_CODE,
+                        TCAC.ACCEPT_CODE AS ACCEPT_CODE,
+                        TCAC.SERVICE_CODE AS SERVICE_CODE,
+                        '保全复核' AS BUSINESS_TYPE,
+                        TCAC.REVIEW_RESULT AS REVIEW_RESULT,
+                        SYSDATE AS INSERT_SYSDATE
+                       FROM DEV_PAS.T_CS_ACCEPT_CHANGE@BINGXING_168_15 TCAC
+                        LEFT JOIN DEV_PAS.T_CS_POLICY_CHANGE@BINGXING_168_15 TCPC
+                        ON TCPC.ACCEPT_ID = TCAC.ACCEPT_ID
+                        LEFT JOIN DEV_PAS.T_CS_APPLICATION@BINGXING_168_15 TCA
+                        ON TCA.CHANGE_ID = TCAC.CHANGE_ID
+                        JOIN DEV_PAS.T_UDMP_USER@BINGXING_168_15 B
+                        ON TCAC.REVIEW_ID = B.USER_ID
+                       WHERE 1=1                                                                                     
+                            AND TCA.SERVICE_TYPE IN ('1','2','3','6','7') 
+                            --ND TRUNC(TCAC.REVIEW_TIME) >= TO_DATE('2018/8/10','YYYY/MM/DD')
+                            AND TRUNC(TCAC.REVIEW_TIME) = TRUNC(SYSDATE)
+                            AND TCPC.ORGAN_CODE LIKE '8647%'
+                            AND B.USER_NAME NOT IN ('SYSADMIN')
+                            ;
+                COMMIT;
+                
+                /******************************************************************************************************************************************** 
+                                                                               老核心SQL   
+                 ********************************************************************************************************************************************/      
+                --DROP TABLE TMP_LIS_QD_BX_BQFH_TJ;
+                --COMMIT;
+                /*create table TMP_LIS_QD_BX_BQFH_TJ
+                (
+                  organ_code     CHAR(20),
+                  user_name      VARCHAR2(10),
+                  insert_time    DATE,
+                  policy_code    CHAR(20) not null,
+                  accept_code    CHAR(20) not null,
+                  service_code   CHAR(2) not null,
+                  review_result  VARCHAR2(1),
+                  accept_status  VARCHAR2(1),
+                  business_type  CHAR(8),
+                  insert_sysdate DATE
+                )*/
+                DELETE FROM TMP_LIS_QD_BX_BQFH_TJ;
+                COMMIT;
+                INSERT INTO TMP_LIS_QD_BX_BQFH_TJ
+                --CREATE TABLE TMP_LIS_QD_BX_BQFH_TJ  AS      
+                select p.COMCODE AS ORGAN_CODE,
+                    m.ApproveOperator AS USER_NAME,
+                    m.ApproveDate AS INSERT_TIME,
+                    m.contno AS POLICY_CODE,
+                    m.edoracceptno AS ACCEPT_CODE,
+                    m.EdorType AS SERVICE_CODE,
+                    m.ApproveFlag AS REVIEW_RESULT,
+                    m.EdorState AS ACCEPT_STATUS,
+                    '保全复核' AS BUSINESS_TYPE,
+                    SYSDATE AS INSERT_SYSDATE
+                  from lis.lpedoritem m
+                  LEFT JOIN LIS.LPEdorApp t
+                  ON t.edoracceptno = m.edoracceptno
+                  LEFT JOIN LIS.LDUSER p
+                  ON TRIM(m.ApproveOperator) = TRIM(p.usercode)
+                where 1=1 
+                   AND t.apptype IN ('1','2','3','6','7')
+                   AND m.ApproveOperator NOT IN ('System','sys-auto','NSPCL')
+                   --AND TRUNC(m.ApproveDate) >= TO_DATE('2018/8/10','YYYY/MM/DD')
+                   AND TRUNC(m.ApproveDate) = TRUNC(SYSDATE)
+                   and exists (select 1
+                          from lis.lccont t
+                         where t.conttype = '1'
+                           and t.appflag in ('1', '4')
+                           and t.managecom like '8647%'
+                           and t.contno = m.contno);
+                           COMMIT;
+                           
+                /******************************************************************************************************************************************** 
+                                                                               差异明细SQL   
+                 ********************************************************************************************************************************************/       
+                
+                --DROP TABLE TMP_NCS_QD_BX_BQFH_BD;
+                --COMMIT;
+                /*create table TMP_NCS_QD_BX_BQFH_BD
+                (
+                  old_organ_code    CHAR(20),
+                  new_organ_code    VARCHAR2(16),
+                  old_user_name     VARCHAR2(12),
+                  new_user_name     VARCHAR2(12),
+                  old_service_code  CHAR(2) not null,
+                  new_service_code  CHAR(4),
+                  old_policy_code   CHAR(20) not null,
+                  new_policy_code   VARCHAR2(40),
+                  old_insert_time   DATE,
+                  new_insert_time   DATE,
+                  old_accept_code   VARCHAR2(20),
+                  new_accept_code   VARCHAR2(60),
+                  old_accept_status VARCHAR2(140),
+                  new_accept_status VARCHAR2(80),
+                  insert_sysdate    DATE,
+                  is_accordance     CHAR(3),
+                  tc_id             VARCHAR2(30)
+                )*/
+                --DELETE FROM TMP_NCS_QD_BX_BQFH_BD;
+                DELETE FROM TMP_NCS_QD_BX_BQFH_BD WHERE TRUNC(OLD_INSERT_TIME) = TRUNC(SYSDATE);
+                COMMIT;
+                INSERT INTO TMP_NCS_QD_BX_BQFH_BD
+                --CREATE TABLE TMP_NCS_QD_BX_BQFH_BD  AS         
+                SELECT  T1.ORGAN_CODE OLD_ORGAN_CODE,
+                        T2.ORGAN_CODE NEW_ORGAN_CODE,
+                        T1.USER_NAME AS OLD_USER_NAME,
+                        T2.USER_NAME AS NEW_USER_NAME,
+                        T1.SERVICE_CODE AS OLD_SERVICE_CODE,
+                        T2.SERVICE_CODE AS NEW_SERVICE_CODE,
+                        T1.POLICY_CODE AS OLD_POLICY_CODE,
+                        T2.POLICY_CODE AS NEW_POLICY_CODE,
+                        T1.INSERT_TIME AS OLD_INSERT_TIME,
+                        T2.INSERT_TIME AS NEW_INSERT_TIME,
+                       TRIM(T1.ACCEPT_CODE) AS OLD_ACCEPT_CODE,
+                       T2.ACCEPT_CODE AS NEW_ACCEPT_CODE,
+                       L.CODENAME AS OLD_ACCEPT_STATUS,
+                       TAS.STATUS_DESC AS NEW_ACCEPT_STATUS,
+                       SYSDATE AS INSERT_SYSDATE,
+                       (CASE 
+                          WHEN  TRIM(T1.ACCEPT_CODE) =  T2.ACCEPT_CODE THEN '是' 
+                          ELSE '否'             
+                        END) AS IS_ACCORDANCE,
+                        ' ' AS tc_id
+                  FROM TMP_LIS_QD_BX_BQFH_TJ T1
+                  LEFT JOIN TMP_NCS_QD_BX_BQFH_TJ T2
+                   ON T2.POLICY_CODE = TRIM(T1.POLICY_CODE)
+                      AND TRIM(T1.ACCEPT_CODE) = TRIM(T2.ACCEPT_CODE)
+                  LEFT JOIN DEV_PAS.T_CS_ACCEPT_CHANGE@BINGXING_168_15 TCAC
+                   ON TCAC.ACCEPT_CODE = TRIM(T1.ACCEPT_CODE)
+                  LEFT JOIN DEV_PAS.T_ACCEPT_STATUS@BINGXING_168_15 TAS
+                   ON TAS.ACCEPT_STATUS = TCAC.ACCEPT_STATUS 
+                  LEFT JOIN LIS.LDCode L
+                   ON L.CodeType = 'edorstate'
+                   AND TRIM(L.CODE)= T1.ACCEPT_STATUS
+                ORDER BY T2.ORGAN_CODE;
+                COMMIT;
+                
+                /*  更新比对表数据  */
+                DELETE FROM TMP_NCS_QD_BX_BQFH_BD_UP;
+                COMMIT;
+                
+                INSERT INTO TMP_NCS_QD_BX_BQFH_BD_UP
+                --CREATE TABLE TMP_NCS_QD_BX_BQFH_BD_UP  AS    
+                SELECT B.ORGAN_CODE AS ORGAN_CODE,
+                        B.USER_NAME AS USER_NAME,
+                        TRUNC(TCAC.REVIEW_TIME) AS INSERT_TIME,
+                        TCPC.POLICY_CODE AS POLICY_CODE,
+                        TCAC.ACCEPT_CODE AS ACCEPT_CODE,
+                        TCAC.ACCEPT_STATUS AS ACCEPT_STATUS,
+                        TCAC.SERVICE_CODE AS SERVICE_CODE
+                       FROM DEV_PAS.T_CS_ACCEPT_CHANGE@BINGXING_168_15 TCAC
+                        LEFT JOIN DEV_PAS.T_CS_POLICY_CHANGE@BINGXING_168_15 TCPC
+                        ON TCPC.ACCEPT_ID = TCAC.ACCEPT_ID
+                        LEFT JOIN DEV_PAS.T_CS_APPLICATION@BINGXING_168_15 TCA
+                        ON TCA.CHANGE_ID = TCAC.CHANGE_ID
+                        JOIN DEV_PAS.T_UDMP_USER@BINGXING_168_15 B
+                        ON TCAC.REVIEW_ID = B.USER_ID
+                       WHERE 1=1                                                                                     
+                            AND TCA.SERVICE_TYPE IN ('1','2','3','6','7') 
+                            AND TRUNC(TCAC.REVIEW_TIME) >= TO_DATE('2018/8/1','YYYY/MM/DD')
+                            AND TRUNC(TCAC.REVIEW_TIME) <= TRUNC(SYSDATE)
+                            AND TCPC.ORGAN_CODE LIKE '8647%'
+                            AND B.USER_NAME NOT IN ('SYSADMIN')
+                            AND B.USER_NAME IS NOT NULL
+                            AND (TCPC.POLICY_CODE,TCAC.ACCEPT_CODE) IN 
+                            (SELECT TRIM(OLD_POLICY_CODE),OLD_ACCEPT_CODE FROM TMP_NCS_QD_BX_BQFH_BD WHERE IS_ACCORDANCE = '否' AND NEW_ACCEPT_STATUS<>'生效')
+                            ;
+                            COMMIT;
+                /******************************************************************************************************************************************** 
+                                                                               更新既往数据SQL   
+                 ********************************************************************************************************************************************/       
+                
+                UPDATE TMP_NCS_QD_BX_BQFH_BD BD
+                SET (NEW_ORGAN_CODE,NEW_USER_NAME,NEW_ACCEPT_CODE,NEW_SERVICE_CODE,NEW_INSERT_TIME,NEW_POLICY_CODE,NEW_ACCEPT_STATUS,IS_ACCORDANCE) = 
+                (SELECT UP.ORGAN_CODE,UP.USER_NAME,UP.ACCEPT_CODE,UP.SERVICE_CODE,UP.INSERT_TIME,UP.POLICY_CODE,
+                TAS.STATUS_DESC,'是' FROM TMP_NCS_QD_BX_BQFH_BD_UP UP LEFT JOIN DEV_PAS.T_ACCEPT_STATUS@BINGXING_168_15 TAS ON TAS.ACCEPT_STATUS = UP.ACCEPT_STATUS
+                WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE)
+                WHERE EXISTS( SELECT 1 FROM TMP_NCS_QD_BX_BQFH_BD_UP UP WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE);
+                COMMIT;
+                /*
+                SELECT * FROM TMP_NCS_QD_BX_BQFH_TJ;
+                SELECT * FROM TMP_LIS_QD_BX_BQFH_TJ;
+                SELECT * FROM TMP_NCS_QD_BX_BQFH_BD_UP;
+                SELECT * FROM TMP_NCS_QD_BX_BQFH_BD WHERE OLD_INSERT_TIME = TRUNC(SYSDATE) FOR UPDATE
+                --AND IS_ACCORDANCE = '否' AND TC_ID IS NULL FOR UPDATE; 
+                OLD_ACCEPT_CODE = '6120180814010458' FOR UPDATE
+                NEW_USER_NAME IN ('sxb333','lyl') FOR UPDATE;-- WHERE OLD_INSERT_TIME = TRUNC(SYSDATE); */
+                
+                --DELETE FROM TMP_NCS_QD_BX_BQFH_BD WHERE TRUNC(OLD_INSERT_TIME) = TO_DATE('2018/8/10','YYYY/MM/DD');";
+
+    }
+
+    public function getBQSL_SQL(){
+        $BQSL_SQL = "/******************************************************************************************************************************************** 
+                                                               新核心SQL   
+                 ********************************************************************************************************************************************/
+                --DROP TABLE TMP_NCS_QD_BX_BQSL_TJ;
+                --COMMIT;
+                /*create table TMP_NCS_QD_BX_BQSL_TJ
+                (
+                  organ_code     VARCHAR2(16) not null,
+                  user_name      VARCHAR2(60),
+                  insert_time    DATE not null,
+                  policy_code    VARCHAR2(40),
+                  accept_code    VARCHAR2(60) not null,
+                  service_code   CHAR(4) not null,
+                  service_type   VARCHAR2(6),
+                  get_money      NUMBER(18,2),
+                  business_type  CHAR(8),
+                  insert_sysdate DATE
+                )*/
+                DELETE FROM TMP_NCS_QD_BX_BQSL_TJ;
+                COMMIT;
+                INSERT INTO TMP_NCS_QD_BX_BQSL_TJ
+                --CREATE TABLE TMP_NCS_QD_BX_BQSL_TJ  AS
+                SELECT DISTINCT TCAC.ORGAN_CODE AS ORGAN_CODE,
+                      B.USER_NAME AS USER_NAME,
+                      TRUNC(TCAC.INSERT_TIME) AS INSERT_TIME,
+                      TCPC.POLICY_CODE AS POLICY_CODE,
+                      TCAC.ACCEPT_CODE AS ACCEPT_CODE,
+                      TCAC.SERVICE_CODE AS SERVICE_CODE,
+                      TCA.SERVICE_TYPE AS SERVICE_TYPE,
+                      NULL AS GET_MONEY,
+                      '保全受理' AS BUSINESS_TYPE,
+                      SYSDATE AS INSERT_SYSDATE
+                       FROM DEV_PAS.T_CS_ACCEPT_CHANGE@BINGXING_168_15 TCAC
+                        LEFT JOIN DEV_PAS.T_CS_POLICY_CHANGE@BINGXING_168_15 TCPC
+                        ON TCPC.ACCEPT_ID = TCAC.ACCEPT_ID
+                        LEFT JOIN DEV_PAS.T_CS_APPLICATION@BINGXING_168_15 TCA
+                        ON TCA.CHANGE_ID = TCAC.CHANGE_ID
+                        LEFT JOIN DEV_PAS.T_UDMP_USER@BINGXING_168_15 B
+                        ON TCAC.INSERT_BY = B.USER_ID
+                       WHERE 1=1
+                            AND TCA.SERVICE_TYPE IN ('1','2','3','6','7')
+                            --AND TRUNC(TCAC.INSERT_TIME) >= TO_DATE('2018/8/10','YYYY/MM/DD')
+                            AND TRUNC(TCAC.INSERT_TIME) = TRUNC(SYSDATE)
+                            AND TCPC.ORGAN_CODE LIKE '8647%'
+                            ORDER BY TCAC.ORGAN_CODE;
+                            COMMIT;
+                
+                /******************************************************************************************************************************************** 
+                                                                               老核心SQL   
+                 ********************************************************************************************************************************************/      
+                --DROP TABLE TMP_LIS_QD_BX_BQSL_TJ;
+                --COMMIT;
+                /*create table TMP_LIS_QD_BX_BQSL_TJ
+                (
+                  organ_code     CHAR(10),
+                  user_name      VARCHAR2(10) not null,
+                  insert_time    DATE not null,
+                  policy_code    CHAR(20) not null,
+                  accept_code    CHAR(20) not null,
+                  service_code   CHAR(2) not null,
+                  service_type   CHAR(2),
+                  get_money      NUMBER(18,2),
+                  business_type  CHAR(8),
+                  insert_sysdate DATE
+                )*/
+                DELETE FROM TMP_LIS_QD_BX_BQSL_TJ;
+                COMMIT;
+                INSERT INTO TMP_LIS_QD_BX_BQSL_TJ
+                --CREATE TABLE TMP_LIS_QD_BX_BQSL_TJ  AS
+                select m.managecom AS ORGAN_CODE,
+                      m.operator AS USER_NAME,
+                      m.MakeDate AS INSERT_TIME,
+                      m.contno AS POLICY_CODE,
+                      m.edoracceptno AS ACCEPT_CODE,
+                      m.EdorType AS SERVICE_CODE,
+                      t.apptype AS SERVICE_TYPE,
+                      '保全受理' AS BUSINESS_TYPE,
+                      SYSDATE AS INSERT_SYSDATE,
+                      SUM(m.getmoney) AS GET_MONEY
+                   from lis.lpedoritem m
+                  LEFT JOIN LIS.LPEdorApp t
+                  ON t.edoracceptno = m.edoracceptno
+                  /*LEFT JOIN lis.lccont n
+                  ON m.contno = n.contno
+                  LEFT JOIN LIS.LDUSER p
+                  ON m.ApproveOperator = p.usercode*/
+                where 1=1 
+                   AND t.apptype IN ('1','2','3','6','7')
+                   --AND TRUNC(m.MakeDate) >= TO_DATE('2018/8/10','YYYY/MM/DD')
+                   AND TRUNC(m.MakeDate) = TRUNC(SYSDATE)
+                   AND m.edoracceptno NOT LIKE '64%'
+                   and exists (select 1
+                          from lis.lccont t
+                         where t.conttype = '1'
+                           and t.appflag in ('1', '4')
+                           and t.managecom like '8647%'
+                           and t.contno = m.contno)
+                   --and ((m.EdorType<>'PR') OR (m.EdorType='PR' and m.MakeDate < TO_DATE('2018/8/1','YYYY/MM/DD')))
+                   GROUP BY m.managecom,m.operator,m.MakeDate,m.contno,m.edoracceptno,m.EdorType,t.apptype
+                 ORDER BY m.managecom;
+                 COMMIT;
+                 
+                /******************************************************************************************************************************************** 
+                                                                               差异明细SQL   
+                 ********************************************************************************************************************************************/       
+                --DROP TABLE TMP_NCS_QD_BX_BQSL_BD;
+                --COMMIT;
+                /*create table TMP_NCS_QD_BX_BQSL_BD
+                (
+                  old_organ_code      VARCHAR2(20),
+                  new_organ_code      VARCHAR2(20),
+                  user_name           VARCHAR2(20) not null,
+                  old_organ_name      VARCHAR2(20),
+                  old_service_code    VARCHAR2(8) not null,
+                  new_service_code    VARCHAR2(8),
+                  old_service_type    VARCHAR2(15),
+                  new_service_type    VARCHAR2(15),
+                  old_policy_code     VARCHAR2(20) not null,
+                  new_policy_code     VARCHAR2(20),
+                  old_accept_code     VARCHAR2(20),
+                  new_accept_code     VARCHAR2(20),
+                  old_get_money       NUMBER(18,2),
+                  new_get_money       NUMBER(18,2),
+                  old_insert_time     DATE not null,
+                  new_insert_time     DATE,
+                  insert_sysdate      DATE,
+                  is_accordance       VARCHAR2(10),
+                  tc_id               VARCHAR2(30),
+                  no_same_description VARCHAR2(50),
+                  is_ncs_advantage    CHAR(2),
+                  link_buss_code      VARCHAR2(20),
+                  is_same_sff         CHAR(2)
+                )*/
+                DELETE FROM TMP_NCS_QD_BX_BQSL_BD WHERE TRUNC(OLD_INSERT_TIME) = TRUNC(SYSDATE);
+                COMMIT;
+                INSERT INTO TMP_NCS_QD_BX_BQSL_BD
+                --CREATE TABLE TMP_NCS_QD_BX_BQSL_BD  AS
+                SELECT  T1.ORGAN_CODE AS OLD_ORGAN_CODE,
+                        T2.ORGAN_CODE AS NEW_ORGAN_CODE,
+                        T1.USER_NAME AS USER_NAME,
+                        (CASE 
+                           WHEN T1.USER_NAME IN ('wangyf_qd','wangyfqd00','wangmx_qd') THEN '城阳 '
+                           WHEN T1.USER_NAME IN ('ningxy_qd','nxyqd00','wangjuan2','wjpmoqd','lishan_qd','lishanqd00','yucx_qd','yucxqd00') THEN '即墨 '
+                           WHEN T1.USER_NAME IN ('muxy_qd','muxyqd00','liuyy_qd','liuyyqd00','zxpmoqd','zhangxuan9') THEN '胶南 '
+                           WHEN T1.USER_NAME IN ('wangx_qd','wangxqd00','yangt_qd','yangtqd00','songdan_qd','songdanqd00','guoyx2','gyxpmoqd','zhaojiasc','zjpmoqd') THEN '胶州 '
+                           WHEN T1.USER_NAME IN ('gengkl_qd','gkl_qd00','likn_qd','liknqd00','wangkk_qd','wangkkqd00','jiangzm_qd','xinwei_qd','liyansd','lypmoqd','wanghx9','whxpmoqd') THEN '开发区 '
+                           WHEN T1.USER_NAME IN ('zhanyh_qd','zhanyhqd00','xusy_qd','xusyqd00','gcpmoqd') THEN '莱西 '
+                           WHEN T1.USER_NAME IN ('lhxpmoqd','liulu_qd','liuluqd00','liuxn_qd','liuxn_qd12','yuyang_qd','jiangzm_qd','xinwei_qd','liyansd','lypmoqd','wanghx9','whxpmoqd') THEN '市南 '
+                           WHEN T1.USER_NAME IN ('lizr_qd','liujie_qd','wangxh1_qd','zhangnn_qd','zhuxj_qd','zhuxj_qd00') THEN '大荣 '
+                           WHEN T1.USER_NAME IN ('zhangjieqd') THEN '李沧 '
+                           WHEN T1.USER_NAME IN ('wangyingqd','wangyqd00','weils_qd','weilsqd00','zongxz_qd','zongxzqd00','wqpmoqd','xypmoqd') THEN '平度 '
+                        END) AS OLD_ORGAN_NAME, 
+                        T1.SERVICE_CODE AS OLD_SERVICE_CODE,
+                        T2.SERVICE_CODE AS NEW_SERVICE_CODE,
+                       (CASE T1.SERVICE_TYPE
+                          WHEN  '1' THEN '客户上门办理 ' 
+                          WHEN  '2' THEN '业务员代办 ' 
+                          WHEN  '3' THEN '其他人代办 ' 
+                          WHEN  '6' THEN '新契约内部转办 ' 
+                          WHEN  '7' THEN '其他内部转办 '          
+                        END) AS OLD_SERVICE_TYPE,
+                       (CASE T2.SERVICE_TYPE
+                          WHEN  '1' THEN '客户上门办理 ' 
+                          WHEN  '2' THEN '业务员代办 ' 
+                          WHEN  '3' THEN '其他人代办 ' 
+                          WHEN  '6' THEN '新契约内部转办 ' 
+                          WHEN  '7' THEN '其他内部转办 '          
+                        END) AS NEW_SERVICE_TYPE,
+                        T1.POLICY_CODE AS OLD_POLICY_CODE,
+                        T2.POLICY_CODE AS NEW_POLICY_CODE,
+                       TRIM(T1.ACCEPT_CODE) AS OLD_ACCEPT_CODE,
+                       T2.ACCEPT_CODE AS NEW_ACCEPT_CODE,
+                       (CASE
+                         WHEN T1.GET_MONEY IS NOT NULL THEN T1.GET_MONEY
+                         ELSE 0.00
+                        END) AS OLD_GET_MONEY,
+                      NULL AS NEW_GET_MONEY,
+                      T1.INSERT_TIME AS OLD_INSERT_TIME,
+                      T2.INSERT_TIME AS NEW_INSERT_TIME,
+                      SYSDATE AS insert_sysdate,
+                       (CASE 
+                          WHEN  TRIM(T1.ACCEPT_CODE) =  T2.ACCEPT_CODE THEN '是' 
+                          ELSE '否'             
+                        END) AS IS_ACCORDANCE,
+                        '' AS tc_id,
+                        '' AS no_same_description,
+                        '' AS is_ncs_advantage,
+                        '' AS link_buss_code,
+                        NULL AS is_same_sff
+                  FROM TMP_LIS_QD_BX_BQSL_TJ T1
+                  LEFT JOIN TMP_NCS_QD_BX_BQSL_TJ T2
+                   ON TRIM(T2.POLICY_CODE) = TRIM(T1.POLICY_CODE)
+                   AND TRIM(T2.ACCEPT_CODE) = TRIM(T1.ACCEPT_CODE)
+                ORDER BY T2.ORGAN_CODE;
+                COMMIT;
+                /******************************************************************************************************************************************** 
+                                                                               删除单保单迁移SQL   
+                 ********************************************************************************************************************************************/       
+                DELETE FROM TMP_NCS_QD_BX_BQSL_BD WHERE TRIM(OLD_POLICY_CODE) IN 
+                (SELECT TRIM(m.contno) FROM lis.lpedoritem m WHERE m.EdorType='PR' AND m.MakeDate >= TO_DATE('2018/8/1','YYYY/MM/DD'));
+                COMMIT;
+                
+                /**********************************  全量更新新核心数据开始  *******************************/
+                DELETE FROM TMP_NCS_QD_BX_BQSL_BD_UP;
+                COMMIT;
+                INSERT INTO TMP_NCS_QD_BX_BQSL_BD_UP
+                --CREATE TABLE TMP_NCS_QD_BX_BQSL_BD_UP  AS
+                SELECT DISTINCT TCAC.ORGAN_CODE AS ORGAN_CODE,
+                      B.USER_NAME AS USER_NAME,
+                      TRUNC(TCAC.INSERT_TIME) AS INSERT_TIME,
+                      TCPC.POLICY_CODE AS POLICY_CODE,
+                      TCAC.ACCEPT_CODE AS ACCEPT_CODE,
+                      TCAC.SERVICE_CODE AS SERVICE_CODE,
+                      TCA.SERVICE_TYPE AS SERVICE_TYPE,
+                      NULL AS GET_MONEY,
+                      '保全受理' AS BUSINESS_TYPE,
+                      SYSDATE AS INSERT_SYSDATE
+                       FROM DEV_PAS.T_CS_ACCEPT_CHANGE@BINGXING_168_15 TCAC
+                        LEFT JOIN DEV_PAS.T_CS_POLICY_CHANGE@BINGXING_168_15 TCPC
+                        ON TCPC.ACCEPT_ID = TCAC.ACCEPT_ID
+                        LEFT JOIN DEV_PAS.T_CS_APPLICATION@BINGXING_168_15 TCA
+                        ON TCA.CHANGE_ID = TCAC.CHANGE_ID
+                        LEFT JOIN DEV_PAS.T_UDMP_USER@BINGXING_168_15 B
+                        ON TCAC.INSERT_BY = B.USER_ID
+                       WHERE 1=1
+                            AND TCA.SERVICE_TYPE IN ('1','2','3','6','7')
+                            AND TRUNC(TCAC.INSERT_TIME) >= TO_DATE('2018/8/1','YYYY/MM/DD')
+                            AND TRUNC(TCAC.INSERT_TIME) <= TRUNC(SYSDATE)
+                            AND TCPC.ORGAN_CODE LIKE '8647%'
+                            AND (TCPC.POLICY_CODE,TCAC.ACCEPT_CODE) IN (SELECT TRIM(OLD_POLICY_CODE),OLD_ACCEPT_CODE FROM TMP_NCS_QD_BX_BQSL_BD WHERE IS_ACCORDANCE = '否')
+                            ;
+                            COMMIT;
+                                 
+                UPDATE TMP_NCS_QD_BX_BQSL_BD BD
+                SET (NEW_ORGAN_CODE,NEW_SERVICE_TYPE,NEW_ACCEPT_CODE,NEW_SERVICE_CODE,NEW_INSERT_TIME,NEW_POLICY_CODE,IS_ACCORDANCE) = 
+                (SELECT ORGAN_CODE,
+                       (CASE SERVICE_TYPE
+                          WHEN  '1' THEN '客户上门办理' 
+                          WHEN  '2' THEN '业务员代办' 
+                          WHEN  '3' THEN '其他人代办' 
+                          WHEN  '6' THEN '新契约内部转办' 
+                          WHEN  '7' THEN '其他内部转办'          
+                        END) AS SERVICE_TYPE,ACCEPT_CODE,SERVICE_CODE,INSERT_TIME,POLICY_CODE,'是' FROM TMP_NCS_QD_BX_BQSL_BD_UP UP
+                WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE)
+                WHERE EXISTS( SELECT 1 FROM TMP_NCS_QD_BX_BQSL_BD_UP UP WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE);
+                COMMIT;
+                /**********************************  全量更新新核心数据开始  *******************************/
+                
+                /**********************************  当日更新金额开始  *******************************/
+                --drop table TMP_NCS_QDBX_BQ_SFF;
+                DELETE FROM TMP_NCS_QDBX_BQ_SFF;
+                COMMIT;
+                INSERT INTO TMP_NCS_QDBX_BQ_SFF
+                --CREATE TABLE TMP_NCS_QDBX_BQ_SFF AS
+                SELECT B.POLICY_CODE,B.BUSINESS_CODE AS ACCEPT_CODE,SUM(GETMONEY) AS GETMONEY FROM 
+                (SELECT DISTINCT B.USER_NAME,TCPA.POLICY_CODE,TCPA.BUSINESS_CODE,CASE 
+                   WHEN TCPA.ARAP_FLAG='2' THEN -TCPA.FEE_AMOUNT ELSE TCPA.FEE_AMOUNT END AS GETMONEY
+                    FROM DEV_PAS.T_CS_PREM_ARAP@BINGXING_168_15 TCPA
+                    LEFT JOIN DEV_PAS.T_CS_ACCEPT_CHANGE@BINGXING_168_15 TCAC
+                    ON TCAC.ACCEPT_CODE = TCPA.BUSINESS_CODE
+                    --ARAP_FLAG 1-收费 2-付费
+                        LEFT JOIN DEV_PAS.T_CS_APPLICATION@BINGXING_168_15 TCA
+                        ON TCA.CHANGE_ID = TCAC.CHANGE_ID
+                        JOIN DEV_PAS.T_UDMP_USER@BINGXING_168_15 B
+                        ON TCA.INSERT_BY = B.USER_ID
+                    WHERE 1=1
+                        AND TCPA.DERIV_TYPE = '004'
+                        AND TCPA.ORGAN_CODE LIKE '8647%'
+                        AND TRUNC(TCPA.INSERT_TIME) = TRUNC(SYSDATE)
+                        AND TCA.SERVICE_TYPE IN ('1','2','3','6','7')
+                   UNION ALL
+                   SELECT DISTINCT B.USER_NAME,TCPC.POLICY_CODE,TCAC.ACCEPT_CODE AS BUSINESS_CODE,0.00 AS GETMONEY-- 按0处理
+                        FROM DEV_PAS.T_CS_ACCEPT_CHANGE@BINGXING_168_15 TCAC
+                        LEFT JOIN DEV_PAS.T_CS_POLICY_CHANGE@BINGXING_168_15 TCPC
+                        ON TCPC.ACCEPT_ID = TCAC.ACCEPT_ID
+                        LEFT JOIN DEV_PAS.T_CS_APPLICATION@BINGXING_168_15 TCA
+                        ON TCA.CHANGE_ID = TCAC.CHANGE_ID
+                        JOIN DEV_PAS.T_UDMP_USER@BINGXING_168_15 B
+                        ON TCA.INSERT_BY = B.USER_ID
+                            WHERE 1=1
+                            AND TCPC.ORGAN_CODE LIKE '8647%'
+                            AND TRUNC(TCAC.INSERT_TIME) = TRUNC(SYSDATE)
+                            AND TCA.SERVICE_TYPE IN ('1','2','3','6','7')
+                   ) B WHERE 1=1
+                GROUP BY B.POLICY_CODE,B.BUSINESS_CODE
+                ORDER BY B.POLICY_CODE;
+                COMMIT;
+                            
+                UPDATE TMP_NCS_QD_BX_BQSL_BD BD
+                SET (NEW_GET_MONEY) = 
+                (SELECT GETMONEY FROM TMP_NCS_QDBX_BQ_SFF UP
+                WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE)
+                WHERE EXISTS( SELECT 1 FROM TMP_NCS_QDBX_BQ_SFF UP WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE);
+                COMMIT;
+                /**********************************  当日更新金额结束  *******************************/
+                
+                
+                /**********************************  全量更新金额开始-定期更新  *******************************
+                DELETE FROM TMP_NCS_QDBX_BQ_SFF_ALL;
+                COMMIT;
+                INSERT INTO TMP_NCS_QDBX_BQ_SFF_ALL
+                --CREATE TABLE TMP_NCS_QDBX_BQ_SFF_ALL AS
+                SELECT B.POLICY_CODE,B.ACCEPT_CODE,SUM(B.GETMONEY) AS GETMONEY FROM 
+                (SELECT DISTINCT B.USER_NAME,TCPA.POLICY_CODE,TCPA.BUSINESS_CODE AS ACCEPT_CODE,CASE 
+                   WHEN TCPA.ARAP_FLAG='2' THEN -TCPA.FEE_AMOUNT ELSE TCPA.FEE_AMOUNT END AS GETMONEY
+                    FROM DEV_PAS.T_CS_PREM_ARAP@BINGXING_168_15 TCPA
+                    LEFT JOIN DEV_PAS.T_CS_ACCEPT_CHANGE@BINGXING_168_15 TCAC
+                    ON TCAC.ACCEPT_CODE = TCPA.BUSINESS_CODE
+                        LEFT JOIN DEV_PAS.T_CS_APPLICATION@BINGXING_168_15 TCA
+                        ON TCA.CHANGE_ID = TCAC.CHANGE_ID
+                        JOIN DEV_PAS.T_UDMP_USER@BINGXING_168_15 B
+                        ON TCA.INSERT_BY = B.USER_ID
+                    WHERE 1=1
+                        AND TCPA.DERIV_TYPE = '004'
+                        AND TCPA.ORGAN_CODE LIKE '8647%'
+                        AND TCPA.INSERT_TIME >= TO_DATE('2018/8/1','YYYY/MM/DD')
+                        AND TCPA.INSERT_TIME <= TRUNC(SYSDATE)
+                        AND TCA.SERVICE_TYPE IN ('1','2','3','6','7')
+                        --AND TCPA.BUSINESS_CODE = '6120180815002335'
+                        )B
+                GROUP BY B.POLICY_CODE,B.ACCEPT_CODE;
+                COMMIT;
+                
+                UPDATE TMP_NCS_QD_BX_BQSL_BD BD
+                SET (NEW_GET_MONEY) = 
+                (SELECT GETMONEY FROM TMP_NCS_QDBX_BQ_SFF_ALL UP
+                WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE)
+                WHERE EXISTS( SELECT 1 FROM TMP_NCS_QDBX_BQ_SFF_ALL UP WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE);
+                COMMIT;  
+                **********************************  全量更新金额结束  *******************************/
+                
+                /**********************************  更新双倍开始  *******************************/
+                --DROP TABLE TMP_NCS_QD_BX_BQSL_BD_SFF;
+                DELETE FROM TMP_NCS_QD_BX_BQSL_BD_SFF;
+                COMMIT;
+                INSERT INTO TMP_NCS_QD_BX_BQSL_BD_SFF
+                --CREATE TABLE TMP_NCS_QD_BX_BQSL_BD_SFF  AS
+                SELECT OLD_POLICY_CODE,OLD_ACCEPT_CODE,OLD_GET_MONEY FROM TMP_NCS_QD_BX_BQSL_BD WHERE OLD_GET_MONEY = (NEW_GET_MONEY - OLD_GET_MONEY) AND OLD_GET_MONEY!=0.00;
+                COMMIT;
+                
+                UPDATE TMP_NCS_QD_BX_BQSL_BD BD
+                SET (NEW_GET_MONEY) = 
+                (SELECT OLD_GET_MONEY FROM TMP_NCS_QD_BX_BQSL_BD_SFF UP
+                WHERE UP.OLD_POLICY_CODE = BD.OLD_POLICY_CODE AND UP.OLD_ACCEPT_CODE = BD.OLD_ACCEPT_CODE)
+                WHERE EXISTS (SELECT 1 FROM TMP_NCS_QD_BX_BQSL_BD_SFF UP WHERE UP.OLD_POLICY_CODE = BD.OLD_POLICY_CODE AND UP.OLD_ACCEPT_CODE = BD.OLD_ACCEPT_CODE);
+                COMMIT;
+                /**********************************  更新双倍结束  *******************************/
+                
+                UPDATE TMP_NCS_QD_BX_BQSL_BD BD
+                SET IS_SAME_SFF = (CASE 
+                WHEN OLD_GET_MONEY = NEW_GET_MONEY OR (OLD_GET_MONEY-NEW_GET_MONEY=-0.01 OR OLD_GET_MONEY-NEW_GET_MONEY=0.01) THEN '是'
+                ELSE '否'
+                END);
+                COMMIT;
+                /*
+                UPDATE TMP_LIS_QD_BX_BQSL_TJ BD
+                SET GET_MONEY = NULL WHERE GET_MONEY = 0
+                
+                SELECT * FROM TMP_NCS_QD_BX_BQSL_TJ;
+                SELECT * FROM TMP_LIS_QD_BX_BQSL_TJ;
+                SELECT * FROM TMP_NCS_QD_BX_BQSL_BD_UP;
+                SELECT * FROM TMP_NCS_QD_BX_BQSL_BD WHERE --IS_NCS_ADVANTAGE = '是' FOR UPDATE--(OLD_GET_MONEY = NEW_GET_MONEY OR (OLD_GET_MONEY-NEW_GET_MONEY=-0.01 OR OLD_GET_MONEY-NEW_GET_MONEY=0.01)) AND OLD_INSERT_TIME = TRUNC(SYSDATE)
+                --IS_SAME_SFF='是' AND OLD_INSERT_TIME = TRUNC(SYSDATE)
+                --IS_ACCORDANCE = '是' AND NEW_GET_MONEY IS NULL FOR UPDATE
+                --OLD_SERVICE_CODE = 'PC' AND (NEW_GET_MONEY IS NULL OR OLD_GET_MONEY IS NULL) FOR UPDATE 
+                --NEW_GET_MONEY IS NOT NULL AND OLD_GET_MONEY IS NULL FOR UPDATE 
+                --IS_ACCORDANCE = '否' AND NO_SAME_DESCRIPTION IS NULL AND TC_ID IS NULL FOR UPDATE
+                OLD_ACCEPT_CODE = '6120180818004788' FOR UPDATE  
+                IN ('6120180816014123',
+                '6120180816014707',
+                '6120180816022319',
+                '6120180816012510',
+                '6120180816022820',
+                '6120180816011644')
+                 FOR UPDATE ;
+                
+                SELECT * FROM TMP_NCS_QD_BX_BQSL_BD WHERE IS_ACCORDANCE = '否' AND TC_ID IS NULL AND NO_SAME_DESCRIPTION IS NULL ORDER BY OLD_ORGAN_NAME FOR UPDATE;
+                
+                
+                SELECT * FROM TMP_NCS_QD_BX_BQSL_BD WHERE IS_NCS_ADVANTAGE = '是' AND IS_ACCORDANCE = '是' FOR UPDATE
+                
+                WHERE OLD_ACCEPT_CODE = '6120180807026371';
+                -----------------------
+                UPDATE TMP_NCS_QD_BX_BQSL_BD 
+                SET NEW_ORGAN_CODE = '86470008',NEW_ACCEPT_CODE = '6120180807026371',NEW_SERVICE_CODE = 'AC',NEW_SERVICE_TYPE = '业务员代办',
+                NEW_POLICY_CODE = '887576774292',NEW_INSERT_TIME = TO_DATE('2018/8/7','YYYY/MM/DD')
+                WHERE OLD_ACCEPT_CODE = '6120180807026371'
+                
+                SELECT OLD_POLICY_CODE,OLD_ACCEPT_CODE FROM TMP_NCS_QD_BX_BQSL_BD WHERE OLD_GET_MONEY = (NEW_GET_MONEY - OLD_GET_MONEY) AND OLD_GET_MONEY!=0.00
+                
+                DELETE FROM TMP_NCS_QD_BX_BQSL_BD WHERE TRUNC(OLD_INSERT_TIME) = TO_DATE('2018/8/10','YYYY/MM/DD');
+                SELECT * FROM TMP_NCS_QD_BX_BQSL_BD WHERE OLD_GET_MONEY != NEW_GET_MONEY AND OLD_GET_MONEY-NEW_GET_MONEY!=-0.01 AND OLD_GET_MONEY-NEW_GET_MONEY!=0.01;
+                */
+                /*
+                UPDATE TMP_NCS_QD_BX_BQSL_BD BD
+                SET (NEW_GET_MONEY) = 
+                (SELECT GETMONEY FROM TMP_NCS_QDBX_BQ_SFF UP
+                WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE)
+                WHERE EXISTS( SELECT 1 FROM TMP_NCS_QDBX_BQ_SFF UP WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE);
+                
+                COMMIT;*/";
+
     }
 
 }

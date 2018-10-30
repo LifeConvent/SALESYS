@@ -371,7 +371,7 @@
                             区间日报查询
                         </a>
                     </li>
-                    <li id="weChat_autoSend">
+                    <li id="weChat_autoSend" class="dis-none">
                         <a href="<?php echo U('Home/WeChat/setAutoRes');?>" style="font-size: 12px;">
                             整体日报查询
                         </a>
@@ -501,26 +501,26 @@
 
             <!--主菜单-->
             <li class="sub-menu">
-                <a href="<?php echo U('Home/Home/home');?>" id="home">
+                <a href="javascript:;" id="home">
                     <i class="fa fa-dashboard"></i>
                         <span style="font-size: 14px;">
                           待确认队列
                         </span>
                         <span class="label label-info span-sidebar">
-                            2
+                            1
                         </span>
                 </a>
                 <ul class="sub" id="data_ub">
                     <li id="data_ount">
-                        <a href="<?php echo U('Home/DataManage/surveyCount');?>" style="font-size: 12px;">
+                        <a href="<?php echo U('Home/PersonDefineFinishWork/perDefine');?>" style="font-size: 12px;">
                             个人待确认
                         </a>
                     </li>
-                    <li id="data_unt">
-                        <a href="<?php echo U('Home/DataManage/surveyCount');?>" style="font-size: 12px;">
-                            机构待确认队列
-                        </a>
-                    </li>
+                    <!--<li id="data_unt">-->
+                        <!--<a href="<?php echo U('Home/DataManage/surveyCount');?>" style="font-size: 12px;">-->
+                            <!--机构待确认队列-->
+                        <!--</a>-->
+                    <!--</li>-->
                 </ul>
             </li>
 

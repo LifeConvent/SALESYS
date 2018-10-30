@@ -2,11 +2,11 @@
 return array(
 	//'配置项'=>'配置值'
     //'本地数据库
-    'DB_TYPE'=>'Oracle',
-    'DB_HOST'=>'10.1.168.5',
-    'DB_NAME'=>'DMGdb',
-    'DB_USER'=>'ncl_1',
-    'DB_PWD'=>'ncl_1',
+    'DB_TYPE'=>'mysql',
+    'DB_HOST'=>'10.1.73.11',
+    'DB_NAME'=>'testcenter_103',
+    'DB_USER'=>'gittest',
+    'DB_PWD'=>'gittest',
     // 'DB_PORT'=>,
     'DB_PREFIX'=>'',
     'DB_CHARSET'=>'utf8',

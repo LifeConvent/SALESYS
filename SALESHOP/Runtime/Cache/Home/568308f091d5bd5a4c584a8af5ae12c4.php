@@ -802,10 +802,10 @@
 <script src="/Public/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="/Public/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 <!--自定义-->
-<script src="/Public/js/Home/count.js"></script>
-<script src="/Public/js/Home/get-time.js"></script>
-<script src="/Public/js/Home/charts-home.js"></script>
-<script src="/Public/js/DayPost/dayPost.js"></script>
+<!--<script src="/Public/js/Home/count.js"></script>-->
+<!--<script src="/Public/js/Home/get-time.js"></script>-->
+<!--<script src="/Public/js/Home/charts-home.js"></script>-->
+<script src="/Public/js/FinishWorkDefine/perDefine.js"></script>
 <script>
 
 </script>
