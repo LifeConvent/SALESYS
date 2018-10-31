@@ -49,31 +49,39 @@
         <!-- 主容器  -->
         <section class="wrapper">
             <div>
-                <section class="panel">
-                    <header class="panel-heading">
-                        <!--<div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>-->
-                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt">选择日期</button></div>
-                        <!--<div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>-->
-                        <div class="tools" style="float:left;margin-left: 10pt">
-                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                <input class="form-control" size="16" type="text" value="" readonly>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
-                            <div style="width:50px;float:left;padding-left: 15px;margin-top: 5px"><strong>至</strong></div>
-                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date2" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
-                                <input class="form-control" size="16" type="text" value="" readonly>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
+                <div>
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <span><strong>新增用户</strong></span>
+                        </header>
+                        <div class="panel-body">
+                            <div class="col-sm-2"><input type="text" class="form-control" id="user_account" placeholder="请输入用户账号"></div>
+                            <div class="col-sm-2"><input type="text" class="form-control" id="user_pass" placeholder="请输入用户密码"></div>
+                            <div><button type="button" id="new_user" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt">添加用户信息</button></div>
                         </div>
-                        <input style="visibility:hidden" id="dtp_input2" value=""/>
-                        <input style="visibility:hidden" id="dtp_input3" value=""/>
-                    </header>
-                    <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
-                        <table id="daily_report2"></table>
-                    </div>
-                </section>
+                    </section>
+                </div>
+                <!--<div>-->
+                    <!--<section class="panel">-->
+                        <!--<header class="panel-heading">-->
+                            <!--<span><strong>编辑用户</strong></span>-->
+                        <!--</header>-->
+                        <!--<div class="panel-body">-->
+                            <!--<div class="col-sm-2"><input type="text" class="form-control" id="" placeholder="请输入用户账号"></div>-->
+                            <!--<div><button type="button" id="modify_user" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt">修改用户信息</button></div>-->
+                        <!--</div>-->
+                    <!--</section>-->
+                <!--</div>-->
+                <div>
+                    <section class="panel">
+                        <header class="panel-heading">
+                            <span><strong>用户信息列表</strong></span>
+                        </header>
+                        <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
+                            <table id="user_list_table"></table>
+                        </div>
+                    </section>
+                </div>
             </div>
 
             <!--用户信息管理注意事项-->
@@ -483,7 +491,18 @@
 <script src="__PUBLIC__/js/sco.message.js" type="text/javascript"></script>
 <script src="__PUBLIC__/js/bootstrap-table.min.js"></script>
 <script src="__PUBLIC__/js/bootstrap-table-zh-CN.min.js"></script>
-<script src="__PUBLIC__/js/userManage/userManage.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/userManage/postUserManage.js" type="text/javascript"></script>
+<!--<script src="__PUBLIC__/js/userManage/userManage.js" type="text/javascript"></script>-->
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/locale/bootstrap-table-zh-CN.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/extensions/export/bootstrap-table-export.js"></script>
+
+<script src="__PUBLIC__/js/bootstrap_above/tableExport/libs/pdfmake/pdfmake.min.js"></script>
+<script src="__PUBLIC__/js/bootstrap_above/tableExport/libs/pdfmake/vfs_fonts.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/FileSaver/FileSaver.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/jsPDF/jspdf.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/tableExport.js"></script>
 
 
 <script>
