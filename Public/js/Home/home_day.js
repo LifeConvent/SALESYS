@@ -66,6 +66,9 @@ var TableInit = function () {
         $('#daily_report').bootstrapTable({
             url: HOST + "index.php/Home/Method/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
+            showExport: true,
+            exportDataType: 'all',
+            exportTypes:[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf'],
             // toolbar: '#toolbar',    //工具按钮用哪个容器
             striped: true,      //是否显示行间隔色
             cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -97,7 +100,7 @@ var TableInit = function () {
                 return '无符合条件的记录';
             },
             formatSearch: function () {
-                return '表内查询';
+                return '搜索';
             },
 
             columns : [

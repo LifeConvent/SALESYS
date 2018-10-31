@@ -48,89 +48,256 @@
 
         <!-- 主容器  -->
         <section class="wrapper">
+            <div>
+                <section class="panel">
+                    <header class="panel-heading">
+                        <!--<div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>-->
+                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt">选择日期</button></div>
+                        <!--<div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>-->
+                        <div class="tools" style="float:left;margin-left: 10pt">
+                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                <input class="form-control" size="16" type="text" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            <div style="width:50px;float:left;padding-left: 15px;margin-top: 5px"><strong>至</strong></div>
+                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date2" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
+                                <input class="form-control" size="16" type="text" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                        </div>
+                        <input style="visibility:hidden" id="dtp_input2" value=""/>
+                        <input style="visibility:hidden" id="dtp_input3" value=""/>
+                    </header>
+                    <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
+                        <table id="daily_report2"></table>
+                    </div>
+                </section>
+            </div>
 
             <!--用户信息管理注意事项-->
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h1 class="panel-title-red">
-                        用户信息管理注意事项：
-                    </h1>
+            <!--<div class="panel panel-success">-->
+                <!--<div class="panel-heading">-->
+                    <!--<h1 class="panel-title-red">-->
+                        <!--用户信息管理注意事项：-->
+                    <!--</h1>-->
+                <!--</div>-->
+                <!--<div class="panel-body" rows="8">-->
+                    <!--1、用户信息管理是指在本系统数据库中存储的可使用课程评价的用户信息。<br>-->
+                    <!--2、搜索条件中姓名搜索方式支持模糊搜索，其他搜索条件仅支持精确搜索。<br>-->
+                    <!--<br><br><br>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--&lt;!&ndash;微信菜单设置&ndash;&gt;-->
+            <!--<div class="row">-->
+
+                <!--<div class="panel-body" style="padding-bottom:0px;">-->
+                    <!--<div class="panel panel-primary">-->
+                        <!--<div class="panel-heading">查询条件</div>-->
+                        <!--<div class="panel-body">-->
+                            <!--<form id="formSearch" class="form-horizontal">-->
+                                <!--<div class="form-group" style="margin-top:15px">-->
+
+                                    <!--<label class="control-label mar-left-10 left-f"-->
+                                           <!--for="txt_search_graclass">账号：</label>-->
+
+                                    <!--<div class="col-sm-2">-->
+                                        <!--<input type="text" class="form-control" id="txt_search_graclass">-->
+                                    <!--</div>-->
+
+                                    <!--<label class="control-label left-f" for="txt_search_pro">专业：</label>-->
+
+                                    <!--<select class="dd3-content-et m-bot15 order-select col-lg-2" id="txt_search_pro"-->
+                                            <!--style="margin-top:3px">-->
+                                        <!--<option value="">无</option>-->
+                                        <!--<option value="1">计算机科学与技术</option>-->
+                                        <!--<option value="2">信息安全</option>-->
+                                        <!--<option value="3">信息与计算科学</option>-->
+                                        <!--<option value="4">计算机科学与技术（中加方向）</option>-->
+                                        <!--<option value="5">网络工程</option>-->
+                                        <!--<option value="6">物联网工程</option>-->
+                                        <!--<option value="7">通信工程</option>-->
+                                    <!--</select>-->
+
+                                    <!--<label class="control-label mar-left-10 left-f"-->
+                                           <!--for="txt_search_class">班级：</label>-->
+
+                                    <!--<div class="col-sm-2">-->
+                                        <!--<input type="text" class="form-control" id="txt_search_class">-->
+                                    <!--</div>-->
+
+                                    <!--<label class="control-label mar-left-10 left-f"-->
+                                           <!--for="txt_search_class">姓名：</label>-->
+
+                                    <!--<div class="col-sm-2">-->
+                                        <!--<input type="text" class="form-control" id="txt_search_name">-->
+                                    <!--</div>-->
+
+                                    <!--<div class="col-sm-1" style="text-align:left;">-->
+                                        <!--<button type="button" style="margin-left:20px" onclick="show();"-->
+                                                <!--id="btn_query"-->
+                                                <!--class="btn btn-primary">查询-->
+                                        <!--</button>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</form>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div>-->
+                        <!--<div id="toolbar" class="btn-group">-->
+                            <!--<button id="btn_delete" type="button" class="btn btn-danger">-->
+                                <!--<span class="glyphicon" aria-hidden="true"></span>全部删除-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<table class="panel" id="table_user" data-page-list="[10, 25, 50, 100, ALL]"></table>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+            <!--</div>-->
+
+            <!-- 第一行数据统计  -->
+            <div class="row state-overview" style="visibility:hidden">
+
+                <!--四个统计框-->
+                <div class="col-lg-3 col-sm-6">
+
+                    <section class="panel">
+
+                        <div class="symbol">
+                            <i class="fa fa-tags blue">
+                            </i>
+                        </div>
+
+                        <div class="value">
+                            <h1 class="count" style="display:none">{$count}</h1>
+
+                            <h1 class=" show_count">
+                                0
+                            </h1>
+
+                            <p>
+                                微信匹配用户总量
+                            </p>
+                        </div>
+
+                    </section>
+
                 </div>
-                <div class="panel-body" rows="8">
-                    1、用户信息管理是指在本系统数据库中存储的可使用课程评价的用户信息。<br>
-                    2、搜索条件中姓名搜索方式支持模糊搜索，其他搜索条件仅支持精确搜索。<br>
-                    <br><br><br>
+
+                <div class="col-lg-3 col-sm-6">
+
+                    <section class="panel">
+
+                        <div class="symbol">
+                            <i class="fa fa-tasks red">
+                            </i>
+                        </div>
+
+                        <div class="value">
+                            <h1 class="count1" style="display:none">{$count1}</h1>
+
+                            <h1 class=" show_count1">
+                                0
+                            </h1>
+
+                            <p>
+                                课程评价总数
+                            </p>
+                        </div>
+
+                    </section>
+
                 </div>
+
+                <div class="col-lg-3 col-sm-6">
+
+                    <section class="panel">
+
+                        <div class="symbol">
+                            <i class="fa fa-user yellow">
+                            </i>
+                        </div>
+
+                        <div class="value">
+                            <h1 class=" count2" style="display:none">{$count2}</h1>
+
+                            <h1 class=" show_count2">0</h1>
+
+                            <p>
+                                微信关注量
+                            </p>
+                        </div>
+
+                    </section>
+
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+
+                    <section class="panel">
+
+                        <div class="symbol">
+                            <i class="fa fa-plus purple">
+                            </i>
+                        </div>
+
+                        <div class="value">
+                            <h1 class=" count3" style="display:none">{$count3}</h1>
+
+                            <h1 class=" show_count3">
+                                0
+                            </h1>
+
+                            <p>
+                                新增用户数量
+                            </p>
+                        </div>
+
+                    </section>
+
+                </div>
+
             </div>
+            <!--第一行数据统计-->
 
-            <!--微信菜单设置-->
-            <div class="row">
-
-                <div class="panel-body" style="padding-bottom:0px;">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading color-lv">查询条件</div>
-                        <div class="panel-body">
-                            <form id="formSearch" class="form-horizontal">
-                                <div class="form-group" style="margin-top:15px">
-
-                                    <label class="control-label mar-left-10 left-f"
-                                           for="txt_search_graclass">年级：</label>
-
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control" id="txt_search_graclass">
-                                    </div>
-
-                                    <label class="control-label left-f" for="txt_search_pro">专业：</label>
-
-                                    <select class="dd3-content-et m-bot15 order-select col-lg-2" id="txt_search_pro"
-                                            style="margin-top:3px">
-                                        <option value="">无</option>
-                                        <option value="1">计算机科学与技术</option>
-                                        <option value="2">信息安全</option>
-                                        <option value="3">信息与计算科学</option>
-                                        <option value="4">计算机科学与技术（中加方向）</option>
-                                        <option value="5">网络工程</option>
-                                        <option value="6">物联网工程</option>
-                                        <option value="7">通信工程</option>
-                                    </select>
-
-                                    <label class="control-label mar-left-10 left-f"
-                                           for="txt_search_class">班级：</label>
-
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control" id="txt_search_class">
-                                    </div>
-
-                                    <label class="control-label mar-left-10 left-f"
-                                           for="txt_search_class">姓名：</label>
-
-                                    <div class="col-sm-2">
-                                        <input type="text" class="form-control" id="txt_search_name">
-                                    </div>
-
-                                    <div class="col-sm-1" style="text-align:left;">
-                                        <button type="button" style="margin-left:20px" onclick="show();"
-                                                id="btn_query"
-                                                class="btn btn-primary">查询
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        微信匹配数量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="weixin-num" class="graph">
                         </div>
                     </div>
-
-                    <div>
-                        <div id="toolbar" class="btn-group">
-                            <button id="btn_delete" type="button" class="btn btn-danger">
-                                <span class="glyphicon" aria-hidden="true"></span>全部删除
-                            </button>
-                        </div>
-                        <table class="panel" id="table_user" data-page-list="[10, 25, 50, 100, ALL]"></table>
-                    </div>
-                </div>
-
+                </section>
             </div>
 
+            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        课程评价数量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="ce-num" class="graph">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        微信关注量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="weixin-sub-num" class="graph">
+                        </div>
+                    </div>
+                </section>
+            </div>
             <!--测试用文本框-->
             <textarea id="list_output" rows="3" class="form-control" style="visibility:hidden"></textarea>
 

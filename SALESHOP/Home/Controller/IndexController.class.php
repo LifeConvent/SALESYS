@@ -27,6 +27,8 @@ class IndexController extends Controller
     public function searchUser($user,$pass){//登录账户用多种
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+//        $user = 'gaobiao_bx';
+//        $pass = '380c0aeaf0b49bba0fa630bdd7b52f3d';
         if (!$conn) {
             $result['status'] = 'failed';
             $result['hint'] = '数据库连接失败！';
@@ -36,6 +38,7 @@ class IndexController extends Controller
             $result_rows = oci_parse($conn, $select); // 配置SQL语句，执行SQL
             $row_count = oci_execute($result_rows, OCI_DEFAULT); // 行数  OCI_DEFAULT表示不要自动commit
             $result = oci_fetch_array($result_rows,OCI_RETURN_NULLS);
+//            dump($result);
             if(strcmp($result['ACCOUNT'],$user)!=0){
                 $result['status'] = 'failed';
                 $result['hint'] = '用户名不存在！';
@@ -46,8 +49,14 @@ class IndexController extends Controller
                 $result['status'] = 'failed';
                 $result['hint'] = '用户名或密码错误！';
             }else{
-                $temp = $user.'-'.time().'-success-'.$result['TYPE'];
-                $token = $method->encode($temp);
+                $temp = $user.'-'.(string)time().'-success-'.$result['TYPE'];
+//                dump($temp);
+                $token = $method->encode((string)$temp);
+//                echo $token;
+//                $token = $method->decode($token);
+//                $info = explode('-', $token);
+//                echo $token;
+//                dump($info);
                 $_SESSION["token"] = $token;
                 $result['status'] = 'success';
                 $result['hint'] = '登录成功！';

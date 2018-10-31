@@ -34,7 +34,7 @@
     <!-- END STYLESHEET-->
 </head>
 <script type="text/javascript">
-    var HOST = "http://localhost/";
+    var HOST = "http://10.8.56.115/";
 </script>
 <body id="body">
 <!-- SECTION -->
@@ -357,7 +357,7 @@
                               日报查询
                             </span>
                             <span class="label label-success span-sidebar">
-                              3
+                              2
                             </span>
                 </a>
                 <ul class="sub" id="weChat_sub">
@@ -548,9 +548,9 @@
             <div class="container-fluid" >
                 <section class="panel">
                     <header class="panel-heading">
-                        <div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>
-                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt">导出日报</button></div>
-                        <div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>
+                        <!--<div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>-->
+                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt">选择日期</button></div>
+                        <!--<div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>-->
                         <div class="tools" style="float:left;margin-left: 10pt">
                             <div style="width:250px;" class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
                                 <input class="form-control" size="16" type="text" value="" readonly>
@@ -560,7 +560,18 @@
                         </div>
                         <input style="visibility:hidden" id="dtp_input2" value=""/>
                     </header>
-                    <div style="margin:0 5px">
+                    <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
+                        <span style="color: red;"><strong>请粘贴相应标签至“表内查询”搜索框搜索,选中后拖拽时记得拽回来啊！</strong></span>
+                        <div>
+                            <input class="form-control" value="本部" style="width:70pt;float:left;">
+                            <input class="form-control" value="城阳" style="width:70pt;float:left;margin-left: 5pt">
+                            <input class="form-control" value="莱西" style="width:70pt;float:left;margin-left: 5pt">
+                            <input class="form-control" value="市南" style="width:70pt;float:left;margin-left: 5pt">
+                            <input class="form-control" value="开发区" style="width:70pt;float:left;margin-left: 5pt">
+                            <input class="form-control" value="核保室" style="width:70pt;float:left;margin-left: 5pt">
+                            <input class="form-control" value="保全室" style="width:80pt;float:left;margin-left: 5pt">
+                            <input class="form-control" value="理赔室" style="width:70pt;float:left;margin-left: 5pt">
+                        </div>
                         <table id="daily_report"></table>
                     </div>
                 </section>
@@ -799,6 +810,17 @@
 <script src="/Public/js/Home/charts-home.js"></script>
 <script src="/Public/js/Home/home.js"></script>
 <script src="/Public/js/Home/home_day.js"></script>
+
+<script type="text/javascript" src="/Public/js/bootstrap_above/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+<script type="text/javascript" src="/Public/js/bootstrap_above/bootstrap-table-develop/dist/locale/bootstrap-table-zh-CN.js"></script>
+<script type="text/javascript" src="/Public/js/bootstrap_above/bootstrap-table-develop/dist/extensions/export/bootstrap-table-export.js"></script>
+
+<script src="/Public/js/bootstrap_above/tableExport/libs/pdfmake/pdfmake.min.js"></script>
+<script src="/Public/js/bootstrap_above/tableExport/libs/pdfmake/vfs_fonts.js"></script>
+<script type="text/javascript" src="/Public/js/bootstrap_above/tableExport/libs/FileSaver/FileSaver.min.js"></script>
+<script type="text/javascript" src="/Public/js/bootstrap_above/tableExport/libs/jsPDF/jspdf.min.js"></script>
+<script type="text/javascript" src="/Public/js/bootstrap_above/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script type="text/javascript" src="/Public/js/bootstrap_above/tableExport/tableExport.js"></script>
 <script>
 
 </script>

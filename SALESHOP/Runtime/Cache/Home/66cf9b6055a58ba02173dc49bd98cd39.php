@@ -28,7 +28,7 @@
     </script>
 </head>
 <script type="text/javascript">
-    var HOST = "http://localhost/";
+    var HOST = "http://10.8.56.115/";
 </script>
 
 <body class="login-screen">

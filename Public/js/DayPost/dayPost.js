@@ -77,6 +77,9 @@ var TableInit = function () {
             method: 'get',      //请求方式（*）
             // toolbar: '#toolbar',    //工具按钮用哪个容器
             striped: true,      //是否显示行间隔色
+            showExport: true,
+            exportDataType: 'all',
+            exportTypes:[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf'],
             cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             pagination: true,     //是否显示分页（*）
             // sortable: false,      //是否启用排序
@@ -106,7 +109,7 @@ var TableInit = function () {
                 return '无符合条件的记录';
             },
             formatSearch: function () {
-                return '表内查询';
+                return '搜索';
             },
 
             columns : [

@@ -19,9 +19,9 @@ $(function () {
         forceParse: 0
     }).on('changeDate', function(ev){
         if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
-            return;
+            $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         }
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getDefPerson"});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getDefPerson?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
     $('#form_date2').datetimepicker({
         language:  'zh-CN',
@@ -37,7 +37,7 @@ $(function () {
             $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
             return;
         }
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getDefPerson"});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getDefPerson?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     //1.初始化Table
@@ -75,6 +75,9 @@ var TableInit = function () {
         $('#daily_report2').bootstrapTable({
             url: HOST + "index.php/Home/PersonDefineFinishWork/getDefPerson",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
+            showExport: true,
+            exportDataType: 'all',
+            exportTypes:[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf'],
             toolbar: '#toolbar',    //工具按钮用哪个容器
             striped: true,      //是否显示行间隔色
             cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
@@ -106,7 +109,7 @@ var TableInit = function () {
                 return '无符合条件的记录';
             },
             formatSearch: function () {
-                return '表内查询';
+                return '搜索';
             },
             columns: [{
                 checkbox: true

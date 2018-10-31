@@ -184,11 +184,6 @@ class MethodController extends Controller
         }
     }
 
-    public function getFuheUser(){
-        $org = array("tangjia_bx","tangjia2_bx");
-        return $org;
-    }
-
     public function getDictArry(){
         $org = array("本部","李沧","平度","胶南","即墨","胶州","城阳","莱西","开发区","市南","小计","分公司核保室","分公司保全室","分公司理赔室","总公司作业中心","合计");
         return $org;
@@ -273,10 +268,25 @@ class MethodController extends Controller
 
     public function getUserOrganCode(){
         $org_code = array(
-            "gaobiao_bx" => "86470005",
+            "gaobiao_bx" => "8647",
             "tangjia_bx" => "86470005",
             "zhaoran_bx" => "86470005");
         return $org_code;
+    }
+
+    public function getFuheUser(){
+        $org = array("tangjia_bx","tangjia2_bx");
+        return $org;
+    }
+
+    public function getClmUser(){
+        $org = array("","");
+        return $org;
+    }
+
+    public function getUwUser(){
+        $org = array("yangyixuan_bx","");
+        return $org;
     }
 
     public function getOrgName()
@@ -451,7 +461,7 @@ class MethodController extends Controller
         }
         $org = $this->getDictArry();
         $userDire =  $this->getUserDictArray();
-        for($i = 0;$i<=sizeof($org);$i++){
+        for($i = 0;$i<sizeof($org);$i++){
             $result[$i]['org'] = $org[$i];
         }
         //中间数据计算
@@ -502,7 +512,7 @@ class MethodController extends Controller
         $result_rows = oci_parse($conn, $nb_where_old_noqd); // 配置SQL语句，执行SQL
         $nb_result_old_noqd = $this->search_long($result_rows);
         //契约数据赋值
-        for($i = 0;$i<=sizeof($org);$i++){
+        for($i = 0;$i<sizeof($org);$i++){
             $result[$i]['nb_old_count'] =0;
             $result[$i]['nb_new_count'] =0;
 //            $result[$i]['nb_cannt_count'] =0;
@@ -615,6 +625,7 @@ class MethodController extends Controller
         }
         #020 核保新老核心
         foreach ($uw_result_new_old_time as &$value) {
+            //核保与复核审核不一样，以作业中心的人员作为筛选的，不是分公司
             if(in_array($value['OLD_USER_NAME'],$zuoyezhongxin_uw)){
                 $result[$zuoYeZhongXin]['nb_new_count'] += (int)$value['NUM'];
             }else{
@@ -692,7 +703,7 @@ class MethodController extends Controller
         $result_old_noqd = $this->search_long($result_rows);
 
         //保全数据赋值
-        for($i = 0;$i<=sizeof($org);$i++){//分支机构
+        for($i = 0;$i<sizeof($org);$i++){//分支机构
             $result[$i]['cs_old_count'] =0;//老核心当天插入
             $result[$i]['cs_new_count'] =0;//老核心新核心当天插入
 //            $result[$i]['cs_cannt_count'] =0;//老核心当天插入新核心无插入日期
@@ -774,6 +785,7 @@ class MethodController extends Controller
 //        $where_new_time_query = "NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
         $userOne = "tangjia_bx";
         $userTwo = "tangjia2_bx";
+        $fuhe_user = $this->getFuheUser();
 
         #007 保全复核老核心当天
         $where_old_time_fh  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQFH_BD WHERE ".$where_OLD_time_query." GROUP BY NEW_USER_NAME";
@@ -799,7 +811,8 @@ class MethodController extends Controller
         #007
         #老核心复核数量一新核心为准进行计算
             foreach ($result_old_time_fh as &$value) {
-                if(strcmp($value['NEW_USER_NAME'],$userOne)==0||strcmp($value['NEW_USER_NAME'],$userTwo)==0){
+//                strcmp($value['NEW_USER_NAME'],$userOne)==0||strcmp($value['NEW_USER_NAME'],$userTwo)==0
+                if(in_array($value['NEW_USER_NAME'],$fuhe_user)){
                     $result[$fenOrganfh]['cs_old_count'] += (int)($value['NUM']);
                 }else{
                     $result[$zuoYeZhongXin]['cs_old_count'] += (int)($value['NUM']);
@@ -808,7 +821,7 @@ class MethodController extends Controller
         $temp[$heji]['cs_old_count'] += $temp[$xiaoji]['cs_old_count'] + $result[$zuoYeZhongXin]['cs_old_count'] + $result[$fenOrganfh]['cs_old_count'];
             #008
             foreach ($result_new_old_time_fh as &$value) {
-                if(strcmp($value['NEW_USER_NAME'],$userOne)==0||strcmp($value['NEW_USER_NAME'],$userTwo)==0){
+                if(in_array($value['NEW_USER_NAME'],$fuhe_user)){
                     $result[$fenOrganfh]['cs_new_count'] += (int)($value['NUM']);
                     $result[$fenOrganfh]['cs_fysame_count'] += (int)($value['NUM']);
                 }else{
@@ -820,7 +833,8 @@ class MethodController extends Controller
         $temp[$heji]['cs_new_count'] += $temp[$xiaoji]['cs_new_count'] + $result[$zuoYeZhongXin]['cs_new_count'] + $result[$fenOrganfh]['cs_new_count'];
         #009
         foreach ($result_new_no_old_time_fh as &$value) {
-            if(strcmp($value['NEW_USER_NAME'],$userOne)==0||strcmp($value['NEW_USER_NAME'],$userTwo)==0){
+            //新核心用户为空时表示无法操作计入分公司
+            if(in_array($value['NEW_USER_NAME'],$fuhe_user)||empty($value['NEW_USER_NAME'])){
                 $result[$fenOrganfh]['cs_fix_count'] += (int)($value['NUM']);
             }else{
                 $result[$zuoYeZhongXin]['cs_fix_count'] += (int)($value['NUM']);
@@ -871,7 +885,7 @@ class MethodController extends Controller
         $clm_result_old_noqd = $this->search_long($result_rows);
 
         //理赔数据赋值
-        for($i = 0;$i<=sizeof($org);$i++){
+        for($i = 0;$i<sizeof($org);$i++){
             $result[$i]['clm_old_count'] =0;
             $result[$i]['clm_new_count'] =0;
 //            $result[$i]['clm_cannt_count'] =0;
@@ -980,7 +994,7 @@ class MethodController extends Controller
         $result[$fenOrganfh]['clm_old_count'] = $clm_num-$result[$zuoYeZhongXin]['clm_old_count'];
         #031 理赔审核审批补录
         foreach ($clm_result_new_no_old_time as &$value) {
-            if(in_array($value['NEW_USER_NAME'],$clm_user)){
+            if(in_array($value['NEW_USER_NAME'],$clm_user)||empty($value['NEW_USER_NAME'])){
                 $result[$fenOrganfh]['clm_fix_count'] += (int)$value['NUM'];
             }else{
                 $result[$zuoYeZhongXin]['clm_fix_count'] += (int)$value['NUM'];

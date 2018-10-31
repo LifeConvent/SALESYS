@@ -9,33 +9,33 @@
     <!-- END META -->
 
     <!-- BEGIN SHORTCUT ICON -->
-    <link rel="shortcut icon" href="/SALESYS/Public/img/favicon.ico">
+    <link rel="shortcut icon" href="/Public/img/favicon.ico">
     <!-- END SHORTCUT ICON -->
     <title>
         SALE-SHOP  门店销售系统
     </title>
     <!-- BEGIN STYLESHEET-->
-    <link href="/SALESYS/Public/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
-    <link href="/SALESYS/Public/css/bootstrap-reset.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
-    <link href="/SALESYS/Public/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 -->
-    <link href="/SALESYS/Public/css/style.css" rel="stylesheet"><!-- THEME BASIC CSS -->
-    <link href="/SALESYS/Public/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
-    <link rel="stylesheet" type="text/css" href="/SALESYS/Public/assets/nestable/jquery.nestable.css"><!-- NESTABLE CSS -->
-    <link href="/SALESYS/Public/css/sco.message.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/SALESYS/Public/css/bootstrap-table.min.css">
-    <link rel="stylesheet" type="text/css" href="/SALESYS/Public/css/userMAnage/modify-user.css">
+    <link href="/Public/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="/Public/css/bootstrap-reset.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="/Public/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 -->
+    <link href="/Public/css/style.css" rel="stylesheet"><!-- THEME BASIC CSS -->
+    <link href="/Public/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
+    <link rel="stylesheet" type="text/css" href="/Public/assets/nestable/jquery.nestable.css"><!-- NESTABLE CSS -->
+    <link href="/Public/css/sco.message.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/Public/css/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="/Public/css/userMAnage/modify-user.css">
 
     <!--[if lt IE 9]>
-    <script src="/SALESYS/Public/js/html5shiv.js">
+    <script src="/Public/js/html5shiv.js">
     </script>
-    <script src="/SALESYS/Public/js/respond.min.js">
+    <script src="/Public/js/respond.min.js">
     </script>
     <![endif]-->
     <!-- END STYLESHEET-->
 </head>
 <script type="text/javascript">
-    var HOST = "http://localhost/SALESYS/";
-    var TITLE = "SALE-SHOP  门店销售系统";
+    var HOST = "http://10.8.56.115/";
+    var TITLE = "DAY-POST  日报系统";
 </script>
 <body id="body">
 <!-- SECTION -->
@@ -53,9 +53,9 @@
     <!-- SIDEBAR TOGGLE BUTTON  END-->
 
     <a href="" class="logo">
-        CES
+        DAY - POST
           <span>
-            课程评价管理系统
+           日报系统
           </span>
     </a>
 
@@ -342,10 +342,10 @@
 
             <!--主菜单-->
             <li>
-                <a href="<?php echo U('Home/Home/home');?>" id="home">
+                <a href="<?php echo U('Home/Sale/sale');?>" id="sale">
                     <i class="fa fa-dashboard"></i>
                         <span style="font-size: 14px;">
-                          统计分析
+                          TC实时监控
                         </span>
                 </a>
             </li>
@@ -355,31 +355,26 @@
                 <a href="javascript:;" id="weChat">
                     <i class="fa fa-laptop"></i>
                             <span style="font-size: 14px;">
-                              微信服务
+                              日报查询
                             </span>
                             <span class="label label-success span-sidebar">
-                              3
+                              2
                             </span>
                 </a>
                 <ul class="sub" id="weChat_sub">
                     <li id="weChat_menu">
-                        <a href="<?php echo U('Home/WeChat/setWeChatMenu');?>" style="font-size: 12px;">
-                            公众号菜单设置
+                        <a href="<?php echo U('Home/Home/Home');?>" style="font-size: 12px;">
+                            单日日报查询
                         </a>
                     </li>
                     <li id="weChat_groupSend">
-                        <a href="<?php echo U('Home/WeChat/messageGroupSend');?>" style="font-size: 12px;">
-                            公众号消息群发
+                        <a href="<?php echo U('Home/DayPost/dayPost');?>" style="font-size: 12px;">
+                            区间日报查询
                         </a>
                     </li>
-                    <li id="weChat_autoSend">
+                    <li id="weChat_autoSend" class="dis-none">
                         <a href="<?php echo U('Home/WeChat/setAutoRes');?>" style="font-size: 12px;">
-                            用户消息回复设置
-                        </a>
-                    </li>
-                    <li class="dis-none">
-                        <a href="" target="_blank" style="font-size: 12px;">
-                            用户标签管理
+                            整体日报查询
                         </a>
                     </li>
                 </ul>
@@ -400,7 +395,7 @@
                 <ul class="sub" id="user_sub">
                     <li id="user_manager">
                         <a href="<?php echo U('Home/UserManage/userManage');?>" style="font-size: 12px;">
-                            用户信息管理
+                            登录用户管理
                         </a>
                     </li>
                     <li class="dis-none">
@@ -422,39 +417,39 @@
                     <i class="fa fa-cogs">
                     </i>
                             <span style="font-size: 14px;">
-                              课程管理
+                              TC请求
                             </span>
                             <span class="label label-primary span-sidebar">
-                              5
+                              1
                             </span>
                 </a>
 
                 <ul class="sub" id="course_sub">
                     <li id="course_info">
                         <a href="<?php echo U('Home/CourseManage/courseManage');?>" style="font-size: 12px;">
-                            课程信息管理
+                            TC刷新队列
                         </a>
                     </li>
-                    <li id="course_survey">
-                        <a href="<?php echo U('Home/CourseManage/surveyManage');?>" style="font-size: 12px;">
-                            课程问卷管理
-                        </a>
-                    </li>
-                    <li id="course_survey_publish">
-                        <a href="<?php echo U('Home/CourseManage/surveyPublish');?>" style="font-size: 12px;">
-                            课程问卷发布
-                        </a>
-                    </li>
-                    <li id="course_count">
-                        <a href="<?php echo U('Home/CourseManage/surveyCondition');?>" style="font-size: 12px;">
-                            问卷完成情况
-                        </a>
-                    </li>
-                    <li id="course_survey_demo_publish">
-                        <a href="<?php echo U('Home/CourseManage/coursePublish');?>" style="font-size: 12px;">
-                            按课程发布模版问卷
-                        </a>
-                    </li>
+                    <!--<li id="course_survey">-->
+                        <!--<a href="<?php echo U('Home/CourseManage/surveyManage');?>" style="font-size: 12px;">-->
+                            <!--课程问卷管理-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li id="course_survey_publish">-->
+                        <!--<a href="<?php echo U('Home/CourseManage/surveyPublish');?>" style="font-size: 12px;">-->
+                            <!--课程问卷发布-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li id="course_count">-->
+                        <!--<a href="<?php echo U('Home/CourseManage/surveyCondition');?>" style="font-size: 12px;">-->
+                            <!--问卷完成情况-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li id="course_survey_demo_publish">-->
+                        <!--<a href="<?php echo U('Home/CourseManage/coursePublish');?>" style="font-size: 12px;">-->
+                            <!--按课程发布模版问卷-->
+                        <!--</a>-->
+                    <!--</li>-->
                 </ul>
             </li>
 
@@ -464,7 +459,7 @@
                     <i class="fa fa-tasks">
                     </i>
                             <span style="font-size: 14px;">
-                              数据管理
+                              完成申请
                             </span>
                             <span class="label label-info span-sidebar">
                               2
@@ -474,7 +469,7 @@
                 <ul class="sub" id="data_sub">
                     <li id="data_course">
                         <a href="<?php echo U('Home/DataManage/userCourse');?>" style="font-size: 12px;">
-                             系统数据维护
+                             待处理完成申请
                         </a>
                     </li>
                     <!--<li id="data_sys_course">-->
@@ -489,19 +484,44 @@
                     <!--</li>-->
                     <li id="data_count">
                         <a href="<?php echo U('Home/DataManage/surveyCount');?>" style="font-size: 12px;">
-                            评价结果统计
+                            提交完成申请
                         </a>
                     </li>
-                    <li class="dis-none">
-                        <a href="">
-                            子菜单
+                    <!--<li class="dis-none">-->
+                        <!--<a href="">-->
+                            <!--子菜单-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li class="dis-none">-->
+                        <!--<a href="">-->
+                            <!--子菜单-->
+                        <!--</a>-->
+                    <!--</li>-->
+                </ul>
+            </li>
+
+            <!--主菜单-->
+            <li class="sub-menu">
+                <a href="javascript:;" id="home">
+                    <i class="fa fa-dashboard"></i>
+                        <span style="font-size: 14px;">
+                          待确认队列
+                        </span>
+                        <span class="label label-info span-sidebar">
+                            1
+                        </span>
+                </a>
+                <ul class="sub" id="data_ub">
+                    <li id="data_ount">
+                        <a href="<?php echo U('Home/PersonDefineFinishWork/perDefine');?>" style="font-size: 12px;">
+                            个人待确认
                         </a>
                     </li>
-                    <li class="dis-none">
-                        <a href="">
-                            子菜单
-                        </a>
-                    </li>
+                    <!--<li id="data_unt">-->
+                        <!--<a href="<?php echo U('Home/DataManage/surveyCount');?>" style="font-size: 12px;">-->
+                            <!--机构待确认队列-->
+                        <!--</a>-->
+                    <!--</li>-->
                 </ul>
             </li>
 
@@ -806,7 +826,7 @@
     <!-- 尾 -->
 <footer class="site-footer">
     <div class="text-center" style="margin-left:20%">
-        2016 &copy; CES by
+        2018 &copy; DAY-POST by
         <a href="" target="_blank">
             高彪
         </a>
@@ -823,19 +843,19 @@
 
 <!-- JS -->
 
-<!--<script src="/SALESYS/Public/js/jquery.js"></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
-<script src="/SALESYS/Public/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
-<script src="/SALESYS/Public/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
-<script src="/SALESYS/Public/js/jquery.dcjqaccordion.2.7.js"></script><!-- 左侧子菜单栏显示 -->
-<script src="/SALESYS/Public/js/jquery.scrollTo.min.js"></script><!-- SCROLLTO JS -->
-<script src="/SALESYS/Public/js/jquery.nicescroll.js"></script><!-- NICESCROLL JS -->
-<script src="/SALESYS/Public/js/respond.min.js"></script><!-- RESPOND JS -->
-<script src="/SALESYS/Public/js/jquery.sparkline.js"></script><!-- SPARKLINE JS -->
-<script src="/SALESYS/Public/js/common-scripts.js"></script><!-- BASIC COMMON JS -->
-<script src="/SALESYS/Public/js/sco.message.js" type="text/javascript"></script>
-<script src="/SALESYS/Public/js/bootstrap-table.min.js"></script>
-<script src="/SALESYS/Public/js/bootstrap-table-zh-CN.min.js"></script>
-<script src="/SALESYS/Public/js/courseManage/courseInfo.js" type="text/javascript"></script>
+<!--<script src="/Public/js/jquery.js"></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
+<script src="/Public/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
+<script src="/Public/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
+<script src="/Public/js/jquery.dcjqaccordion.2.7.js"></script><!-- 左侧子菜单栏显示 -->
+<script src="/Public/js/jquery.scrollTo.min.js"></script><!-- SCROLLTO JS -->
+<script src="/Public/js/jquery.nicescroll.js"></script><!-- NICESCROLL JS -->
+<script src="/Public/js/respond.min.js"></script><!-- RESPOND JS -->
+<script src="/Public/js/jquery.sparkline.js"></script><!-- SPARKLINE JS -->
+<script src="/Public/js/common-scripts.js"></script><!-- BASIC COMMON JS -->
+<script src="/Public/js/sco.message.js" type="text/javascript"></script>
+<script src="/Public/js/bootstrap-table.min.js"></script>
+<script src="/Public/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="/Public/js/courseManage/courseInfo.js" type="text/javascript"></script>
 
 
 </body>
