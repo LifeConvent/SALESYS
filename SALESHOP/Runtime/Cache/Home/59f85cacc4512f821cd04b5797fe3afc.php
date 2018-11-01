@@ -545,40 +545,9 @@
         <!-- 主容器  -->
         <section class="wrapper">
 
-            <div class="container-fluid" >
-                <section class="panel">
-                    <header class="panel-heading">
-                        <!--<div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>-->
-                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt">选择日期</button></div>
-                        <!--<div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>-->
-                        <div class="tools" style="float:left;margin-left: 10pt">
-                            <div style="width:250px;" class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                <input class="form-control" size="16" type="text" value="" readonly>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
-                        </div>
-                        <input style="visibility:hidden" id="dtp_input2" value=""/>
-                    </header>
-                    <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
-                        <span style="color: red;"><strong>请粘贴相应标签至“表内查询”搜索框搜索,选中后拖拽时记得拽回来啊！</strong></span>
-                        <div>
-                            <input class="form-control" value="本部" style="width:70pt;float:left;">
-                            <input class="form-control" value="城阳" style="width:70pt;float:left;margin-left: 5pt">
-                            <input class="form-control" value="莱西" style="width:70pt;float:left;margin-left: 5pt">
-                            <input class="form-control" value="市南" style="width:70pt;float:left;margin-left: 5pt">
-                            <input class="form-control" value="开发区" style="width:70pt;float:left;margin-left: 5pt">
-                            <input class="form-control" value="核保室" style="width:70pt;float:left;margin-left: 5pt">
-                            <input class="form-control" value="保全室" style="width:80pt;float:left;margin-left: 5pt">
-                            <input class="form-control" value="理赔室" style="width:70pt;float:left;margin-left: 5pt">
-                        </div>
-                        <table id="daily_report"></table>
-                    </div>
-                </section>
-            </div>
 
             <!-- 第一行数据统计  -->
-            <div class="row state-overview" style="visibility:hidden">
+            <div class="row state-overview">
 
                 <!--四个统计框-->
                 <div class="col-lg-3 col-sm-6">
@@ -682,7 +651,7 @@
             </div>
              <!--第一行数据统计-->
 
-            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
+            <div class="col-lg-12" style="color:#5eb7dd;">
                 <section class="panel">
                     <header class="panel-heading">
                         微信匹配数量变化趋势
@@ -694,7 +663,7 @@
                 </section>
             </div>
 
-            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
+            <div class="col-lg-12" style="color:#fd6d4d;">
                 <section class="panel">
                     <header class="panel-heading">
                         课程评价数量变化趋势
@@ -706,7 +675,7 @@
                 </section>
             </div>
 
-            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
+            <div class="col-lg-12" style="color:#f7d254;">
                 <section class="panel">
                     <header class="panel-heading">
                         微信关注量变化趋势
@@ -718,17 +687,17 @@
                 </section>
             </div>
 
-            <!--<div class="col-lg-12" style="color:#a560f8">-->
-                <!--<section class="panel">-->
-                    <!--<header class="panel-heading">-->
-                        <!--新增用户数量变化趋势-->
-                    <!--</header>-->
-                    <!--<div class="panel-body">-->
-                        <!--<div id="weixin-new-num" class="graph">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</section>-->
-            <!--</div>-->
+            <div class="col-lg-12" style="color:#a560f8">
+                <section class="panel">
+                    <header class="panel-heading">
+                        新增用户数量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="weixin-new-num" class="graph">
+                        </div>
+                    </div>
+                </section>
+            </div>
 
         </section>
         <!-- 主容器  -->
@@ -808,19 +777,7 @@
 <script src="/Public/js/Home/count.js"></script>
 <script src="/Public/js/Home/get-time.js"></script>
 <script src="/Public/js/Home/charts-home.js"></script>
-<script src="/Public/js/Home/home.js"></script>
-<script src="/Public/js/Home/home_day.js"></script>
-
-<script type="text/javascript" src="/Public/js/bootstrap_above/bootstrap-table-develop/dist/bootstrap-table.js"></script>
-<script type="text/javascript" src="/Public/js/bootstrap_above/bootstrap-table-develop/dist/locale/bootstrap-table-zh-CN.js"></script>
-<script type="text/javascript" src="/Public/js/bootstrap_above/bootstrap-table-develop/dist/extensions/export/bootstrap-table-export.js"></script>
-
-<script src="/Public/js/bootstrap_above/tableExport/libs/pdfmake/pdfmake.min.js"></script>
-<script src="/Public/js/bootstrap_above/tableExport/libs/pdfmake/vfs_fonts.js"></script>
-<script type="text/javascript" src="/Public/js/bootstrap_above/tableExport/libs/FileSaver/FileSaver.min.js"></script>
-<script type="text/javascript" src="/Public/js/bootstrap_above/tableExport/libs/jsPDF/jspdf.min.js"></script>
-<script type="text/javascript" src="/Public/js/bootstrap_above/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
-<script type="text/javascript" src="/Public/js/bootstrap_above/tableExport/tableExport.js"></script>
+<script src="/Public/js/Home/post_home.js"></script>
 <script>
 
 </script>

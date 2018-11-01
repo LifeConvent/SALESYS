@@ -57,6 +57,50 @@ class HomeController extends Controller
         }
     }
 
+    public function postHome()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+
+        if ($result) {
+            $time = time() - 60 * 60 * 24;
+            $t_s = date("Y-m-d", $time);
+            $time = time() - 60 * 60 * 24 * 6;
+            $t_e = date("Y-m-d", $time);
+            $t_s = '2016-12-16';
+            $t_e = '2016-12-22';
+//            $res = $this->dealHomeCount($t_s, $t_e);
+//            for ($i = 0; $i < 7; $i++) {
+//                $new[$i] = (int)$res[$i]['new'];
+//                $all_user[$i] = (int)$res[$i]['all_user'];
+//                $survey[$i] = (int)$res[$i]['survey'];
+//                $is_match[$i] = (int)$res[$i]['is_match'];
+//                if ($i == 6) {
+//                    $new_ = (int)$res[$i]['new'];
+//                    $all_user_ = (int)$res[$i]['all_user'];
+//                    $survey_ = (int)$res[$i]['survey'];
+//                    $is_match_ = (int)$res[$i]['is_match'];
+//                }
+//            }
+//            //发出微信端数据统计请求，访问数据库获取近来评价数据四数组大小为7，过7不与
+//            $this->assign('count', $is_match_);//微信匹配用户总量
+//            $this->assign('count1', $survey_);//课程评价总数
+//            $this->assign('count2', $all_user_);//微信关注量
+//            $this->assign('count3', $new_);//新增用户
+//
+//            $this->assign('weChatMatch', json_encode($is_match));
+//            $this->assign('weChatSub', json_encode($new));
+//            $this->assign('weChatNum', json_encode($all_user));
+//            $this->assign('weCESNum', json_encode($survey));
+            $this->assign('username', $username);
+            $this->assign('TITLE', TITLE);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function login($user, $pass)
     {
         if ($user == null || $pass == null) {

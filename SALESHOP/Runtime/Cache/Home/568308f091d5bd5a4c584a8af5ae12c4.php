@@ -342,7 +342,7 @@
 
             <!--主菜单-->
             <li>
-                <a href="<?php echo U('Home/Sale/sale');?>" id="sale">
+                <a href="<?php echo U('Home/Home/postHome');?>" id="sale">
                     <i class="fa fa-dashboard"></i>
                         <span style="font-size: 14px;">
                           TC实时监控
