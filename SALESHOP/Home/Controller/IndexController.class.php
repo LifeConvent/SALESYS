@@ -34,9 +34,9 @@ class IndexController extends Controller
             $result['hint'] = '数据库连接失败！';
         }
         else {
-            $select = "Select * from TMP_DAYPOST_USER where account ='".$user."'";
+            $select = "Select ACCOUNT,PASS,TYPE,IS_LOCK from TMP_DAYPOST_USER where ACCOUNT ='".$user."'";
             $result_rows = oci_parse($conn, $select); // 配置SQL语句，执行SQL
-            $row_count = oci_execute($result_rows, OCI_DEFAULT); // 行数  OCI_DEFAULT表示不要自动commit
+            oci_execute($result_rows, OCI_DEFAULT); // 行数  OCI_DEFAULT表示不要自动commit
             $result = oci_fetch_array($result_rows,OCI_RETURN_NULLS);
 //            dump($result);
             if(strcmp($result['ACCOUNT'],$user)!=0){
@@ -49,6 +49,11 @@ class IndexController extends Controller
                 $result['status'] = 'failed';
                 $result['hint'] = '用户名或密码错误！';
             }else{
+                if(strcmp($result['IS_LOCK'],"1")==0){
+                    $result['status'] = 'failed';
+                    $result['hint'] = '该用户已锁定联系管理员确认！';
+                    return $result;
+                }
                 $temp = $user.'-'.(string)time().'-success-'.$result['TYPE'];
 //                dump($temp);
                 $token = $method->encode((string)$temp);

@@ -257,6 +257,9 @@ window.actionEvents = {
                     } else if (result.status == 'failed') {
                         debugger;
                         $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                        if(result.lock == 'true'){
+                            window.location.href = HOST + "index.php/Home/Index/index";
+                        }
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {

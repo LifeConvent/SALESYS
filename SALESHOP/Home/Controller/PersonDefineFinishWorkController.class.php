@@ -42,6 +42,15 @@ class PersonDefineFinishWorkController extends Controller
 //        $description = I('post.description');
 //        $link_business = I('post.link_business');
         $method = new MethodController();
+        ##############################################################  公共JS处理部分  ############################################################################
+        //JS请求公共处理部分 TRUE锁定
+        if($method->publicCheck()){
+            $result['status'] = "failed";
+            $result['lock'] = "true";
+            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }
+        ############################################################################################################################################################
         $conn = $method->OracleOldDBCon();
         $select_des = "SELECT DESCRIPTION,LINK_BUSINESS_CODE FROM TMP_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."' AND NODE = '".$business_type."'";
 //        $select_des = "SELECT DESCRIPTION,LINK_BUSINESS_CODE FROM TMP_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '6120180830053347' AND POLICY_CODE = '886570816406' AND NODE = '保全受理'";
@@ -114,6 +123,7 @@ class PersonDefineFinishWorkController extends Controller
             $where_type_fix = "";
        }else if((int)$userType==2){
             $organCode = $method->getUserOrganCode();
+//            dump($organCode);
             $where_type_fix =  " AND OLD_ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
        }else if((int)$userType==3){
             $where_type_fix = " AND NEW_USER_NAME = '".$user_name."'";

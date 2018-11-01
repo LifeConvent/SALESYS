@@ -188,9 +188,6 @@ class UserManageController extends Controller
     public function getPostUserList(){
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-        //保全契约通用数据查询条件
-        #################################################################   契约出单前撤保  ######################################################################
-        #012 契约出单前撤保老核心当天
         $user_select  = "SELECT * FROM TMP_DAYPOST_USER";
         $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
         $user_result =  $method->search_long($result_rows);

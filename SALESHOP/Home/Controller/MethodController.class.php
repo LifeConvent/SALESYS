@@ -55,14 +55,18 @@ class MethodController extends Controller
         $token = $_SESSION['token'];
         $token = $this->decode($token);
         $info = explode('-', $token);
-        if ($info[2] == 'success') {
+        if (strcmp($info[2],"success") == 0) {
             $admin = $info[0];
+            if($this->publicCheck()){
+                return false;
+            }
             if ($info[1] - time() <= 7) {
                 return true;
             } else {
                 return false;
             }
         }
+
     }
 
     public function getUserType()
@@ -265,27 +269,106 @@ class MethodController extends Controller
 
     }
 
+    public function getUserLock($user_account){
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_select  = "SELECT IS_LOCK FROM TMP_DAYPOST_USER WHERE ACCOUNT = '".$user_account."'";
+        $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
+        $user_result =  $method->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($user_result);
+        if((int)$user_result[0]['IS_LOCK'] == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function publicCheck(){
+        //公共用户锁定校验部分
+        $token = $_SESSION['token'];
+        $token = $this->decode($token);
+//        dump($token);
+        $info = explode('-', $token);
+        if (strcmp($info[2],"success") == 0) {
+            $admin = $info[0];
+        }
+        return $this->getUserLock($admin);
+    }
 
     public function getUserOrganCode(){
-        $org_code = array(
-            "gaobiao_bx" => "8647",
-            "tangjia_bx" => "86470005",
-            "zhaoran_bx" => "86470005");
+//        $org_code = array(
+//            "gaobiao_bx" => "8647",
+//            "tangjia_bx" => "86470005",
+//            "zhaoran_bx" => "86470005");
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_select  = "SELECT ACCOUNT,USER_ORGAN_CODE FROM TMP_DAYPOST_USER";
+        $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
+        $user_result =  $method->search_long($result_rows);
+        for($i=0;$i<sizeof($user_result);$i++){
+            $org_code[$user_result[$i]['ACCOUNT']] = $user_result[$i]['USER_ORGAN_CODE'];
+        }
+//        数据处理
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($org_code);
         return $org_code;
     }
 
     public function getFuheUser(){
-        $org = array("tangjia_bx","tangjia2_bx");
+//        $org = array("tangjia_bx","tangjia2_bx");
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_select  = "SELECT ACCOUNT FROM TMP_DAYPOST_USER WHERE BUSS_AREA = '保全复核'";
+        $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
+        $user_result =  $method->search_long($result_rows);
+        for($i=0;$i<sizeof($user_result);$i++){
+            $org[$i] = $user_result[$i]['ACCOUNT'];
+        }
+//        数据处理
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($org);
+//        $token = $_SESSION['token'];
+//        $token = $this->decode($token);
+//        $info = explode('-', $token);
+//        dump($token);
         return $org;
     }
 
     public function getClmUser(){
-        $org = array("","");
+//        $org = array("","");
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_select  = "SELECT ACCOUNT FROM TMP_DAYPOST_USER WHERE BUSS_AREA = '理赔审核'";
+        $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
+        $user_result =  $method->search_long($result_rows);
+        for($i=0;$i<sizeof($user_result);$i++){
+            $org[$i] = $user_result[$i]['ACCOUNT'];
+        }
+//        数据处理
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($org);
         return $org;
     }
 
     public function getUwUser(){
-        $org = array("yangyixuan_bx","");
+//        $org = array("yangyixuan_bx","");
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_select  = "SELECT ACCOUNT FROM TMP_DAYPOST_USER WHERE BUSS_AREA = '核保'";
+        $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
+        $user_result =  $method->search_long($result_rows);
+        for($i=0;$i<sizeof($user_result);$i++){
+            $org[$i] = $user_result[$i]['ACCOUNT'];
+        }
+//        数据处理
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($org);
         return $org;
     }
 
