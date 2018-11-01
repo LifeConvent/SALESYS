@@ -22,7 +22,7 @@ function login() {
                 if (result.status == 'success') {
                     debugger;
                     $.scojs_message(result.hint, $.scojs_message.TYPE_OK);
-                    window.location.href = HOST + "index.php/Home/Home/home";
+                    window.location.href = HOST + "index.php/Home/Home/postHome";
                 } else {
                     $.scojs_message(result.hint, $.scojs_message.TYPE_ERROR);
                 }
