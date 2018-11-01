@@ -19,6 +19,7 @@ class UserManageController extends Controller
         $result = $method->checkIn($username);
         if ($result) {
             $this->assign('username', $username);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -181,6 +182,113 @@ class UserManageController extends Controller
             $result['status'] = 'failed';
             $result['message'] = '修改失败！';
         }
+        exit(json_encode($result));
+    }
+
+    public function getPostUserList(){
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        //保全契约通用数据查询条件
+        #################################################################   契约出单前撤保  ######################################################################
+        #012 契约出单前撤保老核心当天
+        $user_select  = "SELECT * FROM TMP_DAYPOST_USER";
+        $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
+        $user_result =  $method->search_long($result_rows);
+        $num = sizeof($user_result);
+        for($i=0;$i<$num;$i++){
+            $result[$i]['account'] = $user_result[$i]['ACCOUNT'];
+            $result[$i]['type'] = $user_result[$i]['TYPE'];
+            $result[$i]['user_name'] = $user_result[$i]['USER_NAME'];
+            $result[$i]['user_organ_code'] = $user_result[$i]['USER_ORGAN_CODE'];
+            $result[$i]['user_organ_name'] = $user_result[$i]['USER_ORGAN_NAME'];
+            $result[$i]['user_sex'] = $user_result[$i]['USER_SEX'];
+            $result[$i]['user_company'] = $user_result[$i]['USER_COMPANY'];
+            $result[$i]['buss_area'] = $user_result[$i]['BUSS_AREA'];
+            if((int)$user_result[$i]['IS_LOCK']==0){
+                $result[$i]['is_lock'] = "否";
+            }else{
+                $result[$i]['is_lock'] = "是";
+            }
+            if((int)$user_result[$i]['IS_ADD_DATA']==0){
+                $result[$i]['is_add_data'] = "否";
+            }else{
+                $result[$i]['is_add_data'] = "是";
+            }
+        }
+//        dump($result);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function postAddUser(){
+        $user_account = I('post.user_account');
+        $user_pass = I('post.user_pass');
+        $user_type = I('post.user_type');
+        $user_name = I('post.user_name');
+        $user_organ_code = I('post.user_organ_code');
+        $user_organ_name = I('post.user_organ_name');
+        $user_sex = I('post.user_sex');
+        $user_company = I('post.user_company');
+        $buss_area = I('post.buss_area');
+
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_add  = "INSERT INTO TMP_DAYPOST_USER(ACCOUNT,PASS,TYPE,USER_NAME,USER_ORGAN_CODE,USER_ORGAN_NAME,USER_SEX,USER_COMPANY,BUSS_AREA) VALUES('".$user_account."','".$user_pass."','".$user_type."','".$user_name."','".$user_organ_code."','".$user_organ_name."','".$user_sex."','".$user_company."','".$buss_area."')";
+        $result_rows = oci_parse($conn, $user_add); // 配置SQL语句，执行SQL
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
+            $result['status'] = "success";
+            $result['message'] = "用户新建成功！";
+        } else {
+            $result['status'] = "failed";
+            $result['message'] = "用户新建失败！";
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
+    }
+
+    public function postModifyUser(){
+//        $user_account = I('post.user_account');
+//        $user_type = I('post.user_type');
+//        $user_name = I('post.user_name');
+//        $user_organ_code = I('post.user_organ_code');
+//        $user_organ_name = I('post.user_organ_name');
+//        $user_sex = I('post.user_sex');
+//        $buss_area = I('post.buss_area');
+//        $is_lock = I('post.is_lock');
+//        $is_add_data = I('post.is_add_data');
+//        $user_company = I('post.user_company');
+
+        $user_account = "gaobiao_bx";
+        $user_type = "1";
+        $user_name = "高彪";
+        $user_organ_code = "86";
+        $user_organ_name = "总公司";
+        $user_sex = "男";
+        $buss_area = "技术支持";
+        $is_lock = 0;
+        $is_add_data = 1;
+        $user_company = "总公司PMO";
+
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_modify  = "UPDATE TMP_DAYPOST_USER SET TYPE = '".$user_type."' , USER_NAME = '".$user_name."' , USER_ORGAN_CODE = '".$user_organ_code."' , USER_ORGAN_NAME = '".$user_organ_name."' , USER_SEX = '".$user_sex."' , BUSS_AREA = '".$buss_area."' , IS_LOCK = '".$is_lock."' , IS_ADD_DATA = '".$is_add_data."' , USER_COMPANY = '".$user_company."'WHERE ACCOUNT = '".$user_account."'";
+        $result_rows = oci_parse($conn, $user_modify); // 配置SQL语句，执行SQL
+//        dump($user_modify);
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
+            $result['status'] = "success";
+            $result['message'] = "用户更新成功！";
+        } else {
+            $result['status'] = "failed";
+            $result['message'] = "用户更新失败！";
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
         exit(json_encode($result));
     }
 }

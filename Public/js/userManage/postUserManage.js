@@ -3,6 +3,9 @@
  */
 
 $(function () {
+    $('#user').attr('class', 'active');
+    $('#user_sub').css('display', 'block');
+    $('#user_manager').attr('class', 'active');
 
     //1.初始化Table
     var oTable = new TableInit();
@@ -37,7 +40,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#user_list_table').bootstrapTable({
-            url: HOST + "index.php/Home/PersonDefineFinishWork/getDefPerson",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/UserManage/getPostUserList",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             showExport: true,
             exportDataType: 'all',
@@ -81,6 +84,7 @@ var TableInit = function () {
                 field: 'ID',
                 sortable: true,
                 align: 'center',
+                width:80,
                 title: '序号',
                 formatter: function (value, row, index) {
                     return index+1;
@@ -89,60 +93,89 @@ var TableInit = function () {
                 field: 'account',
                 sortable: true,
                 align: 'center',
-                title: '用户名'
+                title: '用户名',
+                formatter: "actionFormatter_account",
+                width:190,
+                events: "actionEvents",
             }, {
                 field: 'type',
                 sortable: true,
                 align: 'center',
-                title: '用户类型'
+                title: '用户类型',
+                formatter: "actionFormatter_type",
+                width:190,
+                events: "actionEvents",
             }, {
                 field: 'user_name',
                 sortable: true,
                 align: 'center',
-                title: '用户姓名'
+                title: '用户姓名',
+                formatter: "actionFormatter_user_name",
+                width:190,
+                events: "actionEvents",
             }, {
                 field: 'user_organ_code',
                 sortable: true,
                 align: 'center',
-                title: '作业机构代码'
+                title: '作业机构代码',
+                formatter: "actionFormatter_user_organ_code",
+                width:190,
+                events: "actionEvents",
             }, {
                 field: 'user_organ_name',
                 sortable: true,
                 align: 'center',
-                title: '作业机构名称'
+                title: '作业机构名称',
+                formatter: "actionFormatter_user_organ_name",
+                width:190,
+                events: "actionEvents",
             }, {
                 field: 'user_sex',
                 sortable: true,
                 align: 'center',
-                title: '性别'
+                title: '性别',
+                formatter: "actionFormatter_user_sex",
+                width:190,
+                events: "actionEvents",
             }, {
                 field: 'user_company',
                 sortable: true,
                 align: 'center',
-                title: '所属公司'
+                title: '所属公司',
+                formatter: "actionFormatter_user_company",
+                width:190,
+                events: "actionEvents",
             }, {
                 field: 'buss_area',
                 sortable: true,
                 align: 'center',
-                title: '作业范围'
+                title: '作业范围',
+                formatter: "actionFormatter_buss_area",
+                width:190,
+                events: "actionEvents",
+            }, {
+                field: 'is_lock',
+                sortable: true,
+                align: 'center',
+                title: '用户是否锁定',
+                formatter: "actionFormatter_is_lock",
+                width:190,
+                events: "actionEvents",
             },  {
-                field: 'description',
+                field: 'is_add_data',
+                sortable: true,
                 align: 'center',
-                title: '描述',
-                formatter: "actionFormatter_des",
-                events: "actionEvents_des",
-            },{
-                field: 'link_business',
-                align: 'center',
-                title: '关联业务号',
-                formatter: "actionFormatter_business",
-                events: "actionEvents_business",
-            },{
+                title: '用户是否灌数',
+                formatter: "actionFormatter_is_add_data",
+                width:190,
+                events: "actionEvents",
+            },  {
                 field: 'operation',
                 title: '操作',
                 align: 'center',
-                formatter: "actionFormatter",
-                events: "actionEvents",
+                formatter: "actionFormatter1",
+                events: "actionEvents1",
+                width:190,
                 clickToSelect: false
             }]
         });
@@ -162,76 +195,169 @@ var TableInit = function () {
 };
 
 
-function actionFormatter(value, row, index) {
-    if(row.is_same == "是"){
-        return '-';
-    }else{
-        return '<button type="button" class="btn btn-primary modify" style="height: 20pt;width: 30pt"><span style="margin-left:-5pt;">修改</span></button>';
-    }
+function actionFormatter_account(value, row, index) {
+    return '<input id="account'+ index+'" class="form-control" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+}
+function actionFormatter_type(value, row, index) {
+    return '<input id="type'+ index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+}
+function actionFormatter_user_name(value, row, index) {
+    return '<input id="user_name'+ index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+}
+function actionFormatter_user_organ_code(value, row, index) {
+    return '<input id="user_organ_code' + index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+}
+function actionFormatter_user_organ_name(value, row, index) {
+    return '<input id="user_organ_name' + index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+}
+function actionFormatter_user_sex(value, row, index) {
+    return '<input id="user_sex' + index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+}
+function actionFormatter_user_company(value, row, index) {
+    return '<input id="user_company' + index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+}
+function actionFormatter_buss_area(value, row, index) {
+    return '<input id="buss_area' + index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+}
+function actionFormatter_is_lock(value, row, index) {
+    return '<input id="is_lock' + index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+}
+function actionFormatter_is_add_data(value, row, index) {
+    return '<input id="is_add_data' + index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+}
+
+
+function actionFormatter1(value, row, index) {
+    return '<div><button type="button" class="btn btn-primary lock" style="height: 20pt;width: 60pt"><span style="margin-left:-2pt;">解除锁定</span></button>'+'<button type="button" class="btn btn-primary modify" style="height: 20pt;width: 60pt;margin-left: 5pt"><span style="margin-left:-2pt;">提交修改</span></button></div>';
 }
 
 window.actionEvents = {
+};
+
+window.actionEvents1 = {
+    'click .lock': function (e, value, row, index) {
+        $(".user_input"+index).removeAttr("disabled");
+    },
     'click .modify': function (e, value, row, index) {
         // ajax提交数据
-        debugger;
-        var link_business = $("#business"+index).val();
-        var description = $("#des"+index).val();
-        var new_user_name = row.new_user_name;
-        if(new_user_name==null){
-            new_user_name = "";
+        if($(".user_input"+index).attr("disabled")){
+            $.scojs_message('请解锁并修改信息后再提交！', $.scojs_message.TYPE_ERROR);
+            return;
         }
-        var business_code = row.business_code;
-        var business_type = row.business_type;
-        var policy_code = row.policy_code;
-        if(link_business!=""||description!=""){
+        debugger;
+        var user_account = $('#account'+index).val();
+        var user_type = $('#type'+index).val();
+        var user_name = $('#user_name'+index).val();
+        var user_organ_code = $('#user_organ_code'+index).val();
+        var user_organ_name = $('#user_organ_name'+index).val();
+        var user_sex = $('#user_sex'+index).val();
+        var buss_area = $('#buss_area'+index).val();
+        var is_lock = $('#is_lock'+index).val();
+        var is_add_data = $('#is_add_data'+index).val();
+        if(user_account==row.account&&user_type==row.type&&user_name==row.user_name&&user_organ_code==row.user_organ_code&&user_organ_name==row.user_organ_name&&user_sex==row.user_sex&&buss_area==row.buss_area&&is_lock==row.is_lock&&is_add_data==row.is_add_data){
+            $.scojs_message('未发生任何修改时请勿提交！', $.scojs_message.TYPE_ERROR);
+            return;
+        }
+        var user_company = $('#user_company'+index).val();
+        if (user_account == "" || user_type == "" || user_organ_code == "" || user_organ_name == "" || user_sex == "" || user_name == "" || buss_area == "" || user_company == "") {
+            $.scojs_message('所修改用户信息不能为空！', $.scojs_message.TYPE_ERROR);
+        }else if((is_lock!="是"&&is_lock!="否")||(is_add_data!="是"&&is_add_data!="否")){
+            $.scojs_message('是否锁定及是否灌数只能填写是或否！', $.scojs_message.TYPE_ERROR);
+        }else{
+            if(is_lock=="是"){
+                is_lock = 1;
+            }else{
+                is_lock = 0;
+            }
+            if(is_add_data=="是"){
+                is_add_data = 1;
+            }else{
+                is_add_data = 0;
+            }
+            debugger;
             $.ajax({
                 type: "POST", //用POST方式传输
-                url: HOST + "index.php/Home/PersonDefineFinishWork/updateDefPerson", //目标地址.
+                url: HOST + "index.php/Home/UserManage/postModifyUser", //目标地址.
                 dataType: "json", //数据格式:JSON
-                data: {new_user_name: new_user_name, business_code: business_code, policy_code: policy_code, description: description, link_business: link_business,business_type:business_type},
+                data: {
+                    user_account: user_account,
+                    user_type: user_type,
+                    user_name: user_name,
+                    user_organ_code: user_organ_code,
+                    user_organ_name: user_organ_name,
+                    user_sex:user_sex,
+                    buss_area: buss_area,
+                    is_lock: is_lock,
+                    is_add_data: is_add_data,
+                    user_company: user_company
+                },
                 success: function (result) {
                     if (result.status == 'success') {
                         debugger;
                         $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                            $(".user_input"+index).attr("disabled",true);
                     } else if (result.status == 'failed') {
                         debugger;
                         $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
-                    }
-                },
+                    }},
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert(XMLHttpRequest);
                     alert(textStatus);
                     alert(errorThrown);
                 }
             });
-        }else{
-            $.scojs_message('请修改信息后再提交！', $.scojs_message.TYPE_ERROR);
         }
     }
 };
 
-function actionFormatter_des(value, row, index) {
-    if(row.is_same == "是"){
-        return '<input id="des'+index+'" class="form-control modify" style="height: 20pt;width: 130pt" disabled placeholder="'+ row.description +'"></input>';
-    }else{
-        return '<input id="des'+index+'" class="form-control modify" style="height: 20pt;width: 130pt" placeholder="'+ row.description +'"></input>';
+$('#new_user').click(function() {
+    var user_account = $('#user_account').val();
+    var user_pass = $('#user_pass').val();
+    debugger;
+    user_pass = md5(user_pass);
+    debugger;
+    var user_name = $('#user_name').val();
+    var user_type = $('#user_type').val();
+    var user_organ_code = $('#user_organ_code').val();
+    var user_organ_name = $('#user_organ_name').val();
+    var user_sex = $('#user_sex').val();
+    var user_company = $('#user_company').val();
+    var buss_area = $('#buss_area').val();
+    if (user_account == "" || user_pass == "" || user_type == "" || user_organ_code == "" || user_organ_name == "" || user_sex == "" || user_company == "" || buss_area == "") {
+        $.scojs_message('所有信息均为必填，请确认输入后再提交添加用户信息！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/UserManage/postAddUser", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_account: user_account,
+                user_pass: user_pass,
+                user_type: user_type,
+                user_name: user_name,
+                user_organ_code: user_organ_code,
+                user_organ_name: user_organ_name,
+                user_sex: user_sex,
+                user_company: user_company,
+                buss_area: buss_area
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                    $('.add_user').val("");
+                    $('#user_list_table').bootstrapTable('refresh', {url: HOST + "index.php/Home/UserManage/getPostUserList"});
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
     }
-}
-
-window.actionEvents_des = {
-    'click .modify': function (e, value, row, index) {
-    }
-};
-
-function actionFormatter_business(value, row, index) {
-    if(row.is_same == "是"){
-        return '<input id="business'+index+'"  class="form-control modify" style="height: 20pt;width: 130pt" disabled placeholder="'+ row.link_business +'"></input>';
-    }else{
-        return '<input id="business'+index+'"  class="form-control modify" style="height: 20pt;width: 130pt" placeholder="'+ row.link_business +'"></input>';
-    }
-}
-
-window.actionEvents_business = {
-    'click .modify': function (e, value, row, index) {
-    }
-};
+});
