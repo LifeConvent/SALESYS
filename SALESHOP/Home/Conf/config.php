@@ -7,7 +7,7 @@ return array(
     'DB_NAME'=>'SALESYS',
     'DB_USER'=>'root',
     'DB_PWD'=>'scce317ces/back.',
-    // 'DB_PORT'=>,
+    'DB_PORT'=>'3306',
     'DB_PREFIX'=>'T_',
     'DB_CHARSET'=>'utf8',
     'DB_DEBUG'=> TRUE,

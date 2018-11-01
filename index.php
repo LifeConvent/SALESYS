@@ -13,7 +13,7 @@ define('APP_PATH', './SALESHOP/');
 define('APP_NAME', './SALESHOP');
 define('KEY', 'Ia0CtpywryfU5VGNAlk23s8ctM-99v7we2HZmkVuh_szDz3dinL9aQ9gqslBTZk2');
 define('TITLE', 'SALE-SHOP  门店销售系统');
-//define('HOST', 'http://tjut.nat300.top/');
-define('HOST', 'http://localhost/');
+define('HOST', 'http://itwwn8.natappfree.cc/');
+//define('HOST', 'http://localhost/');
 //引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';
