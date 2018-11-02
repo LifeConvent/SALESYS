@@ -18,6 +18,8 @@ class UserManageController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
+            $usertype = $method->getUserType();
+            $this->assign('usertype', $usertype);
             $this->assign('username', $username);
             $this->assign('TITLE', TITLE);
             $this->display();
@@ -243,6 +245,13 @@ class UserManageController extends Controller
     }
 
     public function postAddUser(){
+        $method = new MethodController();
+        $userType = $method->getUserType();
+        if((int)$userType!=1){
+            $result['status'] = "failed";
+            $result['message'] = "您不具有添加用户的权限，如需添加用户请联系管理员！";
+            exit(json_encode($result));
+        }
         $user_account = I('post.user_account');
         $user_pass = I('post.user_pass');
         $user_type = I('post.user_type');

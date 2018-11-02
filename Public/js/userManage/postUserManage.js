@@ -311,6 +311,11 @@ window.actionEvents1 = {
 };
 
 $('#new_user').click(function() {
+    var user_type = $('#usertype').val();
+    if(user_type!='1'){
+        $.scojs_message('您不具有添加用户的权限，如需添加用户请联系管理员！', $.scojs_message.TYPE_ERROR);
+        return;
+    }
     var user_account = $('#user_account').val();
     var user_pass = $('#user_pass').val();
     debugger;
