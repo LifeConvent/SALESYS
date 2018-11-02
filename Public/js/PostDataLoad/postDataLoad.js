@@ -3,6 +3,12 @@
  */
 
 $(function () {
+    var user_type = $('#usertype').val();
+    if(user_type!='1'){
+        $('#tc_data_load_exec').hide();
+    }else{
+        $('#tc_data_load_exec').show();
+    }
     $('#course').attr('class', 'active');
     $('#course_sub').css('display', 'block');
     $('#course_info').attr('class', 'active');

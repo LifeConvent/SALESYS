@@ -79,6 +79,16 @@ class MethodController extends Controller
         }
     }
 
+    public function getUserName()
+    {
+        $token = $_SESSION['token'];
+        $token = $this->decode($token);
+        $info = explode('-', $token);
+        if ($info[2] == 'success') {
+            return $info[0];
+        }
+    }
+
     public function back()
     {
         $_SESSION['token'] = '';

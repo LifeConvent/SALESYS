@@ -18,6 +18,8 @@ class RequestPostDataLoadController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
+            $usertype = $method->getUserType();
+            $this->assign('usertype', $usertype);
             $this->assign('username', $username);
             $this->assign('TITLE', TITLE);
             $this->display();
@@ -29,7 +31,13 @@ class RequestPostDataLoadController extends Controller
     public function getRequestList(){
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-        $request_select  = "SELECT A.*,TO_CHAR(A.TIME,'YYYY-MM-DD HH24:mi:ss') AS TIME2CHAR FROM TMP_DATALOAD_REQUEST A";
+        $userType = $method->getUserType();
+        $userName = $method->getUserName();
+        $where = "";
+        if((int)$userType!=1){
+            $where = " WHERE REQUEST_ACCOUNT = '".$userName."' ";
+        }
+        $request_select  = "SELECT A.*,TO_CHAR(A.TIME,'YYYY-MM-DD HH24:mi:ss') AS TIME2CHAR FROM TMP_DATALOAD_REQUEST A".$where;
         $result_rows = oci_parse($conn, $request_select); // 配置SQL语句，执行SQL
         $request_result =  $method->search_long($result_rows);
         $num = sizeof($request_result);

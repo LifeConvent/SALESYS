@@ -94,6 +94,45 @@
                         </section>
                     </div>
 
+            <div class="panel" id="tc_data_load_exec">
+                <header class="panel-heading">
+                    <span><strong>数据加载<span class="red" style="font-size: 3pt"> 系统损耗较大，谨慎点击</span></strong></span>
+                </header>
+                <div class="panel-body ">
+                    <div style="margin-left: 20%">
+                    <div  style="float: left">
+                        <div class="col-sm-12" style="margin-top:20pt;margin-left:25pt">
+                            <button type="button" id="execLoadDataCS" class="btn btn-primary col-sm-6"><strong>保全受理</strong></button>
+                        </div>
+                        <div class="col-sm-12" style="margin-top:20pt;margin-left:25pt">
+                            <button type="button" id="execLoadDataCSFH" class="btn btn-primary col-sm-6"><strong>保全复核</strong></button>
+                        </div>
+                    </div>
+                    <div style="float: left">
+                        <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
+                            <button type="button" id="execLoadDataCLMSL" class="btn btn-primary col-sm-6"><strong>理赔受理</strong></button>
+                        </div>
+                        <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
+                            <button type="button" id="execLoadDataCLMSHSP" class="btn btn-primary col-sm-6"><strong>理赔审核审批</strong></button>
+                        </div>
+                    </div>
+                    <div style="float: left">
+                        <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
+                            <button type="button" id="execLoadDataUW" class="btn btn-primary col-sm-6"><strong>核保</strong></button>
+                        </div>
+                        <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
+                            <button type="button" id="execLoadDataNBCD" class="btn btn-primary col-sm-6"><strong>契约出单回执</strong></button>
+                        </div>
+                    </div>
+                    <div style="margin-left: 110pt">
+                        <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
+                            <button type="button" id="execLoadTcData" class="btn btn-info col-sm-6"><strong>刷新TC</strong></button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
 
             <!-- 第一行数据统计  -->
             <div class="row state-overview" style="visibility:hidden">
@@ -238,6 +277,7 @@
             <!--测试用文本框-->
             <textarea id="list_output" rows="3" class="form-control" style="visibility:hidden"></textarea>
             <textarea id="username" style="display:none">{$username}</textarea>
+            <textarea id="usertype" style="display:none">{$usertype}</textarea>
 
 
         </section>
