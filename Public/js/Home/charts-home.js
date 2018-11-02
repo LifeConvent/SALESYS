@@ -1,8 +1,46 @@
 /**
  * Created by lawrance on 2016/11/8.
  */
-function tableWeiXinMatch(id, key, value) {
-    'use strict';
+// function tableCS(id, key, value) {
+//     'use strict';
+//     Morris.Area({
+//         element: id,
+//         data: [{
+//             key: '2018-9-25',
+//             value:1
+//         }, {
+//             key: '2018-9-26',
+//             value: 2
+//         }, {
+//             key: '2018-9-27',
+//             value: 3
+//         }, {
+//             key: '2018-9-28',
+//             value: 4
+//         }, {
+//             key: '2018-9-29',
+//             value: 5
+//         }, {
+//             key: '2018-9-30',
+//             value: 6
+//         }, {
+//             key: '2018-9-31',
+//             value: 7
+//         }],
+//         xkey: 'key',
+//         ykeys: ['value'],
+//         labels: ['匹配数量'],
+//         hideHover: 'auto',
+//         resize: true,
+//         lineWidth: 1,
+//         pointSize: 10,
+//         lineColors: ['#72d0eb'],
+//         fillOpacity: 1.0
+//         // smooth: true
+//            // pointFillColors: ['#00ff00']
+//     });
+// }
+function tableCS(id, key, value) {
     Morris.Area({
         element: id,
         data: [{
@@ -29,17 +67,18 @@ function tableWeiXinMatch(id, key, value) {
         }],
         xkey: 'key',
         ykeys: ['value'],
-        labels: ['匹配数量'],
-        hideHover: 'hide',
+        labels: ['保全受理'],
+        hideHover: 'auto',
         lineWidth: 1,
         pointSize: 10,
         lineColors: ['#72d0eb'],
         fillOpacity: 1.0,
+        resize: true,
         smooth: true
-//            pointFillColors: ['#00ff00']
+        // pointFillColors: ['#00ff00']
     });
 }
-function tableCE(id, key, value) {
+function tableCLM(id, key, value) {
     'use strict';
     Morris.Area({
         element: id,
@@ -67,17 +106,18 @@ function tableCE(id, key, value) {
         }],
         xkey: 'key',
         ykeys: ['value'],
-        labels: ['问卷数量'],
+        labels: ['理赔受理'],
         hideHover: 'auto',
         lineWidth: 1,
         pointSize: 10,
         lineColors: ['#fd6d4d'],
         fillOpacity: 1.0,
+        resize: true,
         smooth: true
 //            pointFillColors: ['#00ff00']
     });
 }
-function tableWeiXinSub(id, key, value) {
+function tableTC(id, key, value) {
     'use strict';
     Morris.Area({
         element: id,
@@ -105,17 +145,18 @@ function tableWeiXinSub(id, key, value) {
         }],
         xkey: 'key',
         ykeys: ['value'],
-        labels: ['关注量'],
+        labels: ['契约出单'],
         hideHover: 'auto',
         lineWidth: 1,
         pointSize: 10,
         lineColors: ['#f7d254'],
         fillOpacity: 1.0,
+        resize: true,
         smooth: true
 //            pointFillColors: ['#00ff00']
     });
 }
-function tableWeiXinNew(id, key, value) {
+function tableNB(id, key, value) {
     'use strict';
     Morris.Area({
         element: id,
@@ -143,12 +184,13 @@ function tableWeiXinNew(id, key, value) {
         }],
         xkey: 'key',
         ykeys: ['value'],
-        labels: ['新增数量'],
+        labels: ['TC缺陷'],
         hideHover: 'auto',
         lineWidth: 1,
         pointSize: 10,
         lineColors: ['#a560f8'],
         fillOpacity: 1.0,
+        resize: true,
         smooth: true
 //            pointFillColors: ['#00ff00']
     });

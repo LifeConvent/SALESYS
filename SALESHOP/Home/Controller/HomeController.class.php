@@ -14,41 +14,10 @@ class HomeController extends Controller
 {
     public function home()
     {
-
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-
         if ($result) {
-            $time = time() - 60 * 60 * 24;
-            $t_s = date("Y-m-d", $time);
-            $time = time() - 60 * 60 * 24 * 6;
-            $t_e = date("Y-m-d", $time);
-            $t_s = '2016-12-16';
-            $t_e = '2016-12-22';
-//            $res = $this->dealHomeCount($t_s, $t_e);
-//            for ($i = 0; $i < 7; $i++) {
-//                $new[$i] = (int)$res[$i]['new'];
-//                $all_user[$i] = (int)$res[$i]['all_user'];
-//                $survey[$i] = (int)$res[$i]['survey'];
-//                $is_match[$i] = (int)$res[$i]['is_match'];
-//                if ($i == 6) {
-//                    $new_ = (int)$res[$i]['new'];
-//                    $all_user_ = (int)$res[$i]['all_user'];
-//                    $survey_ = (int)$res[$i]['survey'];
-//                    $is_match_ = (int)$res[$i]['is_match'];
-//                }
-//            }
-//            //发出微信端数据统计请求，访问数据库获取近来评价数据四数组大小为7，过7不与
-//            $this->assign('count', $is_match_);//微信匹配用户总量
-//            $this->assign('count1', $survey_);//课程评价总数
-//            $this->assign('count2', $all_user_);//微信关注量
-//            $this->assign('count3', $new_);//新增用户
-//
-//            $this->assign('weChatMatch', json_encode($is_match));
-//            $this->assign('weChatSub', json_encode($new));
-//            $this->assign('weChatNum', json_encode($all_user));
-//            $this->assign('weCESNum', json_encode($survey));
             $this->assign('username', $username);
             $this->assign('TITLE', TITLE);
             $this->display();
@@ -62,37 +31,53 @@ class HomeController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-
         if ($result) {
-            $time = time() - 60 * 60 * 24;
-            $t_s = date("Y-m-d", $time);
-            $time = time() - 60 * 60 * 24 * 6;
-            $t_e = date("Y-m-d", $time);
-            $t_s = '2016-12-16';
-            $t_e = '2016-12-22';
-//            $res = $this->dealHomeCount($t_s, $t_e);
-//            for ($i = 0; $i < 7; $i++) {
-//                $new[$i] = (int)$res[$i]['new'];
-//                $all_user[$i] = (int)$res[$i]['all_user'];
-//                $survey[$i] = (int)$res[$i]['survey'];
-//                $is_match[$i] = (int)$res[$i]['is_match'];
-//                if ($i == 6) {
-//                    $new_ = (int)$res[$i]['new'];
-//                    $all_user_ = (int)$res[$i]['all_user'];
-//                    $survey_ = (int)$res[$i]['survey'];
-//                    $is_match_ = (int)$res[$i]['is_match'];
-//                }
-//            }
-//            //发出微信端数据统计请求，访问数据库获取近来评价数据四数组大小为7，过7不与
-//            $this->assign('count', $is_match_);//微信匹配用户总量
-//            $this->assign('count1', $survey_);//课程评价总数
-//            $this->assign('count2', $all_user_);//微信关注量
-//            $this->assign('count3', $new_);//新增用户
-//
-//            $this->assign('weChatMatch', json_encode($is_match));
-//            $this->assign('weChatSub', json_encode($new));
-//            $this->assign('weChatNum', json_encode($all_user));
-//            $this->assign('weCESNum', json_encode($survey));
+            $res = $this->dealHomeCount();
+            $j=0;
+            for ($i = 6; $i >= 0; $i--) {
+                $new[$j] = (int)$res[$i]['all_user'];//new
+                $tc_time[$j] = $res[$i]['time_nb'];//time_tc
+                $all_user[$j] = (int)$res[$i]['all_user'];
+                $nb_time[$j] = $res[$i]['time_nb'];
+                $survey[$j] = (int)$res[$i]['survey'];
+                $clm_time[$j] = $res[$i]['time_clm'];
+                $is_match[$j] = (int)$res[$i]['is_match'];
+                $cs_time[$j] = $res[$i]['time_cs'];
+                $j++;
+            }
+                $new_ = (int)$res['nb_sum'];//new
+                $all_user_ = (int)$res['nb_sum'];
+                $survey_ = (int)$res['clm_sum'];
+                $is_match_ = (int)$res['cs_sum'];
+            //发出微信端数据统计请求，访问数据库获取近来评价数据四数组大小为7，过7不与
+            $this->assign('count', $is_match_);
+            $this->assign('count1', $survey_);
+            $this->assign('count2', $all_user_);
+            $this->assign('count3', $new_);
+
+            $this->assign('weChatMatch', json_encode($is_match));
+            $this->assign('weChatSub', json_encode($new));
+            $this->assign('weChatNum', json_encode($all_user));
+            $this->assign('weCESNum', json_encode($survey));
+
+            $this->assign('cs_time', json_encode($cs_time));
+            $this->assign('tc_time', json_encode($tc_time));
+            $this->assign('nb_time', json_encode($nb_time));
+            $this->assign('clm_time', json_encode($clm_time));
+
+//            dump($is_match);
+//            dump($new);
+//            dump($all_user);
+//            dump($survey);
+//            dump($is_match_);
+//            dump($new_);
+//            dump($all_user_);
+//            dump($survey_);
+//            dump($is_match_time);
+//            dump($new_time);
+//            dump($all_user_time);
+//            dump($survey_time);
+
             $this->assign('username', $username);
             $this->assign('TITLE', TITLE);
             $this->display();
@@ -116,24 +101,64 @@ class HomeController extends Controller
         }
     }
 
-    public function dealHomeCount($time_start = null, $time_end = null)
+    public function dealHomeCount()
     {
         /**
          * 在部署到服务器之前都是用模拟数据
          */
-        $time_start = '2016-12-16';
-        $time_end = '2016-12-22';
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
 
-        $count = M('');
-        $result = $count->field('time,new,all_user,survey,is_match')
-            ->table('tb_home_count')
-            ->where('time >=\'' . $time_start . '\' AND time <=\'' . $time_end . '\'')
-            ->query('SELECT %FIELD% FROM %TABLE% %WHERE% ORDER BY time ASC', true);
-        if ($result) {
-            return $result;
-        } else {
-            return '';
+        # 时间-time-YYYY-MM-DD
+        # TC缺陷总量-new
+        # 契约作业量-allUser
+        # 理赔作业量-survey
+        # 保全作业量-is_match
+        #####################################################################  保全数据查询  #####################################################################
+        #039
+        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_INSERT_TIME)";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        $cs_result = $method->search_long($result_rows);
+        $result['cs_sum'] =$cs_result[0]['NUM'];
+        $select_cs = "SELECT * FROM (SELECT TO_CHAR(NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_INSERT_TIME ORDER BY NEW_INSERT_TIME DESC) WHERE ROWNUM<8";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        $cs_result_new_time = $method->search_long($result_rows);
+        for($i=0;$i<7;$i++){
+            $result[$i]['time_cs'] = $cs_result_new_time[$i]['NEW_INSERT_TIME'];
+            $result[$i]['is_match'] = $cs_result_new_time[$i]['NUM'];
         }
+        #####################################################################  契约数据查询  #####################################################################
+        #039
+        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_BX_OLD_CDQCB WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY TO_CHAR(NEW_INSERT_TIME,'YYYY-MM-DD'))";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        $cs_result = $method->search_long($result_rows);
+        $result['nb_sum'] =$cs_result[0]['NUM'];
+        $select_nb = "SELECT * FROM (SELECT TO_CHAR(NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_BX_OLD_CDQCB WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY TO_CHAR(NEW_INSERT_TIME,'YYYY-MM-DD') ORDER BY NEW_INSERT_TIME DESC) WHERE ROWNUM<8";
+        $result_rows = oci_parse($conn, $select_nb); // 配置SQL语句，执行SQL
+        $nb_result_new_time = $method->search_long($result_rows);
+        for($i=0;$i<7;$i++){
+            $result[$i]['time_nb'] = $nb_result_new_time[$i]['NEW_INSERT_TIME'];
+            $result[$i]['all_user'] = $nb_result_new_time[$i]['NUM'];
+        }
+        #####################################################################  理赔数据查询  #####################################################################
+        #039
+        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPBA_BD WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_INSERT_TIME)";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        $cs_result = $method->search_long($result_rows);
+        $result['clm_sum'] =$cs_result[0]['NUM'];
+        $select_clm = "SELECT * FROM (SELECT TO_CHAR(NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPBA_BD WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_INSERT_TIME ORDER BY NEW_INSERT_TIME DESC) WHERE ROWNUM<8";
+        $result_rows = oci_parse($conn, $select_clm); // 配置SQL语句，执行SQL
+        $clm_result_new_time = $method->search_long($result_rows);
+        for($i=0;$i<7;$i++){
+            $result[$i]['time_clm'] = $clm_result_new_time[$i]['NEW_INSERT_TIME'];
+            $result[$i]['survey'] = $clm_result_new_time[$i]['NUM'];
+        }
+        #####################################################################  TC数据查询  #####################################################################
+        #039
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($result);
+        return $result;
     }
 
     public function getTotalUser()

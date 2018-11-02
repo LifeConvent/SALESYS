@@ -66,12 +66,12 @@
                         <div class="value">
                             <h1 class="count" style="display:none">{$count}</h1>
 
-                            <h1 class=" show_count">
+                            <h1 class="show_count">
                                 0
                             </h1>
 
                             <p>
-                                微信匹配用户总量
+                                新核心保全受理作业量
                             </p>
                         </div>
 
@@ -91,12 +91,12 @@
                         <div class="value">
                             <h1 class="count1" style="display:none">{$count1}</h1>
 
-                            <h1 class=" show_count1">
+                            <h1 class="show_count1">
                                 0
                             </h1>
 
                             <p>
-                                课程评价总数
+                                新核心理赔作业总量
                             </p>
                         </div>
 
@@ -114,12 +114,12 @@
                         </div>
 
                         <div class="value">
-                            <h1 class=" count2" style="display:none">{$count2}</h1>
+                            <h1 class="count2" style="display:none">{$count2}</h1>
 
-                            <h1 class=" show_count2">0</h1>
+                            <h1 class="show_count2">0</h1>
 
                             <p>
-                                微信关注量
+                                新核心契约作业量
                             </p>
                         </div>
 
@@ -137,14 +137,14 @@
                         </div>
 
                         <div class="value">
-                            <h1 class=" count3" style="display:none">{$count3}</h1>
+                            <h1 class="count3" style="display:none">{$count3}</h1>
 
-                            <h1 class=" show_count3">
+                            <h1 class="show_count3">
                                 0
                             </h1>
 
                             <p>
-                                新增用户数量
+                                截止当日TC缺陷总量
                             </p>
                         </div>
 
@@ -155,10 +155,10 @@
             </div>
              <!--第一行数据统计-->
 
-            <div class="col-lg-12" style="color:#5eb7dd;">
+            <div class="col-sm-12" style="color:#5eb7dd;">
                 <section class="panel">
                     <header class="panel-heading">
-                        微信匹配数量变化趋势
+                        保全作业数量变化趋势
                     </header>
                     <div class="panel-body">
                         <div id="weixin-num" class="graph">
@@ -167,10 +167,10 @@
                 </section>
             </div>
 
-            <div class="col-lg-12" style="color:#fd6d4d;">
+            <div class="col-sm-12" style="color:#fd6d4d;">
                 <section class="panel">
                     <header class="panel-heading">
-                        课程评价数量变化趋势
+                        理赔作业数量变化趋势
                     </header>
                     <div class="panel-body">
                         <div id="ce-num" class="graph">
@@ -179,10 +179,10 @@
                 </section>
             </div>
 
-            <div class="col-lg-12" style="color:#f7d254;">
+            <div class="col-sm-12" style="color:#f7d254;">
                 <section class="panel">
                     <header class="panel-heading">
-                        微信关注量变化趋势
+                        契约作业数量变化趋势
                     </header>
                     <div class="panel-body">
                         <div id="weixin-sub-num" class="graph">
@@ -191,10 +191,10 @@
                 </section>
             </div>
 
-            <div class="col-lg-12" style="color:#a560f8">
+            <div class="col-sm-12" style="color:#a560f8">
                 <section class="panel">
                     <header class="panel-heading">
-                        新增用户数量变化趋势
+                        TC缺陷数量变化趋势
                     </header>
                     <div class="panel-body">
                         <div id="weixin-new-num" class="graph">
@@ -241,6 +241,14 @@
     <p id="weChatNum" style="display:none">{$weChatNum}</p>
 
     <p id="weCESNum" style="display:none">{$weCESNum}</p>
+
+    <p id="cs_time" style="display:none">{$cs_time}</p>
+
+    <p id="clm_time" style="display:none">{$clm_time}</p>
+
+    <p id="nb_time" style="display:none">{$nb_time}</p>
+
+    <p id="tc_time" style="display:none">{$tc_time}</p>
 </section>
 <!-- SECTION -->
 
@@ -265,9 +273,9 @@
 <script src="__PUBLIC__/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="__PUBLIC__/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 <!--自定义-->
-<script src="__PUBLIC__/js/Home/count.js"></script>
-<script src="__PUBLIC__/js/Home/get-time.js"></script>
 <script src="__PUBLIC__/js/Home/charts-home.js"></script>
+<script src="__PUBLIC__/js/Home/get-time.js"></script>
+<script src="__PUBLIC__/js/Home/count.js"></script>
 <script src="__PUBLIC__/js/Home/post_home.js"></script>
 <script>
 

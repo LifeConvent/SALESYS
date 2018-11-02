@@ -314,7 +314,7 @@ $('#new_user').click(function() {
     var user_account = $('#user_account').val();
     var user_pass = $('#user_pass').val();
     debugger;
-    user_pass = md5(user_pass);
+    user_pass = hex_md5(user_pass);
     debugger;
     var user_name = $('#user_name').val();
     var user_type = $('#user_type').val();
