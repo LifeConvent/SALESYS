@@ -421,6 +421,13 @@ $('#loadData').click(function() {
     }
 });
 
+//刷新TC数据---链接形式输出--不使用ajax--打开新页面
+$('#execLoadTcData').click(function(){
+    let a = $("<a href='"+ HOST + "index.php/Home/Method/reloadTc' target='_blank'>刷新TC</a>").get(0);
+    let e = document.createEvent('MouseEvents');
+    e.initEvent( 'click', true, true );
+    a.dispatchEvent(e);
+});
 
 
 

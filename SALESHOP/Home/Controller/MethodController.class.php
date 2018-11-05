@@ -211,6 +211,8 @@ class MethodController extends Controller
     }
 
     public function reloadTc(){
+        //解除30s限制
+        set_time_limit(0);
         //重加载TC数据
         $queryTc = "select b.bug_new_id,b.date_submitted, u.id,b.severity,b.`status`,c.value15,c.value16,c.value17,c.value18 from bug_table b ,custom_field_value_table c,`user_table` u  where u.id = b.reporter_id and b.id = c.bug_id";
         //查询TC数据
@@ -228,8 +230,7 @@ class MethodController extends Controller
         //连接数据库
         $conn = $this->OracleOldDBCon();
         $statement = oci_parse($conn,"delete from tmp_tc_cdqcb");
-        //清空TC
-        oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        echo "清空现有TC数据 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
         foreach ($result as &$value) {
             $ID = $value['ID'];
             $CREAT_TIME = $value['CREATE_TIME'];
@@ -241,7 +242,7 @@ class MethodController extends Controller
             $query_insert = "INSERT INTO TMP_TC_CDQCB(ID,CREAT_TIME,PONDERANCE,STATE,LOCAL,FIND_NODE,POLICY_CODE) VALUES('".$ID."',to_date('".$CREAT_TIME."','YYYY/MM/DD hh24:mi:ss'),'".$PONDERANCE."','".$STATE."','".$LOCAL."','".$FIND_NODE."','".$POLICY_CODE."')";
 //          echo $query_insert;
             $statement = oci_parse($conn,$query_insert);
-            oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+            echo $ID."单条插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
         }
         oci_free_statement($statement);
         oci_close($conn);
@@ -260,17 +261,18 @@ class MethodController extends Controller
         $update_cs_sp_sql = "update TMP_NCS_QD_BX_BQFH_BD  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null  group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_ACCEPT_CODE))";
         $statement = oci_parse($conn,$update_nb_sql);
         //增加日志记录节点（所有无输出的数据库查询）
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        echo "执行更新结果 <br>";
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         $statement = oci_parse($conn,$update_uw_sql);
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         $statement = oci_parse($conn,$update_clm_sl_sql);
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         $statement = oci_parse($conn,$update_clm_sp_sql);
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         $statement = oci_parse($conn,$update_cs_sl_sql);
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         $statement = oci_parse($conn,$update_cs_sp_sql);
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         //释放资源
         oci_free_statement($statement);
         oci_close($conn);
