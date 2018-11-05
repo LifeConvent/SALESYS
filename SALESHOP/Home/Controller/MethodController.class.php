@@ -262,17 +262,17 @@ class MethodController extends Controller
         $statement = oci_parse($conn,$update_nb_sql);
         //增加日志记录节点（所有无输出的数据库查询）
         echo "执行更新结果 <br>";
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
+        echo "契约部分-TC刷新-刷新结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         $statement = oci_parse($conn,$update_uw_sql);
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
+        echo "核保-TC刷新-刷新结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         $statement = oci_parse($conn,$update_clm_sl_sql);
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
+        echo "理赔受理-TC刷新-刷新结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         $statement = oci_parse($conn,$update_clm_sp_sql);
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
+        echo "理赔审核审批-TC刷新-刷新结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         $statement = oci_parse($conn,$update_cs_sl_sql);
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
+        echo "保全受理-TC刷新-刷新结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         $statement = oci_parse($conn,$update_cs_sp_sql);
-        echo oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
+        echo "保全复核-TC刷新-刷新结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         //释放资源
         oci_free_statement($statement);
         oci_close($conn);
