@@ -101,6 +101,7 @@ class PersonDefineFinishWorkController extends Controller
         $conn = $method->OracleOldDBCon();
         //获取用户权限类型-1-管理员2-机构组长3-个人
         $userType = $method->getUserType();
+        $otherUser = $method->getOtherUser();
 //        测试用代码
 //        echo $userType;
 //        $queryDate = "2018-08-30";
@@ -128,6 +129,9 @@ class PersonDefineFinishWorkController extends Controller
        }else if((int)$userType==3){
             $where_type_fix = " AND NEW_USER_NAME = '".$user_name."'";
        }
+       if(in_array($user_name,$otherUser)){
+           $where_type_fix =  " AND OLD_ORGAN_CODE NOT LIKE '8647%'";
+       }
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
@@ -143,7 +147,11 @@ class PersonDefineFinishWorkController extends Controller
             for ($i = $num; $i < sizeof($bqsl_result_old_time); $i++) {
                 $value = $bqsl_result_old_time[$i];
                 $result[$i]['business_type'] = "保全受理";
-                $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
+                if(in_array($user_name,$otherUser)){
+                    $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
+                }else{
+                    $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
+                }
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
                 $result[$i]['business_code'] = $value['OLD_ACCEPT_CODE'];
                 $result[$i]['policy_code'] = $value['OLD_POLICY_CODE'];
@@ -195,6 +203,9 @@ class PersonDefineFinishWorkController extends Controller
                 }else{
                     $result[$i]['organ_code'] = "分公司保全室";
                 }
+                if(in_array($user_name,$otherUser)){
+                    $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
+                }
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
                 $result[$i]['business_code'] = $value['OLD_ACCEPT_CODE'];
                 $result[$i]['policy_code'] = $value['OLD_POLICY_CODE'];
@@ -232,8 +243,12 @@ class PersonDefineFinishWorkController extends Controller
                 $sum_all = sizeof($qycd_result_old_time)+ $num;
                 for($i=$num,$j=0;$i<$sum_all;$i++){
                     $value = $qycd_result_old_time[$j++];
-                    $result[$i]['business_type'] = $value['NODE'];;
-                    $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
+                    $result[$i]['business_type'] = $value['NODE'];
+                    if(in_array($user_name,$otherUser)){
+                        $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
+                    }else{
+                        $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
+                    }
                     $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
                     $result[$i]['business_code'] = $value['OLD_APPLE_CODE'];
                     $result[$i]['policy_code'] = $value['NEW_APPLE_CODE'];
@@ -275,8 +290,12 @@ class PersonDefineFinishWorkController extends Controller
             $sum_all = sizeof($hb_result_old_time)+ $num;
             for($i=$num,$j=0;$i<$sum_all;$i++){
                 $value = $hb_result_old_time[$j++];
-                $result[$i]['business_type'] = $value['NODE'];;
-                $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
+                $result[$i]['business_type'] = $value['NODE'];
+                if(in_array($user_name,$otherUser)){
+                    $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
+                }else{
+                    $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
+                }
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
                 $result[$i]['business_code'] = $value['OLD_APPLE_CODE'];
                 $result[$i]['policy_code'] = $value['OLD_POLICY_CODE'];
@@ -316,8 +335,12 @@ class PersonDefineFinishWorkController extends Controller
             $sum_all = sizeof($hb_result_old_time)+ $num;
             for($i=$num,$j=0;$i<$sum_all;$i++){
                 $value = $hb_result_old_time[$j++];
-                $result[$i]['business_type'] = $value['NODE'];;
-                $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
+                $result[$i]['business_type'] = $value['NODE'];
+                if(in_array($user_name,$otherUser)){
+                    $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
+                }else{
+                    $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
+                }
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
                 $result[$i]['business_code'] = $value['OLD_CASE_CODE'];
                 $result[$i]['policy_code'] = "-";
@@ -362,7 +385,11 @@ class PersonDefineFinishWorkController extends Controller
             for($i=$num,$j=0;$i<$sum_all;$i++){
                 $value = $hb_result_old_time[$j++];
                 $result[$i]['business_type'] = $value['NODE'];;
-                $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
+                if(in_array($user_name,$otherUser)){
+                    $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
+                }else{
+                    $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
+                }
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
                 $result[$i]['business_code'] = $value['OLD_CASE_CODE'];
                 $result[$i]['policy_code'] = "-";

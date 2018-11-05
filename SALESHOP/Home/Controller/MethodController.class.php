@@ -365,6 +365,23 @@ class MethodController extends Controller
         return $org;
     }
 
+    public function getOtherUser(){
+//        $org = array("","");
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_select  = "SELECT ACCOUNT FROM TMP_DAYPOST_USER WHERE BUSS_AREA = '异地作业'";
+        $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
+        $user_result =  $method->search_long($result_rows);
+        for($i=0;$i<sizeof($user_result);$i++){
+            $org[$i] = $user_result[$i]['ACCOUNT'];
+        }
+//        数据处理
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($org);
+        return $org;
+    }
+
     public function getUwUser(){
 //        $org = array("yangyixuan_bx","");
         $method = new MethodController();
