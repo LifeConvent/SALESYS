@@ -28,6 +28,54 @@ class RequestPostDataLoadController extends Controller
         }
     }
 
+    public function postAddTcData(){
+        $tc_reason = $_POST['load_tc_reason'];
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $userName = $method->getUserName();
+        $request_insert  = "INSERT INTO TMP_DATALOAD_REQUEST(REQUEST_ACCOUNT,REQUEST_TYPE,REASON) VALUES('".$userName."','1','".$tc_reason."')";
+        $result_rows = oci_parse($conn, $request_insert); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = 'success';
+            $result['message'] = 'TC申请提交成功!';
+        }else{
+            $result['status'] = 'failed';
+            $result['message'] = 'TC申请提交失败,请稍后再试!';
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function postAddData(){
+        $type = $_POST['load_data_type'];
+        $with_tc = $_POST['with_tc'];
+        $reason = $_POST['load_data_reason'];
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $userName = $method->getUserName();
+        $request_insert  = "INSERT INTO TMP_DATALOAD_REQUEST(REQUEST_ACCOUNT,REQUEST_TYPE,REASON,DATA_TYPE,IS_WITH_TC) VALUES('".$userName."','2','".$reason."','".$type."','".$with_tc."')";
+        $result_rows = oci_parse($conn, $request_insert); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = 'success';
+            $result['message'] = '数据申请提交成功!';
+        }else{
+            $result['status'] = 'failed';
+            $result['message'] = '数据申请提交失败,请稍后再试!';
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
     public function getRequestList(){
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -86,6 +134,7 @@ class RequestPostDataLoadController extends Controller
     public function updateRequestCheck(){
         $is_check = $_POST['is_pass'];
         $request_account = $_POST['request_account'];
+        $time = $_POST['time'];
 //        $request_account = "gaobiao_bx";
 //        $is_check = '1';
         $method = new MethodController();
@@ -93,9 +142,9 @@ class RequestPostDataLoadController extends Controller
         $username = "";
         $method->checkIn($username);
         if((int)$is_check==1){
-            $update_sql = "UPDATE TMP_DATALOAD_REQUEST SET CHECK_ACCOUNT = '".$username."' WHERE REQUEST_ACCOUNT = '".$request_account."'";
+            $update_sql = "UPDATE TMP_DATALOAD_REQUEST SET CHECK_ACCOUNT = '".$username."' WHERE REQUEST_ACCOUNT = '".$request_account."' AND TO_CHAR(TIME,'YYYY-MM-DD HH24:mi:ss') =  '".$time."'";
         }else{
-            $update_sql = "UPDATE TMP_DATALOAD_REQUEST SET CHECK_ACCOUNT = '".$username."',NO_PASS_REASON = '".$is_check."' WHERE REQUEST_ACCOUNT = '".$request_account."'";
+            $update_sql = "UPDATE TMP_DATALOAD_REQUEST SET CHECK_ACCOUNT = '".$username."',NO_PASS_REASON = '".$is_check."' WHERE REQUEST_ACCOUNT = '".$request_account."' AND TO_CHAR(TIME,'YYYY-MM-DD HH24:mi:ss') =  '".$time."'";
         }
         $result_rows = oci_parse($conn, $update_sql); // 配置SQL语句，执行SQL
         if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
@@ -119,13 +168,14 @@ class RequestPostDataLoadController extends Controller
 
     public function updateRequestFinish(){
         $request_account = $_POST['request_account'];
+        $time = $_POST['time'];
 //        $request_account = "gaobiao_bx";
 //        $is_check = '1';
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         $username = "";
         $method->checkIn($username);
-        $update_sql = "UPDATE TMP_DATALOAD_REQUEST SET EXEC_ACCOUNT = '".$username."',IF_FINISH = '1' WHERE REQUEST_ACCOUNT = '".$request_account."'";
+        $update_sql = "UPDATE TMP_DATALOAD_REQUEST SET EXEC_ACCOUNT = '".$username."',IF_FINISH = '1' WHERE REQUEST_ACCOUNT = '".$request_account."' AND TO_CHAR(TIME,'YYYY-MM-DD HH24:mi:ss') = '".$time."'";
         $result_rows = oci_parse($conn, $update_sql); // 配置SQL语句，执行SQL
         if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
             $result['status'] = 'success';

@@ -197,7 +197,7 @@ function actionFormatter_no_pass(value, row, index) {
     }else{
         valueShow = ' value="'+ row.no_pass_reason +'" ';
     }
-    if(row.type!="1"||row.check_account!=null){
+    if(row.type!="1"||row.check_account!=null||(row.no_pass_reason!=""&&row.no_pass_reason!="undefined"&&row.no_pass_reason!=null)){
         return '<input id="nopass'+ index+'" class="form-control nopass" style="height: 20pt;width: 150pt;" disabled '+valueShow+'/>';
     }else{
         return '<input id="nopass'+ index+'" class="form-control nopass" style="height: 20pt;width: 150pt;" '+valueShow+'/>';
@@ -229,6 +229,7 @@ window.actionEvents = {
     'click .check': function (e, value, row, index) {
         //确认是否通过，修改数据库审核人，更新该行数据
         var no_pass = $('#nopass'+index).val();
+        var time= row.time;
         var is_pass = '';
         if(no_pass==''||no_pass==null||no_pass=='undefined'){
             is_pass = "1";
@@ -249,7 +250,8 @@ window.actionEvents = {
             dataType: "json", //数据格式:JSON
             data: {
                 is_pass: is_pass,
-                request_account:request_account
+                request_account:request_account,
+                time:time
             },
             success: function (result) {
                 if (result.status == 'success') {
@@ -275,6 +277,7 @@ window.actionEvents = {
     'click .finish': function (e, value, row, index) {
         //修改数据库执行人，修改是否完成，更新该行数据
         var request_account= row.request_account;
+        var time= row.time;
         var is_show = "是";
         var rows = {
             index : index,  //更新列所在行的索引
@@ -293,7 +296,8 @@ window.actionEvents = {
             url: HOST + "index.php/Home/RequestPostDataLoad/updateRequestFinish", //目标地址.
             dataType: "json", //数据格式:JSON
             data: {
-                request_account:request_account
+                request_account:request_account,
+                time:time
             },
             success: function (result) {
                 if (result.status == 'success') {
@@ -316,44 +320,26 @@ window.actionEvents = {
     }
 };
 
-$('#new_user').click(function() {
-    var user_account = $('#user_account').val();
-    var user_pass = $('#user_pass').val();
+$('#loadTcData').click(function() {
+    //加载TC原因
+    var load_tc_reason = $('#load_tc_reason').val();
     debugger;
-    user_pass = hex_md5(user_pass);
-    debugger;
-    var user_name = $('#user_name').val();
-    var user_type = $('#user_type').val();
-    var user_organ_code = $('#user_organ_code').val();
-    var user_organ_name = $('#user_organ_name').val();
-    var user_sex = $('#user_sex').val();
-    var user_company = $('#user_company').val();
-    var buss_area = $('#buss_area').val();
-    if (user_account == "" || user_pass == "" || user_type == "" || user_organ_code == "" || user_organ_name == "" || user_sex == "" || user_company == "" || buss_area == "") {
-        $.scojs_message('所有信息均为必填，请确认输入后再提交添加用户信息！', $.scojs_message.TYPE_ERROR);
+    if (load_tc_reason == "") {
+        $.scojs_message('请输入刷新TC数据原因后再进行提交！', $.scojs_message.TYPE_ERROR);
     } else {
         debugger;
         $.ajax({
             type: "POST", //用POST方式传输
-            url: HOST + "index.php/Home/UserManage/postAddUser", //目标地址.
+            url: HOST + "index.php/Home/RequestPostDataLoad/postAddTcData", //目标地址.
             dataType: "json", //数据格式:JSON
             data: {
-                user_account: user_account,
-                user_pass: user_pass,
-                user_type: user_type,
-                user_name: user_name,
-                user_organ_code: user_organ_code,
-                user_organ_name: user_organ_name,
-                user_sex: user_sex,
-                user_company: user_company,
-                buss_area: buss_area
+                load_tc_reason: load_tc_reason
             },
             success: function (result) {
                 if (result.status == 'success') {
                     debugger;
                     $.scojs_message(result.message, $.scojs_message.TYPE_OK);
-                    $('.add_user').val("");
-                    $('#user_list_table').bootstrapTable('refresh', {url: HOST + "index.php/Home/UserManage/getPostUserList"});
+                    $('#user_list_table').bootstrapTable('refresh', {url: HOST + "index.php/Home/RequestPostDataLoad/getRequestList"});
                 } else if (result.status == 'failed') {
                     debugger;
                     $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
@@ -367,6 +353,51 @@ $('#new_user').click(function() {
         });
     }
 });
+
+$('#loadData').click(function() {
+    //加载TC原因
+    var load_data_type = $('#load_data_type').val();
+    var load_data_reason = $('#load_data_reason').val();
+    var with_tc = $('#with_tc').val();
+    if(with_tc=='是'){
+        with_tc = '1';
+    }else if(with_tc=='否'){
+        with_tc = '0';
+    }
+    debugger;
+    if (load_data_type == "" ||load_data_type=="") {
+        $.scojs_message('请输入必填项后再进行提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/postAddData", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                load_data_type: load_data_type,
+                load_data_reason:load_data_reason,
+                with_tc:with_tc
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                    $('#user_list_table').bootstrapTable('refresh', {url: HOST + "index.php/Home/RequestPostDataLoad/getRequestList"});
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+
 
 //ajax轮询请求
 // $(function () {
