@@ -560,14 +560,17 @@ class MethodController extends Controller
             $queryDateEnd = I('get.queryDateEnd');
             $where_OLD_time_query = " OLD_INSERT_TIME BETWEEN to_date('".$queryDateStart."','yyyy-mm-dd') AND to_date('".$queryDateEnd."','yyyy-mm-dd') ";
             $where_new_time_query = " NEW_INSERT_TIME BETWEEN to_date('".$queryDateStart."','yyyy-mm-dd') AND to_date('".$queryDateEnd."','yyyy-mm-dd') ";
+            $where_bulu = $where_new_time_query;
         }else{
             $where_OLD_time_query = " OLD_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
             $where_new_time_query = " NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') AND OLD_INSERT_TIME = NEW_INSERT_TIME ";
+            $where_bulu = " NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
         }
         if(empty($queryDate)&&strcmp($queryType,"1")==0){
             $queryDate = date(‘yyyy-mm-dd’,time());
             $where_OLD_time_query = " 1=1 ";
             $where_new_time_query = " 1=1 AND OLD_INSERT_TIME = NEW_INSERT_TIME ";
+            $where_bulu = " 1=1 ";
         }
         $org = $this->getDictArry();
         $userDire =  $this->getUserDictArray();
@@ -593,7 +596,7 @@ class MethodController extends Controller
         $nb_result_new_old_time = $this->search_long($result_rows);
 
         #014 契约出单前撤保老核心当天<>新核心,且新核心不为空
-        $nb_where_new_no_old_time  = "SELECT OLD_USER_NAME,count(*) AS NUM FROM TMP_BX_OLD_CDQCB where ".$where_OLD_time_query." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY OLD_USER_NAME";
+        $nb_where_new_no_old_time  = "SELECT OLD_USER_NAME,count(*) AS NUM FROM TMP_BX_OLD_CDQCB where ".$where_bulu." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY OLD_USER_NAME";
         $result_rows = oci_parse($conn, $nb_where_new_no_old_time); // 配置SQL语句，执行SQL
         $nb_result_new_no_old_time = $this->search_long($result_rows);
 
@@ -715,7 +718,7 @@ class MethodController extends Controller
         $uw_result_new_old_time = $this->search_long($result_rows);
 
         #021 核保老核心当天<>新核心,且新核心不为空
-        $uw_where_new_no_old_time  = "SELECT OLD_USER_NAME,count(*) AS NUM FROM TMP_UW_LIST where ".$where_OLD_time_query." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY OLD_USER_NAME";
+        $uw_where_new_no_old_time  = "SELECT OLD_USER_NAME,count(*) AS NUM FROM TMP_UW_LIST where ".$where_bulu." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY OLD_USER_NAME";
         $result_rows = oci_parse($conn, $uw_where_new_no_old_time); // 配置SQL语句，执行SQL
         $uw_result_new_no_old_time = $this->search_long($result_rows);
 
@@ -787,7 +790,7 @@ class MethodController extends Controller
         $result_new_old_time = $this->search_long($result_rows);
 
         #003 保全受理老核心当天<>新核心,且新核心不为空
-        $where_new_no_old_time  = "SELECT user_name,count(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY USER_NAME";
+        $where_new_no_old_time  = "SELECT user_name,count(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_bulu." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY USER_NAME";
         $result_rows = oci_parse($conn, $where_new_no_old_time); // 配置SQL语句，执行SQL
         $result_new_no_old_time = $this->search_long($result_rows);
 
@@ -908,7 +911,7 @@ class MethodController extends Controller
         $result_new_old_time_fh = $this->search_long($result_rows_fh);
 
         #009 保全复核老核心当天<>新核心,且新核心不为空
-        $where_new_no_old_time_fh  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQFH_BD WHERE ".$where_OLD_time_query." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_USER_NAME";
+        $where_new_no_old_time_fh  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQFH_BD WHERE ".$where_bulu." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_USER_NAME";
         $result_rows_fh = oci_parse($conn, $where_new_no_old_time_fh); // 配置SQL语句，执行SQL
         $result_new_no_old_time_fh = $this->search_long($result_rows_fh);
 
@@ -974,7 +977,7 @@ class MethodController extends Controller
         $clm_result_new_old_time_fh = $this->search_long($result_rows);
 
         #025 理赔受理老核心当天<>新核心,且新核心不为空
-        $clm_where_new_no_old_time  = "SELECT OLD_ORGAN_CODE,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPBA_BD WHERE ".$where_OLD_time_query." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY OLD_ORGAN_CODE";
+        $clm_where_new_no_old_time  = "SELECT OLD_ORGAN_CODE,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPBA_BD WHERE ".$where_bulu." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY OLD_ORGAN_CODE";
         $result_rows = oci_parse($conn, $clm_where_new_no_old_time); // 配置SQL语句，执行SQL
         $clm_result_new_no_old_time = $this->search_long($result_rows);
 
@@ -1079,7 +1082,7 @@ class MethodController extends Controller
         $clm_result_old_time_num = $this->search_long($result_rows);
 
         #031 理赔审批审核老核心当天<>新核心,且新核心不为空
-        $clm_where_new_no_old_time  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPSHSP_BD WHERE ".$where_OLD_time_query." and TO_DATE(NEW_INSERT_TIME,'YYYY_MM_DD') <> TO_DATE(OLD_INSERT_TIME,'YYYY_MM_DD') and NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_USER_NAME";
+        $clm_where_new_no_old_time  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPSHSP_BD WHERE ".$where_bulu." and TO_DATE(NEW_INSERT_TIME,'YYYY_MM_DD') <> TO_DATE(OLD_INSERT_TIME,'YYYY_MM_DD') and NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_USER_NAME";
         $result_rows = oci_parse($conn, $clm_where_new_no_old_time); // 配置SQL语句，执行SQL
         $clm_result_new_no_old_time = $this->search_long($result_rows);
 
