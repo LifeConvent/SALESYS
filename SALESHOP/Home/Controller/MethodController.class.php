@@ -79,6 +79,13 @@ class MethodController extends Controller
         }
     }
 
+    public function getUserTypeJson()
+    {
+        $result['status'] = 'success';
+        $result['type'] = $this->getUserType();
+        exit(json_encode($result));
+    }
+
     public function getUserName()
     {
         $token = $_SESSION['token'];
@@ -519,6 +526,88 @@ class MethodController extends Controller
                                 "clm_fysame_count");
         return $data_object;
     }
+
+    //仅管理员可见
+    public function getWaitDealNotice(){
+        $user_name = $_POST['username'];
+        $user_type = $_POST['usertype'];
+        $conn = $this->OracleOldDBCon();
+        if((int)$user_type==1){
+            $notice_select  = "SELECT COUNT(IS_NOTICE) AS NUM FROM TMP_DATALOAD_REQUEST WHERE REQUEST_ACCOUNT = '".$user_name."'  AND IF_FINISH = '0'";
+        }else{
+            $notice_select  = "SELECT COUNT(IS_NOTICE) AS NUM FROM TMP_DATALOAD_REQUEST WHERE REQUEST_ACCOUNT = '".$user_name."'  AND IS_NOTICE = '0' AND IF_FINISH = '1' ";
+        }
+        $result_rows = oci_parse($conn, $notice_select); // 配置SQL语句，执行SQL
+        $user_result =  $this->search_long($result_rows);
+        if((int)$user_result[0]['NUM']>0){
+            $result['status'] = 'success';
+            if((int)$user_type==1){
+                $message = '您有 '.$user_result[0]['NUM'].' 条待处理数据刷新申请，请及时处理！！！';
+            }else{
+                $message = '您有 '.$user_result[0]['NUM'].' 条数据刷新申请已处理完成，请及时查看！！！';
+            }
+            $where = "UPDATE TMP_DATALOAD_REQUEST SET IS_NOTICE = '1' WHERE REQUEST_ACCOUNT = '".$user_name."'  AND IS_NOTICE = '0' ";
+            $result_rows = oci_parse($conn, $where); // 配置SQL语句，执行SQL
+            if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)){
+                $result['message'] = $message;
+            }else{
+                $result['status'] = 'success_failed';
+                $result['message'] = $message + " 您的消息通知数据未正常处理，请联系管理员！";
+            }
+        }else{
+            $result['status'] = 'failed';
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
+    }
+
+    public function finishNotice(){
+        $user_name = $_POST['username'];
+        $user_type = $_POST['usertype'];
+        if((int)$user_type==1){
+            $result['status'] = 'success';
+            exit(json_encode($result));
+        }
+        $conn = $this->OracleOldDBCon();
+        $where = "UPDATE TMP_DATALOAD_REQUEST SET IS_NOTICE = '1' WHERE REQUEST_ACCOUNT = '".$user_name."'  AND IS_NOTICE = '0' ";
+        $result_rows = oci_parse($conn, $where); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = 'success';
+        }else{
+            $result['status'] = 'failed';
+            $result['message'] = '数据更新失败，请刷新或联系管理员解决！';
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
+    }
+
+    public function test(){
+        $user_type = $this->getUserType();
+        $user_name = $this->getUserName();
+        dump($user_type);
+        dump($user_name);
+    }
+
+    //所有用户可见
+//    public function getWaitDefineNotice(){
+//        $conn = $this->OracleOldDBCon();
+//        $user_name = $this->getUserName();
+////        dump($user_name);
+//        $notice_select  = "SELECT COUNT(IS_NOTICE) AS NUM FROM TMP_DATALOAD_REQUEST WHERE REQUEST_ACCOUNT = '".$user_name."'  AND IS_NOTICE = '0' AND IF_FINISH = '1' ";
+//        $result_rows = oci_parse($conn, $notice_select); // 配置SQL语句，执行SQL
+//        $user_result =  $this->search_long($result_rows);
+//        if((int)$user_result[0]['NUM']>0){
+//            $result['status'] = 'success';
+//            $result['message'] = '您有 '.$user_result[0]['NUM'].' 条数据刷新申请已处理完成，请及时查看！！！';
+//        }else{
+//            $result['status'] = 'failed';
+//        }
+//        oci_free_statement($result_rows);
+//        oci_close($conn);
+//        exit(json_encode($result));
+//    }
 
     public function search_short($sql){
         $conn = $this->OracleOldDBCon();

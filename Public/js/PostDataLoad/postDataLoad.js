@@ -13,16 +13,41 @@ $(function () {
     $('#course_sub').css('display', 'block');
     $('#course_info').attr('class', 'active');
 
+    // $('#loadProcess').modal('show');
     //1.初始化Table
     var oTable = new TableInit();
     oTable.Init();
 //        $[sessionStorage] = oTable.queryParams;
 
+    // startWithNotice();
     //2.初始化Button的点击事件
-    var oButtonInit = new ButtonInit();
-    oButtonInit.Init();
+    // var oButtonInit = new ButtonInit();
+    // oButtonInit.Init();
+
+    // $('#loadProcess').modal('hide');
 
 });
+
+// function longPolling() {
+//     // alert(Date.parse(new Date())/1000);
+//     $.ajax({
+//         type: "POST", //用POST方式传输
+//         url: HOST + "index.php/Home/Method/getNotice",
+//         dataType: "json",
+//         timeout: 5000,//5秒超时，可自定义设置
+//         error: function (XMLHttpRequest, textStatus, errorThrown) {
+//             // $("#state").append("[state: " + textStatus + ", error: " + errorThrown + " ]<br/>");
+//             longPolling();
+//         },
+//         success: function (result) {
+//             // $("#state").append("[state: " + textStatus + ", data: { " + data + "} ]<br/>");
+//             if (result.status == "success") { // 请求成功
+//                 $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+//                 longPolling();
+//             }
+//         }
+//     });
+// }
 
 var TableInit = function () {
     countFooter =  function(v){
@@ -188,7 +213,6 @@ var TableInit = function () {
 
     return oTableInit;
 };
-
 
 function actionFormatter_no_pass(value, row, index) {
     var valueShow = '';
@@ -399,32 +423,4 @@ $('#loadData').click(function() {
 
 
 
-//ajax轮询请求
-// $(function () {
-//     (function longPolling() {
-//         alert(Date.parse(new Date())/1000);
-//         $.ajax({
-//             url: "testPush1111.php",
-//             data: {"timed": Date.parse(new Date())/1000},
-//             dataType: "text",
-//             timeout: 5000,//5秒超时，可自定义设置
-//             error: function (XMLHttpRequest, textStatus, errorThrown) {
-//                 $("#state").append("[state: " + textStatus + ", error: " + errorThrown + " ]<br/>");
-//                 if (textStatus == "timeout") { // 请求超时
-//                     longPolling(); // 递归调用
-//                 } else { // 其他错误，如网络错误等
-//                     longPolling();
-//                 }
-//             },
-//             success: function (data, textStatus) {
-//                 $("#state").append("[state: " + textStatus + ", data: { " + data + "} ]<br/>");
-//
-//                 if (textStatus == "success") { // 请求成功
-//                     longPolling();
-//                 }
-//             }
-//         });
-//
-//     })();
-// });
 

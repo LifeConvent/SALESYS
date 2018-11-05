@@ -283,6 +283,37 @@
         </section>
         <!-- 主容器  -->
 
+        <div class="modal fade" id="waitDeal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">数据请求信息提示</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <span class="left-30 red size-16" id="waitDealText"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-warning" id="waitDealSure" type="button">确认</button>
+                    </div>
+                </div>
+            </div>
+            <span style="display:none" id="myModalHide"></span>
+        </div>
+
+        <div class="modal fade" id="loadProcess">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">提示</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <span class="left-30">数据正在加载中请稍后</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
     </section>
@@ -320,6 +351,7 @@
 <script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/tableExport.js"></script>
 <script src="__PUBLIC__/js/md5.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/startWithNotice.js" type="text/javascript"></script>
 
 
 <script>
