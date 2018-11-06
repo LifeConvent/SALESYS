@@ -429,5 +429,53 @@ $('#execLoadTcData').click(function(){
     a.dispatchEvent(e);
 });
 
+//保全受理数据
+$('#execLoadDataCS').click(function(){
+    let a = $("<a href='"+ HOST + "index.php/Home/Method/execLoadDataCS' target='_blank'>保全受理数据更新</a>").get(0);
+    let e = document.createEvent('MouseEvents');
+    e.initEvent( 'click', true, true );
+    a.dispatchEvent(e);
+});
+
+//保全复核数据
+$('#execLoadDataCSFH').click(function(){
+    let a = $("<a href='"+ HOST + "index.php/Home/Method/execLoadDataCSFH' target='_blank'>保全复核数据更新</a>").get(0);
+    let e = document.createEvent('MouseEvents');
+    e.initEvent( 'click', true, true );
+    a.dispatchEvent(e);
+});
+
+//核保数据
+$('#execLoadDataUW').click(function(){
+    let a = $("<a href='"+ HOST + "index.php/Home/Method/execLoadDataUW' target='_blank'>核保数据更新</a>").get(0);
+    let e = document.createEvent('MouseEvents');
+    e.initEvent( 'click', true, true );
+    a.dispatchEvent(e);
+});
+
+//契约数据
+$('#execLoadDataNBCD').click(function(){
+    let a = $("<a href='"+ HOST + "index.php/Home/Method/execLoadDataNBCD' target='_blank'>契约数据更新</a>").get(0);
+    let e = document.createEvent('MouseEvents');
+    e.initEvent( 'click', true, true );
+    a.dispatchEvent(e);
+});
+
+//理赔受理数据
+$('#execLoadDataCLMSL').click(function(){
+    let a = $("<a href='"+ HOST + "index.php/Home/Method/execLoadDataCLMSL' target='_blank'>理赔受理数据更新</a>").get(0);
+    let e = document.createEvent('MouseEvents');
+    e.initEvent( 'click', true, true );
+    a.dispatchEvent(e);
+});
+
+//理赔审核数据
+$('#execLoadDataCLMSHSP').click(function(){
+    let a = $("<a href='"+ HOST + "index.php/Home/Method/execLoadDataCLMSHSP' target='_blank'>理赔审核数据更新</a>").get(0);
+    let e = document.createEvent('MouseEvents');
+    e.initEvent( 'click', true, true );
+    a.dispatchEvent(e);
+});
+
 
 
