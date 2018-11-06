@@ -280,15 +280,6 @@ class UserManageController extends Controller
 
     public function modifyPass(){
         $method = new MethodController();
-        ##############################################################  公共JS处理部分  ############################################################################
-        //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheck()){
-            $result['status'] = "failed";
-            $result['lock'] = "true";
-            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
-            exit(json_encode($result));
-        }
-        ############################################################################################################################################################
         $modify_old_pass = I('post.modify_old_pass');
         $modify_new_pass = I('post.modify_new_pass');
         $modify_user_account = I('post.modify_user_account');

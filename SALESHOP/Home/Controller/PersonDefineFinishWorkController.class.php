@@ -44,10 +44,15 @@ class PersonDefineFinishWorkController extends Controller
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheck()){
+        if($method->publicCheck()==1){
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }else if($method->publicCheck()==2){
+            $result['status'] = "failed";
+            $result['lock'] = "false";
+            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
         }
         ############################################################################################################################################################
@@ -113,7 +118,7 @@ class PersonDefineFinishWorkController extends Controller
                 $where_old_time_bqsl = " OLD_INSERT_TIME = to_date('" . $queryDateStart . "','yyyy-mm-dd') ";
             }
         } else {
-            $queryDate = date(‘yyyy - mm - dd’, time());
+            $queryDate = date('yyyy-mm-dd', time());
             $where_old_time_bqsl = " OLD_INSERT_TIME = to_date('" . $queryDate . "','yyyy-mm-dd') ";
         }
         $user_name = "";

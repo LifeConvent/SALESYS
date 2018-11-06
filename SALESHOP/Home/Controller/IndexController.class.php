@@ -27,6 +27,20 @@ class IndexController extends Controller
     public function searchUser($user,$pass){//登录账户用多种
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        ##############################################################  公共JS处理部分  ############################################################################
+        //JS请求公共处理部分 TRUE锁定
+        if($method->publicCheck()==1){
+            $result['status'] = "failed";
+            $result['lock'] = "true";
+            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }else if($method->publicCheck()==2){
+            $result['status'] = "failed";
+            $result['lock'] = "false";
+            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }
+        ############################################################################################################################################################
 //        $user = 'gaobiao_bx';
 //        $pass = '380c0aeaf0b49bba0fa630bdd7b52f3d';
         if (!$conn) {

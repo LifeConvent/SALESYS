@@ -14,6 +14,11 @@ $(function () {
 
     $('#modify_user_account').val($('#username').val());
 
+    var type = $('#usertype').val();
+    if(type==1){
+        $('#modify_user_account').removeAttr("disabled");
+    }
+
     //2.初始化Button的点击事件
     // var oButtonInit = new ButtonInit();
     // oButtonInit.Init();
@@ -374,10 +379,16 @@ $('#modify_pass').click(function(){
     var modify_user_account = $('#modify_user_account').val();
     var modify_old_pass = $('#modify_old_pass').val();
     var modify_new_pass = $('#modify_new_pass').val();
+    if(modify_user_account==""||modify_user_account==null){
+        $.scojs_message("用户账户不能为空！", $.scojs_message.TYPE_ERROR);
+        return;
+    }
     if(modify_old_pass==""||modify_new_pass==""){
         $.scojs_message("请输入必填项后再进行提交！", $.scojs_message.TYPE_ERROR);
+        return;
     }else if(modify_old_pass==modify_new_pass){
         $.scojs_message("新密码不可与原始密码相同！", $.scojs_message.TYPE_ERROR);
+        return;
     }else{
         modify_new_pass = hex_md5(modify_new_pass);
         modify_old_pass = hex_md5(modify_old_pass);

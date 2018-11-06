@@ -58,8 +58,8 @@ class MethodController extends Controller
         $info = explode('-', $token);
         if (strcmp($info[2],"success") == 0) {
             $admin = $info[0];
-            Log::write($admin.'用户登录，登录时间：'.time()."<br>",'INFO');
-            if($this->publicCheck()){
+            Log::write($admin.'用户登录，登录时间：'.date("h:i:sa")."<br>",'INFO');
+            if($this->publicCheck()==1){
                 return false;
             }
             if ($info[1] - time() <= 7) {
@@ -199,7 +199,7 @@ class MethodController extends Controller
         //连接Oracle
         $conn = oci_connect($db_user_name,$db_pwd,$db_host_name);
         $user_name = $this->getUserName();
-        Log::write($user_name.' 获取数据库链接时间：'.time()."<br>",'INFO');
+        Log::write($user_name.' 获取数据库链接时间：'.date("h:i:sa")."<br>",'INFO');
         if (!$conn) {
             $e = oci_error();
             return false;
@@ -212,6 +212,9 @@ class MethodController extends Controller
     public function getStartDateString(){
         return '2018/8/1';
     }
+    public function getQianYiTime(){
+        return '20180726';
+    }
 
     public function getDictArry(){
         $org = array("本部","李沧","平度","胶南","即墨","胶州","城阳","莱西","开发区","市南","小计","分公司核保室","分公司保全室","分公司理赔室","总公司作业中心","合计");
@@ -222,12 +225,12 @@ class MethodController extends Controller
     public function execLoadDataNBCD(){
         //解除30s限制
         set_time_limit(0);
-        echo "契约数据更新开始：".time()."<br> ";
-        $user_type = $this->getUserType();
-        if((int)$user_type!=1){
-            echo "请使用管理员账户登录后进行刷新数据！！！";
-            return;
-        }
+        echo "契约数据更新开始：".date("h:i:sa")."<br> ";
+//        $user_type = $this->getUserType();
+//        if((int)$user_type!=1){
+//            echo "请使用管理员账户登录后进行刷新数据！！！";
+//            return;
+//        }
         $conn = $this->OracleOldDBCon();
         echo "契约回执出单数据更新开始 <br>";
         $newDay = "INSERT INTO TMP_OLD_CDQCB 
@@ -236,7 +239,7 @@ class MethodController extends Controller
                        TRIM(A.CERTIFYNO)  AS PRTNO,
                        TRIM(A.CERTIFYNO)  AS PRTNO1,
                        TRIM(A.OPERATOR)   AS OPERATOR,
-                       '保单回执 ' NODE,
+                       '保单回执 ' AS NODE,
                        TP.PREM AS PREM,
                        TP.AMNT AS AMNT
                   FROM LIS.LZSYSCERTIFY A
@@ -252,27 +255,131 @@ class MethodController extends Controller
                          WHERE A.CERTIFYNO = TRIM(T.CONTNO)
                            AND T.CONTTYPE = '1'
                            AND SUBSTR(T.MANAGECOM, 1, 4) = '8647'
-                           AND (T.POLAPPLYDATE >= TO_DATE('20180726', 'YYYYMMDD') OR
-                                (T.POLAPPLYDATE < TO_DATE('20180726', 'YYYYMMDD'))))
-                           AND (A.TAKEBACKMAKEDATE BETWEEN TO_DATE('2018-08-01  00:00:00', 'YYYY-MM-DD HH24:MI:SS') AND SYSDATE)";
+                           AND (T.POLAPPLYDATE >= TO_DATE('".$this->getQianYiTime()."', 'YYYYMMDD') OR
+                                (T.POLAPPLYDATE < TO_DATE('".$this->getQianYiTime()."', 'YYYYMMDD'))))
+                           AND (TO_DATE(A.TAKEBACKMAKEDATE,'YYYY/MM/DD') BETWEEN TO_DATE('".$this->getStartDateString()."', 'YYYY/MM/DD') AND TO_DATE(SYSDATE,'YYYY/MM/DD'))";
         $statement = oci_parse($conn,$newDay);
-        echo "清空新核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        echo "老核心回执录入插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "DELETE FROM TMP_OLD_CDQCB T1 WHERE T1.PRTNO IN (SELECT PRTNO FROM TMP_OLD_CDQCB GROUP BY PRTNO HAVING COUNT(*)>1) AND ROWID NOT IN (SELECT MAX(ROWID) FROM TMP_OLD_CDQCB GROUP BY PRTNO HAVING COUNT(*)>1)";
+        $statement = oci_parse($conn,$newDay);
+        echo "老核心回执录入删除 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "INSERT INTO TMP_BX_CDQCB 
+                SELECT C.ORGAN_CODE       AS ORGAN_CODE, 
+                       A.BRANCH_RECEIVE_DATE AS OPERATE_TIME, 
+                       B.POLICY_CODE      AS APPLY_CODE, 
+                       B.POLICY_CODE     AS APPLY_CODE1,
+                       C.USER_NAME        AS USER_NAME,
+                       '保单回执 '      AS NODE,
+                       PRO.PREM           AS PREM,
+                       PRO.AMOUNT         AS AMNT 
+                  FROM DEV_PAS.T_POLICY_ACKNOWLEDGEMENT@BINGXING_168_15 A
+                  LEFT JOIN DEV_PAS.T_CONTRACT_MASTER@BINGXING_168_15 B
+                    ON A.POLICY_ID = B.POLICY_ID
+                  LEFT JOIN DEV_PAS.T_UDMP_USER@BINGXING_168_15 C
+                    ON A.OPERATOR_ID = C.USER_ID
+                     LEFT JOIN (SELECT SUM(TCP.TOTAL_PREM_AF) AS PREM , SUM(TCP.AMOUNT) AS AMOUNT,TCP.APPLY_CODE  FROM DEV_NB.T_NB_CONTRACT_PRODUCT@BINGXING_168_15_NBS TCP  GROUP BY TCP.APPLY_CODE
+                )PRO  ON PRO.APPLY_CODE = B.APPLY_CODE
+                 WHERE 1=1
+                   AND (TO_DATE(A.BRANCH_RECEIVE_DATE,'YYYY/MM/DD') BETWEEN TO_DATE('".$this->getStartDateString()."','YYYY/MM/DD') AND TO_DATE(SYSDATE,'YYYY/MM/DD'))";
+        $statement = oci_parse($conn,$newDay);
+        echo "新核心回执录入插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "DELETE FROM TMP_BX_CDQCB T1 WHERE T1.APPLY_CODE IN (SELECT APPLY_CODE FROM TMP_BX_CDQCB GROUP BY APPLY_CODE HAVING COUNT(*)>1) 
+                    AND ROWID NOT IN (SELECT MAX(ROWID) FROM TMP_BX_CDQCB GROUP BY APPLY_CODE HAVING COUNT(*)>1)";
+        $statement = oci_parse($conn,$newDay);
+        echo "新核心回执录入删除 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "INSERT INTO TMP_OLD_CDQCB 
+                    SELECT DISTINCT 
+                            T.MANAGECOM AS ORGAN_CODE,
+                           T.MODIFYDATE   AS MODIFYDATE,
+                           TRIM(T.PRTNO)     AS PRTNO,
+                           TRIM(T.PRTNO)    AS PRTNO1,
+                           TRIM(T.OPERATOR)  AS OPERATOR,
+                           '出单前撤保 ' NODE,
+                           TP.PREM         AS PREM,
+                           TP.AMNT         AS AMNT      
+                      FROM LIS.LCAPPLYRECALLPOL T
+                      LEFT JOIN LIS.LDUSER N
+                        ON TRIM(T.OPERATOR) = TRIM(N.USERCODE)
+                         LEFT JOIN (SELECT  T.PRTNO    PRTNO, 
+                          SUM(T.PREM)      PREM,
+                          SUM(T.AMNT)      AMNT
+                      FROM LIS.LCPOL T GROUP BY T.PRTNO) TP
+                      ON TP.PRTNO=T.PRTNO
+                     WHERE EXISTS (SELECT 1
+                              FROM LIS.LCPOL M
+                             WHERE T.PROPOSALNO = M.PROPOSALNO
+                               AND SUBSTR(M.MANAGECOM, 1, 4) = '8647'
+                               AND M.CONTTYPE = '1'
+                               AND (M.POLAPPLYDATE >= TO_DATE('".$this->getQianYiTime()."', 'YYYYMMDD') OR
+                                   (M.POLAPPLYDATE < TO_DATE('".$this->getQianYiTime()."', 'YYYYMMDD') 
+                                 )))
+                         AND (TO_DATE(T.MODIFYDATE,'YYYY/MM/DD') BETWEEN TO_DATE('".$this->getStartDateString()."', 'YYYY/MM/DD') AND SYSDATE)";
+        $statement = oci_parse($conn,$newDay);
+        echo "老核心出单前撤保插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "DELETE FROM TMP_OLD_CDQCB T1 WHERE T1.PRTNO IN (SELECT PRTNO FROM TMP_OLD_CDQCB GROUP BY PRTNO HAVING COUNT(*)>1) 
+                  AND ROWID NOT IN (SELECT MAX(ROWID) FROM TMP_OLD_CDQCB GROUP BY PRTNO HAVING COUNT(*)>1)";
+        $statement = oci_parse($conn,$newDay);
+        echo "新核心回执录入删除 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "INSERT INTO TMP_BX_CDQCB
+                    SELECT TUU.ORGAN_CODE AS ORGAN_CODE,
+                          TPC.OPERATE_TIME AS OPERATE_TIME, 
+                          TPC.APPLY_CODE AS APPLY_CODE,
+                          TPC.APPLY_CODE AS APPLY_CODE1,
+                          TUU.USER_NAME AS USER_NAME,
+                          '出单前撤保 ' NODE, 
+                           PRO.PREM     AS PREM,
+                          PRO.AMOUNT    AS AMNT    
+                      FROM DEV_NB.T_POLICY_CANCEL@BINGXING_168_15_NBS TPC
+                      LEFT JOIN DEV_NB.T_NB_CONTRACT_MASTER@BINGXING_168_15_NBS TCM
+                        ON (TPC.APPLY_CODE = TCM.APPLY_CODE)
+                      LEFT JOIN DEV_NB.T_UDMP_USER@BINGXING_168_15_NBS TUU
+                        ON (TPC.OPERATER_ID = TUU.USER_ID)
+                      LEFT JOIN DEV_NB.T_PRE_AUDIT_MASTER@BINGXING_168_15_NBS TAM
+                        ON (TAM.APPLY_CODE = TPC.APPLY_CODE)
+                        LEFT JOIN (SELECT SUM(TCP.TOTAL_PREM_AF) AS PREM , SUM(TCP.AMOUNT) AS AMOUNT,TCP.APPLY_CODE  FROM DEV_NB.T_NB_CONTRACT_PRODUCT@BINGXING_168_15_NBS TCP  GROUP BY TCP.APPLY_CODE
+                    )PRO  ON (PRO.APPLY_CODE = TCM.APPLY_CODE) 
+                     WHERE 1 = 1
+                       AND TCM.PROPOSAL_STATUS = '12'
+                       AND (TO_DATE(TPC.INSERT_TIME,'YYYY/MM/DD') BETWEEN TO_DATE('".$this->getStartDateString()."','YYYY/MM/DD') AND TO_DATE(SYSDATE,'YYYY/MM/DD'))";
+        $statement = oci_parse($conn,$newDay);
+        echo "新核心出单前撤保插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "DELETE FROM TMP_BX_CDQCB T2 WHERE T2.APPLY_CODE IN (SELECT APPLY_CODE FROM TMP_BX_CDQCB GROUP BY APPLY_CODE HAVING COUNT(*)>1) 
+                    AND ROWID NOT IN (SELECT MAX(ROWID) FROM TMP_BX_CDQCB GROUP BY APPLY_CODE HAVING COUNT(*)>1)";
+        $statement = oci_parse($conn,$newDay);
+        echo "新核心出单前撤保删除 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "EXECUTE IMMEDIATE 'TRUNCATE TABLE TMP_BX_OLD_CDQCB'";
+        $statement = oci_parse($conn,$newDay);
+        echo "脚本执行 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "INSERT INTO TMP_BX_OLD_CDQCB 
+                      SELECT OT.ORGAN_CODE AS OLD_ORGAN_CODE ,NT.ORGAN_CODE AS NEW_ORGAN_CODE,OT.OPERATOR AS OLD_USER_NAME,NT.USER_NAME AS NEW_USER_NAME ,OT.MODIFYDATE AS OLD_INSERT_TIME,NT.OPERATE_TIME AS NEW_INSERT_TIME,OT.PRTNO AS OLD_APPLE_CODE,NT.APPLY_CODE AS NEW_APPLE_CODE,
+                      (CASE WHEN TRIM(OT.PRTNO) = TRIM(NT.APPLY_CODE) THEN '是 '
+                       ELSE '否 ' END)AS IS_ACCORDANCE,'' AS TC_ID,' ' AS PRO_NUMBER, OT.NODE AS NODE,SYSDATE AS INSERT_TIME,OT.PREM AS OLD_PREM,OT.AMNT AS OLD_AMNT,NT.PREM AS NEW_PREM,NT.AMNT AS NEW_AMNT
+                       FROM TMP_OLD_CDQCB OT LEFT JOIN TMP_BX_CDQCB NT ON TRIM(OT.PRTNO) = TRIM(NT.APPLY_CODE)";
+        $statement = oci_parse($conn,$newDay);
+        echo "比对新核心出单前撤保插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "DELETE FROM TMP_BX_OLD_CDQCB T2 WHERE T2.OLD_APPLE_CODE IN (SELECT OLD_APPLE_CODE FROM TMP_BX_OLD_CDQCB GROUP BY OLD_APPLE_CODE HAVING COUNT(*)>1) 
+                    AND ROWID NOT IN (SELECT MAX(ROWID) FROM TMP_BX_OLD_CDQCB GROUP BY OLD_APPLE_CODE HAVING COUNT(*)>1)";
+        $statement = oci_parse($conn,$newDay);
+        echo "比对新核心出单前撤保删除 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "DELETE FROM TMP_BX_OLD_CDQCB T2 WHERE TRIM(T2.OLD_USER_NAME)='MOBILE'";
+        $statement = oci_parse($conn,$newDay);
+        echo "比对NOBILE删除 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
 
         oci_free_statement($statement);
         oci_close($conn);
-        echo "契约数据更新结束 ：".time()."<br> ";
+        echo "契约数据更新结束 ：".date("h:i:sa")."<br> ";
     }
 
     //理赔受理数据更新
     public function execLoadDataCLMSL(){
         //解除30s限制
         set_time_limit(0);
-        echo "理赔受理数据更新开始：".time()."<br> ";
-        $user_type = $this->getUserType();
-        if((int)$user_type!=1){
-            echo "请使用管理员账户登录后进行刷新数据！！！";
-            return;
-        }
+        echo "理赔受理数据更新开始：".date("h:i:sa")."<br> ";
+//        $user_type = $this->getUserType();
+//        if((int)$user_type!=1){
+//            echo "请使用管理员账户登录后进行刷新数据！！！";
+//            return;
+//        }
         $conn = $this->OracleOldDBCon();
         echo "理赔受理数据更新开始 <br>";
         $newDay = "";
@@ -281,19 +388,19 @@ class MethodController extends Controller
 
         oci_free_statement($statement);
         oci_close($conn);
-        echo "理赔受理数据更新结束 ：".time()."<br> ";
+        echo "理赔受理数据更新结束 ：".date("h:i:sa")."<br> ";
     }
 
     //理赔审核数据更新
     public function execLoadDataCLMSHSP(){
         //解除30s限制
         set_time_limit(0);
-        echo "理赔审核数据更新开始：".time()."<br> ";
-        $user_type = $this->getUserType();
-        if((int)$user_type!=1){
-            echo "请使用管理员账户登录后进行刷新数据！！！";
-            return;
-        }
+        echo "理赔审核数据更新开始：".date("h:i:sa")."<br> ";
+//        $user_type = $this->getUserType();
+//        if((int)$user_type!=1){
+//            echo "请使用管理员账户登录后进行刷新数据！！！";
+//            return;
+//        }
         $conn = $this->OracleOldDBCon();
         echo "理赔审核数据更新开始 <br>";
         $newDay = "";
@@ -302,21 +409,21 @@ class MethodController extends Controller
 
         oci_free_statement($statement);
         oci_close($conn);
-        echo "理赔审核数据更新结束 ：".time()."<br> ";
+        echo "理赔审核数据更新结束 ：".date("h:i:sa")."<br> ";
     }
 
     //核保数据更新
     public function execLoadDataUW(){
         //解除30s限制
         set_time_limit(0);
-        echo "核保数据更新开始 ：".time()."<br> ";
-        $user_type = $this->getUserType();
-        if((int)$user_type!=1){
-            echo "请使用管理员账户登录后进行刷新数据！！！";
-            return;
-        }
+        echo "核保数据更新开始 ：".date("h:i:sa")."<br> ";
+//        $user_type = $this->getUserType();
+//        if((int)$user_type!=1){
+//            echo "请使用管理员账户登录后进行刷新数据！！！";
+//            return;
+//        }
         $conn = $this->OracleOldDBCon();
-        echo "核保数据更新开始 ：".time()."<br> ";
+        echo "核保数据更新开始 ：".date("h:i:sa")."<br> ";
         $newDay = "DELETE FROM UW_SUB_NCL_TMP";
         $statement = oci_parse($conn,$newDay);
         echo "清空新核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
@@ -1016,19 +1123,19 @@ class MethodController extends Controller
         echo "对比表插入新数据 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
         oci_free_statement($statement);
         oci_close($conn);
-        echo "核保数据更新结束 ：".time()."<br> ";
+        echo "核保数据更新结束 ：".date("h:i:sa")."<br> ";
     }
 
     //保全受理数据更新
     public function execLoadDataCS(){
         //解除30s限制
         set_time_limit(0);
-        echo "保全数据更新开始 ：".time()."<br> ";
-        $user_type = $this->getUserType();
-        if((int)$user_type!=1){
-            echo "请使用管理员账户登录后进行刷新数据！！！";
-            return;
-        }
+        echo "保全数据更新开始 ：".date("h:i:sa")."<br> ";
+//        $user_type = $this->getUserType();
+//        if((int)$user_type!=1){
+//            echo "请使用管理员账户登录后进行刷新数据！！！";
+//            return;
+//        }
         echo "保全受理数据更新开始 <br>";
         $conn = $this->OracleOldDBCon();
         $newDay = "DELETE FROM TMP_NCS_QD_BX_BQSL_TJ";
@@ -1103,7 +1210,6 @@ class MethodController extends Controller
                 SELECT  T1.ORGAN_CODE AS OLD_ORGAN_CODE,
                         T2.ORGAN_CODE AS NEW_ORGAN_CODE,
                         T1.USER_NAME AS USER_NAME,
-                        T2.USER_NAME AS NEW_USER_NAME,
                         (CASE 
                            WHEN T1.USER_NAME IN ('wangyf_qd','wangyfqd00','wangmx_qd') THEN '城阳 '
                            WHEN T1.USER_NAME IN ('ningxy_qd','nxyqd00','wangjuan2','wjpmoqd','lishan_qd','lishanqd00','yucx_qd','yucxqd00') THEN '即墨 '
@@ -1152,7 +1258,8 @@ class MethodController extends Controller
                         '' AS no_same_description,
                         '' AS is_ncs_advantage,
                         '' AS link_buss_code,
-                        NULL AS is_same_sff
+                        NULL AS is_same_sff,
+                        T2.USER_NAME AS NEW_USER_NAME
                   FROM TMP_LIS_QD_BX_BQSL_TJ T1
                   LEFT JOIN TMP_NCS_QD_BX_BQSL_TJ T2
                    ON TRIM(T2.POLICY_CODE) = TRIM(T1.POLICY_CODE)
@@ -1221,7 +1328,7 @@ class MethodController extends Controller
         $statement = oci_parse($conn,$newDay);
         echo "新核心全量数据更新 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
 
-        $newDay = "DELETE FROM TMP_NCS_QDBX_BQ_SFF;";
+        $newDay = "DELETE FROM TMP_NCS_QDBX_BQ_SFF";
         $statement = oci_parse($conn,$newDay);
         echo "清空新核心金额数据更新准备表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
         $newDay = "INSERT INTO TMP_NCS_QDBX_BQ_SFF
@@ -1240,7 +1347,7 @@ class MethodController extends Controller
                         WHERE 1=1
                             AND TCPA.DERIV_TYPE = '004'
                             AND TCPA.ORGAN_CODE LIKE '8647%'
-                            AND TCPA.BUSI_APPLY_DATE >= TO_DATE('2018/8/1','YYYY/MM/DD')
+                            AND TCPA.BUSI_APPLY_DATE >= TO_DATE('".$this->getStartDateString()."','YYYY/MM/DD')
                             AND TCPA.BUSI_APPLY_DATE <= TRUNC(SYSDATE)        --业务申请时间
                             AND TCA.SERVICE_TYPE IN ('1','2','3','6','7')
                             AND TCPA.FEE_STATUS <> '16'
@@ -1256,7 +1363,7 @@ class MethodController extends Controller
                             ON TCA.INSERT_BY = B.USER_ID
                                 WHERE 1=1
                                 AND TCPC.ORGAN_CODE LIKE '8647%'
-                                AND TRUNC(TCAC.INSERT_TIME) >= TO_DATE('2018/8/1','YYYY/MM/DD')
+                                AND TRUNC(TCAC.INSERT_TIME) >= TO_DATE('".$this->getStartDateString()."','YYYY/MM/DD')
                                 AND TRUNC(TCAC.INSERT_TIME) = TRUNC(SYSDATE)
                                 AND TCA.SERVICE_TYPE IN ('1','2','3','6','7')
                                 AND TCAC.SERVICE_CODE <> 'RE'
@@ -1274,7 +1381,7 @@ class MethodController extends Controller
         $statement = oci_parse($conn,$newDay);
         echo "新核心金额数据更新不等于复效 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
 
-        $newDay = "DELETE FROM TMP_NCS_QDBX_BQ_SFF;";
+        $newDay = "DELETE FROM TMP_NCS_QDBX_BQ_SFF";
         $statement = oci_parse($conn,$newDay);
         echo "清空新核心金额数据更新准备表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
         $newDay = "INSERT INTO TMP_NCS_QDBX_BQ_SFF
@@ -1293,7 +1400,7 @@ class MethodController extends Controller
                     WHERE 1=1
                         AND TCPA.DERIV_TYPE = '004'
                         AND TCPA.ORGAN_CODE LIKE '8647%'
-                        AND TCPA.BUSI_APPLY_DATE >= TO_DATE('2018/8/1','YYYY/MM/DD')
+                        AND TCPA.BUSI_APPLY_DATE >= TO_DATE('".$this->getStartDateString()."','YYYY/MM/DD')
                         AND TCPA.BUSI_APPLY_DATE <= TRUNC(SYSDATE)         --业务申请时间
                         AND TCA.SERVICE_TYPE IN ('1','2','3','6','7')
                         AND TCPA.FEE_STATUS <> '16'
@@ -1309,7 +1416,7 @@ class MethodController extends Controller
                         ON TCA.INSERT_BY = B.USER_ID
                             WHERE 1=1
                             AND TCPC.ORGAN_CODE LIKE '8647%'
-                            AND TRUNC(TCAC.INSERT_TIME) >= TO_DATE('2018/8/1','YYYY/MM/DD')
+                            AND TRUNC(TCAC.INSERT_TIME) >= TO_DATE('".$this->getStartDateString()."','YYYY/MM/DD')
                             AND TRUNC(TCAC.INSERT_TIME) = TRUNC(SYSDATE)
                             AND TCA.SERVICE_TYPE IN ('1','2','3','6','7')
                             AND TCAC.SERVICE_CODE = 'RE'
@@ -1320,8 +1427,7 @@ class MethodController extends Controller
         $statement = oci_parse($conn,$newDay);
         echo "新核心金额数据更新数据插入等于复效 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
         $newDay = "UPDATE TMP_NCS_QD_BX_BQSL_BD BD
-                    SET (NEW_GET_MONEY) = 
-                    (SELECT GETMONEY FROM TMP_NCS_QDBX_BQ_SFF UP
+                    SET (NEW_GET_MONEY) = (SELECT GETMONEY FROM TMP_NCS_QDBX_BQ_SFF UP
                     WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE)
                     WHERE EXISTS( SELECT 1 FROM TMP_NCS_QDBX_BQ_SFF UP WHERE BD.OLD_ACCEPT_CODE = UP.ACCEPT_CODE AND TRIM(BD.OLD_POLICY_CODE) = UP.POLICY_CODE)";
         $statement = oci_parse($conn,$newDay);
@@ -1355,19 +1461,19 @@ class MethodController extends Controller
 
         oci_free_statement($statement);
         oci_close($conn);
-        echo "保全数据更新结束 ：".time()."<br> ";
+        echo "保全数据更新结束 ：".date("h:i:sa")."<br> ";
     }
 
     //保全复核数据更新
     public function execLoadDataCSFH(){
         //解除30s限制
         set_time_limit(0);
-        echo "保全数据更新开始 ：".time()."<br> ";
-        $user_type = $this->getUserType();
-        if((int)$user_type!=1){
-            echo "请使用管理员账户登录后进行刷新数据！！！";
-            return;
-        }
+        echo "保全数据更新开始 ：".date("h:i:sa")."<br> ";
+//        $user_type = $this->getUserType();
+//        if((int)$user_type!=1){
+//            echo "请使用管理员账户登录后进行刷新数据！！！";
+//            return;
+//        }
         $conn = $this->OracleOldDBCon();
         echo "保全复核数据更新开始 <br>";
         $newDay = "DELETE FROM TMP_NCS_QD_BX_BQFH_TJ";
@@ -1519,7 +1625,7 @@ class MethodController extends Controller
         echo "新核心既往数据更新 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
         oci_free_statement($statement);
         oci_close($conn);
-        echo "保全数据更新结束 ：".time()."<br> ";
+        echo "保全数据更新结束 ：".date("h:i:sa")."<br> ";
 
     }
 
@@ -1527,12 +1633,12 @@ class MethodController extends Controller
     public function reloadTc(){
         //解除30s限制
         set_time_limit(0);
-        echo "TC数据更新开始 ：".time()."<br> ";
-        $user_type = $this->getUserType();
-        if((int)$user_type!=1){
-            echo "请使用管理员账户登录后进行刷新数据！！！";
-            return;
-        }
+        echo "TC数据更新开始 ：".date("h:i:sa")."<br> ";
+//        $user_type = $this->getUserType();
+//        if((int)$user_type!=1){
+//            echo "请使用管理员账户登录后进行刷新数据！！！";
+//            return;
+//        }
         //重加载TC数据
         $queryTc = "select b.bug_new_id,b.date_submitted, u.id,b.severity,b.`status`,c.value15,c.value16,c.value17,c.value18 from bug_table b ,custom_field_value_table c,`user_table` u  where u.id = b.reporter_id and b.id = c.bug_id";
         //查询TC数据
@@ -1568,7 +1674,7 @@ class MethodController extends Controller
         oci_close($conn);
         //加载TC数据
         $this->getImpTc();
-        echo "TC数据更新结束 ：".time()."<br> ";
+        echo "TC数据更新结束 ：".date("h:i:sa")."<br> ";
     }
 
     //TC更新
@@ -1603,16 +1709,18 @@ class MethodController extends Controller
     public function getUserLock($user_account){
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-        $user_select  = "SELECT IS_LOCK FROM TMP_DAYPOST_USER WHERE ACCOUNT = '".$user_account."'";
+        $user_select  = "SELECT IS_LOCK,IS_ADD_DATA FROM TMP_DAYPOST_USER WHERE ACCOUNT = '".$user_account."'";
         $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
         $user_result =  $method->search_long($result_rows);
         oci_free_statement($result_rows);
         oci_close($conn);
 //        dump($user_result);
         if((int)$user_result[0]['IS_LOCK'] == 1){
-            return true;
+            return 1;
+        }else if((int)$user_result[0]['IS_ADD_DATA'] == 1){
+            return 2;
         }else{
-            return false;
+            return 0;
         }
     }
 
@@ -1898,10 +2006,6 @@ class MethodController extends Controller
     }
 
     public function test(){
-        $user_type = $this->getUserType();
-        $user_name = $this->getUserName();
-        dump($user_type);
-        dump($user_name);
     }
 
     //所有用户可见
@@ -1969,7 +2073,7 @@ class MethodController extends Controller
             $where_bulu = " NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
         }
         if(empty($queryDate)&&strcmp($queryType,"1")==0){
-            $queryDate = date(‘yyyy-mm-dd’,time());
+            $queryDate = date('yyyy-mm-dd',time());
             $where_OLD_time_query = " 1=1 ";
             $where_new_time_query = " 1=1 AND OLD_INSERT_TIME = NEW_INSERT_TIME ";
             $where_bulu = " 1=1 ";
