@@ -24,4 +24,8 @@ return  array(
     'TMPL_STRIP_SPACE'      =>  false,       // 是否去除模板文件里面的html空格与换行
     'SHOW_ERROR_MSG'        =>  true,    // 显示错误信息
     'URL_CASE_INSENSITIVE'  =>  false,  // URL区分大小写
+    'SHOW_ADV_TIME'=>true,     // 显示详细的运行时间
+    'SHOW_DB_TIMES'=>true,     // 显示数据库查询和写入次数
+    'SHOW_CACHE_TIMES'=>true,    // 显示缓存操作次数
+    'SHOW_USE_MEM'=>true,      // 显示内存开销
 );

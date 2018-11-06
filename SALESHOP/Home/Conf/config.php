@@ -11,7 +11,9 @@ return array(
     'DB_PREFIX'=>'',
     'DB_CHARSET'=>'utf8',
     'DB_DEBUG'=> TRUE,
-    'URL_HTML_SUFFIX'=>''
+    'URL_HTML_SUFFIX'=>'',
+    'LOG_RECORD'=>true,//开启了日志记录
+    'LOG_RECORD_LEVEL'=>array('EMERG','ALERT','ERROR')
 
     //销售数据库
 //    'DB_TYPE'=>'mysql',

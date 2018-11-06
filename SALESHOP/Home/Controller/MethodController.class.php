@@ -8,6 +8,7 @@
 
 namespace Home\Controller;
 use Think\Controller;
+use Think\Log;
 
 class MethodController extends Controller
 {
@@ -57,6 +58,7 @@ class MethodController extends Controller
         $info = explode('-', $token);
         if (strcmp($info[2],"success") == 0) {
             $admin = $info[0];
+            Log::write($admin.'用户登录，登录时间：'.time()."<br>",'INFO');
             if($this->publicCheck()){
                 return false;
             }
@@ -196,6 +198,8 @@ class MethodController extends Controller
         $db_pwd='ncl_1';
         //连接Oracle
         $conn = oci_connect($db_user_name,$db_pwd,$db_host_name);
+        $user_name = $this->getUserName();
+        Log::write($user_name.' 获取数据库链接时间：'.time()."<br>",'INFO');
         if (!$conn) {
             $e = oci_error();
             return false;
@@ -1923,7 +1927,6 @@ class MethodController extends Controller
         $conn = $this->OracleOldDBCon();
         $result_rows = oci_parse($conn, $sql); // 配置SQL语句，执行SQL
         oci_execute($result_rows, OCI_DEFAULT); // 行数  OCI_DEFAULT表示不要自动commit
-        oci_fetch_array($result_rows,OCI_RETURN_NULLS);
         //封装函数
         while($row = oci_fetch_array($result_rows, OCI_RETURN_NULLS))
             $result[] = $row;
