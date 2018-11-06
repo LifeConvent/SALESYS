@@ -12,15 +12,18 @@ $(function () {
     oTable.Init();
 //        $[sessionStorage] = oTable.queryParams;
 
-    //2.初始化Button的点击事件
-    var oButtonInit = new ButtonInit();
-    oButtonInit.Init();
+    $('#modify_user_account').val($('#username').val());
 
-    $('input').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
-        increaseArea: '2%' // optional
-    });
+    //2.初始化Button的点击事件
+    // var oButtonInit = new ButtonInit();
+    // oButtonInit.Init();
+    //
+    //
+    // $('input').iCheck({
+    //     checkboxClass: 'icheckbox_square-green',
+    //     radioClass: 'iradio_square-green',
+    //     increaseArea: '2%' // optional
+    // });
 
 
 });
@@ -365,4 +368,44 @@ $('#new_user').click(function() {
             }
         });
     }
+});
+
+$('#modify_pass').click(function(){
+    var modify_user_account = $('#modify_user_account').val();
+    var modify_old_pass = $('#modify_old_pass').val();
+    var modify_new_pass = $('#modify_new_pass').val();
+    if(modify_old_pass==""||modify_new_pass==""){
+        $.scojs_message("请输入必填项后再进行提交！", $.scojs_message.TYPE_ERROR);
+    }else if(modify_old_pass==modify_new_pass){
+        $.scojs_message("新密码不可与原始密码相同！", $.scojs_message.TYPE_ERROR);
+    }else{
+        modify_new_pass = hex_md5(modify_new_pass);
+        modify_old_pass = hex_md5(modify_old_pass);
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/UserManage/modifyPass", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                modify_old_pass: modify_old_pass,
+                modify_new_pass: modify_new_pass,
+                modify_user_account:modify_user_account
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                    window.location.href = HOST + "index.php/Home/Index/index";
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+
 });

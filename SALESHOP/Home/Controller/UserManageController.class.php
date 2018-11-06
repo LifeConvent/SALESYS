@@ -278,6 +278,42 @@ class UserManageController extends Controller
         exit(json_encode($result));
     }
 
+    public function modifyPass(){
+        $method = new MethodController();
+        ##############################################################  公共JS处理部分  ############################################################################
+        //JS请求公共处理部分 TRUE锁定
+        if($method->publicCheck()){
+            $result['status'] = "failed";
+            $result['lock'] = "true";
+            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }
+        ############################################################################################################################################################
+        $modify_old_pass = I('post.modify_old_pass');
+        $modify_new_pass = I('post.modify_new_pass');
+        $modify_user_account = I('post.modify_user_account');
+        $conn = $method->OracleOldDBCon();
+        $user_add  = "SELECT * FROM TMP_DAYPOST_USER WHERE ACCOUNT = '".$modify_user_account."'";
+        $result_rows = oci_parse($conn, $user_add); // 配置SQL语句，执行SQL
+        $user_result =  $method->search_long($result_rows);
+        if(strcmp($user_result[0]['PASS'],$modify_old_pass)!=0){
+            $result['status'] = "failed";
+            $result['message'] = "原密码输入错误，密码修改失败！！！";
+            exit(json_encode($result));
+        }
+        $user_add  = "UPDATE TMP_DAYPOST_USER SET PASS = '".$modify_new_pass."' WHERE ACCOUNT = '".$modify_user_account."'";
+        $result_rows = oci_parse($conn, $user_add); // 配置SQL语句，执行SQL
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
+            $result['status'] = "success";
+            $result['message'] = "用户密码修改成功！";
+            $_SESSION['token'] = '';
+        } else {
+            $result['status'] = "failed";
+            $result['message'] = "密码修改失败，请联系管理员或稍后再试！";
+        }
+        exit(json_encode($result));
+    }
+
     public function postModifyUser(){
 //        $user_account = I('post.user_account');
 //        $user_type = I('post.user_type');
