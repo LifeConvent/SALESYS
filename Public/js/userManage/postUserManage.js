@@ -207,7 +207,7 @@ function actionFormatter_account(value, row, index) {
     return '<input id="account'+ index+'" class="form-control" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
 }
 function actionFormatter_type(value, row, index) {
-    return '<input id="type'+ index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+    return '<input id="input_type'+ index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
 }
 function actionFormatter_user_name(value, row, index) {
     return '<input id="user_name'+ index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
@@ -244,7 +244,13 @@ window.actionEvents = {
 
 window.actionEvents1 = {
     'click .lock': function (e, value, row, index) {
-        $(".user_input"+index).removeAttr("disabled");
+        var type = $('#usertype').val();
+        if(type!="1"){
+            $(".user_input"+index).removeAttr("disabled");
+            $("#input_type"+index).attr("disabled","disabled");
+        }else{
+            $(".user_input"+index).removeAttr("disabled");
+        }
     },
     'click .modify': function (e, value, row, index) {
         // ajax提交数据
