@@ -477,5 +477,55 @@ $('#execLoadDataCLMSHSP').click(function(){
     a.dispatchEvent(e);
 });
 
+//灌数开始
+$('#startLoadData').click(function(){
+    var username = $('#username').val();
+    $.ajax({
+        type: "POST", //用POST方式传输
+        url: HOST + "index.php/Home/Method/startLoadData", //目标地址.
+        dataType: "json", //数据格式:JSON
+        data: {
+            username: username
+        },
+        success: function (result) {
+            if (result.status == 'success') {
+                $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+            } else if (result.status == 'failed') {
+                $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest);
+            alert(textStatus);
+            alert(errorThrown);
+        }
+    });
+});
+
+//灌数结束
+$('#endLoadData').click(function(){
+    var username = $('#username').val();
+    $.ajax({
+        type: "POST", //用POST方式传输
+        url: HOST + "index.php/Home/Method/endLoadData", //目标地址.
+        dataType: "json", //数据格式:JSON
+        data: {
+            username: username
+        },
+        success: function (result) {
+            if (result.status == 'success') {
+                $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+            } else if (result.status == 'failed') {
+                $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest);
+            alert(textStatus);
+            alert(errorThrown);
+        }
+    });
+});
+
 
 

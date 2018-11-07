@@ -490,6 +490,7 @@ class MethodController extends Controller
                      AND T.UW_SOURCE_TYPE = '2' -- 保全人核的
                      AND T.ORGAN_CODE LIKE '8647%' -- 青岛分公司的
                      AND X.UW_STATUS_DETAIL = '0401' -- 人工核保完成的
+                     AND B.User_Name IS NOT NULL
                      AND TRUNC(X.UW_FINISH_TIME) >= TO_DATE('".$this->getStartDateString()."', 'YYYY/MM/DD')
                      AND TRUNC(X.UW_FINISH_TIME) <= TRUNC(SYSDATE)";
         $statement = oci_parse($conn,$newDay);
@@ -1706,6 +1707,55 @@ class MethodController extends Controller
         oci_close($conn);
     }
 
+    //开始灌输
+    public function startLoadData(){
+        $username = I('post.username');
+        if(empty($username)){
+            $result['status'] = 'failed';
+            $result['message'] = '登录状态已失效，请重新登录后进行操作！';
+            exit(json_encode($result));
+        }
+        $update_sql = "UPDATE TMP_DAYPOST_USER SET IS_ADD_DATA = '1' WHERE ACCOUNT =  '".$username."'";
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $result_rows = oci_parse($conn, $update_sql); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = 'success';
+            $result['message'] = '用户已成功设置开始灌输！';
+        }else{
+            $result['status'] = 'failed';
+            $result['message'] = "系统设置灌数开始失败，请联系管理员！";
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
+    }
+
+    //灌输结束
+    public function endLoadData(){
+        $username = I('post.username');
+        if(empty($username)){
+            $result['status'] = 'failed';
+            $result['message'] = '登录状态已失效，请重新登录后进行操作！';
+            exit(json_encode($result));
+        }
+        $update_sql = "UPDATE TMP_DAYPOST_USER SET IS_ADD_DATA = '0' WHERE ACCOUNT =  '".$username."'";
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $result_rows = oci_parse($conn, $update_sql); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = 'success';
+            $result['message'] = '用户已成功设置结束灌输！';
+        }else{
+            $result['status'] = 'failed';
+            $result['message'] = "系统设置灌数结束失败，请联系管理员！";
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
+    }
+
+    //获取用户锁
     public function getUserLock($user_account){
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -1724,6 +1774,7 @@ class MethodController extends Controller
         }
     }
 
+    //日报系统公共校验
     public function publicCheck(){
         //公共用户锁定校验部分
         $token = $_SESSION['token'];
@@ -1736,6 +1787,7 @@ class MethodController extends Controller
         return $this->getUserLock($admin);
     }
 
+    //获取用户机构码
     public function getUserOrganCode(){
 //        $org_code = array(
 //            "gaobiao_bx" => "8647",
@@ -1756,6 +1808,7 @@ class MethodController extends Controller
         return $org_code;
     }
 
+    //获取保全复核用户
     public function getFuheUser(){
 //        $org = array("tangjia_bx","tangjia2_bx");
         $method = new MethodController();
@@ -1777,6 +1830,7 @@ class MethodController extends Controller
         return $org;
     }
 
+    //获取理赔室用户
     public function getClmUser(){
 //        $org = array("","");
         $method = new MethodController();
@@ -1794,6 +1848,7 @@ class MethodController extends Controller
         return $org;
     }
 
+    //获取异地作业用户
     public function getOtherUser(){
 //        $org = array("","");
         $method = new MethodController();
@@ -1811,6 +1866,7 @@ class MethodController extends Controller
         return $org;
     }
 
+    //获取核保室用户
     public function getUwUser(){
 //        $org = array("yangyixuan_bx","");
         $method = new MethodController();
@@ -1828,6 +1884,7 @@ class MethodController extends Controller
         return $org;
     }
 
+    //获取机构名称
     public function getOrgName()
     {
         $org_name = array(
@@ -1846,6 +1903,7 @@ class MethodController extends Controller
         return $org_name;
     }
 
+    //老核心用户作业机构
     public function getUserDictArray(){
         $user_dict = array("yangyxit"=>"分公司核保室",
             "tangjia"=>"分公司保全室",
@@ -1984,6 +2042,7 @@ class MethodController extends Controller
         exit(json_encode($result));
     }
 
+    //通知函数暂不使用
     public function finishNotice(){
         $user_name = $_POST['username'];
         $user_type = $_POST['usertype'];
@@ -2008,25 +2067,7 @@ class MethodController extends Controller
     public function test(){
     }
 
-    //所有用户可见
-//    public function getWaitDefineNotice(){
-//        $conn = $this->OracleOldDBCon();
-//        $user_name = $this->getUserName();
-////        dump($user_name);
-//        $notice_select  = "SELECT COUNT(IS_NOTICE) AS NUM FROM TMP_DATALOAD_REQUEST WHERE REQUEST_ACCOUNT = '".$user_name."'  AND IS_NOTICE = '0' AND IF_FINISH = '1' ";
-//        $result_rows = oci_parse($conn, $notice_select); // 配置SQL语句，执行SQL
-//        $user_result =  $this->search_long($result_rows);
-//        if((int)$user_result[0]['NUM']>0){
-//            $result['status'] = 'success';
-//            $result['message'] = '您有 '.$user_result[0]['NUM'].' 条数据刷新申请已处理完成，请及时查看！！！';
-//        }else{
-//            $result['status'] = 'failed';
-//        }
-//        oci_free_statement($result_rows);
-//        oci_close($conn);
-//        exit(json_encode($result));
-//    }
-
+    //数据库Orcale短查询
     public function search_short($sql){
         $conn = $this->OracleOldDBCon();
         $result_rows = oci_parse($conn, $sql); // 配置SQL语句，执行SQL
@@ -2040,6 +2081,7 @@ class MethodController extends Controller
         return $result;
     }
 
+    //数据库长查询
     public function search_long($result_rows){
         oci_execute($result_rows, OCI_DEFAULT); // 行数  OCI_DEFAULT表示不要自动commit
         //封装函数
@@ -2049,6 +2091,7 @@ class MethodController extends Controller
         return $result;
     }
 
+    //加载日报数据
     public function loadDayPostData(){
         $licang = 1;
         $xiaoji = $licang+9;

@@ -36,6 +36,9 @@ class PersonDefineFinishWorkController extends Controller
         $description = $_POST['description'];
         $link_business = $_POST['link_business'];
         $business_type = $_POST['business_type'];
+        if(empty($policy_code)||strcmp($policy_code,"-")==0){
+            $policy_code = $business_code;
+        }
 //        $new_user_name = I('post.new_user_name');
 //        $business_code = I('post.business_code');
 //        $policy_code = I('post.policy_code');
