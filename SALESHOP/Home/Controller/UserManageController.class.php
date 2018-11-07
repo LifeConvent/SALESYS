@@ -9,6 +9,7 @@
 namespace Home\Controller;
 
 use Think\Controller;
+use Think\Log;
 
 class UserManageController extends Controller
 {
@@ -306,31 +307,22 @@ class UserManageController extends Controller
     }
 
     public function postModifyUser(){
-//        $user_account = I('post.user_account');
-//        $user_type = I('post.user_type');
-//        $user_name = I('post.user_name');
-//        $user_organ_code = I('post.user_organ_code');
-//        $user_organ_name = I('post.user_organ_name');
-//        $user_sex = I('post.user_sex');
-//        $buss_area = I('post.buss_area');
-//        $is_lock = I('post.is_lock');
-//        $is_add_data = I('post.is_add_data');
-//        $user_company = I('post.user_company');
-
-        $user_account = "gaobiao_bx";
-        $user_type = "1";
-        $user_name = "高彪";
-        $user_organ_code = "86";
-        $user_organ_name = "总公司";
-        $user_sex = "男";
-        $buss_area = "技术支持";
-        $is_lock = 0;
-        $is_add_data = 1;
-        $user_company = "总公司PMO";
+        $user_account = I('post.user_account');
+        $user_type = I('post.user_type');
+        $user_name = I('post.user_name');
+        $user_organ_code = I('post.user_organ_code');
+        $user_organ_name = I('post.user_organ_name');
+        $user_sex = I('post.user_sex');
+        $buss_area = I('post.buss_area');
+        $is_lock = I('post.is_lock');
+        $is_add_data = I('post.is_add_data');
+        $user_company = I('post.user_company');
 
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         $user_modify  = "UPDATE TMP_DAYPOST_USER SET TYPE = '".$user_type."' , USER_NAME = '".$user_name."' , USER_ORGAN_CODE = '".$user_organ_code."' , USER_ORGAN_NAME = '".$user_organ_name."' , USER_SEX = '".$user_sex."' , BUSS_AREA = '".$buss_area."' , IS_LOCK = '".$is_lock."' , IS_ADD_DATA = '".$is_add_data."' , USER_COMPANY = '".$user_company."'WHERE ACCOUNT = '".$user_account."'";
+
+        Log::write('用户： '.$user_name.' 执行SQL：'.$user_modify."<br>",'INFO');
         $result_rows = oci_parse($conn, $user_modify); // 配置SQL语句，执行SQL
 //        dump($user_modify);
         if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {

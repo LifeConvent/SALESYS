@@ -128,6 +128,9 @@ class PersonDefineFinishWorkController extends Controller
         $method->checkIn($user_name);
         #33 保全受理、复核处理个人待查询列表
         $orgName = $method->getOrgName();
+        $fuhe_user = $method->getFuheUser();
+        $clm_user = $method->getClmUser();
+        $uw_user = $method->getUwUser();
         if((int)$userType==1){
             $where_type_fix = "";
        }else if((int)$userType==2){
@@ -140,9 +143,6 @@ class PersonDefineFinishWorkController extends Controller
        if(in_array($user_name,$otherUser)){
            $where_type_fix =  " AND OLD_ORGAN_CODE NOT LIKE '8647%'";
        }
-        $fuhe_user = $method->getFuheUser();
-        $clm_user = $method->getClmUser();
-        $uw_user = $method->getUwUser();
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与

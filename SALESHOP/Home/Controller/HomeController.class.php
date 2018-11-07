@@ -35,8 +35,8 @@ class HomeController extends Controller
             $res = $this->dealHomeCount();
             $j=0;
             for ($i = 6; $i >= 0; $i--) {
-                $new[$j] = (int)$res[$i]['all_user'];//new
-                $tc_time[$j] = $res[$i]['time_nb'];//time_tc
+                $new[$j] = (int)$res[$i]['new'];//new
+                $tc_time[$j] = $res[$i]['time_tc'];//time_tc
                 $all_user[$j] = (int)$res[$i]['all_user'];
                 $nb_time[$j] = $res[$i]['time_nb'];
                 $survey[$j] = (int)$res[$i]['survey'];
@@ -45,7 +45,7 @@ class HomeController extends Controller
                 $cs_time[$j] = $res[$i]['time_cs'];
                 $j++;
             }
-                $new_ = (int)$res['nb_sum'];//new
+                $new_ = (int)$res['tc_sum'];//tc_sum
                 $all_user_ = (int)$res['nb_sum'];
                 $survey_ = (int)$res['clm_sum'];
                 $is_match_ = (int)$res['cs_sum'];
@@ -154,7 +154,15 @@ class HomeController extends Controller
             $result[$i]['survey'] = $clm_result_new_time[$i]['NUM'];
         }
         #####################################################################  TC数据查询  #####################################################################
-        #039
+        $tc_cursor = M();
+        $tcSQl = $method->getTcSql();
+        $res = $tc_cursor->query($tcSQl['home_sum']);
+        for($i=0;$i<7;$i++){
+            $result[$i]['time_tc'] = $res[$i]['time'];
+            $result[$i]['new'] = $res[$i]['num'];
+        }
+        $res = $tc_cursor->query($tcSQl['sum']);
+        $result['tc_sum'] = $res[0]['num'];
         oci_free_statement($result_rows);
         oci_close($conn);
 //        dump($result);

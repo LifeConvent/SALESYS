@@ -207,7 +207,7 @@ function actionFormatter_account(value, row, index) {
     return '<input id="account'+ index+'" class="form-control" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
 }
 function actionFormatter_type(value, row, index) {
-    return '<input id="input_type'+ index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
+    return '<input id="type'+ index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
 }
 function actionFormatter_user_name(value, row, index) {
     return '<input id="user_name'+ index+'" class="form-control user_input'+index +'" style="height: 20pt;width: 130pt" value="'+ value +'" disabled></input>';
@@ -247,7 +247,7 @@ window.actionEvents1 = {
         var type = $('#usertype').val();
         if(type!="1"){
             $(".user_input"+index).removeAttr("disabled");
-            $("#input_type"+index).attr("disabled","disabled");
+            $("#type"+index).attr("disabled","disabled");
         }else{
             $(".user_input"+index).removeAttr("disabled");
         }

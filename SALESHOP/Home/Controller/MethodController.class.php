@@ -1641,18 +1641,23 @@ class MethodController extends Controller
 //            return;
 //        }
         //重加载TC数据
-        $queryTc = "select b.bug_new_id,b.date_submitted, u.id,b.severity,b.`status`,c.value15,c.value16,c.value17,c.value18 from bug_table b ,custom_field_value_table c,`user_table` u  where u.id = b.reporter_id and b.id = c.bug_id";
+        $tc_fix = $this->getTcFix();
+        $queryTc = "select bt.bug_new_id,bt.date_submitted, ut.id,ut.username,bt.severity,bt.`status`,cfvt.value3,cfvt.value15,cfvt.value16,cfvt.value17,cfvt.value18 
+                    from bug_table bt ,custom_field_value_table cfvt,`user_table` ut  
+                    where ut.id = bt.reporter_id ".$tc_fix." and bt.id = cfvt.bug_id";
         //查询TC数据
         $tc_cursor = M();
         $res = $tc_cursor->query($queryTc);
         for($i=0;$i<=sizeof($res);$i++){
             $result[$i]['ID'] = $res[$i]['bug_new_id'];
             $result[$i]['CREATE_TIME'] = $res[$i]['date_submitted'];
+            $result[$i]['USER_NAME'] = $res[$i]['username'];
             $result[$i]['PONDERANCE'] = $res[$i]['severity'];
             $result[$i]['STATE'] = $res[$i]['status'];
             $result[$i]['LOCAL'] = $res[$i]['value16'];
             $result[$i]['FIND_NODE'] = $res[$i]['value17'];
             $result[$i]['POLICY_CODE'] = $res[$i]['value18'];
+            $result[$i]['DISCOVER_STEP'] = $res[$i]['value3'];
         }
         //连接数据库
         $conn = $this->OracleOldDBCon();
@@ -1666,7 +1671,9 @@ class MethodController extends Controller
             $LOCAL = $value['LOCAL'];
             $FIND_NODE = $value['FIND_NODE'];
             $POLICY_CODE = $value['POLICY_CODE'];
-            $query_insert = "INSERT INTO TMP_TC_CDQCB(ID,CREAT_TIME,PONDERANCE,STATE,LOCAL,FIND_NODE,POLICY_CODE) VALUES('".$ID."',to_date('".$CREAT_TIME."','YYYY/MM/DD hh24:mi:ss'),'".$PONDERANCE."','".$STATE."','".$LOCAL."','".$FIND_NODE."','".$POLICY_CODE."')";
+            $USER_NAME = $value['USER_NAME'];
+            $DISCOVER_STEP = $value['DISCOVER_STEP'];
+            $query_insert = "INSERT INTO TMP_TC_CDQCB(ID,CREAT_TIME,PONDERANCE,STATE,LOCAL,FIND_NODE,POLICY_CODE,USER_NAME,DISCOVER_STEP) VALUES('".$ID."',to_date('".$CREAT_TIME."','YYYY/MM/DD hh24:mi:ss'),'".$PONDERANCE."','".$STATE."','".$LOCAL."','".$FIND_NODE."','".$POLICY_CODE."','".$USER_NAME."','".$DISCOVER_STEP."')";
 //          echo $query_insert;
             $statement = oci_parse($conn,$query_insert);
             echo $ID."单条插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
@@ -1682,7 +1689,7 @@ class MethodController extends Controller
     public function getImpTc(){
         $conn = $this->OracleOldDBCon();
         //回写TC数据
-        $update_nb_sql = "update tmp_bx_old_cdqcb  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null  group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_APPL_CODE))";
+        $update_nb_sql = "update tmp_bx_old_cdqcb  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null  group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_APPLE_CODE))";
         $update_uw_sql = "update TMP_UW_LIST  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_APPLE_CODE))";
         $update_clm_sl_sql = "update TMP_NCS_QD_BX_LPBA_BD  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null  group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_CASE_CODE))";
         $update_clm_sp_sql = "update TMP_NCS_QD_BX_LPSHSP_BD  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null  group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_CASE_CODE))";
@@ -1690,7 +1697,7 @@ class MethodController extends Controller
         $update_cs_sp_sql = "update TMP_NCS_QD_BX_BQFH_BD  tt set tt.tc_id  = (select id from (select trim(policy_code) policy_code, (LISTAGG(id, ',') WITHIN group(order by id)) as id  from tmp_tc_cdqcb t  where t.policy_code is not null  group by trim(t.policy_code)) tc where trim(tc.policy_code) = trim(tt.OLD_ACCEPT_CODE))";
         $statement = oci_parse($conn,$update_nb_sql);
         //增加日志记录节点（所有无输出的数据库查询）
-        echo "执行更新结果 <br>";
+        echo "执行更新开始 <br>";
         echo "契约部分-TC刷新-刷新结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
         $statement = oci_parse($conn,$update_uw_sql);
         echo "核保-TC刷新-刷新结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)."<br>";
@@ -1705,6 +1712,22 @@ class MethodController extends Controller
         //释放资源
         oci_free_statement($statement);
         oci_close($conn);
+    }
+
+    public function getTcFix(){
+        $tc_fix = " AND cfvt.value3 IN ('11-第二次青岛并行','12-第二次技术并行','13-第二次数据并行') ";
+        $tc_fix = " ";
+        return $tc_fix;
+    }
+
+    public function getTcSql(){
+        $tc_fix = $this->getTcFix();
+        $res = array(
+            "home_sum"=>"SELECT DATE_FORMAT(bt.date_submitted,'%Y-%m-%d') AS TIME,COUNT(*) AS NUM FROM bug_table bt LEFT JOIN custom_field_value_table cfvt ON bt.id = cfvt.bug_id 
+                              WHERE 1=1 ".$tc_fix." GROUP BY DATE_FORMAT(bt.date_submitted,'%Y-%m-%d') ORDER BY bt.date_submitted ASC LIMIT 7;",
+            "sum" => "SELECT COUNT(*) AS NUM FROM bug_table bt LEFT JOIN custom_field_value_table cfvt ON bt.id = cfvt.bug_id WHERE 1=1 ".$tc_fix.";"
+        );
+        return $res;
     }
 
     //开始灌输
