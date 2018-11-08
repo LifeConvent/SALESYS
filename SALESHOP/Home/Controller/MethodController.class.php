@@ -2187,12 +2187,12 @@ class MethodController extends Controller
             $queryDateEnd = I('get.queryDateEnd');
             $where_OLD_time_query = " OLD_INSERT_TIME BETWEEN to_date('".$queryDateStart."','yyyy-mm-dd') AND to_date('".$queryDateEnd."','yyyy-mm-dd') ";
             $where_new_time_query = " NEW_INSERT_TIME BETWEEN to_date('".$queryDateStart."','yyyy-mm-dd') AND to_date('".$queryDateEnd."','yyyy-mm-dd') ";
-            $where_bulu = $where_new_time_query;
+            $where_bulu = $where_OLD_time_query;
             $tc_time_where = " AND DATE_FORMAT(bt.last_updated,'%Y-%m-%d') BETWEEN DATE_FORMAT('".$queryDateStart."','%Y-%m-%d') AND DATE_FORMAT('".$queryDateEnd."','%Y-%m-%d')";
         }else{
             $where_OLD_time_query = " OLD_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
             $where_new_time_query = " NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') AND OLD_INSERT_TIME = NEW_INSERT_TIME ";
-            $where_bulu = " NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
+            $where_bulu = " OLD_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
             $tc_time_where = " AND DATE_FORMAT(bt.last_updated,'%Y-%m-%d') = DATE_FORMAT('".$queryDate."','%Y-%m-%d') ";
         }
         if(empty($queryDate)&&strcmp($queryType,"1")==0){
@@ -2469,13 +2469,6 @@ class MethodController extends Controller
                     $temp[$xiaoji]['cs_new_count'] += (int)$value['NUM'];
                 }
             }
-            #004
-//            foreach ($result_new_null as &$value) {
-//                if($userDire[$value['USER_NAME']]==$org[$i]&&$org[$i]!='小计'){
-//                    $result[$i]['cs_cannt_count'] += (int)$value['NUM'];
-//                    $temp['cs_cannt_count'] += (int)$value['NUM'];
-//                }
-//            }
             #003
             foreach ($result_new_no_old_time as &$value) {
                 if(strcmp($userDire[$value['USER_NAME']],$org[$i])==0&&!empty($userDire[$value['USER_NAME']])){
@@ -2526,8 +2519,6 @@ class MethodController extends Controller
         //保全数据查询
 //        $where_OLD_time_query = "OLD_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd')";
 //        $where_new_time_query = "NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
-        $userOne = "tangjia_bx";
-        $userTwo = "tangjia2_bx";
         $fuhe_user = $this->getFuheUser();
 
         #007 保全复核老核心当天
@@ -2555,7 +2546,7 @@ class MethodController extends Controller
         #老核心复核数量一新核心为准进行计算
             foreach ($result_old_time_fh as &$value) {
 //                strcmp($value['NEW_USER_NAME'],$userOne)==0||strcmp($value['NEW_USER_NAME'],$userTwo)==0
-                if(in_array($value['NEW_USER_NAME'],$fuhe_user)){
+                if(in_array($value['NEW_USER_NAME'],$fuhe_user)||empty($value['NEW_USER_NAME'])){
                     $result[$fenOrganfh]['cs_old_count'] += (int)($value['NUM']);
                 }else{
                     $result[$zuoYeZhongXin]['cs_old_count'] += (int)($value['NUM']);
@@ -2564,7 +2555,7 @@ class MethodController extends Controller
         $temp[$heji]['cs_old_count'] += $temp[$xiaoji]['cs_old_count'] + $result[$zuoYeZhongXin]['cs_old_count'] + $result[$fenOrganfh]['cs_old_count'];
             #008
             foreach ($result_new_old_time_fh as &$value) {
-                if(in_array($value['NEW_USER_NAME'],$fuhe_user)){
+                if(in_array($value['NEW_USER_NAME'],$fuhe_user)||empty($value['NEW_USER_NAME'])){
                     $result[$fenOrganfh]['cs_new_count'] += (int)($value['NUM']);
                     $result[$fenOrganfh]['cs_fysame_count'] += (int)($value['NUM']);
                 }else{
