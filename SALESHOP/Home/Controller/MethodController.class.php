@@ -1715,17 +1715,25 @@ class MethodController extends Controller
     }
 
     public function getTcFix(){
-        $tc_fix = " AND cfvt.value3 IN ('11-第二次青岛并行','12-第二次技术并行','13-第二次数据并行') ";
-        $tc_fix = " ";
+//        $tc_fix = " AND cfvt.value3 IN ('11-第二次青岛并行','12-第二次技术并行','13-第二次数据并行') ";
+        $tc_fix = " AND cfvt.value3 IN ('8-青岛并行','9-技术并行','10-数据并行') ";
         return $tc_fix;
     }
 
     public function getTcSql(){
+#                            AND DATE_FORMAT(bt.last_updated,'%Y-%m-%d') = DATE_FORMAT(current_date,'%Y-%m-%d')
         $tc_fix = $this->getTcFix();
         $res = array(
             "home_sum"=>"SELECT DATE_FORMAT(bt.date_submitted,'%Y-%m-%d') AS TIME,COUNT(*) AS NUM FROM bug_table bt LEFT JOIN custom_field_value_table cfvt ON bt.id = cfvt.bug_id 
                               WHERE 1=1 ".$tc_fix." GROUP BY DATE_FORMAT(bt.date_submitted,'%Y-%m-%d') ORDER BY bt.date_submitted ASC LIMIT 7;",
-            "sum" => "SELECT COUNT(*) AS NUM FROM bug_table bt LEFT JOIN custom_field_value_table cfvt ON bt.id = cfvt.bug_id WHERE 1=1 ".$tc_fix.";"
+            "sum" => "SELECT COUNT(*) AS NUM FROM bug_table bt LEFT JOIN custom_field_value_table cfvt ON bt.id = cfvt.bug_id WHERE 1=1 ".$tc_fix.";",
+            "pro_fix" => "select cfvt.value17,cfvt.value16,COUNT(*) AS NUM
+                            from bug_table bt ,custom_field_value_table cfvt,`user_table` ut  
+                            where ut.id = bt.reporter_id ".$tc_fix."
+                            AND DATE_FORMAT(bt.last_updated,'%Y-%m-%d') = DATE_FORMAT('2018-08-31','%Y-%m-%d')
+                            AND bt.id = cfvt.bug_id
+                            AND bt.`status` IN ('8','11')
+                            GROUP BY cfvt.value17,cfvt.value16;"
         );
         return $res;
     }
@@ -2004,10 +2012,8 @@ class MethodController extends Controller
 
     public function getDataObject(){
         $data_object = array(
-//            "org"=>"o",
                                 "nb_old_count",
                                 "nb_new_count",
-//                                "nb_cannt_count",
                                 "nb_fix_count",
                                 "nb_pro_count",
                                 "nb_profix_count",
@@ -2015,19 +2021,39 @@ class MethodController extends Controller
                                 "nb_bfsame_count",
                                 "cs_old_count",
                                 "cs_new_count",
-//                                "cs_cannt_count",
                                 "cs_fix_count",
                                 "cs_pro_count",
                                 "cs_profix_count",
                                 "cs_fysame_count",
                                 "clm_old_count",
                                 "clm_new_count",
-//                                "clm_cannt_count",
                                 "clm_fix_count",
                                 "clm_pro_count",
                                 "clm_profix_count",
                                 "clm_fysame_count");
         return $data_object;
+    }
+
+    public function getObjectIndex(){
+
+        $index = array(
+            "本部" => 0,
+            "李沧" => 1,
+            "平度" => 2,
+            "胶南" => 3,
+            "即墨" => 4,
+            "胶州" => 5,
+            "城阳" => 6,
+            "莱西" => 7,
+            "开发区" => 8,
+            "市南" => 9,
+            "小计" => 10,
+            "分公司核保室" => 11,
+            "分公司保全室" => 12,
+            "分公司理赔室" => 13,
+            "总公司作业中心" => 14,
+            "合计" => 15);
+        return $index;
     }
 
     //仅管理员可见
@@ -2088,6 +2114,34 @@ class MethodController extends Controller
     }
 
     public function test(){
+//        $xiaoji = 10 ;
+//        $heji = 15;
+//        $temp[$xiaoji][] = 0;
+//        $temp[$heji][] = 0;
+//        $tc_cursor = M();
+//        $tcSQl = $this->getTcSql();
+//        $objectIndex = $this->getObjectIndex();
+//        $res = $tc_cursor->query($tcSQl['pro_fix']);
+//        for($i=0;$i<sizeof($res);$i++){
+//            $col = $objectIndex[$res[$i]['value16']];//取得行索引
+//            if(strcmp($res[$i]['value17'],'保全')==0){
+//                $result[$col]['cs_profix_count'] = $res[$i]['num'];
+//                $temp[$xiaoji]['cs_profix_count'] += $res[$i]['num'];
+//            }else if(strcmp($res[$i]['value17'],'契约')==0){
+//                $result[$col]['nb_profix_count'] = $res[$i]['num'];
+//                $temp[$xiaoji]['nb_profix_count'] += $res[$i]['num'];
+//            }else if(strcmp($res[$i]['value17'],'理赔')==0){
+//                $result[$col]['clm_profix_count'] = $res[$i]['num'];
+//                $temp[$xiaoji]['clm_profix_count'] += $res[$i]['num'];
+//            }else if(strcmp($res[$i]['value17'],'核保')==0){
+//                $result[$col]['nb_profix_count'] = $res[$i]['num'];
+//                $temp[$heji]['nb_profix_count'] += $res[$i]['num'];
+//            }
+//            $temp[$heji]['nb_profix_count'] += $temp[$xiaoji]['clm_profix_count'];
+//        }
+//        dump($res);
+//        dump($result);
+//        dump($temp);
     }
 
     //数据库Orcale短查询
@@ -2126,6 +2180,7 @@ class MethodController extends Controller
         $queryDate = I('get.queryDate');
         //表格区域赋值
         $queryType = I('get.type');
+        $tc_fix = $this->getTcFix();
         //表格区域赋值
         if(strcmp($queryType,"2")==0){
             $queryDateStart = I('get.queryDateStart');
@@ -2133,16 +2188,19 @@ class MethodController extends Controller
             $where_OLD_time_query = " OLD_INSERT_TIME BETWEEN to_date('".$queryDateStart."','yyyy-mm-dd') AND to_date('".$queryDateEnd."','yyyy-mm-dd') ";
             $where_new_time_query = " NEW_INSERT_TIME BETWEEN to_date('".$queryDateStart."','yyyy-mm-dd') AND to_date('".$queryDateEnd."','yyyy-mm-dd') ";
             $where_bulu = $where_new_time_query;
+            $tc_time_where = " AND DATE_FORMAT(bt.last_updated,'%Y-%m-%d') BETWEEN DATE_FORMAT('".$queryDateStart."','%Y-%m-%d') AND DATE_FORMAT('".$queryDateEnd."','%Y-%m-%d')";
         }else{
             $where_OLD_time_query = " OLD_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
             $where_new_time_query = " NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') AND OLD_INSERT_TIME = NEW_INSERT_TIME ";
             $where_bulu = " NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
+            $tc_time_where = " AND DATE_FORMAT(bt.last_updated,'%Y-%m-%d') = DATE_FORMAT('".$queryDate."','%Y-%m-%d') ";
         }
         if(empty($queryDate)&&strcmp($queryType,"1")==0){
             $queryDate = date('yyyy-mm-dd',time());
             $where_OLD_time_query = " 1=1 ";
             $where_new_time_query = " 1=1 AND OLD_INSERT_TIME = NEW_INSERT_TIME ";
             $where_bulu = " 1=1 ";
+            $tc_time_where = " ";
         }
         $org = $this->getDictArry();
         $userDire =  $this->getUserDictArray();
@@ -2701,6 +2759,49 @@ class MethodController extends Controller
         $result[$zuoYeZhongXin]['clm_fysame_count'] = $result[$zuoYeZhongXin]['clm_new_count'];
         $result[$fenOrganfh]['clm_fysame_count'] = $result[$fenOrganfh]['clm_new_count'];
         $temp[$heji]['clm_fysame_count'] = $temp[$xiaoji]['clm_fysame_count'] + $result[$fenOrganfh]['clm_fysame_count'] + $result[$zuoYeZhongXin]['clm_fysame_count'];
+        #######################################################################################################################################
+
+        #################################################################   TC当日问题单解决数量  ######################################################################
+        $tc_cursor = M();
+        $tcSQl = "select cfvt.value17,cfvt.value16,COUNT(*) AS NUM
+                            from bug_table bt ,custom_field_value_table cfvt,`user_table` ut  
+                            where ut.id = bt.reporter_id ".$tc_fix."
+                            ".$tc_time_where."
+                            AND bt.id = cfvt.bug_id
+                            AND bt.`status` IN ('8','11')
+                            GROUP BY cfvt.value17,cfvt.value16;";
+        $objectIndex = $this->getObjectIndex();
+        $res = $tc_cursor->query($tcSQl);
+        $temp[$heji]['nb_profix_count'] = 0;
+        $temp[$heji]['cs_profix_count'] = 0;
+        $temp[$heji]['clm_profix_count'] = 0;
+        for($i=0;$i<sizeof($res);$i++){
+            $col = $objectIndex[$res[$i]['value16']];//取得行索引
+            if(strcmp($res[$i]['value17'],'保全')==0){
+                $result[$col]['cs_profix_count'] = $res[$i]['num'];
+                if(strcmp($res[$i]['value16'],'分公司保全室')==0){
+                    $temp[$heji]['cs_profix_count'] += $res[$i]['num'];
+                }else{
+                    $temp[$xiaoji]['cs_profix_count'] += $res[$i]['num'];
+                    $temp[$heji]['cs_profix_count'] += $res[$i]['num'];
+                }
+            }else if(strcmp($res[$i]['value17'],'契约')==0){
+                $result[$col]['nb_profix_count'] = $res[$i]['num'];
+                $temp[$xiaoji]['nb_profix_count'] += $res[$i]['num'];
+                $temp[$heji]['nb_profix_count'] += $res[$i]['num'];
+            }else if(strcmp($res[$i]['value17'],'理赔')==0){
+                $result[$col]['clm_profix_count'] = $res[$i]['num'];
+                if(strcmp($res[$i]['value16'],'分公司理赔室')==0){
+                    $temp[$heji]['clm_profix_count'] += $res[$i]['num'];
+                }else{
+                    $temp[$xiaoji]['clm_profix_count'] += $res[$i]['num'];
+                    $temp[$heji]['clm_profix_count'] += $res[$i]['num'];
+                }
+            }else if(strcmp($res[$i]['value17'],'核保')==0){
+                $result[$col]['nb_profix_count'] = $res[$i]['num'];
+                $temp[$heji]['nb_profix_count'] += $res[$i]['num'];
+            }
+        }
         #######################################################################################################################################
 
         #################################################################   数据汇总处理  ######################################################################
