@@ -149,12 +149,12 @@ var TableInit = function () {
                     footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    // field : 'nb_cannt_count',
+                    field : 'nb_cannt_count',
                     title : '无法<br>操作<br>件数',
-                    // footerFormatter:countFooter,
-                    formatter:function(value, row, index){
-                        return row.nb_old_count - row.nb_new_count;
-                    },
+                    footerFormatter:countFooter,
+                    // formatter:function(value, row, index){
+                    //     return row.nb_old_count - row.nb_new_count;
+                    // },
                     align : 'center'
                 },{
                     field : 'nb_fix_count',
@@ -239,12 +239,12 @@ var TableInit = function () {
                     footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    // field : 'nb_cannt_count',
+                    field : 'cs_cannt_count',
                     title : '无法<br>操作<br>件数',
-                    // footerFormatter:countFooter,
-                    formatter:function(value, row, index){
-                        return row.cs_old_count - row.cs_new_count;
-                    },
+                    footerFormatter:countFooter,
+                    // formatter:function(value, row, index){
+                    //     return row.cs_old_count - row.cs_new_count;
+                    // },
                     align : 'center'
                 },{
                     field : 'cs_fix_count',
@@ -314,12 +314,12 @@ var TableInit = function () {
                     footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    // field : 'nb_cannt_count',
+                    field : 'clm_cannt_count',
                     title : '无法<br>操作<br>件数',
-                    // footerFormatter:countFooter,
-                    formatter:function(value, row, index){
-                        return row.clm_old_count - row.clm_new_count;
-                    },
+                    footerFormatter:countFooter,
+                    // formatter:function(value, row, index){
+                    //     return row.clm_old_count - row.clm_new_count;
+                    // },
                     align : 'center'
                 },{
                     field : 'clm_fix_count',

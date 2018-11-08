@@ -2014,6 +2014,7 @@ class MethodController extends Controller
         $data_object = array(
                                 "nb_old_count",
                                 "nb_new_count",
+                                "nb_cannt_count",
                                 "nb_fix_count",
                                 "nb_pro_count",
                                 "nb_profix_count",
@@ -2021,12 +2022,14 @@ class MethodController extends Controller
                                 "nb_bfsame_count",
                                 "cs_old_count",
                                 "cs_new_count",
+                                "cs_cannt_count",
                                 "cs_fix_count",
                                 "cs_pro_count",
                                 "cs_profix_count",
                                 "cs_fysame_count",
                                 "clm_old_count",
                                 "clm_new_count",
+                                "clm_cannt_count",
                                 "clm_fix_count",
                                 "clm_pro_count",
                                 "clm_profix_count",
@@ -2225,6 +2228,11 @@ class MethodController extends Controller
         $result_rows = oci_parse($conn, $nb_where_new_old_time); // 配置SQL语句，执行SQL
         $nb_result_new_old_time = $this->search_long($result_rows);
 
+        #013+ 契约出单前撤保新老核心当天
+        $nb_where_new_old_time  = "SELECT OLD_USER_NAME,count(*) AS NUM FROM TMP_BX_OLD_CDQCB where ".$where_OLD_time_query." and NEW_INSERT_TIME IS NULL GROUP BY OLD_USER_NAME";
+        $result_rows = oci_parse($conn, $nb_where_new_old_time); // 配置SQL语句，执行SQL
+        $nb_result_old_time_no_new = $this->search_long($result_rows);
+
         #014 契约出单前撤保老核心当天<>新核心,且新核心不为空
         $nb_where_new_no_old_time  = "SELECT OLD_USER_NAME,count(*) AS NUM FROM TMP_BX_OLD_CDQCB where ".$where_bulu." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY OLD_USER_NAME";
         $result_rows = oci_parse($conn, $nb_where_new_no_old_time); // 配置SQL语句，执行SQL
@@ -2258,7 +2266,7 @@ class MethodController extends Controller
         for($i = 0;$i<sizeof($org);$i++){
             $result[$i]['nb_old_count'] =0;
             $result[$i]['nb_new_count'] =0;
-//            $result[$i]['nb_cannt_count'] =0;
+            $result[$i]['nb_cannt_count'] =0;
             $result[$i]['nb_fix_count'] =0;//补录
             $result[$i]['nb_pro_count'] =0;
             $result[$i]['nb_profix_count'] =0;
@@ -2276,6 +2284,13 @@ class MethodController extends Controller
                 if(strcmp($userDire[$value['OLD_USER_NAME']],$org[$i])==0&&!empty($userDire[$value['OLD_USER_NAME']])){
                     $result[$i]['nb_new_count'] += (int)$value['NUM'];
                     $temp[$xiaoji]['nb_new_count'] += (int)$value['NUM'];
+                }
+            }
+            #013+
+            foreach ($nb_result_old_time_no_new as &$value) {
+                if(strcmp($userDire[$value['OLD_USER_NAME']],$org[$i])==0&&!empty($userDire[$value['OLD_USER_NAME']])){
+                    $result[$i]['nb_cannt_count'] += (int)$value['NUM'];
+                    $temp[$xiaoji]['nb_cannt_count'] += (int)$value['NUM'];
                 }
             }
             #014
@@ -2310,12 +2325,14 @@ class MethodController extends Controller
         #018 异地作业单独处理
         $result[$licang]["nb_old_count"] += sizeof($nb_result_old_noqd);
         $temp[$xiaoji]["nb_old_count"] += sizeof($nb_result_old_noqd);
+        $jishu_no_new = 0;
         foreach ($nb_result_old_noqd as &$value) {
 //            $result[$licang]["nb_old_count"]++;
 //            $temp[$xiaoji]["nb_old_count"]++;
             if(!empty($value["NEW_INSERT_TIME"])){
                 $result[$licang]["nb_new_count"] ++;
                 $temp[$xiaoji]['nb_new_count'] ++;
+                $jishu_no_new++;
             }
             if($value["NEW_INSERT_TIME"]!=$value["OLD_INSERT_TIME"]){
                 $result[$licang]["nb_fix_count"] ++;
@@ -2334,6 +2351,9 @@ class MethodController extends Controller
                 $temp[$xiaoji]['nb_bfsame_count'] ++;
             }
         }
+        $nb_cannt_count = sizeof($nb_result_old_noqd) - $jishu_no_new;
+        $temp[$xiaoji]["nb_cannt_count"] += $nb_cannt_count;
+        $result[$licang]["nb_cannt_count"] += $nb_cannt_count;
 
         #######################################################################################################################################
 
@@ -2348,6 +2368,11 @@ class MethodController extends Controller
         $uw_where_new_old_time  = "SELECT OLD_USER_NAME,count(*) AS NUM FROM TMP_UW_LIST where ".$where_OLD_time_query." and ".$where_new_time_query."  GROUP BY OLD_USER_NAME";
         $result_rows = oci_parse($conn, $uw_where_new_old_time); // 配置SQL语句，执行SQL
         $uw_result_new_old_time = $this->search_long($result_rows);
+
+        #020+ 核保新老核心当天
+        $uw_where_new_old_time  = "SELECT OLD_USER_NAME,count(*) AS NUM FROM TMP_UW_LIST where ".$where_OLD_time_query." and NEW_INSERT_TIME IS NULL  GROUP BY OLD_USER_NAME";
+        $result_rows = oci_parse($conn, $uw_where_new_old_time); // 配置SQL语句，执行SQL
+        $uw_result_old_time_no_new = $this->search_long($result_rows);
 
         #021 核保老核心当天<>新核心,且新核心不为空
         $uw_where_new_no_old_time  = "SELECT OLD_USER_NAME,count(*) AS NUM FROM TMP_UW_LIST where ".$where_bulu." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY OLD_USER_NAME";
@@ -2377,6 +2402,9 @@ class MethodController extends Controller
                 $result[$uw_fengongsi]['nb_new_count'] += (int)$value['NUM'];
             }
         }
+        #020+ 核保新老核心
+        $result[$uw_fengongsi]['nb_cannt_count'] += sizeof($uw_result_old_time_no_new);
+
         #021 核保补录
         foreach ($uw_result_new_no_old_time as &$value) {
             if(in_array($value['OLD_USER_NAME'],$zuoyezhongxin_uw)){
@@ -2403,6 +2431,7 @@ class MethodController extends Controller
         $result[$zuoYeZhongXin]['nb_bfsame_count'] = $result[$zuoYeZhongXin]['nb_new_count'];
         $temp[$heji]['nb_besame_count'] = $temp[$xiaoji]['nb_besame_count'] + $result[$uw_fengongsi]['nb_besame_count'] + $result[$zuoYeZhongXin]['nb_besame_count'];
         $temp[$heji]['nb_bfsame_count'] = $temp[$xiaoji]['nb_bfsame_count'] + $result[$uw_fengongsi]['nb_bfsame_count'] + $result[$zuoYeZhongXin]['nb_bfsame_count'];
+        $temp[$heji]['nb_cannt_count'] = $temp[$xiaoji]['nb_cannt_count'] + $result[$uw_fengongsi]['nb_cannt_count'];
 
         #######################################################################################################################################
 
@@ -2420,6 +2449,11 @@ class MethodController extends Controller
         $where_new_old_time  = "SELECT user_name,count(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query." and ".$where_new_time_query."  GROUP BY USER_NAME";
         $result_rows = oci_parse($conn, $where_new_old_time); // 配置SQL语句，执行SQL
         $result_new_old_time = $this->search_long($result_rows);
+
+        #002+ 保全受理新老核心当天
+        $where_new_old_time  = "SELECT user_name,count(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_OLD_time_query." and NEW_INSERT_TIME IS NULL  GROUP BY USER_NAME";
+        $result_rows = oci_parse($conn, $where_new_old_time); // 配置SQL语句，执行SQL
+        $result_old_time_no_new = $this->search_long($result_rows);
 
         #003 保全受理老核心当天<>新核心,且新核心不为空
         $where_new_no_old_time  = "SELECT user_name,count(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD where ".$where_bulu." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY USER_NAME";
@@ -2451,7 +2485,7 @@ class MethodController extends Controller
         for($i = 0;$i<sizeof($org);$i++){//分支机构
             $result[$i]['cs_old_count'] =0;//老核心当天插入
             $result[$i]['cs_new_count'] =0;//老核心新核心当天插入
-//            $result[$i]['cs_cannt_count'] =0;//老核心当天插入新核心无插入日期
+            $result[$i]['cs_cannt_count'] =0;//老核心当天插入新核心无插入日期
             $result[$i]['cs_fix_count'] =0;//老核心当天插入，新核心非当天插入
             $result[$i]['cs_pro_count'] =0;//老核心当天插入，TC不为空
             $result[$i]['cs_profix_count'] =0;//当天插入，TC状态为已关闭，分机构TC数据库直接获取
@@ -2469,6 +2503,13 @@ class MethodController extends Controller
                 if(strcmp($userDire[$value['USER_NAME']],$org[$i])==0&&!empty($userDire[$value['USER_NAME']])){
                     $result[$i]['cs_new_count'] += (int)$value['NUM'];
                     $temp[$xiaoji]['cs_new_count'] += (int)$value['NUM'];
+                }
+            }
+            #002+
+            foreach ($result_old_time_no_new as &$value) {
+                if(strcmp($userDire[$value['USER_NAME']],$org[$i])==0&&!empty($userDire[$value['USER_NAME']])){
+                    $result[$i]['cs_cannt_count'] += (int)$value['NUM'];
+                    $temp[$xiaoji]['cs_cannt_count'] += (int)$value['NUM'];
                 }
             }
             #003
@@ -2497,10 +2538,12 @@ class MethodController extends Controller
         #011 异地作业单独处理
         $result[$licang]["cs_old_count"] += sizeof($result_old_noqd);
         $temp[$xiaoji]["cs_old_count"] += sizeof($result_old_noqd);
+        $jishu_no_new = 0;
         foreach ($result_old_noqd as &$value) {
             if(!empty($value["NEW_ORGAN_CODE"])){
                 $result[$licang]["cs_new_count"] ++;
                 $temp[$xiaoji]['cs_new_count'] ++;
+                $jishu_no_new++;
             }
             if($value["NEW_INSERT_TIME"]!=$value["OLD_INSERT_TIME"]){
                 $result[$licang]["cs_fix_count"] ++;
@@ -2515,6 +2558,9 @@ class MethodController extends Controller
                 $temp[$xiaoji]['cs_fysame_count'] ++;
             }
         }
+        $cs_cannt_count = sizeof($result_old_noqd)-$jishu_no_new;
+        $result[$licang]["cs_cannt_count"] += $cs_cannt_count;
+        $temp[$xiaoji]['cs_cannt_count'] += $cs_cannt_count;
         #######################################################################################################################################
 
         #################################################################   保全复核  ######################################################################
@@ -2532,6 +2578,11 @@ class MethodController extends Controller
         $where_new_old_time_fh  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQFH_BD WHERE ".$where_OLD_time_query." and ".$where_new_time_query."  GROUP BY NEW_USER_NAME";
         $result_rows_fh = oci_parse($conn, $where_new_old_time_fh); // 配置SQL语句，执行SQL
         $result_new_old_time_fh = $this->search_long($result_rows_fh);
+
+        #008+ 保全复核新老核心当天
+        $where_new_old_time_fh  = "SELECT COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQFH_BD WHERE ".$where_OLD_time_query." and NEW_INSERT_TIME IS NULL  GROUP BY NEW_USER_NAME";
+        $result_rows_fh = oci_parse($conn, $where_new_old_time_fh); // 配置SQL语句，执行SQL
+        $result_old_time_fh_no_new = $this->search_long($result_rows_fh);
 
         #009 保全复核老核心当天<>新核心,且新核心不为空
         $where_new_no_old_time_fh  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQFH_BD WHERE ".$where_bulu." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_USER_NAME";
@@ -2567,6 +2618,11 @@ class MethodController extends Controller
             }
         $temp[$heji]['cs_fysame_count'] += $temp[$xiaoji]['cs_fysame_count'] + $result[$zuoYeZhongXin]['cs_fysame_count'] + $result[$fenOrganfh]['cs_fysame_count'];
         $temp[$heji]['cs_new_count'] += $temp[$xiaoji]['cs_new_count'] + $result[$zuoYeZhongXin]['cs_new_count'] + $result[$fenOrganfh]['cs_new_count'];
+
+        #008+
+        $result[$fenOrganfh]['cs_cannt_count'] += (int)($result_old_time_fh_no_new[0]['NUM']);
+        $temp[$heji]['cs_cannt_count'] = $temp[$xiaoji]['cs_cannt_count'] +  $result[$fenOrganfh]['cs_cannt_count'];
+
         #009
         foreach ($result_new_no_old_time_fh as &$value) {
             //新核心用户为空时表示无法操作计入分公司
@@ -2599,6 +2655,11 @@ class MethodController extends Controller
         $result_rows = oci_parse($conn, $clm_where_new_old_time); // 配置SQL语句，执行SQL
         $clm_result_new_old_time_fh = $this->search_long($result_rows);
 
+        #024+ 理赔受理新老核心当天
+        $clm_where_new_old_time  = "SELECT OLD_ORGAN_CODE,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPBA_BD WHERE ".$where_OLD_time_query." and NEW_INSERT_TIME IS NULL  GROUP BY OLD_ORGAN_CODE";
+        $result_rows = oci_parse($conn, $clm_where_new_old_time); // 配置SQL语句，执行SQL
+        $clm_result_old_time_fh_no_time = $this->search_long($result_rows);
+
         #025 理赔受理老核心当天<>新核心,且新核心不为空
         $clm_where_new_no_old_time  = "SELECT OLD_ORGAN_CODE,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPBA_BD WHERE ".$where_bulu." and NEW_INSERT_TIME <> OLD_INSERT_TIME and NEW_INSERT_TIME IS NOT NULL GROUP BY OLD_ORGAN_CODE";
         $result_rows = oci_parse($conn, $clm_where_new_no_old_time); // 配置SQL语句，执行SQL
@@ -2624,7 +2685,7 @@ class MethodController extends Controller
         for($i = 0;$i<sizeof($org);$i++){
             $result[$i]['clm_old_count'] =0;
             $result[$i]['clm_new_count'] =0;
-//            $result[$i]['clm_cannt_count'] =0;
+            $result[$i]['clm_cannt_count'] =0;
             $result[$i]['clm_fix_count'] =0;
             $result[$i]['clm_pro_count'] =0;
             $result[$i]['clm_profix_count'] =0;
@@ -2641,6 +2702,13 @@ class MethodController extends Controller
                 if(strcmp($orgName[$value['OLD_ORGAN_CODE']],$org[$i])==0&&!empty($orgName[$value['OLD_ORGAN_CODE']])){
                     $result[$i]['clm_new_count'] += (int)$value['NUM'];
                     $temp[$xiaoji]['clm_new_count'] += (int)$value['NUM'];
+                }
+            }
+            #024+
+            foreach ($clm_result_old_time_fh_no_time as &$value) {
+                if(strcmp($orgName[$value['OLD_ORGAN_CODE']],$org[$i])==0&&!empty($orgName[$value['OLD_ORGAN_CODE']])){
+                    $result[$i]['clm_cannt_count'] += (int)$value['NUM'];
+                    $temp[$xiaoji]['clm_cannt_count'] += (int)$value['NUM'];
                 }
             }
             #025
@@ -2670,10 +2738,12 @@ class MethodController extends Controller
         #028 异地作业单独处理
         $result[$licang]["clm_old_count"] += sizeof($clm_result_old_noqd);
         $temp[$xiaoji]["clm_old_count"] += sizeof($clm_result_old_noqd);
+        $jishu_no_new = 0;
         foreach ($clm_result_old_noqd as &$value) {
             if(!empty($value["NEW_ORGAN_CODE"])){
                 $result[$licang]["clm_new_count"] ++;
                 $temp[$xiaoji]['clm_new_count'] ++;
+                $jishu_no_new++;
             }
             if($value["NEW_INSERT_TIME"]!=$value["OLD_INSERT_TIME"]){
                 $result[$licang]["clm_fix_count"] ++;
@@ -2688,12 +2758,16 @@ class MethodController extends Controller
                 $temp[$xiaoji]['clm_fysame_count'] ++;
             }
         }
+        $nb_cannt_count = sizeof($clm_result_old_noqd) - $jishu_no_new;
+        $result[$licang]["clm_cannt_count"] += sizeof($clm_result_old_noqd);
+        $temp[$xiaoji]["clm_cannt_count"] += sizeof($clm_result_old_noqd);
+
         #######################################################################################################################################
 
 
         #################################################################   理赔审批审核  ######################################################################
         //理赔数据查询
-        $clm_user = array("heyuan","heyuan_bx","SYSADMIN");
+        $clm_user = $this->getClmUser();
         #029 理赔审批审核老核心当天
         $clm_where_old_time  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPSHSP_BD WHERE ".$where_OLD_time_query." GROUP BY NEW_USER_NAME";
         $result_rows = oci_parse($conn, $clm_where_old_time); // 配置SQL语句，执行SQL
@@ -2703,6 +2777,11 @@ class MethodController extends Controller
         $clm_where_old_time_num  = "SELECT OLD_ORGAN_CODE,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPSHSP_BD WHERE ".$where_OLD_time_query." GROUP BY OLD_ORGAN_CODE";
         $result_rows = oci_parse($conn, $clm_where_old_time_num); // 配置SQL语句，执行SQL
         $clm_result_old_time_num = $this->search_long($result_rows);
+
+        #030+ 理赔审批审核老核心当天
+        $clm_where_old_time_num  = "SELECT COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPSHSP_BD WHERE ".$where_OLD_time_query." and NEW_INSERT_TIME IS NULL GROUP BY OLD_ORGAN_CODE";
+        $result_rows = oci_parse($conn, $clm_where_old_time_num); // 配置SQL语句，执行SQL
+        $clm_result_old_time_num_no_new = $this->search_long($result_rows);
 
         #031 理赔审批审核老核心当天<>新核心,且新核心不为空
         $clm_where_new_no_old_time  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPSHSP_BD WHERE ".$where_bulu." and TO_DATE(NEW_INSERT_TIME,'YYYY-MM-DD') <> TO_DATE(OLD_INSERT_TIME,'YYYY-MM-DD') and NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_USER_NAME";
@@ -2728,6 +2807,10 @@ class MethodController extends Controller
             $clm_num += (int)$value['NUM'];
         }
         $result[$fenOrganfh]['clm_old_count'] = $clm_num-$result[$zuoYeZhongXin]['clm_old_count'];
+        //无法操作
+        $result[$fenOrganfh]['clm_cannt_count'] += sizeof($clm_result_old_time_num_no_new);
+        $result[$heji]['clm_cannt_count'] = $result[$xiaoji]['clm_cannt_count']+sizeof($clm_result_old_time_num_no_new);
+
         #031 理赔审核审批补录
         foreach ($clm_result_new_no_old_time as &$value) {
             if(in_array($value['NEW_USER_NAME'],$clm_user)||empty($value['NEW_USER_NAME'])){
