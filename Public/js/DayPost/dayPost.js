@@ -284,7 +284,7 @@ var TableInit = function () {
                     formatter:function(value, row, index){
                         if(row.cs_old_count==0){
                             return '100.00%'
-                        }else if(row.nb_new_count+row.nb_fix_count>=row.nb_old_count){
+                        }else if(row.cs_new_count+row.cs_fix_count>=row.cs_old_count){
                             return '100.00%'
                         }
                         // if($("#dtp_input2").val()!=''){
@@ -359,7 +359,7 @@ var TableInit = function () {
                     formatter:function(value, row, index){
                         if(row.clm_old_count==0){
                             return '100.00%'
-                        }else if(row.nb_new_count+row.nb_fix_count>=row.nb_old_count){
+                        }else if(row.clm_new_count+row.clm_fix_count>=row.clm_old_count){
                             return '100.00%'
                         }
                         // if($("#dtp_input2").val()!=''){

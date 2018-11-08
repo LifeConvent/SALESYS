@@ -2186,13 +2186,13 @@ class MethodController extends Controller
             $queryDateStart = I('get.queryDateStart');
             $queryDateEnd = I('get.queryDateEnd');
             $where_OLD_time_query = " OLD_INSERT_TIME BETWEEN to_date('".$queryDateStart."','yyyy-mm-dd') AND to_date('".$queryDateEnd."','yyyy-mm-dd') ";
-            $where_new_time_query = " NEW_INSERT_TIME BETWEEN to_date('".$queryDateStart."','yyyy-mm-dd') AND to_date('".$queryDateEnd."','yyyy-mm-dd') ";
+            $where_new_time_query = " NEW_INSERT_TIME BETWEEN to_date('".$queryDateStart."','yyyy-mm-dd') AND to_date('".$queryDateEnd."','yyyy-mm-dd')  AND OLD_INSERT_TIME = NEW_INSERT_TIME ";
             $where_bulu = $where_OLD_time_query;
             $tc_time_where = " AND DATE_FORMAT(bt.last_updated,'%Y-%m-%d') BETWEEN DATE_FORMAT('".$queryDateStart."','%Y-%m-%d') AND DATE_FORMAT('".$queryDateEnd."','%Y-%m-%d')";
         }else{
             $where_OLD_time_query = " OLD_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
             $where_new_time_query = " NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') AND OLD_INSERT_TIME = NEW_INSERT_TIME ";
-            $where_bulu = " OLD_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
+            $where_bulu = " NEW_INSERT_TIME = to_date('".$queryDate."','yyyy-mm-dd') ";
             $tc_time_where = " AND DATE_FORMAT(bt.last_updated,'%Y-%m-%d') = DATE_FORMAT('".$queryDate."','%Y-%m-%d') ";
         }
         if(empty($queryDate)&&strcmp($queryType,"1")==0){
@@ -2309,8 +2309,10 @@ class MethodController extends Controller
         }
         #018 异地作业单独处理
         $result[$licang]["nb_old_count"] += sizeof($nb_result_old_noqd);
-        $temp[$xiaoji]["nb_new_count"] += sizeof($nb_result_old_noqd);
+        $temp[$xiaoji]["nb_old_count"] += sizeof($nb_result_old_noqd);
         foreach ($nb_result_old_noqd as &$value) {
+//            $result[$licang]["nb_old_count"]++;
+//            $temp[$xiaoji]["nb_old_count"]++;
             if(!empty($value["NEW_INSERT_TIME"])){
                 $result[$licang]["nb_new_count"] ++;
                 $temp[$xiaoji]['nb_new_count'] ++;
@@ -2703,7 +2705,7 @@ class MethodController extends Controller
         $clm_result_old_time_num = $this->search_long($result_rows);
 
         #031 理赔审批审核老核心当天<>新核心,且新核心不为空
-        $clm_where_new_no_old_time  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPSHSP_BD WHERE ".$where_bulu." and TO_DATE(NEW_INSERT_TIME,'YYYY_MM_DD') <> TO_DATE(OLD_INSERT_TIME,'YYYY_MM_DD') and NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_USER_NAME";
+        $clm_where_new_no_old_time  = "SELECT NEW_USER_NAME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPSHSP_BD WHERE ".$where_bulu." and TO_DATE(NEW_INSERT_TIME,'YYYY-MM-DD') <> TO_DATE(OLD_INSERT_TIME,'YYYY-MM-DD') and NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_USER_NAME";
         $result_rows = oci_parse($conn, $clm_where_new_no_old_time); // 配置SQL语句，执行SQL
         $clm_result_new_no_old_time = $this->search_long($result_rows);
 
