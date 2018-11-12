@@ -1951,6 +1951,70 @@ class MethodController extends Controller
         echo "TC数据更新结束 ：".date("h:i:sa")."<br> ";
     }
 
+    //TC回写数据加载
+    public function backloadTc(){
+        //解除30s限制
+        set_time_limit(0);
+        echo "TC回写数据加载开始 ：".date("h:i:sa")."<br> ";
+//        $user_type = $this->getUserType();
+//        if((int)$user_type!=1){
+//            echo "请使用管理员账户登录后进行刷新数据！！！";
+//            return;
+//        }
+        //重加载TC数据
+        $tc_fix = $this->getTcFix();
+        $queryTc = "select cfvt.value17 AS TC_MODE,cfvt.value18 AS BUSINESS_CODE
+                    from bug_table bt ,custom_field_value_table cfvt,`user_table` ut
+                    where ut.id = bt.reporter_id 
+                    ".$tc_fix."
+                    AND cfvt.value24 IN ('2-需求差异','3-操作差异')
+                    #AND DATE_FORMAT(bt.last_updated,'%Y-%m-%d') BETWEEN DATE_FORMAT('2018-08-30','%Y-%m-%d') AND DATE_FORMAT('2018-08-31','%Y-%m-%d')
+                    AND bt.id = cfvt.bug_id
+                    AND cfvt.value18 <> ''
+                    AND bt.`status` IN ('8','11')";
+        //查询TC数据
+        $tc_cursor = M();
+        $res = $tc_cursor->query($queryTc);
+        dump($res);
+        //连接数据库
+        $conn = $this->OracleOldDBCon();
+        $statement = oci_parse($conn,"delete from tmp_tc_backload");
+        echo "清空现有TC数据 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        foreach ($res as &$value) {
+            $query_insert = "INSERT INTO tmp_tc_backload(BUSINESS_CODE,TC_MODE) VALUES('".$value['business_code']."','".$value['tc_mode']."')";
+            $statement = oci_parse($conn,$query_insert);
+            oci_execute($statement,OCI_COMMIT_ON_SUCCESS);
+        }
+        foreach ($res as &$value) {
+            if(strcmp($value['tc_mode'],'契约')){
+                $query_insert = "UPDATE TMP_BX_OLD_CDQCB SET IS_ACCORDANCE= '是' WHERE OLD_APPLE_CODE = '".$value['business_code']."'";
+                $statement = oci_parse($conn,$query_insert);
+                echo $value['tc_mode'].": ".$value['business_code']."单条更新 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+            }else if(strcmp($value['tc_mode'],'保全')){
+                $query_insert = "UPDATE TMP_NCS_QD_BX_BQSL_BD SET IS_ACCORDANCE= '是' WHERE OLD_ACCEPT_CODE = '".$value['business_code']."'";
+                $statement = oci_parse($conn,$query_insert);
+                echo $value['tc_mode'].": ".$value['business_code']."单条更新 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+                $query_insert = "UPDATE TMP_NCS_QD_BX_BQFH_BD SET IS_ACCORDANCE= '是' WHERE OLD_ACCEPT_CODE = '".$value['business_code']."'";
+                $statement = oci_parse($conn,$query_insert);
+                echo $value['tc_mode'].": ".$value['business_code']."单条更新 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+            }else if(strcmp($value['tc_mode'],'理赔')){
+                $query_insert = "UPDATE TMP_NCS_QD_BX_LPBA_BD SET IS_ACCORDANCE= '是' WHERE OLD_CASE_CODE = '".$value['business_code']."'";
+                $statement = oci_parse($conn,$query_insert);
+                echo $value['tc_mode'].": ".$value['business_code']."单条更新 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+                $query_insert = "UPDATE TMP_NCS_QD_BX_LPSHSP_BD SET IS_ACCORDANCE= '是' WHERE OLD_CASE_CODE = '".$value['business_code']."'";
+                $statement = oci_parse($conn,$query_insert);
+                echo $value['tc_mode'].": ".$value['business_code']."单条更新 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+            }else if(strcmp($value['tc_mode'],'核保')){
+                $query_insert = "UPDATE TMP_UW_LIST SET IS_ACCORDANCE= '是' WHERE OLD_APPLE_CODE = '".$value['business_code']."'";
+                $statement = oci_parse($conn,$query_insert);
+                echo $value['tc_mode'].": ".$value['business_code']."单条更新 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+            }
+        }
+        oci_free_statement($statement);
+        oci_close($conn);
+        echo "TC回写数据更新结束 ：".date("h:i:sa")."<br> ";
+    }
+
     //TC更新
     public function getImpTc(){
         $conn = $this->OracleOldDBCon();

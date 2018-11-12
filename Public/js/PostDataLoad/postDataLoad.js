@@ -477,6 +477,14 @@ $('#execLoadDataCLMSHSP').click(function(){
     a.dispatchEvent(e);
 });
 
+//TC回写数据
+$('#backloadTc').click(function(){
+    let a = $("<a href='"+ HOST + "index.php/Home/Method/backloadTc' target='_blank'>理赔审核数据更新</a>").get(0);
+    let e = document.createEvent('MouseEvents');
+    e.initEvent( 'click', true, true );
+    a.dispatchEvent(e);
+});
+
 //灌数开始
 $('#startLoadData').click(function(){
     var username = $('#username').val();
