@@ -212,8 +212,14 @@ class MethodController extends Controller
     public function getStartDateString(){
         return '2018/8/1';
     }
+    public function getStartDateStringWith(){
+        return '2018-08-01';
+    }
     public function getQianYiTime(){
         return '20180726';
+    }
+    public function getQianYiTimeWith(){
+        return '2018-07-26';
     }
 
     public function getDictArry(){
@@ -381,10 +387,120 @@ class MethodController extends Controller
 //            return;
 //        }
         $conn = $this->OracleOldDBCon();
-        echo "理赔受理数据更新开始 <br>";
-        $newDay = "";
+        $newDay = "delete from  TMP_OLD_QD_BX_LPBA ba where trunc(ba.insert_time) = trunc(sysdate)";
+        $statement = oci_parse($conn,$newDay);
+        echo "清空老核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "insert into TMP_OLD_QD_BX_LPBA 
+                    select distinct trim(t1.mngcom)   as  ORGAN_CODE,
+                                    TRUNC(t1.makedate)  as  INSERT_TIME,
+                                    '' as POLICY_CODE,
+                                    trim(t1.rgtno)   as CASE_CODE,                
+                                    t4.USERname   as USER_NAME,               
+                                    '理赔受理 '  as  BUSINESS_TYPE,
+                                    sysdate as  INSERT_SYSDATE,
+                                    '0' as GET_MONEY    
+                       From  lis.Llregister t1 
+                        inner join lis.Llclaimdetail t2
+                        on t1.rgtno = t2.clmno
+                        inner join lis.lcpol t3
+                        on t2.polno = t3.polno
+                         left join lis.lduser t4
+                        on t1.operator = t4.usercode
+                    Where  t1.rgtobj='1'
+                       And trunc(t1.makedate) = trunc(sysdate)
+                    and t1.Rgtdate >= date '".$this->getQianYiTimeWith()."'
+                    and t3.managecom like '8647%'
+                    union
+                    Select distinct trim(t1.mngcom)   as  ORGAN_CODE,
+                                    TRUNC(t1.makedate)  as  INSERT_TIME,
+                                    '' as POLICY_CODE,
+                                    trim(t1.rgtno)   as CASE_CODE,                
+                                    t4.USERname   as USER_NAME,               
+                                    '理赔受理 '  as  BUSINESS_TYPE,
+                                    sysdate as  INSERT_SYSDATE,
+                                    '0' as GET_MONEY    
+                     From  lis.Llregister t1
+                     left join  lis.lduser t4
+                        on t1.operator = t4.usercode
+                     Where  t1.Mngcom Like '8647%' and t1.rgtobj='1'
+                        And trunc(t1.makedate) = trunc(sysdate)
+                    and t1.Rgtdate >= date '".$this->getQianYiTimeWith()."'
+                    AND CLMSTATE >= '20'   AND CLMSTATE < '30'";
+        $statement = oci_parse($conn,$newDay);
+        echo "老核心当日临时表插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "delete from  TMP_NCS_QD_BX_LPBA ba where trunc(ba.insert_time) = trunc(sysdate)";
         $statement = oci_parse($conn,$newDay);
         echo "清空新核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "insert into TMP_NCS_QD_BX_LPBA 
+                    select distinct trim(A.ORGAN_CODE) as  ORGAN_CODE,
+                                    TRUNC(A.SIGN_TIME)  as  INSERT_TIME,
+                                    trim(A.CASE_NO) as CASE_CODE,                
+                                    D.USER_name as USER_NAME,      
+                                    sysdate as  INSERT_SYSDATE,      
+                                    '理赔受理 ' as  BUSINESS_TYPE,
+                                    '0' as GET_MONEY               
+                        from DEV_CLM.T_CLAIM_CASE@Bingxing_168_15_Clm A
+                      left join DEV_PAS.T_UDMP_USER@Bingxing_168_15_Pas D
+                        on A.ACCEPTOR_ID = D.USER_ID
+                    where 1=1   
+                      and a.case_status in ('30', '31','32','40','41','50','51','52','53',
+                                             '54','60','61','70','71','80','90','99')
+                      and TRUNC(a.sign_time) = TRUNC(sysdate)
+                      and a.case_no not in (
+                      select distinct    trim(t1.rgtno) rgtno                            
+                      from lis.llregister t1  
+                      left join lis.lduser t4
+                        on t1.operator = t4.usercode
+                    where 1=1
+                       and t1.rgtobj='1'
+                       and (Clmstate <> '10' or Clmstate <> '15') 
+                       --迁移时点 至统计开始时间  排除统计范围
+                       and TRUNC(t1.makedate) >= DATE'".$this->getQianYiTimeWith()."' AND TRUNC(t1.makedate) <= DATE'".$this->getStartDateStringWith()."')";
+        $statement = oci_parse($conn,$newDay);
+        echo "插入新核心当日临时表排除迁移至开始统计数据 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "delete from TMP_NCS_QD_BX_LPBA_BD bd ";
+        $statement = oci_parse($conn,$newDay);
+        echo "清空比对表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "insert into TMP_NCS_QD_BX_LPBA_BD  
+                    SELECT T1.ORGAN_CODE as OLD_ORGAN_CODE,
+                           T2.Organ_Code as NEW_ORGAN_CODE,
+                           T1.Case_CODE as OLD_CASE_CODE,
+                           T2.Case_CODE as NEW_CASE_CODE,
+                           t1.user_name as OLD_USER_NAME,
+                           t2.USER_name as NEW_USER_NAME,
+                           T1.INSERT_TIME as OLD_INSERT_TIME,
+                           T2.INSERT_TIME  as NEW_INSERT_TIME,
+                           (CASE
+                             WHEN TRIM(T1.Case_CODE) = TRIM(T2.Case_CODE) THEN
+                              '是 '
+                             ELSE
+                              '否 '
+                           END) AS IS_ACCORDANCE, 
+                           sysdate as INSERT_SYSDATE,
+                           '理赔受理 ' as BUSINESS_TYPE,
+                           0.00 as OLD_GET_MONEY,
+                           0.00 as NEW_GET_MONEY,
+                           ' ' as TC_ID,
+                           ' ' as PRO_NUMBER       
+                      FROM TMP_OLD_QD_BX_LPBA T1
+                      LEFT JOIN TMP_NCS_QD_BX_LPBA T2   
+                       on TRIM(T1.Case_CODE) = TRIM(T2.Case_CODE)";
+        $statement = oci_parse($conn,$newDay);
+        echo "比对表插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "delete from TMP_NCS_QD_BX_LPBA_BD  T2 where T2.OLD_CASE_CODE in (select OLD_CASE_CODE from TMP_NCS_QD_BX_LPBA_BD group by OLD_CASE_CODE having count(*)>1) 
+                  and rowid not in (select max(rowid) from TMP_NCS_QD_BX_LPBA_BD group by OLD_CASE_CODE having count(*)>1)";
+        $statement = oci_parse($conn,$newDay);
+        echo "清空数据 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "update TMP_NCS_QD_BX_LPBA_BD t set (OLD_GET_MONEY) = 
+                      nvl((select DECODE(TRIM(C.CLMSTATE), '50', TRIM(C.REALPAY), '60', TRIM(C.REALPAY), '0') from  lis.LLCLAIM c
+                      where concat(t.old_case_code,'         ') = c.clmno  ),'0')";
+        $statement = oci_parse($conn,$newDay);
+        echo "数据更新 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "update TMP_NCS_QD_BX_LPBA_BD t set (NEW_GET_MONEY) = 
+                      (select DECODE(CLM.CASE_STATUS, '80', CLM.ACTUAL_PAY, '0') from  DEV_CLM.T_CLAIM_CASE@BINGXING_168_15_CLM clm
+                      where t.old_case_code = clm.case_no)";
+        $statement = oci_parse($conn,$newDay);
+        echo "数据更新 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
 
         oci_free_statement($statement);
         oci_close($conn);
@@ -402,10 +518,160 @@ class MethodController extends Controller
 //            return;
 //        }
         $conn = $this->OracleOldDBCon();
-        echo "理赔审核数据更新开始 <br>";
-        $newDay = "";
+        $newDay = "delete from TMP_LIS_QD_BX_LPSH sh where TRUNC(sh.AUDITDATE) = TRUNC(SYSDATE)";
         $statement = oci_parse($conn,$newDay);
-        echo "清空新核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        echo "清空老核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "INSERT INTO TMP_LIS_QD_BX_LPSH              
+                    Select distinct a.mngcom mngcom, d.auditdate auditdate, a.Rgtno Rgtno,d.auditper auditper
+                    From (Select * From lis.Llregister Where Clmstate In ('40', '50', '60', '70') and Mngcom Like '8647%' and rgtobj='1') a, 
+                     lis.Llclaimdetail b,  lis.Llclaimuwmain d, lis.lcpol e, lis.lduser f
+                       Where a.Rgtno = b.Clmno 
+                       And a.Rgtno = d.Clmno  
+                       and b.polno = e.polno
+                       and d.auditper = f.usercode
+                       And TRUNC(d.auditdate) = TRUNC(SYSDATE)
+                    and TRUNC(a.Rgtdate) >= date '".$this->getQianYiTimeWith()."'
+                    and e.managecom like  '8647%'";
+        $statement = oci_parse($conn,$newDay);
+        echo "插入老核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "delete from TMP_LIS_QD_BX_LPSP sp where TRUNC(sp.EXAMDATE) = TRUNC(sysdate)";
+        $statement = oci_parse($conn,$newDay);
+        echo "清空理赔审批老核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "INSERT INTO TMP_LIS_QD_BX_LPSP
+                    Select  distinct a.mngcom mngcom, d.Examdate Examdate, TRIM(a.Rgtno) Rgtno,d.Examper Examper
+                    From (Select * From lis.Llregister Where Clmstate In ('40', '50', '60', '70') And Mngcom Like '8647%' and rgtobj='1') a, 
+                     lis.Llclaimdetail b,  lis.Llclaimuwmain d, lis.lcpol e, lis.lduser g
+                       Where a.Rgtno = b.Clmno 
+                       And a.Rgtno = d.Clmno  
+                       and b.polno = e.polno
+                       and d.Examper = g.usercode
+                       And TRUNC(d.Examdate) = TRUNC(SYSDATE)
+                    and a.Rgtdate >= date '".$this->getQianYiTimeWith()."'
+                    and e.managecom like  '8647%'
+                    and d.Examper <> 'BPO_CLM'
+                    and d.auditper <> 'AUTO'
+                    and d.Examper <> d.auditper";
+        $statement = oci_parse($conn,$newDay);
+        echo "理赔审批插入老核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "delete from TMP_NCS_QD_BX_LPSH sh where TRUNC(sh.AUDIT_TIME) = TRUNC(sysdate)";
+        $statement = oci_parse($conn,$newDay);
+        echo "清空理赔审核老核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "INSERT INTO TMP_NCS_QD_BX_LPSH
+                    SELECT DISTINCT a.AUDIT_ORGAN  AS Organ_Code,
+                                    A.AUDIT_TIME as AUDIT_TIME,
+                                    trim(a.Case_No) AS Case_No,                
+                                    a.case_Status AS case_Status,
+                                    D.USER_NAME as USER_NAME
+                      FROM Dev_Clm.t_Claim_Case@Bingxing_168_15_Clm      a
+                      left join dev_pas.t_udmp_user@bingxing_168_15_Pas d
+                      on a.AUDITOR_ID = d.USER_ID
+                     WHERE 1 = 1
+                        AND a.CASE_STATUS >='60'
+                         AND trunc(a.sign_TIME) >= DATE'".$this->getQianYiTimeWith()."'    
+                       AND a.AUDITOR_ID is not null 
+                       AND TRUNC(A.AUDIT_TIME) = TRUNC(sysdate)";
+        $statement = oci_parse($conn,$newDay);
+        echo "理赔审核插入老核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "INSERT INTO TMP_NCS_QD_BX_LPSH
+                    SELECT DISTINCT t1.Organ_Code  AS Organ_Code,
+                                    t1.registe_TIME as AUDIT_TIME,
+                                    trim(t1.Case_No) AS Case_No,                
+                                    t1.case_Status AS case_Status,
+                                    'SYSADMIN' as USER_NAME
+                      FROM DEV_CLM.T_CLAIM_CASE@BINGXING_168_15_CLM T1
+                    WHERE  T1.CASE_STATUS = '80'
+                      and TRUNC(t1.sign_time) = TRUNC(sysdate)";
+        $statement = oci_parse($conn,$newDay);
+        echo "理赔审核插入老核心 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "delete from TMP_NCS_QD_BX_LPSP sp where TRUNC(sp.APPROVE_TIME) = TRUNC(sysdate)";
+        $statement = oci_parse($conn,$newDay);
+        echo "清空理赔审批新核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "INSERT INTO TMP_NCS_QD_BX_LPSP
+                    SELECT DISTINCT A.Audit_Organ AS Audit_Organ,
+                                    a.Approve_Time AS Approve_Time,
+                                    TRIM(a.CASE_NO) AS CASE_NO,
+                                    d.USER_NAME as USER_NAME       
+                      FROM Dev_Clm.t_Claim_Case@Bingxing_168_15_Clm      a
+                      left join Dev_Clm.t_Contract_Master@Bingxing_168_15_Clm c
+                      on A.CASE_Id = c.CASE_Id
+                      left join dev_pas.t_udmp_user@bingxing_168_15_Pas d
+                      on a.APPROVER_ID = d.USER_ID
+                     WHERE 1 =1 
+                      AND trunc(a.sign_TIME) >= DATE'".$this->getQianYiTimeWith()."'
+                     AND a.CASE_STATUS >='60'
+                      and a.APPROVE_DECISION = '1'
+                     And trunc(a.Approve_Time) = TRUNC(sysdate)
+                    AND a.APPROVER_ID is not null";
+        $statement = oci_parse($conn,$newDay);
+        echo "插入审批新核心当日临时表 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "INSERT INTO TMP_NCS_QD_BX_LPSP
+                    SELECT DISTINCT t1.Organ_Code  AS AUDIT_ORGAN,
+                                    t1.registe_TIME as APPROVE_TIME,
+                                    trim(t1.Case_No) AS Case_No,       
+                                    'SYSADMIN' as USER_NAME
+                      FROM DEV_CLM.T_CLAIM_CASE@BINGXING_168_15_CLM T1
+                    WHERE  T1.CASE_STATUS = '80'
+                      and TRUNC(t1.end_case_time) = TRUNC(sysdate)";
+        $statement = oci_parse($conn,$newDay);
+        echo "理赔审批插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "delete from TMP_NCS_QD_BX_LPSH T1 where T1.case_no in (select case_no from TMP_NCS_QD_BX_LPSH group by case_no having count(*)>1) 
+                    and rowid not in (select max(rowid) from TMP_NCS_QD_BX_LPSH group by case_no having count(*)>1)";
+        $statement = oci_parse($conn,$newDay);
+        echo "理赔审核删除 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "delete from TMP_NCS_QD_BX_LPSP T1 where T1.case_no in (select case_no from TMP_NCS_QD_BX_LPSP group by case_no having count(*)>1) 
+                  and rowid not in (select max(rowid) from TMP_NCS_QD_BX_LPSP group by case_no having count(*)>1)";
+        $statement = oci_parse($conn,$newDay);
+        echo "理赔审批删除 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "delete from TMP_NCS_QD_BX_LPSHSP_BD";
+        $statement = oci_parse($conn,$newDay);
+        echo "理赔比对表删除 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "insert into TMP_NCS_QD_BX_LPSHSP_BD 
+                    SELECT distinct trim(T1.mngcom) as  OLD_ORGAN_CODE,
+                           T2.Organ_Code as NEW_ORGAN_CODE,
+                           T1.AUDITPER as OLD_USER_NAME,
+                           T2.USER_NAME as NEW_USER_NAME,
+                           T1.rgtno as OLD_CASE_CODE,
+                           T2.Case_No as NEW_CASE_CODE,
+                           T1.AUDITDATE as OLD_INSERT_TIME,
+                           T2.AUDIT_TIME as NEW_INSERT_TIME,
+                           sysdate as INSERT_SYSDATE,
+                           '0' as TC_ID,
+                           '理赔审核 ' as BUSINESS_TYPE,
+                           (CASE
+                             WHEN TRIM(T1.rgtno) = T2.Case_No THEN
+                              '是 '
+                             ELSE
+                              '否 '
+                           END) AS IS_ACCORDANCE
+                      FROM Tmp_Lis_Qd_Bx_Lpsh T1
+                      LEFT JOIN Tmp_Ncs_Qd_Bx_Lpsh T2
+                       on TRIM(T1.rgtno) = TRIM(T2.Case_No)";
+        $statement = oci_parse($conn,$newDay);
+        echo "理赔审核比对表插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+        $newDay = "insert into TMP_NCS_QD_BX_LPSHSP_BD t 
+                    SELECT distinct 
+                           trim(T1.mngcom) as  OLD_ORGAN_CODE,
+                           trim(T2.AUDIT_ORGAN) as new_ORGAN_CODE,
+                           T1.EXAMPER as OLD_USER_NAME,
+                           T2.USER_NAME as NEW_USER_NAME,
+                           T1.rgtno as OLD_CASE_CODE,
+                           T2.CASE_NO as NEW_CASE_CODE,
+                           T1.EXAMDATE as OLD_INSERT_TIME,
+                           T2.APPROVE_TIME as NEW_INSERT_TIME,
+                           sysdate as INSERT_SYSDATE,
+                           '' as TC_ID,
+                           '理赔审批 ' as BUSINESS_TYPE,
+                           (CASE
+                             WHEN TRIM(T1.rgtno) = T2.CASE_NO THEN
+                              '是 '
+                             ELSE
+                              '否 '
+                           END) AS IS_ACCORDANCE
+                      FROM Tmp_Lis_Qd_Bx_Lpsp T1
+                      LEFT JOIN Tmp_Ncs_Qd_Bx_Lpsp T2
+                       on TRIM(T1.rgtno) = TRIM(T2.CASE_NO)";
+        $statement = oci_parse($conn,$newDay);
+        echo "理赔审批比对表插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
 
         oci_free_statement($statement);
         oci_close($conn);
