@@ -639,9 +639,9 @@ class MethodController extends Controller
                            '理赔审核 ' as BUSINESS_TYPE,
                            (CASE
                              WHEN TRIM(T1.rgtno) = T2.Case_No THEN
-                              '是 '
+                              '是'
                              ELSE
-                              '否 '
+                              '否'
                            END) AS IS_ACCORDANCE
                       FROM Tmp_Lis_Qd_Bx_Lpsh T1
                       LEFT JOIN Tmp_Ncs_Qd_Bx_Lpsh T2
@@ -663,9 +663,9 @@ class MethodController extends Controller
                            '理赔审批 ' as BUSINESS_TYPE,
                            (CASE
                              WHEN TRIM(T1.rgtno) = T2.CASE_NO THEN
-                              '是 '
+                              '是'
                              ELSE
-                              '否 '
+                              '否'
                            END) AS IS_ACCORDANCE
                       FROM Tmp_Lis_Qd_Bx_Lpsp T1
                       LEFT JOIN Tmp_Ncs_Qd_Bx_Lpsp T2

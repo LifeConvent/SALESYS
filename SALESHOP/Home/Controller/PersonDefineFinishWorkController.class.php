@@ -385,7 +385,7 @@ class PersonDefineFinishWorkController extends Controller
         if(in_array($user_name,$clm_user)||(int)$userType==1) {
 //            $where_type_fix = "";
             #038 个人待确认理赔审批审核查询
-            $select_hb = "SELECT B.DESCRIPTION,B.LINK_BUSINESS_CODE,TC_ID,TRIM(OLD_ORGAN_CODE) AS OLD_ORGAN_CODE,A.NEW_USER_NAME,OLD_CASE_CODE,NEW_CASE_CODE,TRIM(IS_ACCORDANCE) AS IS_ACCORDANCE,'理赔审核审批' AS NODE
+            $select_hb = "SELECT B.DESCRIPTION,B.LINK_BUSINESS_CODE,TC_ID,TRIM(OLD_ORGAN_CODE) AS OLD_ORGAN_CODE,A.NEW_USER_NAME,OLD_CASE_CODE,NEW_CASE_CODE,TRIM(IS_ACCORDANCE) AS IS_ACCORDANCE,A.BUSINESS_TYPE AS NODE
                           FROM TMP_NCS_QD_BX_LPSHSP_BD A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_CASE_CODE = B.BUSINESS_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) WHERE ".$where_old_time_bqsl.$where_type_fix;
             $result_rows = oci_parse($conn, $select_hb); // 配置SQL语句，执行SQL
             $hb_result_old_time = $method->search_long($result_rows);
