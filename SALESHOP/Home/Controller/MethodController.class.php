@@ -2498,6 +2498,9 @@ class MethodController extends Controller
         while($row = oci_fetch_array($result_rows, OCI_RETURN_NULLS)){
             $result[] = $row;
         }
+        if(empty($result)){
+            return null;
+        }
         return $result;
     }
 

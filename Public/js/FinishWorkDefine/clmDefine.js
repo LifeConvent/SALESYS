@@ -6,7 +6,7 @@ $(function () {
 
     $('#home').attr('class','active');
     $('#data_ub').css('display','block');
-    $('#nb_tb_define').attr('class','active');
+    $('#clm_define').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
@@ -22,7 +22,7 @@ $(function () {
             // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         }
         $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getNbTbDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getClmDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
     $('#form_date2').datetimepicker({
         language:  'zh-CN',
@@ -39,7 +39,7 @@ $(function () {
             return;
         }
         $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getNbTbDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getClmDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     //1.初始化Table
@@ -75,7 +75,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
-            url: HOST + "index.php/Home/PersonDefineFinishWork/getNbTbDefine",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/PersonDefineFinishWork/getClmDefine",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             showExport: true,
             exportDataType: 'all',
@@ -123,140 +123,42 @@ var TableInit = function () {
                 formatter: function (value, row, index) {
                     return index+1;
                 }
-            }, {
-                field: 'organ_code2',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '二级机构',
-                width:80
-            }, {
-                field: 'organ_code3',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '三级机构',
-                width:100
-            }, {
-                field: 'organ_code4',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '四级机构',
-                width:100
-            }, {
-                field: 'channel_type',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '销售渠道',
-                width:100
-            }, {
-                field: 'submit_channel',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '承保模式',
-                width:100
-            }, {
+            },{
                 field: 'apply_code',
                 sortable: true,
-                valign: 'middle',
                 align: 'center',
+                valign: 'middle',
                 title: '投保单号',
+                width:200
+            }, {
+                field: 'check_con',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '操作内容',
                 width:150
-            }, {
-                field: 'winning_start_flag',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '是否预承保',
-                width:100
-            }, {
-                field: 'policy_code',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '保单号',
-                width:120
-            }, {
-                field: 'apply_date',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '投保日期',
-                width:100
-            }, {
-                field: 'issue_date',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '签单日期',
-                width:100
-            }, {
-                field: 'validate_date',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '生效日期',
-                width:100
-            }, {
-                field: 'proposal_status',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '保单状态',
-                width:100
-            }, {
-                field: 'agent_name',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '业务员姓名',
-                width:100
-            },  {
-                field: 'agent_code',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '业务员工号',
-                width:110
-            }, {
-                field: 'service_bank',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '银行',
-                width:150
-            }, {
-                field: 'service_bank_branch',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '网点代码',
-                width:100
             }, {
                 field: 'user_name',
                 sortable: true,
-                align: 'center',
                 valign: 'middle',
+                align: 'center',
                 title: '操作员',
-                width:100
-            },{
+                width:150
+            },  {
                 field: 'organ_code',
                 sortable: true,
-                align: 'center',
                 valign: 'middle',
+                align: 'center',
                 title: '作业机构',
                 width:100
-            },{
+            }, {
                 field: 'business_name',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '业务节点',
                 width:100
-            },{
+            }, {
                 field: 'tc_id',
                 sortable: true,
                 align: 'center',
@@ -349,8 +251,8 @@ window.actionEvents = {
         // var link_business = $("#business"+index).val();
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
-        var business_code = row.apply_code;
-        var policy_code = row.policy_code;
+        var policy_code = row.apply_code;
+        var business_code = row.document_no;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输

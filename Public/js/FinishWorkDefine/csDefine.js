@@ -18,11 +18,13 @@ $(function () {
         minView: 2,
         forceParse: 0
     }).on('changeDate', function(ev){
-        if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
-            // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
-        }
+        // if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
+        //     // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
+        // }
+        $('#daily_report2').bootstrapTable('removeAll');
         $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
+
     $('#form_date2').datetimepicker({
         language:  'zh-CN',
         weekStart: 1,
@@ -37,6 +39,7 @@ $(function () {
             $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
             return;
         }
+    $('#daily_report2').bootstrapTable('removeAll');
         $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
@@ -45,42 +48,42 @@ $(function () {
     oTable.Init();
 //        $[sessionStorage] = oTable.queryParams;
 
-    // //2.初始化Button的点击事件
-    // var oButtonInit = new ButtonInit();
-    // oButtonInit.Init();
-    //
-    // $('input').iCheck({
-    //     checkboxClass: 'icheckbox_square-green',
-    //     radioClass: 'iradio_square-green',
-    //     increaseArea: '2%' // optional
-    // });
+    //2.初始化Button的点击事件
+    var oButtonInit = new ButtonInit();
+    oButtonInit.Init();
+
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+        increaseArea: '2%' // optional
+    });
 
 
 });
 
 var TableInit = function () {
-    countFooter =  function(v){
-        var count = 0;
-        for (var i in v) {
-            if(v[i]['org']=='小计'){
-                continue;
-            }
-            count += v[i][this.field];
-        }
-        return count+'';
-    };
+    // countFooter =  function(v){
+    //     var count = 0;
+    //     for (var i in v) {
+    //         if(v[i]['org']=='小计'){
+    //             continue;
+    //         }
+    //         count += v[i][this.field];
+    //     }
+    //     return count+'';
+    // };
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
             url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
+            cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             showExport: true,
             exportDataType: 'all',
             exportTypes:[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf'],
-            toolbar: '#toolbar',    //工具按钮用哪个容器
+            // toolbar: '#toolbar',    //工具按钮用哪个容器
             striped: true,      //是否显示行间隔色
-            cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             pagination: true,     //是否显示分页（*）
             sortable: true,      //是否启用排序
             sortName: 'ID', // 设置默认排序为 name

@@ -21,6 +21,7 @@ $(function () {
         if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
             // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         }
+        $('#daily_report2').bootstrapTable('removeAll');
         $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getNbBdDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
     $('#form_date2').datetimepicker({
@@ -37,6 +38,7 @@ $(function () {
             $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
             return;
         }
+        $('#daily_report2').bootstrapTable('removeAll');
         $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getNbBdDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
