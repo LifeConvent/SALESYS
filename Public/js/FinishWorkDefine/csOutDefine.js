@@ -6,7 +6,7 @@ $(function () {
 
     $('#home').attr('class','active');
     $('#data_ub').css('display','block');
-    $('#cs_difine').attr('class','active');
+    $('#cs_out_define').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
@@ -21,7 +21,7 @@ $(function () {
         if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
             // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         }
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsOutDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
     $('#form_date2').datetimepicker({
         language:  'zh-CN',
@@ -37,7 +37,7 @@ $(function () {
             $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
             return;
         }
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsOutDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     //1.初始化Table
@@ -73,7 +73,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
-            url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/PersonDefineFinishWork/getCsOutDefine",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             showExport: true,
             exportDataType: 'all',
@@ -136,11 +136,11 @@ var TableInit = function () {
                 title: '保单号',
                 width:130
             }, {
-                field: 'insert_date',
+                field: 'issue_date',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '操作日期',
+                title: '签单日期',
                 width:100
             }, {
                 field: 'service_code',
@@ -169,6 +169,13 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '金额',
+                width:100
+            }, {
+                field: 'cs_validate_date',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保全生效日期',
                 width:100
             }, {
                 field: 'apply_date',
@@ -205,6 +212,34 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '业务节点',
                 width:100
+            }, {
+                field: 'policy_validate_date',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保单生效日期',
+                width:100
+            },  {
+                field: 'product_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '主险名称',
+                width:150
+            }, {
+                field: 'amount',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保额',
+                width:150
+            }, {
+                field: 'total_prem_af',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保费',
+                width:150
             },{
                 field: 'tc_id',
                 sortable: true,
@@ -212,7 +247,7 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '缺陷号',
                 width:150
-            },  {
+            }, {
                 field: 'result',
                 align: 'center',
                 valign: 'middle',
@@ -303,7 +338,7 @@ window.actionEvents = {
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输
-                url: HOST + "index.php/Home/PersonDefineFinishWork/updateCsDefine", //目标地址.
+                url: HOST + "index.php/Home/PersonDefineFinishWork/updateCsOutDefine", //目标地址.
                 dataType: "json", //数据格式:JSON
                 data: {username: username, accept_code: accept_code, policy_code: policy_code, business_name:business_name},
                 success: function (result) {

@@ -30,12 +30,48 @@ class PersonDefineFinishWorkController extends Controller
     }
 
     public function csDefine(){
-
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-//        $token = $_SESSION['token'];
-//dump($token);
+        if ($result) {
+            $this->assign('username', $username);
+            $this->assign('TITLE', TITLE);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
+    public function csOutDefine(){
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $this->assign('username', $username);
+            $this->assign('TITLE', TITLE);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
+    public function nbTbDefine(){
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $this->assign('username', $username);
+            $this->assign('TITLE', TITLE);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
+    public function nbBdDefine(){
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
         if ($result) {
             $this->assign('username', $username);
             $this->assign('TITLE', TITLE);
@@ -479,12 +515,12 @@ class PersonDefineFinishWorkController extends Controller
         ##############################################################  公共条件处理部分-无用户区分  ############################################################################
         if (!empty($queryDateStart)) {
             if (!empty($queryDateEnd)) {
-                $where_time_bqsl = " A.INSERT_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+                $where_time_bqsl = " A.SYS_INSERT_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             } else {
-                $where_time_bqsl = " A.INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd') ";
+                $where_time_bqsl = " A.SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd') ";
             }
         } else {
-            $where_time_bqsl = " A.INSERT_DATE = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " A.SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
         ##############################################################  测试数据  ############################################################################
         $where_time_bqsl = "";
@@ -514,7 +550,7 @@ class PersonDefineFinishWorkController extends Controller
         //保全室、理赔室、核保室不参与
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
-            $select_bqsl = "SELECT A.ACCEPT_CODE,
+            $select_bqsl = "SELECT DISTINCT  A.ACCEPT_CODE,
                                    A.POLICY_CODE,
                                    TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
                                    A.SERVICE_CODE,
@@ -653,4 +689,526 @@ class PersonDefineFinishWorkController extends Controller
             exit(json_encode(''));
         }
     }
+
+    public function getCsOutDefine(){
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        //获取用户权限类型-1-管理员2-机构组长3-个人
+        $userType = $method->getUserType();
+        $otherUser = $method->getOtherUser();
+
+        ##############################################################  公共条件处理部分-无用户区分  ############################################################################
+        if (!empty($queryDateStart)) {
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " A.INSERT_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            } else {
+                $where_time_bqsl = " A.INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " A.INSERT_DATE = TRUNC(SYSDATE) ";
+        }
+        ##############################################################  测试数据  ############################################################################
+        $where_time_bqsl = "";
+        ##############################################################  测试数据  ############################################################################
+        $user_name = "";
+        $method->checkIn($user_name);
+        #33 保全受理、复核处理个人待查询列表
+        $orgName = $method->getOrgName();
+        $fuhe_user = $method->getFuheUser();
+        $clm_user = $method->getClmUser();
+        $uw_user = $method->getUwUser();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+//            dump($organCode);
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(in_array($user_name,$otherUser)){
+            $where_type_fix =  " AND ORGAN_CODE NOT LIKE '8647%'";
+        }
+
+        $num = 0;
+        ################################################################   保全受理   #######################################################################
+        //保全室、理赔室、核保室不参与
+        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+            #033 个人待确认保全受理查询
+            $select_bqsl = "SELECT DISTINCT  A.ACCEPT_CODE,
+                                   A.POLICY_CODE,
+                                   TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
+                                   A.SERVICE_CODE,
+                                   A.SERVICE_NAME,
+                                   A.USER_NAME,
+                                   A.GET_MONEY,
+                                   TO_CHAR(A.CS_VALIDATE_DATE,'YYYY-MM-DD') AS CS_VALIDATE_DATE,
+                                   TO_CHAR(A.APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
+                                   A.SERVICE_TYPE,
+                                   A.ACCEPT_STATUS,
+                                   A.ORGAN_CODE,
+                                   D.BUSINESS_NAME,
+                                   TO_CHAR(A.POLICY_VALIDATE_DATE,'YYYY-MM-DD') AS POLICY_VALIDATE_DATE,
+                                   A.PRODUCT_NAME,
+                                   A.AMOUNT,
+                                   A.TOTAL_PREM_AF,
+                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                   --C.TC_ID,
+                                   (CASE
+                                      WHEN C.TC_ID IS NULL THEN B.RESULT
+                                        ELSE '错误'
+                                    END) AS RESULT,
+                                   (CASE
+                                      WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
+                                        ELSE C.TC_USER_NAME
+                                    END) AS HD_USER_NAME,
+                                   (CASE
+                                      WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                        ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
+                                    END) AS SYS_INSERT_DATE,
+                                   --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   --C.STATUS,
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                FROM TMP_QDSX_CS_SLFH_WW A 
+                                LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                                  ON A.ACCEPT_CODE = B.BUSINESS_CODE
+                                  AND A.POLICY_CODE = B.POLICY_CODE
+                                  AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                                  AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                                LEFT JOIN TMP_QDSX_TC_BUG C  
+                                  ON C.BUSINESS_CODE = A.ACCEPT_CODE
+                                  --AND C.POLICY_CODE = A.POLICY_CODE
+                                  AND C.FIND_NODE = A.BUSINESS_NODE
+                                LEFT JOIN TMP_BUSINESS_NODE D
+                                  ON D.BUSINESS_NODE = A.BUSINESS_NODE
+                                 WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+            $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+            $bqsl_result_time = $method->search_long($result_rows);
+            for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
+                $value = $bqsl_result_time[$i];
+                $result[$i]['accept_code'] = $value['ACCEPT_CODE'];
+                $result[$i]['policy_code'] = $value['POLICY_CODE'];
+                $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+                $result[$i]['service_code'] = $value['SERVICE_CODE'];
+                $result[$i]['service_name'] = $value['SERVICE_NAME'];
+                $result[$i]['user_name'] = $value['USER_NAME'];
+                $result[$i]['cs_validate_date'] = $value['CS_VALIDATE_DATE'];
+                $result[$i]['apply_date'] = $value['APPLY_DATE'];
+                $result[$i]['service_type'] = $value['SERVICE_TYPE'];
+                $result[$i]['accept_status'] = $value['ACCEPT_STATUS'];
+                $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+                $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+                $result[$i]['policy_validate_date'] = $value['POLICY_VALIDATE_DATE'];
+                $result[$i]['product_name'] = $value['PRODUCT_NAME'];
+                $result[$i]['amount'] = $value['AMOUNT'];
+                $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
+                if(empty( $value['TC_ID'])){
+                    $result[$i]['tc_id'] = "-";
+                }else{
+                    $result[$i]['tc_id'] = $value['TC_ID'];
+                }
+                if(empty( $value['RESULT'])){
+                    $result[$i]['result'] = "-";
+                }else{
+                    $result[$i]['result'] = $value['RESULT'];
+                }
+                $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
+                $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+                if (empty($value['DESCRIPTION'])) {
+                    $result[$i]['description'] = "-";
+                } else {
+                    $result[$i]['description'] = $value['DESCRIPTION'];
+                }
+                $result[$i]['status'] = $value['STATUS'];
+            }
+            $num += sizeof($bqsl_result_time);
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function updateCsOutDefine(){
+        header('Content-type: text/html; charset=utf-8');
+        $user_name = $_POST['username'];
+        $business_name = $_POST['business_name'];
+        $policy_code = $_POST['policy_code'];
+        $accept_code = $_POST['accept_code'];
+        $method = new MethodController();
+        ##############################################################  公共JS处理部分  ############################################################################
+        //JS请求公共处理部分 TRUE锁定
+        if($method->publicCheck()==1){
+            $result['status'] = "failed";
+            $result['lock'] = "true";
+            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }else if($method->publicCheck()==2){
+            $result['status'] = "failed";
+            $result['lock'] = "false";
+            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }
+        ############################################################################################################################################################
+        $conn = $method->OracleOldDBCon();
+        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
+        $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
+        $node_result = $method->search_long($result_rows);
+        #$sysDate = date('yyyy/mm/dd', time());
+        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
+        #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
+        Log::write($user_name.' 数据库查询SQL：'.$insert_sql,'INFO');
+        $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = "success";
+            $result['message'] = "受理号：".$accept_code."-保单号：".$policy_code." 确认成功！";
+        }else{
+            $result['status'] = "failed";
+            $e = oci_error();
+            $result['message'] = "确认失败".$e['message'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getNbTbDefine(){
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        //获取用户权限类型-1-管理员2-机构组长3-个人
+        $userType = $method->getUserType();
+        $otherUser = $method->getOtherUser();
+
+        ##############################################################  公共条件处理部分-无用户区分  ############################################################################
+        if (!empty($queryDateStart)) {
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " A.INSERT_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            } else {
+                $where_time_bqsl = " A.INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " A.INSERT_DATE = TRUNC(SYSDATE) ";
+        }
+        ##############################################################  测试数据  ############################################################################
+        $where_time_bqsl = "";
+        ##############################################################  测试数据  ############################################################################
+        $user_name = "";
+        $method->checkIn($user_name);
+        #33 保全受理、复核处理个人待查询列表
+        $orgName = $method->getOrgName();
+        $fuhe_user = $method->getFuheUser();
+        $clm_user = $method->getClmUser();
+        $uw_user = $method->getUwUser();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+//            dump($organCode);
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(in_array($user_name,$otherUser)){
+            $where_type_fix =  " AND ORGAN_CODE NOT LIKE '8647%'";
+        }
+
+        $num = 0;
+        ################################################################   保全受理   #######################################################################
+        //保全室、理赔室、核保室不参与
+        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+            #033 个人待确认保全受理查询
+            $select_bqsl = "SELECT DISTINCT A.ORGAN_CODE2,
+                               A.ORGAN_CODE3,
+                               A.ORGAN_CODE4,
+                               A.CHANNEL_TYPE,
+                               A.SUBMIT_CHANNEL,
+                               A.APPLY_CODE,
+                               A.WINNING_START_FLAG,
+                               A.POLICY_CODE,
+                               TO_CHAR(A.APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
+                               TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
+                               TO_CHAR(A.VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,
+                               A.PROPOSAL_STATUS,
+                               A.AGENT_NAME,
+                               A.AGENT_CODE,
+                               A.SERVICE_BANK,
+                               A.SERVICE_BANK_BRANCH,
+                               A.USER_NAME,
+                               A.ORGAN_CODE,
+                               D.BUSINESS_NAME,
+                               C.TC_ID,
+                               (CASE
+                                  WHEN C.TC_ID IS NULL THEN B.RESULT
+                                    ELSE '错误'
+                                END) AS RESULT,
+                               (CASE
+                                  WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
+                                    ELSE C.TC_USER_NAME
+                                END) AS HD_USER_NAME,
+                               (CASE
+                                  WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                    ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
+                                END) AS SYS_INSERT_DATE,
+                               C.DESCRIPTION,
+                               C.STATUS  
+                            FROM TMP_QDSX_NB_TBXX A 
+                            LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                            ON A.APPLY_CODE = B.BUSINESS_CODE
+                            AND A.POLICY_CODE = B.POLICY_CODE
+                            AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                            AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                            LEFT JOIN TMP_QDSX_TC_BUG C  
+                              ON C.BUSINESS_CODE = A.APPLY_CODE
+                              AND C.FIND_NODE = A.BUSINESS_NODE
+                              LEFT JOIN TMP_BUSINESS_NODE D
+                              ON D.BUSINESS_NODE = A.BUSINESS_NODE
+                                 WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+            $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+            $bqsl_result_time = $method->search_long($result_rows);
+            for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
+                $value = $bqsl_result_time[$i];
+                $result[$i]['organ_code2'] = $value['ORGAN_CODE2'];
+                $result[$i]['organ_code3'] = $value['ORGAN_CODE3'];
+                $result[$i]['organ_code4'] = $value['ORGAN_CODE4'];
+                $result[$i]['channel_type'] = $value['CHANNEL_TYPE'];
+                $result[$i]['submit_channel'] = $value['SUBMIT_CHANNEL'];
+                $result[$i]['apply_code'] = $value['APPLY_CODE'];
+                $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
+                $result[$i]['policy_code'] = $value['POLICY_CODE'];
+                $result[$i]['apply_date'] = $value['APPLY_DATE'];
+                $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+                $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
+                $result[$i]['proposal_status'] = $value['PROPOSAL_STATUS'];
+                $result[$i]['agent_name'] = $value['AGENT_NAME'];
+                $result[$i]['agent_code'] = $value['AGENT_CODE'];
+                $result[$i]['service_bank'] = $value['SERVICE_BANK'];
+                $result[$i]['service_bank_branch'] = $value['SERVICE_BANK_BRANCH'];
+                $result[$i]['user_name'] = $value['USER_NAME'];
+                $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+                $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+                if(empty( $value['TC_ID'])){
+                    $result[$i]['tc_id'] = "-";
+                }else{
+                    $result[$i]['tc_id'] = $value['TC_ID'];
+                }
+                if(empty( $value['RESULT'])){
+                    $result[$i]['result'] = "-";
+                }else{
+                    $result[$i]['result'] = $value['RESULT'];
+                }
+                $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
+                $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+                if (empty($value['DESCRIPTION'])) {
+                    $result[$i]['description'] = "-";
+                } else {
+                    $result[$i]['description'] = $value['DESCRIPTION'];
+                }
+                $result[$i]['status'] = $value['STATUS'];
+            }
+            $num += sizeof($bqsl_result_time);
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function updatePublicDefine(){
+        header('Content-type: text/html; charset=utf-8');
+        $user_name = $_POST['username'];
+        $business_name = $_POST['business_name'];
+        $policy_code = $_POST['policy_code'];
+        $accept_code = $_POST['business_code'];
+        $method = new MethodController();
+        ##############################################################  公共JS处理部分  ############################################################################
+        //JS请求公共处理部分 TRUE锁定
+        if($method->publicCheck()==1){
+            $result['status'] = "failed";
+            $result['lock'] = "true";
+            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }else if($method->publicCheck()==2){
+            $result['status'] = "failed";
+            $result['lock'] = "false";
+            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }
+        ############################################################################################################################################################
+        $conn = $method->OracleOldDBCon();
+        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
+        $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
+        $node_result = $method->search_long($result_rows);
+        #$sysDate = date('yyyy/mm/dd', time());
+        if(empty($policy_code)){
+            $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
+        }else{
+            $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
+        }
+        #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
+        Log::write($user_name.' 数据库查询SQL：'.$insert_sql,'INFO');
+        $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = "success";
+            $result['message'] = "关键业务号：".$accept_code."-业务号：".$policy_code." 确认成功！";
+        }else{
+            $result['status'] = "failed";
+            $e = oci_error();
+            $result['message'] = "确认失败".$e['message'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getNbBdDefine(){
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        //获取用户权限类型-1-管理员2-机构组长3-个人
+        $userType = $method->getUserType();
+        $otherUser = $method->getOtherUser();
+
+        ##############################################################  公共条件处理部分-无用户区分  ############################################################################
+        if (!empty($queryDateStart)) {
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " A.INSERT_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            } else {
+                $where_time_bqsl = " A.INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " A.INSERT_DATE = TRUNC(SYSDATE) ";
+        }
+        ##############################################################  测试数据  ############################################################################
+        $where_time_bqsl = "";
+        ##############################################################  测试数据  ############################################################################
+        $user_name = "";
+        $method->checkIn($user_name);
+        #33 保全受理、复核处理个人待查询列表
+        $orgName = $method->getOrgName();
+        $fuhe_user = $method->getFuheUser();
+        $clm_user = $method->getClmUser();
+        $uw_user = $method->getUwUser();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+//            dump($organCode);
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(in_array($user_name,$otherUser)){
+            $where_type_fix =  " AND ORGAN_CODE NOT LIKE '8647%'";
+        }
+
+        $num = 0;
+        ################################################################   保全受理   #######################################################################
+        //保全室、理赔室、核保室不参与
+        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+            #033 个人待确认保全受理查询
+            $select_bqsl = "SELECT DISTINCT 
+                               A.POLICY_CODE,
+                               A.MEDIA_TYPE,
+                               TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
+                               A.BUSI_PROD_NAME,
+                               A.USER_NAME,
+                               A.ORGAN_CODE,
+                               D.BUSINESS_NAME,
+                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                               --C.TC_ID,
+                               (CASE
+                                  WHEN C.TC_ID IS NULL THEN B.RESULT
+                                    ELSE '错误'
+                                END) AS RESULT,
+                               (CASE
+                                  WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
+                                    ELSE C.TC_USER_NAME
+                                END) AS HD_USER_NAME,
+                               (CASE
+                                  WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                    ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
+                                END) AS SYS_INSERT_DATE,
+                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
+                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                               --C.STATUS,
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                            FROM TMP_QDSX_NB_BXHT A 
+                            LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                              ON A.POLICY_CODE = B.BUSINESS_CODE
+                              AND A.MEDIA_TYPE = B.MEDIA_TYPE
+                              AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                              AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                            LEFT JOIN TMP_QDSX_TC_BUG C  
+                              ON C.BUSINESS_CODE = A.POLICY_CODE
+                              --AND C.POLICY_CODE = A.POLICY_CODE
+                              AND C.FIND_NODE = A.BUSINESS_NODE
+                            LEFT JOIN TMP_BUSINESS_NODE D
+                              ON D.BUSINESS_NODE = A.BUSINESS_NODE
+                                 WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+            $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+            $bqsl_result_time = $method->search_long($result_rows);
+            for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
+                $value = $bqsl_result_time[$i];
+                $result[$i]['policy_code'] = $value['POLICY_CODE'];
+                $result[$i]['media_type'] = $value['MEDIA_TYPE'];
+                $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+                $result[$i]['busi_prod_name'] = $value['BUSI_PROD_NAME'];
+                $result[$i]['user_name'] = $value['USER_NAME'];
+                $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+                $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+                if(empty( $value['TC_ID'])){
+                    $result[$i]['tc_id'] = "-";
+                }else{
+                    $result[$i]['tc_id'] = $value['TC_ID'];
+                }
+                if(empty( $value['RESULT'])){
+                    $result[$i]['result'] = "-";
+                }else{
+                    $result[$i]['result'] = $value['RESULT'];
+                }
+                $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
+                $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+                if (empty($value['DESCRIPTION'])) {
+                    $result[$i]['description'] = "-";
+                } else {
+                    $result[$i]['description'] = $value['DESCRIPTION'];
+                }
+                $result[$i]['status'] = $value['STATUS'];
+            }
+            $num += sizeof($bqsl_result_time);
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
 }

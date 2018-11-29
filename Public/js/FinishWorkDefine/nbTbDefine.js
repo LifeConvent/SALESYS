@@ -6,7 +6,7 @@ $(function () {
 
     $('#home').attr('class','active');
     $('#data_ub').css('display','block');
-    $('#cs_difine').attr('class','active');
+    $('#nb_tb_define').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
@@ -21,7 +21,7 @@ $(function () {
         if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
             // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         }
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getNbTbDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
     $('#form_date2').datetimepicker({
         language:  'zh-CN',
@@ -37,7 +37,7 @@ $(function () {
             $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
             return;
         }
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getNbTbDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     //1.初始化Table
@@ -73,7 +73,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
-            url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/PersonDefineFinishWork/getNbTbDefine",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             showExport: true,
             exportDataType: 'all',
@@ -122,83 +122,132 @@ var TableInit = function () {
                     return index+1;
                 }
             }, {
-                field: 'accept_code',
+                field: 'organ_code2',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '受理号',
-                width:170
+                title: '二级机构',
+                width:80
+            }, {
+                field: 'organ_code3',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '三级机构',
+                width:100
+            }, {
+                field: 'organ_code4',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '四级机构',
+                width:100
+            }, {
+                field: 'channel_type',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '销售渠道',
+                width:100
+            }, {
+                field: 'submit_channel',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '承保模式',
+                width:100
+            }, {
+                field: 'apply_code',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '投保单号',
+                width:150
+            }, {
+                field: 'winning_start_flag',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '是否预承保',
+                width:100
             }, {
                 field: 'policy_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '保单号',
-                width:130
-            }, {
-                field: 'insert_date',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '操作日期',
-                width:100
-            }, {
-                field: 'service_code',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '保全项',
-                width:100
-            }, {
-                field: 'service_name',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '保全项目名称',
-                width:150
-            }, {
-                field: 'user_name',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '操作员',
-                width:100
-            }, {
-                field: 'get_money',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '金额',
-                width:100
+                width:120
             }, {
                 field: 'apply_date',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '申请日期',
+                title: '投保日期',
                 width:100
             }, {
-                field: 'service_type',
+                field: 'issue_date',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '申请方式',
+                title: '签单日期',
                 width:100
             }, {
-                field: 'accept_status',
+                field: 'validate_date',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '受理状态',
+                title: '生效日期',
                 width:100
             }, {
+                field: 'proposal_status',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保单状态',
+                width:100
+            }, {
+                field: 'agent_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务员姓名',
+                width:100
+            },  {
+                field: 'agent_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务员工号',
+                width:110
+            }, {
+                field: 'service_bank',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '银行',
+                width:150
+            }, {
+                field: 'service_bank_branch',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '网点代码',
+                width:100
+            }, {
+                field: 'user_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '操作员',
+                width:100
+            },{
                 field: 'organ_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '作业机构',
                 width:100
-            }, {
+            },{
                 field: 'business_name',
                 sortable: true,
                 align: 'center',
@@ -212,7 +261,7 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '缺陷号',
                 width:150
-            },  {
+            }, {
                 field: 'result',
                 align: 'center',
                 valign: 'middle',
@@ -298,14 +347,14 @@ window.actionEvents = {
         // var link_business = $("#business"+index).val();
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
-        var accept_code = row.accept_code;
+        var business_code = row.apply_code;
         var policy_code = row.policy_code;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输
-                url: HOST + "index.php/Home/PersonDefineFinishWork/updateCsDefine", //目标地址.
+                url: HOST + "index.php/Home/PersonDefineFinishWork/updatePublicDefine", //目标地址.
                 dataType: "json", //数据格式:JSON
-                data: {username: username, accept_code: accept_code, policy_code: policy_code, business_name:business_name},
+                data: {username: username, business_code: business_code, policy_code: policy_code, business_name:business_name},
                 success: function (result) {
                     if (result.status == 'success') {
                         debugger;
