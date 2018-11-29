@@ -112,12 +112,12 @@ var TableInit = function () {
                 return '搜索';
             },
             columns: [{
-                checkbox: false
-            }, {
                 field: 'ID',
                 sortable: true,
                 align: 'center',
+                valign: 'middle',
                 title: '序号',
+                width:40,
                 formatter: function (value, row, index) {
                     return index+1;
                 }
@@ -125,107 +125,145 @@ var TableInit = function () {
                 field: 'accept_code',
                 sortable: true,
                 align: 'center',
-                title: '受理号'
+                valign: 'middle',
+                title: '受理号',
+                width:170
             }, {
                 field: 'policy_code',
                 sortable: true,
                 align: 'center',
-                title: '保单号'
+                valign: 'middle',
+                title: '保单号',
+                width:130
             }, {
                 field: 'insert_date',
                 sortable: true,
+                valign: 'middle',
                 align: 'center',
-                title: '操作日期'
+                title: '操作日期',
+                width:100
             }, {
                 field: 'service_code',
                 sortable: true,
                 align: 'center',
-                title: '保全项代码'
+                valign: 'middle',
+                title: '保全项',
+                width:100
             }, {
                 field: 'service_name',
                 sortable: true,
+                valign: 'middle',
                 align: 'center',
-                title: '保全项目名称'
+                title: '保全项目名称',
+                width:150
             }, {
                 field: 'user_name',
                 sortable: true,
+                valign: 'middle',
                 align: 'center',
-                title: '业务操作员'
+                title: '操作员',
+                width:100
             }, {
                 field: 'get_money',
                 sortable: true,
                 align: 'center',
-                title: '收付费金额'
+                valign: 'middle',
+                title: '金额',
+                width:100
             }, {
                 field: 'apply_date',
                 sortable: true,
                 align: 'center',
-                title: '保全申请日期'
+                valign: 'middle',
+                title: '申请日期',
+                width:100
             }, {
                 field: 'service_type',
                 sortable: true,
                 align: 'center',
-                title: '申请方式'
+                valign: 'middle',
+                title: '申请方式',
+                width:100
             }, {
                 field: 'accept_status',
                 sortable: true,
                 align: 'center',
-                title: '受理状态'
+                valign: 'middle',
+                title: '受理状态',
+                width:100
             }, {
                 field: 'organ_code',
                 sortable: true,
                 align: 'center',
-                title: '作业机构代码'
+                valign: 'middle',
+                title: '作业机构',
+                width:100
             }, {
                 field: 'business_name',
                 sortable: true,
                 align: 'center',
-                title: '业务节点名称'
+                valign: 'middle',
+                title: '业务节点',
+                width:100
             },{
                 field: 'tc_id',
                 sortable: true,
                 align: 'center',
-                title: '缺陷号'
+                valign: 'middle',
+                title: '缺陷号',
+                width:150
             },  {
                 field: 'result',
                 align: 'center',
+                valign: 'middle',
                 sortable: true,
                 title: '核对结果',
+                width:100
                 // formatter: "actionFormatter_result",
                 // events: "actionEvents_result",
             },{
                 field: 'hd_user_name',
                 align: 'center',
+                valign: 'middle',
                 title: '核对人',
                 sortable: true,
+                width:100
                 // formatter: "actionFormatter_hd_user",
                 // events: "actionEvents_hd_user",
             },{
                 field: 'sys_insert_date',
                 align: 'center',
+                valign: 'middle',
                 title: '核对日期',
                 sortable: true,
+                width:100
                 // formatter: "actionFormatter_in_date",
                 // events: "actionEvents_in_date",
             },{
                 field: 'description',
                 align: 'center',
+                valign: 'middle',
                 title: '存在问题',
+                width:200
                 // formatter: "actionFormatter_des",
                 // events: "actionEvents_des",
             },{
                 field: 'status',
                 align: 'center',
+                valign: 'middle',
                 title: '解决进度',
                 sortable: true,
+                width:200
                 // formatter: "actionFormatter_status",
                 // events: "actionEvents_status",
             },{
                 field: 'operation',
                 title: '操作',
                 align: 'center',
+                valign: 'middle',
                 formatter: "actionFormatter",
                 events: "actionEvents",
+                width:100,
                 clickToSelect: false
             }]
         });

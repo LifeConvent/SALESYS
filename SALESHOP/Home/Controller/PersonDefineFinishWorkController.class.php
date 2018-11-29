@@ -526,7 +526,8 @@ class PersonDefineFinishWorkController extends Controller
                                    A.ACCEPT_STATUS,
                                    A.ORGAN_CODE,
                                    D.BUSINESS_NAME,
-                                   C.TC_ID,
+                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                   --C.TC_ID,
                                    (CASE
                                       WHEN C.TC_ID IS NULL THEN B.RESULT
                                         ELSE '错误'
@@ -539,8 +540,10 @@ class PersonDefineFinishWorkController extends Controller
                                       WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
                                         ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
                                     END) AS SYS_INSERT_DATE,
-                                   C.DESCRIPTION,
-                                   C.STATUS,
+                                   --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   --C.STATUS,
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS,
                                    A.BUSINESS_NODE,
                                    C.FIND_NODE
                                 FROM TMP_QDSX_CS_SLFH_GM A 
