@@ -124,34 +124,104 @@ var TableInit = function () {
                     return index+1;
                 }
             },{
-                field: 'apply_code',
+                field: 'case_no',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '投保单号',
-                width:200
+                title: '赔案号',
+                width:120
             }, {
-                field: 'check_con',
+                field: 'policy_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '操作内容',
+                title: '保单号',
+                width:120
+            }, {
+                field: 'rptr_time',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '报案日期',
+                width:100
+            }, {
+                field: 'insured_name',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '出险人',
+                width:100
+            }, {
+                field: 'claim_type',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '理赔类型',
+                width:100
+            }, {
+                field: 'is_fee',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '是否医疗费用型',
                 width:150
-            }, {
+            },{
+                field: 'case_status',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '赔案状态',
+                width:100
+            },{
+                field: 'sign_time',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '签收确认日期',
+                width:120
+            },{
+                field: 'calc_pay',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '理算金额',
+                width:100
+            },{
+                field: 'fee_amount',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '收付费金额',
+                width:120
+            },{
+                field: 'end_case_time',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '结案日期',
+                width:100
+            },{
+                field: 'finish_time',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '到账日期',
+                width:100
+            },{
                 field: 'user_name',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
                 title: '操作员',
-                width:150
-            },  {
+                width:100
+            },{
                 field: 'organ_code',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
                 title: '作业机构',
                 width:100
-            }, {
+            },{
                 field: 'business_name',
                 sortable: true,
                 align: 'center',
@@ -252,7 +322,7 @@ window.actionEvents = {
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
         var policy_code = row.apply_code;
-        var business_code = row.document_no;
+        var business_code = row.case_no;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输

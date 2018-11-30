@@ -102,13 +102,15 @@ var TableInit = function () {
             formatSearch: function () {
                 return '搜索';
             },
-            columns: [{
-                checkbox: true
-            }, {
+            columns: [
+            //     {
+            //     checkbox: true
+            // },
+                {
                 field: 'ID',
                 sortable: true,
                 align: 'center',
-                width:80,
+                width:40,
                 title: '序号',
                 formatter: function (value, row, index) {
                     return index+1;
@@ -124,26 +126,28 @@ var TableInit = function () {
                 sortable: true,
                 align: 'center',
                 title: '请求内容',
-                width:120
+                width:100
             }, {
                 field: 'reason',
                 sortable: true,
                 align: 'center',
                 title: '申请原因',
-                width:120
+                width:200
             }, {
                 field: 'data_type',
                 sortable: true,
                 align: 'center',
                 title: '数据分类',
-                width:120
-            }, {
-                field: 'with_tc',
-                sortable: true,
-                align: 'center',
-                title: '是否同时加载TC',
-                width:140
-            }, {
+                width:200
+            },
+            //     {
+            //     field: 'with_tc',
+            //     sortable: true,
+            //     align: 'center',
+            //     title: '是否同时加载TC',
+            //     width:140
+            // },
+                {
                 field: 'check_account',
                 sortable: true,
                 align: 'center',
@@ -154,7 +158,7 @@ var TableInit = function () {
                 sortable: true,
                 align: 'center',
                 title: '是否完成',//0-未完成  1-完成
-                width:120,
+                width:100,
             },{
                 field: 'exec_account',
                 sortable: true,
@@ -166,13 +170,13 @@ var TableInit = function () {
                 sortable: true,
                 align: 'center',
                 title: '是否通知',
-                width:120,
+                width:100,
             }, {
                 field: 'time',
                 sortable: true,
                 align: 'center',
                 title: '请求时间',
-                width:190,
+                width:180,
             }, {
                 field: 'type',
                 sortable: true,

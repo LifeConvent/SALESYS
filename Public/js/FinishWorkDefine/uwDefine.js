@@ -124,19 +124,12 @@ var TableInit = function () {
                     return index+1;
                 }
             },{
-                field: 'apply_code',
+                field: 'business_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '投保单号',
+                title: '关键业务号',
                 width:200
-            }, {
-                field: 'check_con',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '操作内容',
-                width:150
             }, {
                 field: 'user_name',
                 sortable: true,
@@ -152,6 +145,13 @@ var TableInit = function () {
                 title: '作业机构',
                 width:100
             }, {
+                field: 'insert_date',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '操作时间',
+                width:100
+            },  {
                 field: 'business_name',
                 sortable: true,
                 align: 'center',
@@ -251,8 +251,8 @@ window.actionEvents = {
         // var link_business = $("#business"+index).val();
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
-        var policy_code = row.apply_code;
-        var business_code = row.document_no;
+        var policy_code = row.business_code;
+        var business_code = row.business_code;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输

@@ -50,20 +50,22 @@
         <section class="wrapper">
                     <div class="panel" id="data_load_show">
                         <header class="panel-heading">
-                            <span><strong>业务数据加载请求:
+                            <span><strong>确认结果修改请求:
                         </header>
                         <div class="panel-body">
                             <div style="padding-top:10pt;">
                                 <div class="col-sm-12">
-                                    <div ><span class="red">*</span><span><strong>加载数据分类: <span class="red">*</span>保全受理/<span class="red">*</span>保全复核/<span class="red">*</span>契约出单回执/<span class="red">*</span>核保/<span class="red">*</span>理赔受理/<span class="red">*</span>理赔审核审批</strong></span>
-                                        <span class="red" style="font-size:3pt"><strong>同时加载多项时分号隔开</strong> </span><input type="text" class="form-control add_user" id="load_data_type" placeholder="请输入数据加载类型"></div>
+                                    <div ><span class="red">*</span><span><strong>修改结果分类: <span class="red">*</span>保全短信/<span class="red">*</span>保全复核/<span class="red">*</span>保全核保/<span class="red">*</span>保全受理/<span class="red">*</span>保险合同/<span class="red">*</span>承保短信/<span class="red">*</span>出单前撤保/<span class="red">*</span>回执<br />
+                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span class="red">*</span>理赔核保/<span class="red">*</span>理赔审核/<span class="red">*</span>理赔自核/<span class="red">*</span>其他承保业务/<span class="red">*</span>契约核保/<span class="red">*</span>通知书/<span class="red">*</span>投保信息/<span class="red">*</span>续保核保</strong></span>
+                                        <span class="red" style="font-size:3pt"><strong>同时加载多项时分号隔开</strong> </span><input type="text" class="form-control add_user" id="load_data_type" placeholder="请输入确认结果修改类型+关键业务号码，如保单号受理号等"></div>
                                 </div>
                                 <div>
-                                    <div class="col-sm-6" style="margin-top: 14pt"><span class="red">*</span><span><strong>加载原因: </strong></span><span class="red" style="font-size:3pt"><strong> 简单说明原因即可</strong> </span><input type="text" class="form-control add_user" id="load_data_reason" placeholder="请输入数据加载原因"></div>
-                                    <div class="col-sm-6" style="margin-top: 14pt"><span><strong>是否同时加载TC: <span class="red">*</span>是/<span class="red">*</span>否</strong></span><span class="red" style="font-size:3pt"><strong> 只可填写是否</strong> </span><input type="text" class="form-control add_user" id="with_tc" value="否"></div>
+                                    <div class="col-sm-6" style="margin-top: 14pt"><span class="red">*</span><span><strong>修改原因: </strong></span><span class="red" style="font-size:3pt"><strong> 简单说明原因即可</strong> </span><input type="text" class="form-control add_user" id="load_data_reason" placeholder="请输入确认结果修改原因"></div>
+                                    <div class="col-sm-6" style="margin-top: 14pt"><span><strong>是否同时加载TC: <span class="red">*</span>是/<span class="red">*</span>否</strong></span><span class="red" style="font-size:3pt"><strong> 不可填写单独提请</strong> </span><input type="text" class="form-control add_user" id="with_tc" value="否" readonly></div>
                                 </div>
                                 <div class="col-sm-12" style="margin-top:20pt;margin-left:25%">
-                                    <button type="button" id="loadData" class="btn btn-primary col-sm-6">提交业务数据加载请求</button>
+                                    <button type="button" id="loadData" class="btn btn-primary col-sm-6">提交确认结果修改请求</button>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +73,7 @@
 
                     <div class="panel" id="tc_data_load_show">
                         <header class="panel-heading">
-                            <span><strong>TC数据加载请求: <span class="red" style="font-size: 3pt"> TC数据家在建议在核对数据之前进行，降低系统损耗</span></strong></span>
+                            <span><strong>TC数据加载请求: <span class="red" style="font-size: 3pt"> 关联缺陷系统查看BUG信息</span></strong></span>
                         </header>
                         <div class="panel-body">
                             <div>
@@ -100,30 +102,30 @@
                 </header>
                 <div class="panel-body ">
                     <div style="margin-left: 20%">
-                        <div  style="float: left">
-                            <div class="col-sm-12" style="margin-top:20pt;margin-left:25pt">
-                                <button type="button" id="execLoadDataCS" class="btn btn-primary col-sm-6"><strong>保全受理</strong></button>
-                            </div>
-                            <div class="col-sm-12" style="margin-top:20pt;margin-left:25pt">
-                                <button type="button" id="execLoadDataCSFH" class="btn btn-primary col-sm-6"><strong>保全复核</strong></button>
-                            </div>
-                        </div>
-                        <div style="float: left">
-                            <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
-                                <button type="button" id="execLoadDataCLMSL" class="btn btn-primary col-sm-6"><strong>理赔受理</strong></button>
-                            </div>
-                            <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
-                                <button type="button" id="execLoadDataCLMSHSP" class="btn btn-primary col-sm-6"><strong>理赔审核审批</strong></button>
-                            </div>
-                        </div>
-                        <div style="float: left">
-                            <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
-                                <button type="button" id="execLoadDataUW" class="btn btn-primary col-sm-6"><strong>核保</strong></button>
-                            </div>
-                            <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
-                                <button type="button" id="execLoadDataNBCD" class="btn btn-primary col-sm-6"><strong>契约出单回执</strong></button>
-                            </div>
-                        </div>
+                        <!--<div  style="float: left">-->
+                            <!--<div class="col-sm-12" style="margin-top:20pt;margin-left:25pt">-->
+                                <!--<button type="button" id="execLoadDataCS" class="btn btn-primary col-sm-6" ><strong>保全受理</strong></button>-->
+                            <!--</div>-->
+                            <!--<div class="col-sm-12" style="margin-top:20pt;margin-left:25pt">-->
+                                <!--<button type="button" id="execLoadDataCSFH" class="btn btn-primary col-sm-6"><strong>保全复核</strong></button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div style="float: left">-->
+                            <!--<div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">-->
+                                <!--<button type="button" id="execLoadDataCLMSL" class="btn btn-primary col-sm-6"><strong>理赔受理</strong></button>-->
+                            <!--</div>-->
+                            <!--<div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">-->
+                                <!--<button type="button" id="execLoadDataCLMSHSP" class="btn btn-primary col-sm-6"><strong>理赔审核审批</strong></button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div style="float: left">-->
+                            <!--<div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">-->
+                                <!--<button type="button" id="execLoadDataUW" class="btn btn-primary col-sm-6"><strong>核保</strong></button>-->
+                            <!--</div>-->
+                            <!--<div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">-->
+                                <!--<button type="button" id="execLoadDataNBCD" class="btn btn-primary col-sm-6"><strong>契约出单回执</strong></button>-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <div style="margin-left: 110pt">
                             <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
                                 <button type="button" id="execLoadTcData" class="btn btn-info col-sm-6"><strong>刷新TC</strong></button>
@@ -133,11 +135,11 @@
                                 <button type="button" id="startLoadData" class="btn btn-success col-sm-4"><strong>灌输开始</strong></button>
                                 <button type="button" id="endLoadData" class="btn btn-success col-sm-4" style="margin-left:85pt"><strong>灌数结束</strong></button>
                          </div>
-                        <div style="margin-left: 110pt">
-                            <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
-                                <button type="button" id="backloadTc" class="btn btn-warning col-sm-6"><strong>TC数据回写</strong></button>
-                            </div>
-                        </div>
+                        <!--<div style="margin-left: 110pt">-->
+                            <!--<div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">-->
+                                <!--<button type="button" id="backloadTc" class="btn btn-warning col-sm-6"><strong>TC数据回写</strong></button>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                 </div>
             </div>

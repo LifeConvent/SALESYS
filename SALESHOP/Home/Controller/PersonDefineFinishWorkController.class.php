@@ -988,50 +988,53 @@ class PersonDefineFinishWorkController extends Controller
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT A.ORGAN_CODE2,
-                               A.ORGAN_CODE3,
-                               A.ORGAN_CODE4,
-                               A.CHANNEL_TYPE,
-                               A.SUBMIT_CHANNEL,
-                               A.APPLY_CODE,
-                               A.WINNING_START_FLAG,
-                               A.POLICY_CODE,
-                               TO_CHAR(A.APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
-                               TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
-                               TO_CHAR(A.VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,
-                               A.PROPOSAL_STATUS,
-                               A.AGENT_NAME,
-                               A.AGENT_CODE,
-                               A.SERVICE_BANK,
-                               A.SERVICE_BANK_BRANCH,
-                               A.USER_NAME,
-                               A.ORGAN_CODE,
-                               D.BUSINESS_NAME,
-                               C.TC_ID,
-                               (CASE
-                                  WHEN C.TC_ID IS NULL THEN B.RESULT
-                                    ELSE '错误'
-                                END) AS RESULT,
-                               (CASE
-                                  WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
-                                    ELSE C.TC_USER_NAME
-                                END) AS HD_USER_NAME,
-                               (CASE
-                                  WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                    ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
-                                END) AS SYS_INSERT_DATE,
-                               C.DESCRIPTION,
-                               C.STATUS  
-                            FROM TMP_QDSX_NB_TBXX A 
-                            LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
-                            ON A.APPLY_CODE = B.BUSINESS_CODE
-                            AND A.POLICY_CODE = B.POLICY_CODE
-                            AND B.BUSINESS_NODE = A.BUSINESS_NODE
-                            AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
-                            LEFT JOIN TMP_QDSX_TC_BUG C  
-                              ON C.BUSINESS_CODE = A.APPLY_CODE
-                              AND C.FIND_NODE = A.BUSINESS_NODE
-                              LEFT JOIN TMP_BUSINESS_NODE D
-                              ON D.BUSINESS_NODE = A.BUSINESS_NODE
+                                               A.ORGAN_CODE3,
+                                               A.ORGAN_CODE4,
+                                               A.CHANNEL_TYPE,
+                                               A.SUBMIT_CHANNEL,
+                                               A.APPLY_CODE,
+                                               A.WINNING_START_FLAG,
+                                               A.POLICY_CODE,
+                                               TO_CHAR(A.APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
+                                               TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
+                                               TO_CHAR(A.VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,
+                                               A.PROPOSAL_STATUS,
+                                               A.AGENT_NAME,
+                                               A.AGENT_CODE,
+                                               A.SERVICE_BANK,
+                                               A.SERVICE_BANK_BRANCH,
+                                               A.USER_NAME,
+                                               A.ORGAN_CODE,
+                                               D.BUSINESS_NAME,
+                                                  (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                               --C.TC_ID,
+                                               (CASE
+                                                  WHEN C.TC_ID IS NULL THEN B.RESULT
+                                                    ELSE '错误'
+                                                END) AS RESULT,
+                                               (CASE
+                                                  WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
+                                                    ELSE C.TC_USER_NAME
+                                                END) AS HD_USER_NAME,
+                                               (CASE
+                                                  WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                                    ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
+                                                END) AS SYS_INSERT_DATE,
+                                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
+                                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                               --C.STATUS,
+                                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                            FROM TMP_QDSX_NB_TBXX A 
+                                            LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                                            ON A.APPLY_CODE = B.BUSINESS_CODE
+                                            AND A.POLICY_CODE = B.POLICY_CODE
+                                            AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                                            AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                                            LEFT JOIN TMP_QDSX_TC_BUG C  
+                                              ON C.BUSINESS_CODE = A.APPLY_CODE
+                                              AND C.FIND_NODE = A.BUSINESS_NODE
+                                              LEFT JOIN TMP_BUSINESS_NODE D
+                                              ON D.BUSINESS_NODE = A.BUSINESS_NODE
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
@@ -1441,11 +1444,12 @@ class PersonDefineFinishWorkController extends Controller
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT
                                 A.APPLY_CODE,
-                                A.CHECK_CON,
+                               A.CHECK_CON,
                                 A.USER_NAME,
                                 A.ORGAN_CODE,
                                 D.BUSINESS_NAME,
-                                C.TC_ID,
+                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                               --C.TC_ID,
                                (CASE
                                   WHEN C.TC_ID IS NULL THEN B.RESULT
                                     ELSE '错误'
@@ -1458,9 +1462,11 @@ class PersonDefineFinishWorkController extends Controller
                                   WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
                                     ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
                                 END) AS SYS_INSERT_DATE,
-                               C.DESCRIPTION,
-                               C.STATUS  
-                            FROM TMP_QDSX_NB_CBYW A 
+                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
+                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                               --C.STATUS,
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                           FROM TMP_QDSX_NB_CBYW A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                             ON A.APPLY_CODE = B.BUSINESS_CODE
                                AND B.BUSINESS_NODE = A.BUSINESS_NODE
@@ -1558,13 +1564,25 @@ class PersonDefineFinishWorkController extends Controller
         //保全室、理赔室、核保室不参与
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
-            $select_bqsl = "SELECT DISTINCT
-                                A.APPLY_CODE,
-                                A.CHECK_CON,
+            $select_bqsl = "SELECT  DISTINCT 
+                                TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
+                                A.CASE_NO,
+                                A.POLICY_CODE,
+                                TO_CHAR(A.RPTR_TIME,'YYYY-MM-DD') AS RPTR_TIME,
+                                A.INSURED_NAME,
+                                A.CLAIM_TYPE,
+                                A.IS_FEE,
+                                A.CASE_STATUS,
+                                TO_CHAR(A.SIGN_TIME,'YYYY-MM-DD') AS SIGN_TIME,       
+                                A.CALC_PAY,
+                                A.FEE_AMOUNT,
+                                TO_CHAR(A.END_CASE_TIME,'YYYY-MM-DD') AS END_CASE_TIME,   
+                                TO_CHAR(A.FINISH_TIME,'YYYY-MM-DD') AS FINISH_TIME,
                                 A.USER_NAME,
                                 A.ORGAN_CODE,
                                 D.BUSINESS_NAME,
-                                C.TC_ID,
+                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                               --C.TC_ID,
                                (CASE
                                   WHEN C.TC_ID IS NULL THEN B.RESULT
                                     ELSE '错误'
@@ -1577,25 +1595,39 @@ class PersonDefineFinishWorkController extends Controller
                                   WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
                                     ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
                                 END) AS SYS_INSERT_DATE,
-                               C.DESCRIPTION,
-                               C.STATUS  
-                            FROM TMP_QDSX_NB_CBYW A 
+                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
+                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                               --C.STATUS,
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                            FROM TMP_QDSX_CLM A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
-                            ON A.APPLY_CODE = B.BUSINESS_CODE
-                               AND B.BUSINESS_NODE = A.BUSINESS_NODE
-                            AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                              ON A.case_no = B.BUSINESS_CODE
+                              AND A.POLICY_CODE = B.POLICY_CODE
+                              AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                              AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
                             LEFT JOIN TMP_QDSX_TC_BUG C  
-                              ON C.BUSINESS_CODE = A.APPLY_CODE
+                              ON C.BUSINESS_CODE = A.case_no
+                              --AND C.POLICY_CODE = A.POLICY_CODE
                               AND C.FIND_NODE = A.BUSINESS_NODE
-                              LEFT JOIN TMP_BUSINESS_NODE D
+                            LEFT JOIN TMP_BUSINESS_NODE D
                               ON D.BUSINESS_NODE = A.BUSINESS_NODE
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
-                $result[$i]['apply_code'] = $value['APPLY_CODE'];
-                $result[$i]['check_con'] = $value['CHECK_CON'];
+                $result[$i]['case_no'] = $value['CASE_NO'];
+                $result[$i]['policy_code'] = $value['POLICY_CODE'];
+                $result[$i]['rptr_time'] = $value['RPTR_TIME'];
+                $result[$i]['insured_name'] = $value['INSURED_NAME'];
+                $result[$i]['claim_type'] = $value['CLAIM_TYPE'];
+                $result[$i]['is_fee'] = $value['IS_FEE'];
+                $result[$i]['case_status'] = $value['CASE_STATUS'];
+                $result[$i]['sign_time'] = $value['SIGN_TIME'];
+                $result[$i]['calc_pay'] = $value['CALC_PAY'];
+                $result[$i]['fee_amount'] = $value['FEE_AMOUNT'];
+                $result[$i]['end_case_time'] = $value['END_CASE_TIME'];
+                $result[$i]['finish_time'] = $value['FINISH_TIME'];
                 $result[$i]['user_name'] = $value['USER_NAME'];
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
@@ -1677,44 +1709,297 @@ class PersonDefineFinishWorkController extends Controller
         //保全室、理赔室、核保室不参与
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
-            $select_bqsl = "SELECT DISTINCT
-                                A.APPLY_CODE,
-                                A.CHECK_CON,
-                                A.USER_NAME,
-                                A.ORGAN_CODE,
-                                D.BUSINESS_NAME,
-                                C.TC_ID,
-                               (CASE
-                                  WHEN C.TC_ID IS NULL THEN B.RESULT
-                                    ELSE '错误'
-                                END) AS RESULT,
-                               (CASE
-                                  WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
-                                    ELSE C.TC_USER_NAME
-                                END) AS HD_USER_NAME,
-                               (CASE
-                                  WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                    ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
-                                END) AS SYS_INSERT_DATE,
-                               C.DESCRIPTION,
-                               C.STATUS  
-                            FROM TMP_QDSX_NB_CBYW A 
-                            LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
-                            ON A.APPLY_CODE = B.BUSINESS_CODE
-                               AND B.BUSINESS_NODE = A.BUSINESS_NODE
-                            AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
-                            LEFT JOIN TMP_QDSX_TC_BUG C  
-                              ON C.BUSINESS_CODE = A.APPLY_CODE
-                              AND C.FIND_NODE = A.BUSINESS_NODE
-                              LEFT JOIN TMP_BUSINESS_NODE D
-                              ON D.BUSINESS_NODE = A.BUSINESS_NODE
+            $select_bqsl = "SELECT  DISTINCT 
+                                TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
+                                   A.BUSINESS_CODE,
+                                   A.USER_NAME,
+                                   A.ORGAN_CODE,
+                                   D.BUSINESS_NAME,
+                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                   --C.TC_ID,
+                                   (CASE
+                                      WHEN C.TC_ID IS NULL THEN B.RESULT
+                                        ELSE '错误'
+                                    END) AS RESULT,
+                                   (CASE
+                                      WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
+                                        ELSE C.TC_USER_NAME
+                                    END) AS HD_USER_NAME,
+                                   (CASE
+                                      WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                        ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
+                                    END) AS SYS_INSERT_DATE,
+                                   --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   --C.STATUS,
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                FROM TMP_QDSX_UW A 
+                                LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                                  ON  A.BUSINESS_CODE = B.BUSINESS_CODE
+                                  AND A.POLICY_CODE = B.POLICY_CODE
+                                  AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                                  AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                                LEFT JOIN TMP_QDSX_TC_BUG C  
+                                  ON C.BUSINESS_CODE = A.BUSINESS_CODE
+                                  --AND C.POLICY_CODE = A.POLICY_CODE
+                                  AND C.FIND_NODE = A.BUSINESS_NODE
+                                LEFT JOIN TMP_BUSINESS_NODE D
+                                  ON D.BUSINESS_NODE = A.BUSINESS_NODE
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
-                $result[$i]['apply_code'] = $value['APPLY_CODE'];
-                $result[$i]['check_con'] = $value['CHECK_CON'];
+                $result[$i]['insert_date'] = $value['INSERT_DATE'];
+                $result[$i]['business_code'] = $value['BUSINESS_CODE'];
+                $result[$i]['user_name'] = $value['USER_NAME'];
+                $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+                $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+                if(empty( $value['TC_ID'])){
+                    $result[$i]['tc_id'] = "-";
+                }else{
+                    $result[$i]['tc_id'] = $value['TC_ID'];
+                }
+                if(empty( $value['RESULT'])){
+                    $result[$i]['result'] = "-";
+                }else{
+                    $result[$i]['result'] = $value['RESULT'];
+                }
+                $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
+                $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+                if (empty($value['DESCRIPTION'])) {
+                    $result[$i]['description'] = "-";
+                } else {
+                    $result[$i]['description'] = $value['DESCRIPTION'];
+                }
+                $result[$i]['status'] = $value['STATUS'];
+            }
+            $num += sizeof($bqsl_result_time);
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getCsChatDefine(){
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        //获取用户权限类型-1-管理员2-机构组长3-个人
+        $userType = $method->getUserType();
+        $otherUser = $method->getOtherUser();
+
+        ##############################################################  公共条件处理部分-无用户区分  ############################################################################
+        if (!empty($queryDateStart)) {
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND A.SYS_INSERT_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            } else {
+                $where_time_bqsl = " AND A.SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " AND A.SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+        }
+        ##############################################################  测试数据  ############################################################################
+        #$where_time_bqsl = "";
+        ##############################################################  测试数据  ############################################################################
+        $user_name = "";
+        $method->checkIn($user_name);
+        #33 保全受理、复核处理个人待查询列表
+        $orgName = $method->getOrgName();
+        $fuhe_user = $method->getFuheUser();
+        $clm_user = $method->getClmUser();
+        $uw_user = $method->getUwUser();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+//            dump($organCode);
+            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+        }
+        if(in_array($user_name,$otherUser)){
+            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        }
+
+        $num = 0;
+        ################################################################   保全受理   #######################################################################
+        //保全室、理赔室、核保室不参与
+        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+            #033 个人待确认保全受理查询
+            $select_bqsl = "SELECT  DISTINCT 
+                                TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
+                                   A.BUSINESS_CODE,
+                                   A.USER_NAME,
+                                   A.ORGAN_CODE,
+                                   D.BUSINESS_NAME,
+                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                   --C.TC_ID,
+                                   (CASE
+                                      WHEN C.TC_ID IS NULL THEN B.RESULT
+                                        ELSE '错误'
+                                    END) AS RESULT,
+                                   (CASE
+                                      WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
+                                        ELSE C.TC_USER_NAME
+                                    END) AS HD_USER_NAME,
+                                   (CASE
+                                      WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                        ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
+                                    END) AS SYS_INSERT_DATE,
+                                   --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   --C.STATUS,
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                FROM TMP_QDSX_UW A 
+                                LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                                  ON  A.BUSINESS_CODE = B.BUSINESS_CODE
+                                  AND A.POLICY_CODE = B.POLICY_CODE
+                                  AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                                  AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                                LEFT JOIN TMP_QDSX_TC_BUG C  
+                                  ON C.BUSINESS_CODE = A.BUSINESS_CODE
+                                  --AND C.POLICY_CODE = A.POLICY_CODE
+                                  AND C.FIND_NODE = A.BUSINESS_NODE
+                                LEFT JOIN TMP_BUSINESS_NODE D
+                                  ON D.BUSINESS_NODE = A.BUSINESS_NODE
+                                 WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+            $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+            $bqsl_result_time = $method->search_long($result_rows);
+            for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
+                $value = $bqsl_result_time[$i];
+                $result[$i]['insert_date'] = $value['INSERT_DATE'];
+                $result[$i]['business_code'] = $value['BUSINESS_CODE'];
+                $result[$i]['user_name'] = $value['USER_NAME'];
+                $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+                $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+                if(empty( $value['TC_ID'])){
+                    $result[$i]['tc_id'] = "-";
+                }else{
+                    $result[$i]['tc_id'] = $value['TC_ID'];
+                }
+                if(empty( $value['RESULT'])){
+                    $result[$i]['result'] = "-";
+                }else{
+                    $result[$i]['result'] = $value['RESULT'];
+                }
+                $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
+                $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+                if (empty($value['DESCRIPTION'])) {
+                    $result[$i]['description'] = "-";
+                } else {
+                    $result[$i]['description'] = $value['DESCRIPTION'];
+                }
+                $result[$i]['status'] = $value['STATUS'];
+            }
+            $num += sizeof($bqsl_result_time);
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getNbChatDefine(){
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        //获取用户权限类型-1-管理员2-机构组长3-个人
+        $userType = $method->getUserType();
+        $otherUser = $method->getOtherUser();
+
+        ##############################################################  公共条件处理部分-无用户区分  ############################################################################
+        if (!empty($queryDateStart)) {
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND A.SYS_INSERT_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            } else {
+                $where_time_bqsl = " AND A.SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " AND A.SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+        }
+        ##############################################################  测试数据  ############################################################################
+        #$where_time_bqsl = "";
+        ##############################################################  测试数据  ############################################################################
+        $user_name = "";
+        $method->checkIn($user_name);
+        #33 保全受理、复核处理个人待查询列表
+        $orgName = $method->getOrgName();
+        $fuhe_user = $method->getFuheUser();
+        $clm_user = $method->getClmUser();
+        $uw_user = $method->getUwUser();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+//            dump($organCode);
+            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+        }
+        if(in_array($user_name,$otherUser)){
+            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        }
+
+        $num = 0;
+        ################################################################   保全受理   #######################################################################
+        //保全室、理赔室、核保室不参与
+        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+            #033 个人待确认保全受理查询
+            $select_bqsl = "SELECT  DISTINCT 
+                                TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
+                                   A.BUSINESS_CODE,
+                                   A.USER_NAME,
+                                   A.ORGAN_CODE,
+                                   D.BUSINESS_NAME,
+                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                   --C.TC_ID,
+                                   (CASE
+                                      WHEN C.TC_ID IS NULL THEN B.RESULT
+                                        ELSE '错误'
+                                    END) AS RESULT,
+                                   (CASE
+                                      WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
+                                        ELSE C.TC_USER_NAME
+                                    END) AS HD_USER_NAME,
+                                   (CASE
+                                      WHEN C.CREATE_DATE IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                        ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
+                                    END) AS SYS_INSERT_DATE,
+                                   --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   --C.STATUS,
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                FROM TMP_QDSX_UW A 
+                                LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                                  ON  A.BUSINESS_CODE = B.BUSINESS_CODE
+                                  AND A.POLICY_CODE = B.POLICY_CODE
+                                  AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                                  AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                                LEFT JOIN TMP_QDSX_TC_BUG C  
+                                  ON C.BUSINESS_CODE = A.BUSINESS_CODE
+                                  --AND C.POLICY_CODE = A.POLICY_CODE
+                                  AND C.FIND_NODE = A.BUSINESS_NODE
+                                LEFT JOIN TMP_BUSINESS_NODE D
+                                  ON D.BUSINESS_NODE = A.BUSINESS_NODE
+                                 WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+            $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+            $bqsl_result_time = $method->search_long($result_rows);
+            for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
+                $value = $bqsl_result_time[$i];
+                $result[$i]['insert_date'] = $value['INSERT_DATE'];
+                $result[$i]['business_code'] = $value['BUSINESS_CODE'];
                 $result[$i]['user_name'] = $value['USER_NAME'];
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];

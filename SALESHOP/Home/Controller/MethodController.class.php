@@ -192,10 +192,10 @@ class MethodController extends Controller
 
     public function OracleOldDBCon()
     {
-        //取数据库参数
-        $db_host_name='10.1.168.5/DMGdb';
-        $db_user_name='ncl_1';
-        $db_pwd='ncl_1';
+        //取数据库参数 querybx/querybx@10.1.95.43:1521/DMGTSTdb3
+        $db_host_name='10.1.95.43:1521/DMGTSTdb3';
+        $db_user_name='querybx';
+        $db_pwd='querybx';
         //连接Oracle
         $conn = oci_connect($db_user_name,$db_pwd,$db_host_name);
         $user_name = $this->getUserName();

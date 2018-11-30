@@ -6,7 +6,7 @@ $(function () {
 
     $('#home').attr('class','active');
     $('#data_ub').css('display','block');
-    $('#cs_difine').attr('class','active');
+    $('#cs_chat_define').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
@@ -22,7 +22,7 @@ $(function () {
         //     // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         // }
         $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsChatDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     $('#form_date2').datetimepicker({
@@ -40,7 +40,7 @@ $(function () {
             return;
         }
     $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsChatDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     //1.初始化Table
@@ -76,7 +76,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
-            url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/PersonDefineFinishWork/getCsChatDefine",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             showExport: true,
@@ -125,18 +125,18 @@ var TableInit = function () {
                     return index+1;
                 }
             }, {
+                field: 'chat_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '短信名称',
+                width:170
+            }, {
                 field: 'accept_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '受理号',
-                width:170
-            }, {
-                field: 'policy_code',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '保单号',
                 width:130
             }, {
                 field: 'insert_date',
