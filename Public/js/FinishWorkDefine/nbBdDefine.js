@@ -267,12 +267,13 @@ window.actionEvents = {
         var business_name = row.business_name;
         var policy_code = row.policy_code;
         var business_code = row.policy_code;
+        var media_type = row.media_type;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输
-                url: HOST + "index.php/Home/PersonDefineFinishWork/updatePublicDefine", //目标地址.
+                url: HOST + "index.php/Home/PersonDefineFinishWork/updateNbBdDefine", //目标地址.
                 dataType: "json", //数据格式:JSON
-                data: {username: username, business_code: business_code, policy_code: policy_code, business_name:business_name},
+                data: {username: username, business_code: business_code, policy_code: policy_code, business_name:business_name,media_type:media_type},
                 success: function (result) {
                     if (result.status == 'success') {
                         debugger;
