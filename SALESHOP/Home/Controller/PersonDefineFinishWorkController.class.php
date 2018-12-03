@@ -2013,6 +2013,7 @@ class PersonDefineFinishWorkController extends Controller
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT 
+                                  A.SEND_ID,
                                   A.RECEIVE_OBJ,
                                   A.CHANNEL_TYPE,
                                   A.APPLY_CODE,
@@ -2066,6 +2067,7 @@ class PersonDefineFinishWorkController extends Controller
             $bqsl_result_time = $method->search_long($result_rows);
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
+                $result[$i]['send_id'] = $value['SEND_ID'];
                 $result[$i]['receive_obj'] = $value['RECEIVE_OBJ'];
                 $result[$i]['channel_type'] = $value['CHANNEL_TYPE'];
                 $result[$i]['apply_code'] = $value['APPLY_CODE'];

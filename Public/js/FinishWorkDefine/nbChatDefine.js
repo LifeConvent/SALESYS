@@ -125,6 +125,13 @@ var TableInit = function () {
                     return index+1;
                 }
             }, {
+                field: 'send_id',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '短信ID',
+                width:100
+            },{
                 field: 'receive_obj',
                 sortable: true,
                 align: 'center',
@@ -193,7 +200,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '投保险种（主险）',
-                width:140
+                width:180
             }, {
                 field: 'issue_date',
                 sortable: true,
