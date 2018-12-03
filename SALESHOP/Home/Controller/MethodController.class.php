@@ -2242,7 +2242,7 @@ class MethodController extends Controller
 //        数据处理
         oci_free_statement($result_rows);
         oci_close($conn);
-//        dump($org);
+//        dump($result_rows);
         return $org;
     }
 

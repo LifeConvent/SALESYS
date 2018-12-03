@@ -1469,6 +1469,7 @@ class PersonDefineFinishWorkController extends Controller
         }
         ##############################################################  测试数据  ############################################################################
         #$where_time_bqsl = "";
+        $where_type_fix  = "";
         ##############################################################  测试数据  ############################################################################
         $user_name = "";
         $method->checkIn($user_name);
@@ -1563,6 +1564,7 @@ class PersonDefineFinishWorkController extends Controller
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
+//        dump($result);
         if ($result) {
             exit(json_encode($result));
         } else {
