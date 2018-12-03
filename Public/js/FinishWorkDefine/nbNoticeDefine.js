@@ -129,7 +129,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '投保单号',
-                width:120
+                width:130
             }, {
                 field: 'document_no',
                 sortable: true,

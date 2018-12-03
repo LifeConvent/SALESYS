@@ -125,12 +125,26 @@ var TableInit = function () {
                     return index+1;
                 }
             }, {
-                field: 'accept_code',
+                field: 'receive_obj',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '受理号',
-                width:170
+                title: '承保短信',
+                width:100
+            }, {
+                field: 'channel_type',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '销售渠道',
+                width:100
+            }, {
+                field: 'apply_code',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '投保单号',
+                width:130
             }, {
                 field: 'policy_code',
                 sortable: true,
@@ -139,69 +153,104 @@ var TableInit = function () {
                 title: '保单号',
                 width:130
             }, {
-                field: 'insert_date',
+                field: 'holder_mobile',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '操作日期',
+                title: '投保人手机号',
+                width:130
+            }, {
+                field: 'holder_name',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '投保人姓名',
+                width:130
+            }, {
+                field: 'holder_gender',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '投保人性别',
+                width:130
+            }, {
+                field: 'insured_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '被保人姓名',
+                width:130
+            }, {
+                field: 'insured_gender',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '被保人性别',
+                width:130
+            }, {
+                field: 'busi_prod_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '投保险种（主险）',
+                width:140
+            }, {
+                field: 'issue_date',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '签单日期',
                 width:100
             }, {
-                field: 'service_code',
+                field: 'validate_date',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '保全项',
+                title: '生效日期',
                 width:100
-            }, {
-                field: 'service_name',
+            },{
+                field: 'agent_name',
                 sortable: true,
-                valign: 'middle',
                 align: 'center',
-                title: '保全项目名称',
+                valign: 'middle',
+                title: '业务员姓名',
+                width:130
+            },{
+                field: 'agent_mobile',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务员手机号',
+                width:130
+            },{
+                field: 'send_mobile',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '短信发送手机号',
                 width:150
-            }, {
+            },{
+                field: 'send_content',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '短信话术',
+                width:100
+            },{
                 field: 'user_name',
                 sortable: true,
-                valign: 'middle',
                 align: 'center',
+                valign: 'middle',
                 title: '操作员',
                 width:100
-            }, {
-                field: 'get_money',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '金额',
-                width:100
-            }, {
-                field: 'apply_date',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '申请日期',
-                width:100
-            }, {
-                field: 'service_type',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '申请方式',
-                width:100
-            }, {
-                field: 'accept_status',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '受理状态',
-                width:100
-            }, {
+            },{
                 field: 'organ_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '作业机构',
                 width:100
-            }, {
+            },{
                 field: 'business_name',
                 sortable: true,
                 align: 'center',

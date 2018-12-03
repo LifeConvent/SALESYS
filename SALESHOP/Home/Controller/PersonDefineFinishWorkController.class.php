@@ -2012,13 +2012,27 @@ class PersonDefineFinishWorkController extends Controller
         //保全室、理赔室、核保室不参与
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
-            $select_bqsl = "SELECT  DISTINCT 
-                                TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
-                                   A.BUSINESS_CODE,
-                                   A.USER_NAME,
-                                   A.ORGAN_CODE,
-                                   D.BUSINESS_NAME,
-                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+            $select_bqsl = "SELECT DISTINCT 
+                                  A.RECEIVE_OBJ,
+                                  A.CHANNEL_TYPE,
+                                  A.APPLY_CODE,
+                                  A.POLICY_CODE,
+                                  A.HOLDER_MOBILE,
+                                  A.HOLDER_NAME,
+                                  A.HOLDER_GENDER,
+                                  A.INSURED_NAME,
+                                  A.INSURED_GENDER,
+                                  A.BUSI_PROD_NAME,
+                                  TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
+                                  TO_CHAR(A.VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,
+                                  A.AGENT_NAME,
+                                  A.AGENT_MOBILE,
+                                  A.SEND_MOBILE,
+                                  A.SEND_CONTENT,
+                                  A.USER_NAME,
+                                  A.ORGAN_CODE,
+                                  D.BUSINESS_NAME,
+                                  (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_MOBILE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                    --C.TC_ID,
                                    (CASE
                                       WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -2033,28 +2047,41 @@ class PersonDefineFinishWorkController extends Controller
                                         ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
                                     END) AS SYS_INSERT_DATE,
                                    --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_MOBILE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
-                                FROM TMP_QDSX_UW A 
-                                LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
-                                  ON  A.BUSINESS_CODE = B.BUSINESS_CODE
-                                  AND A.POLICY_CODE = B.POLICY_CODE
-                                  AND B.BUSINESS_NODE = A.BUSINESS_NODE
-                                  AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
-                                LEFT JOIN TMP_QDSX_TC_BUG C  
-                                  ON C.BUSINESS_CODE = A.BUSINESS_CODE
-                                  --AND C.POLICY_CODE = A.POLICY_CODE
-                                  AND C.FIND_NODE = A.BUSINESS_NODE
-                                LEFT JOIN TMP_BUSINESS_NODE D
-                                  ON D.BUSINESS_NODE = A.BUSINESS_NODE
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_MOBILE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                  FROM TMP_QDSX_NB_CBDX A
+                                  LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                                     ON A.SEND_MOBILE = B.BUSINESS_CODE
+                                     AND A.POLICY_CODE = B.POLICY_CODE
+                                     AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                                     AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                                     LEFT JOIN TMP_QDSX_TC_BUG C  
+                                     ON C.BUSINESS_CODE = A.SEND_MOBILE
+                                     AND C.FIND_NODE = A.BUSINESS_NODE
+                                     LEFT JOIN TMP_BUSINESS_NODE D
+                                     ON D.BUSINESS_NODE = A.BUSINESS_NODE
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
-                $result[$i]['insert_date'] = $value['INSERT_DATE'];
-                $result[$i]['business_code'] = $value['BUSINESS_CODE'];
+                $result[$i]['receive_obj'] = $value['RECEIVE_OBJ'];
+                $result[$i]['channel_type'] = $value['CHANNEL_TYPE'];
+                $result[$i]['apply_code'] = $value['APPLY_CODE'];
+                $result[$i]['policy_code'] = $value['POLICY_CODE'];
+                $result[$i]['holder_mobile'] = $value['HOLDER_MOBILE'];
+                $result[$i]['holder_name'] = $value['HOLDER_NAME'];
+                $result[$i]['holder_gender'] = $value['HOLDER_GENDER'];
+                $result[$i]['insured_name'] = $value['INSURED_NAME'];
+                $result[$i]['insured_gender'] = $value['INSURED_GENDER'];
+                $result[$i]['busi_prod_name'] = $value['BUSI_PROD_NAME'];
+                $result[$i]['issue_date'] = $value['INSERT_DATE'];
+                $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
+                $result[$i]['agent_name'] = $value['AGENT_NAME'];
+                $result[$i]['agent_mobile'] = $value['AGENT_MOBILE'];
+                $result[$i]['send_mobile'] = $value['SEND_MOBILE'];
+                $result[$i]['send_content'] = $value['SEND_CONTENT'];
                 $result[$i]['user_name'] = $value['USER_NAME'];
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
