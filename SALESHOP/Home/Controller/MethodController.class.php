@@ -192,6 +192,7 @@ class MethodController extends Controller
 
     public function OracleOldDBCon()
     {
+        putenv("NLS_LANG=AMERICAN_AMERICA.AL32UTF8");
         //取数据库参数 querybx/querybx@10.1.95.43:1521/DMGTSTdb3
         $db_host_name='10.1.95.43:1521/DMGTSTdb3';
         $db_user_name='querybx';
