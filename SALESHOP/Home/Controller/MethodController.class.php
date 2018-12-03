@@ -1907,47 +1907,55 @@ class MethodController extends Controller
 //            return;
 //        }
         //重加载TC数据
-        $tc_fix = $this->getTcFix();
-        $queryTc = "select bt.bug_new_id,bt.date_submitted, ut.id,ut.username,bt.severity,bt.`status`,cfvt.value3,cfvt.value15,cfvt.value16,cfvt.value17,cfvt.value18 
-                    from bug_table bt ,custom_field_value_table cfvt,`user_table` ut  
-                    where ut.id = bt.reporter_id ".$tc_fix." and bt.id = cfvt.bug_id";
+//        $tc_fix = $this->getTcFix();
+        $queryTc = "select bt.bug_new_id as tc_id,ut.username as tc_user_name,cfvt.value18 AS business_code,bt.date_submitted as create_date,bt.summary as description,bt.status as status,cfvt.value17 AS find_node,cfvt.value16 AS local,bt.severity
+                    from bug_table bt,custom_field_value_table cfvt,`user_table` ut  
+                    where ut.id = bt.reporter_id and bt.id = cfvt.bug_id";
         //查询TC数据
         $tc_cursor = M();
         $res = $tc_cursor->query($queryTc);
-        for($i=0;$i<=sizeof($res);$i++){
-            $result[$i]['ID'] = $res[$i]['bug_new_id'];
-            $result[$i]['CREATE_TIME'] = $res[$i]['date_submitted'];
-            $result[$i]['USER_NAME'] = $res[$i]['username'];
+        for($i=0;$i<sizeof($res);$i++){
+            $result[$i]['TC_ID'] = $res[$i]['tc_id'];
+            $result[$i]['TC_USER_NAME'] = $res[$i]['tc_user_name'];
+            $result[$i]['CREATE_DATE'] = $res[$i]['create_date'];
+            $result[$i]['BUSINESS_CODE'] = $res[$i]['business_code'];
+            $result[$i]['DESCRIPTION'] = $res[$i]['description'];
+            $result[$i]['STATUS'] = $res[$i]['status'];
+            $result[$i]['FIND_NODE'] = $res[$i]['find_node'];
+            $result[$i]['LOCAL'] = $res[$i]['local'];
             $result[$i]['PONDERANCE'] = $res[$i]['severity'];
-            $result[$i]['STATE'] = $res[$i]['status'];
-            $result[$i]['LOCAL'] = $res[$i]['value16'];
-            $result[$i]['FIND_NODE'] = $res[$i]['value17'];
-            $result[$i]['POLICY_CODE'] = $res[$i]['value18'];
-            $result[$i]['DISCOVER_STEP'] = $res[$i]['value3'];
         }
         //连接数据库
         $conn = $this->OracleOldDBCon();
-        $statement = oci_parse($conn,"delete from tmp_tc_cdqcb");
+        $result_rows = oci_parse($conn,"SELECT * from TMP_BUSINESS_NODE");
+        $business_node = $this->search_long($result_rows);
+        foreach ($business_node as &$value) {
+            $TC_ID = $value['TC_ID'];
+            $BUSINESS_NODE = $value['BUSINESS_NODE'];
+            $BUSINESS_NAME = $value['BUSINESS_NAME'];
+            $business[$BUSINESS_NAME] = $BUSINESS_NODE;
+        }
+        $statement = oci_parse($conn,"delete from TMP_QDSX_TC_BUG");
         echo "清空现有TC数据 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
         foreach ($result as &$value) {
-            $ID = $value['ID'];
-            $CREAT_TIME = $value['CREATE_TIME'];
-            $PONDERANCE = $value['PONDERANCE'];
-            $STATE = $value['STATE'];
+            $TC_ID = $value['TC_ID'];
+            $TC_USER_NAME = $value['TC_USER_NAME'];
+            $CREATE_DATE = $value['CREATE_DATE'];
+            $BUSINESS_CODE = $value['BUSINESS_CODE'];
+            $DESCRIPTION = $value['DESCRIPTION'];
+            $STATUS = $value['STATUS'];
+            $FIND_NODE = $business[$value['FIND_NODE']];
             $LOCAL = $value['LOCAL'];
-            $FIND_NODE = $value['FIND_NODE'];
-            $POLICY_CODE = $value['POLICY_CODE'];
-            $USER_NAME = $value['USER_NAME'];
-            $DISCOVER_STEP = $value['DISCOVER_STEP'];
-            $query_insert = "INSERT INTO TMP_TC_CDQCB(ID,CREAT_TIME,PONDERANCE,STATE,LOCAL,FIND_NODE,POLICY_CODE,USER_NAME,DISCOVER_STEP) VALUES('".$ID."',to_date('".$CREAT_TIME."','YYYY/MM/DD hh24:mi:ss'),'".$PONDERANCE."','".$STATE."','".$LOCAL."','".$FIND_NODE."','".$POLICY_CODE."','".$USER_NAME."','".$DISCOVER_STEP."')";
+            $PONDERANCE = $value['PONDERANCE'];
+            $query_insert = "INSERT INTO TMP_QDSX_TC_BUG(TC_ID,CREATE_DATE,TC_USER_NAME,BUSINESS_CODE,DESCRIPTION,STATUS,FIND_NODE,LOCAL,PONDERANCE) VALUES('".$TC_ID."',to_date('".$CREATE_DATE."','YYYY/MM/DD hh24:mi:ss'),'".$TC_USER_NAME."','".$BUSINESS_CODE."','".$DESCRIPTION."','".$STATUS."','".$FIND_NODE."','".$LOCAL."','".$PONDERANCE."')";
 //          echo $query_insert;
             $statement = oci_parse($conn,$query_insert);
-            echo $ID."单条插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+            echo $TC_ID."单条插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
         }
         oci_free_statement($statement);
         oci_close($conn);
         //加载TC数据
-        $this->getImpTc();
+//        $this->getImpTc();
         echo "TC数据更新结束 ：".date("h:i:sa")."<br> ";
     }
 
