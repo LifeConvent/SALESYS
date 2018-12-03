@@ -2046,7 +2046,8 @@ class MethodController extends Controller
 
     public function getTcFix(){
 //        $tc_fix = " AND cfvt.value3 IN ('11-第二次青岛并行','12-第二次技术并行','13-第二次数据并行') ";
-        $tc_fix = " AND cfvt.value3 IN ('8-青岛并行','9-技术并行','10-数据并行') ";
+//        $tc_fix = " AND cfvt.value3 IN ('8-青岛并行','9-技术并行','10-数据并行') ";
+        $tc_fix = " ";
         return $tc_fix;
     }
 
