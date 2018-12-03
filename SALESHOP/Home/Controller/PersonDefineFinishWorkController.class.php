@@ -2078,7 +2078,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['insured_name'] = $value['INSURED_NAME'];
                 $result[$i]['insured_gender'] = $value['INSURED_GENDER'];
                 $result[$i]['busi_prod_name'] = $value['BUSI_PROD_NAME'];
-                $result[$i]['issue_date'] = $value['INSERT_DATE'];
+                $result[$i]['issue_date'] = $value['ISSUE_DATE'];
                 $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
                 $result[$i]['agent_name'] = $value['AGENT_NAME'];
                 $result[$i]['agent_mobile'] = $value['AGENT_MOBILE'];
