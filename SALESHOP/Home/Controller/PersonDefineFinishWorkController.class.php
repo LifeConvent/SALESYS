@@ -851,6 +851,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['service_code'] = $value['SERVICE_CODE'];
                 $result[$i]['service_name'] = $value['SERVICE_NAME'];
                 $result[$i]['user_name'] = $value['USER_NAME'];
+                $result[$i]['get_money'] = $value['GET_MONEY'];
                 $result[$i]['cs_validate_date'] = $value['CS_VALIDATE_DATE'];
                 $result[$i]['apply_date'] = $value['APPLY_DATE'];
                 $result[$i]['service_type'] = $value['SERVICE_TYPE'];

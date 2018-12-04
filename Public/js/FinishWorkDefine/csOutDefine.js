@@ -178,7 +178,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '保全生效日期',
-                width:100
+                width:130
             }, {
                 field: 'apply_date',
                 sortable: true,
@@ -214,13 +214,13 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '业务节点',
                 width:100
-            }, {
+            },{
                 field: 'policy_validate_date',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '保单生效日期',
-                width:100
+                width:130
             },  {
                 field: 'product_name',
                 sortable: true,
@@ -242,6 +242,15 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '保费',
                 width:150
+            },{
+                field: 'operation',
+                title: '操作',
+                align: 'center',
+                valign: 'middle',
+                formatter: "actionFormatter",
+                events: "actionEvents",
+                width:100,
+                clickToSelect: false
             },{
                 field: 'tc_id',
                 sortable: true,
@@ -293,15 +302,6 @@ var TableInit = function () {
                 width:200
                 // formatter: "actionFormatter_status",
                 // events: "actionEvents_status",
-            },{
-                field: 'operation',
-                title: '操作',
-                align: 'center',
-                valign: 'middle',
-                formatter: "actionFormatter",
-                events: "actionEvents",
-                width:100,
-                clickToSelect: false
             }]
         });
     };

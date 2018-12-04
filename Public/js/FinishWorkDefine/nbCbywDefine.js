@@ -158,6 +158,15 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '业务节点',
                 width:100
+            },{
+                field: 'operation',
+                title: '操作',
+                align: 'center',
+                valign: 'middle',
+                formatter: "actionFormatter",
+                events: "actionEvents",
+                width:100,
+                clickToSelect: false
             }, {
                 field: 'tc_id',
                 sortable: true,
@@ -209,15 +218,6 @@ var TableInit = function () {
                 width:200
                 // formatter: "actionFormatter_status",
                 // events: "actionEvents_status",
-            },{
-                field: 'operation',
-                title: '操作',
-                align: 'center',
-                valign: 'middle',
-                formatter: "actionFormatter",
-                events: "actionEvents",
-                width:100,
-                clickToSelect: false
             }]
         });
     };
