@@ -91,7 +91,8 @@ var TableInit = function () {
             queryParams: oTableInit.queryParams,//传递参数（*）
 //                sidePagination: "server",   //分页方式：client客户端分页，server服务端分页（*）
             pageNumber: 1,      //初始化加载第一页，默认第一页
-            pageSize: 16,      //每页的记录行数（*）
+            pageSize: 10,      //每页的记录行数（*）
+            pageList: [10,15,25,30,50,100],
             search: true,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
             strictSearch: false,
             showColumns: true,     //是否显示所有的列
@@ -124,14 +125,28 @@ var TableInit = function () {
                 formatter: function (value, row, index) {
                     return index+1;
                 }
-            }, {
+            },  {
+                field: 'send_id',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '短信ID',
+                width:100
+            },{
                 field: 'chat_name',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '短信名称',
                 width:170
-            }, {
+            },{
+                field: 'chat_content',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '短信内容',
+                width:200
+            },  {
                 field: 'accept_code',
                 sortable: true,
                 align: 'center',
@@ -301,14 +316,14 @@ window.actionEvents = {
         // var link_business = $("#business"+index).val();
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
-        var accept_code = row.accept_code;
-        var policy_code = row.policy_code;
+        var business_code = row.send_id;
+        var policy_code = row.accept_code;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输
-                url: HOST + "index.php/Home/PersonDefineFinishWork/updateCsDefine", //目标地址.
+                url: HOST + "index.php/Home/PersonDefineFinishWork/updatePublicDefine", //目标地址.
                 dataType: "json", //数据格式:JSON
-                data: {username: username, accept_code: accept_code, policy_code: policy_code, business_name:business_name},
+                data: {username: username, business_code: business_code, policy_code: policy_code, business_name:business_name},
                 success: function (result) {
                     if (result.status == 'success') {
                         debugger;

@@ -6,7 +6,7 @@ $(function () {
 
     $('#home').attr('class','active');
     $('#data_ub').css('display','block');
-    $('#nb_chat_define').attr('class','active');
+    $('#clm_chat_define').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
@@ -22,7 +22,7 @@ $(function () {
         //     // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         // }
         $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getNbChatDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getClmChatDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     $('#form_date2').datetimepicker({
@@ -40,7 +40,7 @@ $(function () {
             return;
         }
     $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getNbChatDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getClmChatDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     //1.初始化Table
@@ -76,7 +76,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
-            url: HOST + "index.php/Home/PersonDefineFinishWork/getNbChatDefine",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/PersonDefineFinishWork/getClmChatDefine",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             showExport: true,
@@ -126,139 +126,48 @@ var TableInit = function () {
                     return index+1;
                 }
             }, {
-                field: 'send_id',
+                field: 'case_no',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '赔案号',
+                width:170
+            }, {
+                field: 'contend_id',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '短信ID',
-                width:100
-            },{
-                field: 'receive_obj',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '承保短信',
-                width:100
-            }, {
-                field: 'channel_type',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '销售渠道',
-                width:100
-            }, {
-                field: 'apply_code',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '投保单号',
                 width:130
             }, {
-                field: 'policy_code',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '保单号',
-                width:130
-            }, {
-                field: 'holder_mobile',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '投保人手机号',
-                width:130
-            }, {
-                field: 'holder_name',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '投保人姓名',
-                width:130
-            }, {
-                field: 'holder_gender',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '投保人性别',
-                width:130
-            }, {
-                field: 'insured_name',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '被保人姓名',
-                width:130
-            }, {
-                field: 'insured_gender',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '被保人性别',
-                width:130
-            }, {
-                field: 'busi_prod_name',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '投保险种（主险）',
-                width:180
-            }, {
-                field: 'issue_date',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '签单日期',
-                width:100
-            }, {
-                field: 'validate_date',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '生效日期',
-                width:100
-            },{
-                field: 'agent_name',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '业务员姓名',
-                width:130
-            },{
-                field: 'agent_mobile',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '业务员手机号',
-                width:130
-            },{
-                field: 'send_mobile',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '短信发送手机号',
-                width:150
-            },{
-                field: 'send_content',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '短信话术',
-                width:100
-            },{
                 field: 'user_name',
                 sortable: true,
-                align: 'center',
                 valign: 'middle',
+                align: 'center',
                 title: '操作员',
                 width:100
-            },{
+            }, {
+                field: 'mail_title',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '短信标题',
+                width:100
+            }, {
+                field: 'contend_info',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '短信内容',
+                width:200
+            }, {
                 field: 'organ_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '作业机构',
                 width:100
-            },{
+            }, {
                 field: 'business_name',
                 sortable: true,
                 align: 'center',
@@ -358,8 +267,8 @@ window.actionEvents = {
         // var link_business = $("#business"+index).val();
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
-        var business_code = row.send_id;
-        var policy_code = row.policy_code;
+        var business_code = row.contend_id;
+        var policy_code = row.case_no;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输
