@@ -137,7 +137,7 @@ var TableInit = function () {
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '承保短信',
+                title: '发送对象',
                 width:100
             }, {
                 field: 'channel_type',

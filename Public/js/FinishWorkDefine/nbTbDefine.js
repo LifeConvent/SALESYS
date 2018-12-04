@@ -158,7 +158,7 @@ var TableInit = function () {
                 valign: 'middle',
                 align: 'center',
                 title: '承保模式',
-                width:100
+                width:130
             }, {
                 field: 'apply_code',
                 sortable: true,
@@ -172,7 +172,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '是否预承保',
-                width:100
+                width:120
             }, {
                 field: 'policy_code',
                 sortable: true,
@@ -214,7 +214,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '业务员姓名',
-                width:100
+                width:120
             },  {
                 field: 'agent_code',
                 sortable: true,
