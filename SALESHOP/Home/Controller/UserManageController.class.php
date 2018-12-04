@@ -199,17 +199,18 @@ class UserManageController extends Controller
         $organ_code = $method->getUserOrganCode();
         $where = "";
         if((int)$userType==2){
-            if(in_array($userName,$userCS)){
-                $where = " WHERE USER_ORGAN_CODE LIKE '".$organ_code[$userName]."%' AND BUSS_AREA = '保全复核' ";
-            }else if(in_array($userName,$userUW)){
-                $where = " WHERE USER_ORGAN_CODE LIKE '".$organ_code[$userName]."%' AND BUSS_AREA = '核保'  ";
-            }else if(in_array($userName,$userCLM)){
-                $where = " WHERE USER_ORGAN_CODE LIKE '".$organ_code[$userName]."%' AND BUSS_AREA = '理赔审核'  ";
-            }else{
-                $where = " WHERE USER_ORGAN_CODE LIKE '".$organ_code[$userName]."%' ";
-            }
+            exit(json_encode(''));
+//            if(in_array($userName,$userCS)){
+//                $where = " WHERE USER_ORGAN_CODE LIKE '".$organ_code[$userName]."%' AND BUSS_AREA = '保全复核' ";
+//            }else if(in_array($userName,$userUW)){
+//                $where = " WHERE USER_ORGAN_CODE LIKE '".$organ_code[$userName]."%' AND BUSS_AREA = '核保'  ";
+//            }else if(in_array($userName,$userCLM)){
+//                $where = " WHERE USER_ORGAN_CODE LIKE '".$organ_code[$userName]."%' AND BUSS_AREA = '理赔审核'  ";
+//            }else{
+//                $where = " WHERE USER_ORGAN_CODE LIKE '".$organ_code[$userName]."%' ";
+//            }
         }else if((int)$userType==3){
-            return;
+            exit(json_encode(''));
         }
         $user_select  = "SELECT * FROM TMP_DAYPOST_USER".$where;
         $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
