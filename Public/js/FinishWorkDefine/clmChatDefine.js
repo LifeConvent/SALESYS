@@ -126,11 +126,11 @@ var TableInit = function () {
                     return index+1;
                 }
             }, {
-                field: 'case_no',
+                field: 'business_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '赔案号',
+                title: '关键业务号',
                 width:170
             }, {
                 field: 'contend_id',
@@ -159,7 +159,7 @@ var TableInit = function () {
                 valign: 'middle',
                 align: 'center',
                 title: '短信内容',
-                width:200
+                width:400
             }, {
                 field: 'organ_code',
                 sortable: true,
@@ -268,7 +268,7 @@ window.actionEvents = {
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
         var business_code = row.contend_id;
-        var policy_code = row.case_no;
+        var policy_code = row.business_code;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输

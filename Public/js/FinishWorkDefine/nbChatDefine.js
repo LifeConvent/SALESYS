@@ -243,7 +243,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '短信话术',
-                width:100
+                width:400
             },{
                 field: 'user_name',
                 sortable: true,
