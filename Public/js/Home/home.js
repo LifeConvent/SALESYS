@@ -2,7 +2,7 @@
  * Created by lawrance on 2017/1/11.
  */
 $(function () {
-    $('#weChat').attr('class','active');
-    $('#weChat_sub').css('display','block');
-    $('#weChat_menu').attr('class','active');
+    $('#day_post').attr('class','active');
+    $('#day_post_this').css('display','block');
+    $('#day_post_nb_this').attr('class','active');
 });

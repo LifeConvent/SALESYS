@@ -15,29 +15,85 @@
 
             <!--菜单一-->
             <li class="sub-menu">
-                <a href="javascript:;" id="weChat">
+                <a href="javascript:;" id="day_post">
                     <i class="fa fa-laptop"></i>
                             <span style="font-size: 14px;">
-                              日报查询
+                              当日日报查询
                             </span>
                             <span class="label label-success span-sidebar">
+                              4
+                            </span>
+                </a>
+                <ul class="sub" id="day_post_this">
+                    <li id="day_post_nb_this">
+                        <a href="{:U('Home/Home/Home')}" style="font-size: 12px;">
+                            契约当日日报
+                        </a>
+                    </li>
+                    <li id="day_post_uw_this">
+                        <a href="{:U('Home/DayPost/dayPostUwThis')}" style="font-size: 12px;">
+                            核保当日日报
+                        </a>
+                    </li>
+                    <li id="day_post_cs_this">
+                        <a href="{:U('Home/DayPost/dayPostCsThis')}" style="font-size: 12px;">
+                            保全当日日报
+                        </a>
+                    </li>
+                    <li id="day_post_clm_this">
+                        <a href="{:U('Home/DayPost/dayPostClmThis')}" style="font-size: 12px;">
+                            核赔当日日报
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" id="day_post_two">
+                    <i class="fa fa-laptop"></i>
+                    <span style="font-size: 14px;">
+                              累计日报查询
+                            </span>
+                    <span class="label label-success span-sidebar">
+                              4
+                            </span>
+                </a>
+                <ul class="sub" id="day_post_all">
+                    <li id="day_post_nb_all">
+                        <a href="{:U('Home/DayPost/dayPostNbAll')}" style="font-size: 12px;">
+                            契约累计日报
+                        </a>
+                    </li>
+                    <li id="day_post_uw_all">
+                        <a href="{:U('Home/DayPost/dayPostUwAll')}" style="font-size: 12px;">
+                            核保累计日报
+                        </a>
+                    </li>
+                    <li id="day_post_cs_all">
+                        <a href="{:U('Home/DayPost/dayPostCsAll')}" style="font-size: 12px;">
+                            保全累计日报
+                        </a>
+                    </li>
+                    <li id="day_post_clm_all">
+                        <a href="{:U('Home/DayPost/dayPostClmAll')}" style="font-size: 12px;">
+                            核赔累计日报
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="javascript:;" id="day_post_other">
+                    <i class="fa fa-laptop"></i>
+                    <span style="font-size: 14px;">
+                              其他日报查询
+                            </span>
+                    <span class="label label-success span-sidebar">
                               2
                             </span>
                 </a>
-                <ul class="sub" id="weChat_sub">
-                    <li id="weChat_menu">
-                        <a href="{:U('Home/Home/Home')}" style="font-size: 12px;">
-                            单日日报查询
-                        </a>
-                    </li>
-                    <li id="weChat_groupSend">
-                        <a href="{:U('Home/DayPost/dayPost')}" style="font-size: 12px;">
-                            区间日报查询
-                        </a>
-                    </li>
-                    <li id="weChat_autoSend" class="dis-none">
-                        <a href="{:U('Home/WeChat/setAutoRes')}" style="font-size: 12px;">
-                            整体日报查询
+                <ul class="sub" id="day_post_three">
+                    <li id="day_post_tc">
+                        <a href="{:U('Home/DayPost/dayPostTc')}" style="font-size: 12px;">
+                            TC问题日报
                         </a>
                     </li>
                 </ul>
@@ -232,7 +288,7 @@
                     </li>
                     <li id="clm_chat_define">
                         <a href="{:U('Home/PersonDefineFinishWork/clmChatDefine')}" style="font-size: 12px;">
-                            理赔核保短信清单
+                            理赔/核保短信清单
                         </a>
                     </li>
                 </ul>

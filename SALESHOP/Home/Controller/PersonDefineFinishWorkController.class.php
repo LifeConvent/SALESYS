@@ -2208,6 +2208,7 @@ class PersonDefineFinishWorkController extends Controller
         if(in_array($user_name,$otherUser)){
             $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
         }
+        Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
 
         $num = 0;
         ################################################################   保全受理   #######################################################################
