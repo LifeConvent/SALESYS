@@ -137,7 +137,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '保单号',
-                width:130
+                width:170
             }, {
                 field: 'issue_date',
                 sortable: true,
@@ -159,14 +159,16 @@ var TableInit = function () {
                 align: 'center',
                 title: '保全项目名称',
                 width:150
-            }, {
-                field: 'user_name',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '操作员',
-                width:100
-            }, {
+            },
+            //     {
+            //     field: 'user_name',
+            //     sortable: true,
+            //     valign: 'middle',
+            //     align: 'center',
+            //     title: '操作员',
+            //     width:100
+            // },
+                {
                 field: 'get_money',
                 sortable: true,
                 align: 'center',
@@ -228,7 +230,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '主险名称',
-                width:150
+                width:180
             }, {
                 field: 'amount',
                 sortable: true,

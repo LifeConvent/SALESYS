@@ -138,7 +138,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '保单号',
-                width:130
+                width:170
             }, {
                 field: 'insert_date',
                 sortable: true,
