@@ -352,6 +352,9 @@ window.actionEvents = {
         var business_name = row.business_name;
         var business_code = row.apply_code;
         var policy_code = row.policy_code;
+        if(policy_code==""||policy_code==null||policy_code=='-'){
+            policy_code = row.apply_code;
+        }
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输
