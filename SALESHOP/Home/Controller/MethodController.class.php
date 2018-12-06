@@ -228,6 +228,58 @@ class MethodController extends Controller
         return $org;
     }
 
+    public function getBugSys(){
+        $org = array(
+            "CSS-柜面系统" => 0,
+            "NBS-新契约子系统" => 1,
+            "CUS-保全子系统" => 2,
+            "CLM-理赔子系统" => 3,
+            "UWS-核保子系统" => 4,
+            "CAP-收付费系统" => 5,
+            "QRY-综合查询系统" => 6,
+            "PAS-保单管理子系统" => 7,
+            "PDS-产品工厂子系统" => 8,
+            "BRM-规则管理平台" => 9,
+            "PRS-打印系统" => 10,
+            "ECS-影像采集系统与内容管理平台" => 11,
+            "CIP-接入渠道整合平台" => 12,
+            "DM-数据迁移项目" => 13,
+            "SI-集成" => 14,
+            "业务公共" => 15,
+            "UDMP-统一开发管理平台" => 16,
+            "ODS-数据集成平台" => 17,
+            "BPM-工作流管理平台" => 18,
+            "ESB-应用集成平台" => 19,
+            "MDM" => 20,
+            "合计" => 21
+        );
+        return $org;
+    }
+
+    public function getBugSysName(){
+        $org = array(
+            "CSS-柜面系统","NBS-新契约子系统","CUS-保全子系统","CLM-理赔子系统",
+            "UWS-核保子系统",
+            "CAP-收付费系统",
+            "QRY-综合查询系统",
+            "PAS-保单管理子系统",
+            "PDS-产品工厂子系统",
+            "BRM-规则管理平台",
+            "PRS-打印系统",
+            "ECS-影像采集系统与内容管理平台",
+            "CIP-接入渠道整合平台",
+            "DM-数据迁移项目",
+            "SI-集成",
+            "业务公共",
+            "UDMP-统一开发管理平台",
+            "ODS-数据集成平台",
+            "BPM-工作流管理平台",
+            "ESB-应用集成平台",
+            "MDM","合计"
+        );
+        return $org;
+    }
+
     //契约回执出单数据更新
     public function execLoadDataNBCD(){
         //解除30s限制
@@ -1909,9 +1961,10 @@ class MethodController extends Controller
 //        }
         //重加载TC数据
 //        $tc_fix = $this->getTcFix();
-        $queryTc = "select bt.bug_new_id as tc_id,ut.username as tc_user_name,cfvt.value18 AS business_code,bt.date_submitted as create_date,bt.summary as description,bt.status as status,cfvt.value17 AS find_node,cfvt.value16 AS local,bt.severity
-                    from bug_table bt,custom_field_value_table cfvt,`user_table` ut  
-                    where ut.id = bt.reporter_id and bt.id = cfvt.bug_id";
+        $queryTc = "select bt.bug_new_id as tc_id,ut.username as tc_user_name,cfvt.value18 AS business_code,bt.date_submitted as create_date,bt.summary as description,bt.status as status,tp.tx_desc as status_desc,cfvt.value17 as find_node,cfvt.value16 as local,bt.severity,cfvt.value3 as sys
+                    from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
+                    where ut.id = bt.reporter_id and bt.id = cfvt.bug_id 
+										and tp.plname = 'bug_table_status' and tp.tx_value = bt.status";
         //查询TC数据
         $tc_cursor = M();
         $res = $tc_cursor->query($queryTc);
@@ -1925,6 +1978,8 @@ class MethodController extends Controller
             $result[$i]['FIND_NODE'] = $res[$i]['find_node'];
             $result[$i]['LOCAL'] = $res[$i]['local'];
             $result[$i]['PONDERANCE'] = $res[$i]['severity'];
+            $result[$i]['STATUS_DESC'] = $res[$i]['status_desc'];
+            $result[$i]['SYS'] = $res[$i]['sys'];
         }
         //连接数据库
         $conn = $this->OracleOldDBCon();
@@ -1948,7 +2003,9 @@ class MethodController extends Controller
             $FIND_NODE = $business[$value['FIND_NODE']];
             $LOCAL = $value['LOCAL'];
             $PONDERANCE = $value['PONDERANCE'];
-            $query_insert = "INSERT INTO TMP_QDSX_TC_BUG(TC_ID,CREATE_DATE,TC_USER_NAME,BUSINESS_CODE,DESCRIPTION,STATUS,FIND_NODE,LOCAL,PONDERANCE) VALUES('".$TC_ID."',to_date('".$CREATE_DATE."','YYYY/MM/DD hh24:mi:ss'),'".$TC_USER_NAME."','".$BUSINESS_CODE."','".$DESCRIPTION."','".$STATUS."','".$FIND_NODE."','".$LOCAL."','".$PONDERANCE."')";
+            $STATUS_DESC = $value['STATUS_DESC'];
+            $SYS = $value['SYS'];
+            $query_insert = "INSERT INTO TMP_QDSX_TC_BUG(TC_ID,CREATE_DATE,TC_USER_NAME,BUSINESS_CODE,DESCRIPTION,STATUS,FIND_NODE,LOCAL,PONDERANCE,STATUS_DESC,SYS) VALUES('".$TC_ID."',to_date('".$CREATE_DATE."','YYYY/MM/DD hh24:mi:ss'),'".$TC_USER_NAME."','".$BUSINESS_CODE."','".$DESCRIPTION."','".$STATUS."','".$FIND_NODE."','".$LOCAL."','".$PONDERANCE."','".$STATUS_DESC."','".$SYS."')";
 //          echo $query_insert;
             $statement = oci_parse($conn,$query_insert);
             echo $TC_ID."单条插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
