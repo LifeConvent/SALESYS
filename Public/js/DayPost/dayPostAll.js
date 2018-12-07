@@ -32,7 +32,7 @@ $(function () {
         minView: 2,
         forceParse: 0
     }).on('changeDate', function(ev){
-        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1"});
+        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getDayPostAll?queryDateStart="+$("#dtp_input2").val()+"&type=1"});
     });
 
     //1.初始化Table
@@ -54,21 +54,11 @@ $(function () {
 });
 
 var TableInit = function () {
-    countFooter =  function(v){
-        var count = 0;
-        for (var i in v) {
-            if(v[i]['org']=='小计'){
-                continue;
-            }
-            count += v[i][this.field];
-        }
-        return count+'';
-    };
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report').bootstrapTable({
-            url: HOST + "index.php/Home/Method/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/DayPost/getDayPostAll",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             showExport: true,
             exportDataType: 'all',
@@ -137,101 +127,70 @@ var TableInit = function () {
                 ],[{
                     field : 'org',
                     title : '地区',
-                    footerFormatter:function(){
-                        return '合计';
-                    },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'nb_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'nb_bug_sum',
                     title : '问题单<br>数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'nb_solved_sum',
                     title : '已解决<br>问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'nb_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'uw_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'uw_bug_sum',
                     title : '问题单<br>数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'uw_solved_sum',
                     title : '已解决<br>问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'uw_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'cs_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'cs_bug_sum',
                     title : '问题单<br>数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'cs_solved_sum',
                     title : '已解决<br>问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'cs_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'clm_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'clm_bug_sum',
                     title : '问题单<br>数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'clm_solved_sum',
                     title : '已解决<br>问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'clm_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 }]]
         });

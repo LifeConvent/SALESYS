@@ -103,6 +103,24 @@ class DayPostController extends Controller
         }
     }
 
+    public function dayPostTc()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
+        if ($result) {
+            $this->assign('username', $username);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function dayPostAll()
     {
         $username = '';
@@ -552,69 +570,79 @@ class DayPostController extends Controller
         $dictIndex = $method->getDictIndex();
         $DictArry = $method->getDictArry();
         for ($i = 0; $i < sizeof($DictArry); $i++) {
-            $result[] = array("org" => $DictArry[$i],"lpsh_sum" => 0,"lpsh_bug_sum" => 0,"lpsh_rate" => 0,
-                "lpzh_sum" => 0,"lpzh_bug_sum" => 0,"lpzh_rate" => 0,
-                "lpdx_sum" => 0,"lpdx_bug_sum" => 0,"lpdx_rate" => 0);
+            $result[] = array("org" => $DictArry[$i],"nb_sum" => 0,"nb_bug_sum" => 0,"nb_solved_sum" => 0,"nb_rate" => 0,
+                "uw_sum" => 0,"uw_bug_sum" => 0,"uw_solved_sum" => 0,"uw_rate" => 0,
+                "cs_sum" => 0,"cs_bug_sum" => 0,"cs_solved_sum" => 0,"cs_rate" => 0,
+                "clm_sum" => 0,"clm_bug_sum" => 0,"clm_solved_sum" => 0,"clm_rate" => 0);
         }
-        $select_bqsl = "SELECT * FROM TMP_QDSX_NB_DAYPOST WHERE 1=1 
+        $select_bqsl = "SELECT * FROM TMP_QDSX_LJ_DAYPOST WHERE 1=1 
                             ".$where_time_bqsl."
                             UNION ALL 
                             SELECT SYS_INSERT_DATE,
                                    '' AS ORGAN_CODE,
                                    '合计' AS ORGAN_NAME,
-                                   SUM(BXHT_SUM) AS BXHT_SUM,
-                                   SUM(BXHT_BUG_SUM) AS BXHT_BUG_SUM,
-                                   DECODE(SUM(BXHT_SUM),0,'100.00%', trim(to_char((SUM(BXHT_SUM)-SUM(BXHT_BUG_SUM))/SUM(BXHT_SUM)*100,'999D99')||'%')) BXHT_RATE,
-                                   SUM(CBDX_SUM) AS CDDX_SUM,
-                                   SUM(CBDX_BUG_SUM) AS CDDX_BUG_SUM,
-                                   DECODE(SUM(CBDX_SUM),0,'100.00%', trim(to_char((SUM(CBDX_SUM)-SUM(CBDX_BUG_SUM))/SUM(CBDX_SUM)*100,'999D99')||'%')) CBDX_RATE,
-                                   SUM(TZS_SUM) AS TZS_SUM,
-                                   SUM(TZS_BUG_SUM) AS TZS_BUG_SUM,
-                                   DECODE(SUM(TZS_SUM),0,'100.00%', trim(to_char((SUM(TZS_SUM)-SUM(TZS_BUG_SUM))/SUM(TZS_SUM)*100,'999D99')||'%')) TZS_RATE,
-                                   SUM(TBXX_SUM) AS TBXX_SUM,
-                                   SUM(TBXX_BUG_SUM) AS TBXX_BUG_SUM,
-                                   DECODE(SUM(TBXX_SUM),0,'100.00%', trim(to_char((SUM(TBXX_SUM)-SUM(TBXX_BUG_SUM))/SUM(TBXX_SUM)*100,'999D99')||'%')) TBXX_RATE,
-                                   SUM(CBYW_SUM) AS CBYW_SUM,
-                                   SUM(CBYW_BUG_SUM) AS CBYW_BUG_SUM,
-                                   DECODE(SUM(CBYW_SUM),0,'100.00%', trim(to_char((SUM(CBYW_SUM)-SUM(CBYW_BUG_SUM))/SUM(CBYW_SUM)*100,'999D99')||'%')) CBYW_RATE
-                            FROM TMP_QDSX_NB_DAYPOST 
+                                   SUM(NB_SUM) AS NB_SUM,
+                                   SUM(NB_BUG_SUM) AS NB_BUG_SUM,
+                                   SUM(NB_SOLVED_SUM)  AS NB_SOLVED_SUM,
+                                   DECODE(SUM(NB_SUM),0,'100.00%', trim(to_char((SUM(NB_SUM)-SUM(NB_BUG_SUM)+SUM(NB_SOLVED_SUM))/SUM(NB_SUM)*100,'999D99')||'%')) NB_RATE,
+                                   SUM(UW_SUM) AS UW_SUM,
+                                   SUM(UW_BUG_SUM) AS UW_BUG_SUM,
+                                   SUM(UW_SOLVED_SUM) AS UW_SOLVED_SUM,
+                                   DECODE(SUM(UW_SUM),0,'100.00%', trim(to_char((SUM(UW_SUM)-SUM(UW_BUG_SUM)+SUM(UW_SOLVED_SUM))/SUM(UW_SUM)*100,'999D99')||'%')) UW_RATE,
+                                   SUM(CS_SUM) AS CS_SUM,
+                                   SUM(CS_BUG_SUM) AS CS_BUG_SUM,
+                                   SUM(CS_SOLVED_SUM) AS CS_SOLVED_SUM,
+                                   DECODE(SUM(CS_SUM),0,'100.00%', trim(to_char((SUM(CS_SUM)-SUM(CS_BUG_SUM)+SUM(CS_SOLVED_SUM))/SUM(CS_SUM)*100,'999D99')||'%')) CS_RATE,     
+                                   SUM(CLM_SUM) AS CLM_SUM,
+                                   SUM(CLM_BUG_SUM) AS CLM_BUG_SUM,
+                                   SUM(CLM_SOLVED_SUM) AS CLM_SOLVED_SUM,
+                                   DECODE(SUM(CLM_SUM),0,'100.00%', trim(to_char((SUM(CLM_SUM)-SUM(CLM_BUG_SUM)+SUM(CLM_SOLVED_SUM))/SUM(CLM_SUM)*100,'999D99')||'%')) CLM_RATE
+                            FROM TMP_QDSX_LJ_DAYPOST 
                              WHERE 1=1 ".$where_time_bqsl."
                             GROUP BY SYS_INSERT_DATE
                             UNION ALL
                             SELECT SYS_INSERT_DATE,
                                    '' AS ORGAN_CODE,
                                    '小计' AS ORGAN_NAME,
-                                   SUM(BXHT_SUM) AS BXHT_SUM,
-                                   SUM(BXHT_BUG_SUM) AS BXHT_BUG_SUM,
-                                   DECODE(SUM(BXHT_SUM),0,'100.00%', trim(to_char((SUM(BXHT_SUM)-SUM(BXHT_BUG_SUM))/SUM(BXHT_SUM)*100,'999D99')||'%')) BXHT_RATE,
-                                   SUM(CBDX_SUM) AS CDDX_SUM,
-                                   SUM(CBDX_BUG_SUM) AS CDDX_BUG_SUM,
-                                   DECODE(SUM(CBDX_SUM),0,'100.00%', trim(to_char((SUM(CBDX_SUM)-SUM(CBDX_BUG_SUM))/SUM(CBDX_SUM)*100,'999D99')||'%')) CBDX_RATE,
-                                   SUM(TZS_SUM) AS TZS_SUM,
-                                   SUM(TZS_BUG_SUM) AS TZS_BUG_SUM,
-                                   DECODE(SUM(TZS_SUM),0,'100.00%', trim(to_char((SUM(TZS_SUM)-SUM(TZS_BUG_SUM))/SUM(TZS_SUM)*100,'999D99')||'%')) TZS_RATE,
-                                   SUM(TBXX_SUM) AS TBXX_SUM,
-                                   SUM(TBXX_BUG_SUM) AS TBXX_BUG_SUM,
-                                   DECODE(SUM(TBXX_SUM),0,'100.00%', trim(to_char((SUM(TBXX_SUM)-SUM(TBXX_BUG_SUM))/SUM(TBXX_SUM)*100,'999D99')||'%')) TBXX_RATE,
-                                   SUM(CBYW_SUM) AS CBYW_SUM,
-                                   SUM(CBYW_BUG_SUM) AS CBYW_BUG_SUM,
-                                   DECODE(SUM(CBYW_SUM),0,'100.00%', trim(to_char((SUM(CBYW_SUM)-SUM(CBYW_BUG_SUM))/SUM(CBYW_SUM)*100,'999D99')||'%')) CBYW_RATE
-                            FROM TMP_QDSX_NB_DAYPOST 
-                             WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','864700') ".$where_time_bqsl."
+                                   SUM(NB_SUM) AS NB_SUM,
+                                   SUM(NB_BUG_SUM) AS NB_BUG_SUM,
+                                   SUM(NB_SOLVED_SUM)  AS NB_SOLVED_SUM,
+                                   DECODE(SUM(NB_SUM),0,'100.00%', trim(to_char((SUM(NB_SUM)-SUM(NB_BUG_SUM)+SUM(NB_SOLVED_SUM))/SUM(NB_SUM)*100,'999D99')||'%')) NB_RATE, 
+                                   SUM(UW_SUM) AS UW_SUM,
+                                   SUM(UW_BUG_SUM) AS UW_BUG_SUM,
+                                   SUM(UW_SOLVED_SUM) AS UW_SOLVED_SUM,
+                                   DECODE(SUM(UW_SUM),0,'100.00%', trim(to_char((SUM(UW_SUM)-SUM(UW_BUG_SUM)+SUM(UW_SOLVED_SUM))/SUM(UW_SUM)*100,'999D99')||'%')) UW_RATE,
+                                   SUM(CS_SUM) AS CS_SUM,
+                                   SUM(CS_BUG_SUM) AS CS_BUG_SUM,
+                                   SUM(CS_SOLVED_SUM) AS CS_SOLVED_SUM,
+                                   DECODE(SUM(CS_SUM),0,'100.00%', trim(to_char((SUM(CS_SUM)-SUM(CS_BUG_SUM)+SUM(CS_SOLVED_SUM))/SUM(CS_SUM)*100,'999D99')||'%')) CS_RATE,
+                                   SUM(CLM_SUM) AS CLM_SUM,
+                                   SUM(CLM_BUG_SUM) AS CLM_BUG_SUM,
+                                   SUM(CLM_SOLVED_SUM) AS CLM_SOLVED_SUM,
+                                   DECODE(SUM(CLM_SUM),0,'100.00%', trim(to_char((SUM(CLM_SUM)-SUM(CLM_BUG_SUM)+SUM(CLM_SOLVED_SUM))/SUM(CLM_SUM)*100,'999D99')||'%')) CLM_RATE
+                            FROM TMP_QDSX_LJ_DAYPOST 
+                            WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','8600') ".$where_time_bqsl."
                             GROUP BY SYS_INSERT_DATE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
-            $result[$dictIndex[$value['ORGAN_NAME']]]['lpsh_sum'] = $value['LPSH_SUM'];
-            $result[$dictIndex[$value['ORGAN_NAME']]]['lpsh_bug_sum'] = $value['LPSH_BUG_SUM'];
-            $result[$dictIndex[$value['ORGAN_NAME']]]['lpsh_rate'] = $value['LPSH_RATE'];
-            $result[$dictIndex[$value['ORGAN_NAME']]]['lpzh_sum'] = $value['LPZH_SUM'];
-            $result[$dictIndex[$value['ORGAN_NAME']]]['lpzh_bug_sum'] = $value['LPZH_BUG_SUM'];
-            $result[$dictIndex[$value['ORGAN_NAME']]]['lpzh_rate'] = $value['LPZH_RATE'];
-            $result[$dictIndex[$value['ORGAN_NAME']]]['lpdx_sum'] = $value['LPDX_SUM'];
-            $result[$dictIndex[$value['ORGAN_NAME']]]['lpdx_bug_sum'] = $value['LPDX_BUG_SUM'];
-            $result[$dictIndex[$value['ORGAN_NAME']]]['lpdx_rate'] = $value['LPDX_RATE'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['nb_sum'] = $value['NB_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['nb_bug_sum'] = $value['NB_BUG_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['nb_solved_sum'] = $value['NB_SOLVED_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['nb_rate'] = $value['NB_RATE'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['uw_sum'] = $value['UW_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['uw_bug_sum'] = $value['UW_BUG_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['uw_solved_sum'] = $value['UW_SOLVED_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['uw_rate'] = $value['UW_RATE'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['cs_sum'] = $value['CS_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['cs_bug_sum'] = $value['CS_BUG_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['cs_solved_sum'] = $value['CS_SOLVED_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['cs_rate'] = $value['CS_RATE'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['clm_sum'] = $value['CLM_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['clm_bug_sum'] = $value['CLM_BUG_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['clm_solved_sum'] = $value['CLM_SOLVED_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['clm_rate'] = $value['CLM_RATE'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);

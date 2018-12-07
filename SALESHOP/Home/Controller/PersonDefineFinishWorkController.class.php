@@ -1962,12 +1962,12 @@ class PersonDefineFinishWorkController extends Controller
         }else if((int)$userType==2){
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix =  " AND 1=1 ";
         }else if((int)$userType==3){
             $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
         }
         if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+            $where_type_fix =  " AND 1=1 ";
         }
 
         $num = 0;
@@ -1975,13 +1975,23 @@ class PersonDefineFinishWorkController extends Controller
         //保全室、理赔室、核保室不参与
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
-            $select_bqsl = "SELECT  DISTINCT 
-                                TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
-                                   A.BUSINESS_CODE,
-                                   A.USER_NAME,
-                                   A.ORGAN_CODE,
+            $select_bqsl = "SELECT A.CONTENT_ID,
+                                   A.CHAT_NAME,
+                                   A.ACCEPT_CODE,
+                                   A.POLICY_CODE,
+                                   TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
+                                   TO_CHAR(A.POLICY_VALIDATE_DATE,'YYYY-MM-DD') AS POLICY_VALIDATE_DATE,
+                                   A.HOLDER_NAME,
+                                   A.POLICY_STATUS,
+                                   TO_CHAR(A.DEADLINE_DATE,'YYYY-MM-DD') AS DEADLINE_DATE,
+                                   A.SERVICE_NAME,
+                                   A.SERVICE_CODE,
+                                   A.GET_MONEY,
+                                   A.RECEIPTOR_NAME,
+                                   A.PHONE,
+                                   A.CHAT_CONTENT,
                                    D.BUSINESS_NAME,
-                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                    --C.TC_ID,
                                    (CASE
                                       WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -1996,17 +2006,16 @@ class PersonDefineFinishWorkController extends Controller
                                         ELSE TO_CHAR(C.CREATE_DATE,'YYYY-MM-DD')
                                     END) AS SYS_INSERT_DATE,
                                    --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
-                                FROM TMP_QDSX_UW A 
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                FROM TMP_QDSX_CS_BQDX A 
                                 LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
-                                  ON  A.BUSINESS_CODE = B.BUSINESS_CODE
-                                  AND A.POLICY_CODE = B.POLICY_CODE
+                                  ON A.CONTENT_ID = B.BUSINESS_CODE
                                   AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                   AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
                                 LEFT JOIN TMP_QDSX_TC_BUG C  
-                                  ON C.BUSINESS_CODE = A.BUSINESS_CODE
+                                  ON C.BUSINESS_CODE = A.CONTENT_ID
                                   --AND C.POLICY_CODE = A.POLICY_CODE
                                   AND C.FIND_NODE = A.BUSINESS_NODE
                                 LEFT JOIN TMP_BUSINESS_NODE D
@@ -2016,20 +2025,23 @@ class PersonDefineFinishWorkController extends Controller
             $bqsl_result_time = $method->search_long($result_rows);
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
-                $result[$i]['send_id'] = $value['SEND_ID'];
+                $result[$i]['send_id'] = $value['CONTENT_ID'];
                 $result[$i]['chat_name'] = $value['CHAT_NAME'];
-                $result[$i]['chat_content'] = $value['CHAT_CONTENT'];
                 $result[$i]['accept_code'] = $value['ACCEPT_CODE'];
-                $result[$i]['insert_date'] = $value['INSERT_DATE'];
-                $result[$i]['service_code'] = $value['SERVICE_CODE'];
+                $result[$i]['policy_code'] = $value['POLICY_CODE'];
+                $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+                $result[$i]['validate_date'] = $value['POLICY_VALIDATE_DATE'];
+                $result[$i]['holder_name'] = $value['HOLDER_NAME'];
+                $result[$i]['status'] = $value['POLICY_STATUS'];
+                $result[$i]['deadline_date'] = $value['DEADLINE_DATE'];
                 $result[$i]['service_name'] = $value['SERVICE_NAME'];
-                $result[$i]['user_name'] = $value['USER_NAME'];
-                $result[$i]['get_money'] = $value['GET_MONEY'];
-                $result[$i]['apply_date'] = $value['APPLY_DATE'];
                 $result[$i]['service_type'] = $value['SERVICE_TYPE'];
-                $result[$i]['accept_status'] = $value['ACCEPT_STATUS'];
-                $result[$i]['organ_code'] = $value['ORGAN_CODE'];
-                $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+                $result[$i]['service_code'] = $value['SERVICE_CODE'];
+                $result[$i]['get_money'] = $value['GET_MONEY'];
+                $result[$i]['receiptor_name'] = $value['RECEIPTOR_NAME'];
+                $result[$i]['phone'] = $value['PHONE'];
+                $result[$i]['chat_content'] = $value['CHAT_CONTENT'];
+                $result[$i]['bussiness_name'] = $value['BUSINESS_NAME'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
                 }else{

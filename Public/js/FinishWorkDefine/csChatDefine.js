@@ -91,8 +91,8 @@ var TableInit = function () {
             queryParams: oTableInit.queryParams,//传递参数（*）
 //                sidePagination: "server",   //分页方式：client客户端分页，server服务端分页（*）
             pageNumber: 1,      //初始化加载第一页，默认第一页
-            pageSize: 10,      //每页的记录行数（*）
-            pageList: [10,15,25,30,50,100],
+            pageSize: 5,      //每页的记录行数（*）
+            pageList: [5,10,15,25,30,50,100],
             search: true,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
             strictSearch: false,
             showColumns: true,     //是否显示所有的列
@@ -139,26 +139,68 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '短信名称',
                 width:170
-            },{
-                field: 'chat_content',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '短信内容',
-                width:200
-            },  {
+            }, {
                 field: 'accept_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '受理号',
-                width:130
+                width:170
             }, {
-                field: 'insert_date',
+                field: 'policy_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保单号',
+                width:130
+            },{
+                field: 'issue_date',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '操作日期',
+                title: '签单日期',
+                width:100
+            }, {
+                field: 'validate_date',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '生效日期',
+                width:100
+            }, {
+                field: 'holder_name',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '投保人姓名',
+                width:120
+            }, {
+                field: 'status',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '保单状态',
+                width:100
+            }, {
+                field: 'deadline_date',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '满期日期',
+                width:100
+            }, {
+                field: 'service_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保全项目名称',
+                width:150
+            }, {
+                field: 'service_type',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '申请方式',
                 width:100
             }, {
                 field: 'service_code',
@@ -168,62 +210,41 @@ var TableInit = function () {
                 title: '保全项',
                 width:100
             }, {
-                field: 'service_name',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '保全项目名称',
-                width:150
-            }, {
-                field: 'user_name',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '操作员',
-                width:100
-            }, {
                 field: 'get_money',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '金额',
+                title: '补退费金额',
                 width:100
             }, {
-                field: 'apply_date',
+                field: 'receiptor_name',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '申请日期',
+                title: '领取人姓名',
                 width:100
             }, {
-                field: 'service_type',
+                field: 'phone',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '申请方式',
+                title: '手机号',
                 width:100
             }, {
-                field: 'accept_status',
+                field: 'chat_content',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '受理状态',
-                width:100
-            }, {
-                field: 'organ_code',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '作业机构',
-                width:100
-            }, {
-                field: 'business_name',
+                title: '短信话术',
+                width:300
+            },{
+                field: 'bussiness_name',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '业务节点',
                 width:100
-            },{
+            }, {
                 field: 'operation',
                 title: '操作',
                 align: 'center',
