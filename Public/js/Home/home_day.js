@@ -1,22 +1,8 @@
 
-//重新加载TC
-// function reloadTc(){
-//     $('.fade').show();
-//     $.ajax({
-//         type : "get",
-//         url :  'api/ReloadTc',
-//         dataType : 'json',
-//         async : true,
-//         success : function(data) {
-//             if(data){
-//                 BootstrapDialog.alert("TC重加载成功")
-//             }
-//             $('.fade').hide()
-//         }
-//     });
-// }
-
 $(function () {
+    $('#day_post').attr('class','active');
+    $('#day_post_this').css('display','block');
+    $('#day_post_nb_this').attr('class','active');
 
     $('.form_date').datetimepicker({
         language:  'zh-CN',
@@ -28,7 +14,7 @@ $(function () {
         minView: 2,
         forceParse: 0
     }).on('changeDate', function(ev){
-        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1"});
+        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getNbDayPostThis?queryDateStart="+$("#dtp_input2").val()+"&type=1"});
     });
 
     //1.初始化Table
@@ -50,21 +36,21 @@ $(function () {
 });
 
 var TableInit = function () {
-    countFooter =  function(v){
-        var count = 0;
-        for (var i in v) {
-            if(v[i]['org']=='小计'){
-                continue;
-            }
-            count += v[i][this.field];
-        }
-        return count+'';
-    };
+    // countFooter =  function(v){
+    //     var count = 0;
+    //     for (var i in v) {
+    //         if(v[i]['org']=='小计'){
+    //             continue;
+    //         }
+    //         count += v[i][this.field];
+    //     }
+    //     return count+'';
+    // };
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report').bootstrapTable({
-            url: HOST + "index.php/Home/Method/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/DayPost/getNbDayPostThis",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             showExport: true,
             exportDataType: 'all',
@@ -102,7 +88,6 @@ var TableInit = function () {
             formatSearch: function () {
                 return '搜索';
             },
-
             columns : [
                 [{
                     title :  '契约当日作业核对情况',
@@ -137,99 +122,66 @@ var TableInit = function () {
                 ],[{
                     field : 'org',
                     title : '地区',
-                    footerFormatter:function(){
-                        return '合计';
-                    },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'bxht_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'bxht_bug_sum',
                     title : '问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'bxht_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'cbdx_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'cbdx_bug_sum',
                     title : '问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'cbdx_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'tzs_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'tzs_bug_sum',
                     title : '问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'tzs_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'tbxx_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'tbxx_bug_sum',
                     title : '问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'tbxx_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'cbyw_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'cbyw_bug_sum',
                     title : '问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'cbyw_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 }]]
         });
@@ -247,65 +199,6 @@ var TableInit = function () {
 
     return oTableInit;
 };
-
-// function sumColCount(value){
-//     var count = 0;
-//     for (var i in value) {
-//         count += value[i][this.field];
-//     }
-//     $('th[data-field='+this.field+'] div:first-child').html(this.title+"<span style='color:red'>&nbsp;"+count+"&nbsp;</span>");
-//     return count+'';
-// }
-// function Log(info){
-// 	setTimeout(function(){
-// 		$('.progress-bar').html(info);
-// 	},100);
-// }
-// (function(){
-//     // $('.fade').show();
-//     // initTable();
-//     // // loadData(1);初始加载数据
-
-//     //请求刷新TC
-//     // $('.reloadtc').click(function(){
-//     //     BootstrapDialog.confirm('刷新TC比较耗时，且会有多次数据库的读取，确认是否继续？', function(result){
-//     //         if(result) {
-//     //             reloadTc()
-//     //         }
-    //     });
-    // });
-
-
-    //刷新数据
-    // $('.loadbxdata').click(function(){
-    //     BootstrapDialog.confirm('生成数据会耗时较久，且影响历史数据，确认是否继续', function(result){
-    //         if(result) {
-    //             $('.fade').show();
-    //             $.ajax({
-    //                 type : "get",
-    //                 url :  'api/ReloadTc',
-    //                 dataType : 'json',
-    //                 async : true,
-    //                 success : function(data) {
-    //                     if(data){
-    //                         $('.fade').hide();
-    //                         BootstrapDialog.alert("已经提交请求，稍等片刻后再此查询数据。")
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //     });
-//     // });
-//     $('.exportreport').click(function(){
-//         alert($("#dtp_input2").val());
-//          window.open(""+$("#dtp_input2").val());
-//     });
-//     $('.exportdetail').click(function(){
-//         alert($("#dtp_input2").val());
-//          window.open(""+$("#dtp_input2").val());
-//     });
-//     setTimeout(function(){$('.fade').hide()},4000)
-// })();
 
 
 $('.exportreport').click(function () {

@@ -32,7 +32,7 @@ $(function () {
         minView: 2,
         forceParse: 0
     }).on('changeDate', function(ev){
-        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1"});
+        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getUwDayPostThis?queryDate="+$("#dtp_input2").val()+"&type=1"});
     });
 
     //1.初始化Table
@@ -54,21 +54,21 @@ $(function () {
 });
 
 var TableInit = function () {
-    countFooter =  function(v){
-        var count = 0;
-        for (var i in v) {
-            if(v[i]['org']=='小计'){
-                continue;
-            }
-            count += v[i][this.field];
-        }
-        return count+'';
-    };
+    // countFooter =  function(v){
+    //     var count = 0;
+    //     for (var i in v) {
+    //         if(v[i]['org']=='小计'){
+    //             continue;
+    //         }
+    //         count += v[i][this.field];
+    //     }
+    //     return count+'';
+    // };
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report').bootstrapTable({
-            url: HOST + "index.php/Home/Method/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/DayPost/getUwDayPostThis",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             showExport: true,
             exportDataType: 'all',
@@ -106,7 +106,6 @@ var TableInit = function () {
             formatSearch: function () {
                 return '搜索';
             },
-
             columns : [
                 [{
                     title :  '核保当日作业核对情况',
@@ -141,99 +140,66 @@ var TableInit = function () {
                 ],[{
                     field : 'org',
                     title : '地区',
-                    footerFormatter:function(){
-                        return '合计';
-                    },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'qyhb_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'qyhb_bug_sum',
                     title : '问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'qyhb_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'bqhb_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'bqhb_bug_sum',
                     title : '问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'bqhb_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'lphb_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'lphb_bug_sum',
                     title : '问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'lphb_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'xbhb_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'xbhb_bug_sum',
                     title : '问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'xbhb_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 },{
-                    field : 'policy_check',
+                    field : 'hbssdx_sum',
                     title : '核对量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_pro',
+                    field : 'hbssdx_bug_sum',
                     title : '问题单数量',
-                    footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'policy_check_accuracy',
+                    field : 'hbssdx_rate',
                     title : '正确率',
-                    // footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.nb_old_count - row.nb_new_count;
-                    // },
                     align : 'center'
                 }]]
         });

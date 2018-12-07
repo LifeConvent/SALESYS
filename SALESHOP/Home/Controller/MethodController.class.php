@@ -51,6 +51,40 @@ class MethodController extends Controller
         return base64_decode(join('', $strArr));
     }
 
+    public function getUserTypeBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if((int)$result[0]['TYPE']!=1){
+            Log::write($username.'用户类型：'.$result[0]['TYPE'],'INFO');
+            return '3';
+        }else{
+            Log::write($username.'用户类型：'.$result[0]['TYPE'],'INFO');
+            return '1';
+        }
+    }
+
+    public function getCanDayPostBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.CAN_DAYPOST FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if((int)$result[0]['CAN_DAYPOST']!=1){
+            Log::write($username.'用户日报权限：'.$result[0]['CAN_DAYPOST'],'INFO');
+            return '0';
+        }else{
+            Log::write($username.'用户日报权限：'.$result[0]['CAN_DAYPOST'],'INFO');
+            return '1';
+        }
+    }
+
     public function checkIn(&$admin)
     {
         $token = $_SESSION['token'];
@@ -225,6 +259,12 @@ class MethodController extends Controller
 
     public function getDictArry(){
         $org = array("本部","李沧","平度","胶南","即墨","胶州","城阳","莱西","开发区","市南","小计","分公司","作业中心","合计");
+        return $org;
+    }
+
+    public function getDictIndex(){
+        $org = array("本部" => 0,"李沧" => 1,"平度" => 2,"胶南" => 3,"即墨" => 4,"胶州" => 5,"城阳" => 6,
+            "莱西" => 7,"开发区" => 8,"市南" => 9,"小计" => 10,"分公司" => 11,"作业中心" => 12,"合计" => 13);
         return $org;
     }
 

@@ -322,7 +322,7 @@ window.actionEvents = {
         // var link_business = $("#business"+index).val();
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
-        var policy_code = row.apply_code;
+        var policy_code = row.policy_code;
         var business_code = row.case_no;
         var username = $("#username").text();
             $.ajax({

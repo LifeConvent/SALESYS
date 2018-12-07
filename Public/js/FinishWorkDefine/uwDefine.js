@@ -143,7 +143,7 @@ var TableInit = function () {
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '作业机构',
+                title: '管理机构',
                 width:100
             }, {
                 field: 'insert_date',

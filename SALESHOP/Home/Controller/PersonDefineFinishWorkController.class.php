@@ -18,11 +18,13 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-//        $token = $_SESSION['token'];
-//dump($token);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -33,9 +35,13 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -46,9 +52,13 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -59,9 +69,13 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -72,9 +86,13 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -85,9 +103,13 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -98,9 +120,13 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -111,9 +137,14 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
+            $this->assign('user_type', $type);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -124,9 +155,13 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -137,9 +172,13 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -150,9 +189,13 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -163,9 +206,13 @@ class PersonDefineFinishWorkController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -1067,7 +1114,7 @@ class PersonDefineFinishWorkController extends Controller
                                             FROM TMP_QDSX_NB_TBXX A 
                                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                             ON A.APPLY_CODE = B.BUSINESS_CODE
-                                            AND A.POLICY_CODE = B.POLICY_CODE
+                                            --AND A.POLICY_CODE = B.POLICY_CODE
                                             AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                             AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
                                             LEFT JOIN TMP_QDSX_TC_BUG C  

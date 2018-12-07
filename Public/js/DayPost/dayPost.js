@@ -73,7 +73,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
-            url: HOST + "index.php/Home/Method/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/DayPost/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             // toolbar: '#toolbar',    //工具按钮用哪个容器
             striped: true,      //是否显示行间隔色

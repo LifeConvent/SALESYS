@@ -65,7 +65,7 @@
                         <input style="visibility:hidden" id="dtp_input2" value=""/>
                     </header>
                     <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
-                        <span style="color: red;"><strong>请粘贴相应标签至“表内查询”搜索框搜索,选中后拖拽时记得拽回来啊！</strong></span>
+                        <!--<span style="color: red;"><strong>请粘贴相应标签至“表内查询”搜索框搜索,选中后拖拽时记得拽回来啊！</strong></span>-->
                         <div>
                             <input class="form-control" value="本部" style="width:70pt;float:left;">
                             <input class="form-control" value="城阳" style="width:70pt;float:left;margin-left: 5pt">
@@ -80,159 +80,6 @@
                     </div>
                 </section>
             </div>
-
-            <!-- 第一行数据统计  -->
-            <div class="row state-overview" style="visibility:hidden">
-
-                <!--四个统计框-->
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-tags blue">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class="count" style="display:none">{$count}</h1>
-
-                            <h1 class=" show_count">
-                                0
-                            </h1>
-
-                            <p>
-                                微信匹配用户总量
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-tasks red">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class="count1" style="display:none">{$count1}</h1>
-
-                            <h1 class=" show_count1">
-                                0
-                            </h1>
-
-                            <p>
-                                课程评价总数
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-user yellow">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class=" count2" style="display:none">{$count2}</h1>
-
-                            <h1 class=" show_count2">0</h1>
-
-                            <p>
-                                微信关注量
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-plus purple">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class=" count3" style="display:none">{$count3}</h1>
-
-                            <h1 class=" show_count3">
-                                0
-                            </h1>
-
-                            <p>
-                                新增用户数量
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-            </div>
-             <!--第一行数据统计-->
-
-            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信匹配数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        课程评价数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="ce-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信关注量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-sub-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!--<div class="col-lg-12" style="color:#a560f8">-->
-                <!--<section class="panel">-->
-                    <!--<header class="panel-heading">-->
-                        <!--新增用户数量变化趋势-->
-                    <!--</header>-->
-                    <!--<div class="panel-body">-->
-                        <!--<div id="weixin-new-num" class="graph">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</section>-->
-            <!--</div>-->
 
         </section>
         <!-- 主容器  -->
@@ -265,6 +112,9 @@
 
     <include file="Public/footer-20"/>
 
+    <p id="user_name" style="display:none">{$username}</p>
+    <p id="user_type" style="display:none">{$user_type}</p>
+    <p id="user_day_post" style="display:none">{$user_day_post}</p>
     <p id="weChatMatch" style="display:none">{$weChatMatch}</p>
 
     <p id="weChatSub" style="display:none">{$weChatSub}</p>
@@ -301,6 +151,7 @@
 <script src="__PUBLIC__/js/Home/charts-home.js"></script>
 <!--<script src="__PUBLIC__/js/Home/home.js"></script>-->
 <script src="__PUBLIC__/js/dayPost/dayPostAll.js"></script>
+<script src="__PUBLIC__/js/public/userCheck.js"></script>
 
 <script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/bootstrap-table.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/locale/bootstrap-table-zh-CN.js"></script>

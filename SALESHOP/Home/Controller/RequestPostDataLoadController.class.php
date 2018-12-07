@@ -17,10 +17,14 @@ class RequestPostDataLoadController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $usertype = $method->getUserType();
-            $this->assign('usertype', $usertype);
+            $this->assign('usertype', $type);
+            $this->assign('user_type', $type);
             $this->assign('username', $username);
+            $this->assign('user_name', $username);
+            $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
             $this->display();
         } else {

@@ -17,9 +17,13 @@ class HomeController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
-            $this->assign('TITLE', TITLE);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -31,6 +35,8 @@ class HomeController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
             $res = $this->dealHomeCount();
             $j=0;
@@ -77,9 +83,11 @@ class HomeController extends Controller
 //            dump($new_time);
 //            dump($all_user_time);
 //            dump($survey_time);
-
-            $this->assign('username', $username);
             $this->assign('TITLE', TITLE);
+            $this->assign('username', $username);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
             $this->display();
         } else {
             $this->redirect('Index/index');
