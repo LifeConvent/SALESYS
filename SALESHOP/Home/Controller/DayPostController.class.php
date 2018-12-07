@@ -103,6 +103,24 @@ class DayPostController extends Controller
         }
     }
 
+    public function dayPostAll()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
+        if ($result) {
+            $this->assign('username', $username);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function test(){
         $username = '';
         $method = new MethodController();
