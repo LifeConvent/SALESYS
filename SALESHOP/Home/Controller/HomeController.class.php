@@ -116,7 +116,30 @@ class HomeController extends Controller
          */
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-
+        $select_cs = "DELETE FROM TMP_QDSX_TIME";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS);
+        $select_cs = "INSERT INTO TMP_QDSX_TIME (NEW_INSERT_TIME,NUM) VALUES(TRUNC(SYSDATE),0)";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS);
+        $select_cs = "INSERT INTO TMP_QDSX_TIME (NEW_INSERT_TIME,NUM) VALUES(TRUNC(SYSDATE-1),0)";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS);
+        $select_cs = "INSERT INTO TMP_QDSX_TIME (NEW_INSERT_TIME,NUM) VALUES(TRUNC(SYSDATE-2),0)";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS);
+        $select_cs = "INSERT INTO TMP_QDSX_TIME (NEW_INSERT_TIME,NUM) VALUES(TRUNC(SYSDATE-3),0)";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS);
+        $select_cs = "INSERT INTO TMP_QDSX_TIME (NEW_INSERT_TIME,NUM) VALUES(TRUNC(SYSDATE-4),0)";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS);
+        $select_cs = "INSERT INTO TMP_QDSX_TIME (NEW_INSERT_TIME,NUM) VALUES(TRUNC(SYSDATE-5),0)";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS);
+        $select_cs = "INSERT INTO TMP_QDSX_TIME (NEW_INSERT_TIME,NUM) VALUES(TRUNC(SYSDATE-6),0)";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS);
         # 时间-time-YYYY-MM-DD
         # TC缺陷总量-new
         # 契约作业量-allUser
@@ -124,11 +147,17 @@ class HomeController extends Controller
         # 保全作业量-is_match
         #####################################################################  保全数据查询  #####################################################################
         #039
-        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_INSERT_TIME)";
+        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_QDSX_CS_SLFH_GM WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE)";
         $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
         $cs_result = $method->search_long($result_rows);
         $result['cs_sum'] =$cs_result[0]['NUM'];
-        $select_cs = "SELECT * FROM (SELECT TO_CHAR(NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_BQSL_BD WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_INSERT_TIME ORDER BY NEW_INSERT_TIME DESC) WHERE ROWNUM<8";
+        $select_cs = "SELECT TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME,
+                              (CASE 
+                                 WHEN B.NUM IS NULL THEN A.NUM ELSE B.NUM
+                              END) AS NUM
+                        FROM TMP_QDSX_TIME A LEFT JOIN
+                        (SELECT * FROM (SELECT TO_CHAR(SYS_INSERT_DATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_QDSX_CS_SLFH_GM WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE ORDER BY SYS_INSERT_DATE DESC) WHERE ROWNUM<8) B
+                        ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME";
         $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
         $cs_result_new_time = $method->search_long($result_rows);
         for($i=0;$i<7;$i++){
@@ -137,11 +166,17 @@ class HomeController extends Controller
         }
         #####################################################################  契约数据查询  #####################################################################
         #039
-        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_BX_OLD_CDQCB WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY TO_CHAR(NEW_INSERT_TIME,'YYYY-MM-DD'))";
+        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_QDSX_NB_BXHT WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY TO_CHAR(SYS_INSERT_DATE,'YYYY-MM-DD'))";
         $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
         $cs_result = $method->search_long($result_rows);
         $result['nb_sum'] =$cs_result[0]['NUM'];
-        $select_nb = "SELECT * FROM (SELECT TO_CHAR(NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_BX_OLD_CDQCB WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY TO_CHAR(NEW_INSERT_TIME,'YYYY-MM-DD') ORDER BY NEW_INSERT_TIME DESC) WHERE ROWNUM<8";
+        $select_nb = "SELECT TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME,
+                              (CASE 
+                                 WHEN B.NUM IS NULL THEN A.NUM ELSE B.NUM
+                              END) AS NUM
+                        FROM TMP_QDSX_TIME A LEFT JOIN
+                        (SELECT * FROM (SELECT TO_CHAR(SYS_INSERT_DATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_QDSX_NB_BXHT WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE ORDER BY SYS_INSERT_DATE DESC) WHERE ROWNUM<8) B
+                        ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME";
         $result_rows = oci_parse($conn, $select_nb); // 配置SQL语句，执行SQL
         $nb_result_new_time = $method->search_long($result_rows);
         for($i=0;$i<7;$i++){
@@ -150,11 +185,17 @@ class HomeController extends Controller
         }
         #####################################################################  理赔数据查询  #####################################################################
         #039
-        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPBA_BD WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_INSERT_TIME)";
+        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_QDSX_CLM WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE)";
         $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
         $cs_result = $method->search_long($result_rows);
         $result['clm_sum'] =$cs_result[0]['NUM'];
-        $select_clm = "SELECT * FROM (SELECT TO_CHAR(NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_NCS_QD_BX_LPBA_BD WHERE NEW_INSERT_TIME IS NOT NULL GROUP BY NEW_INSERT_TIME ORDER BY NEW_INSERT_TIME DESC) WHERE ROWNUM<8";
+        $select_clm = "SELECT TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME,
+                              (CASE 
+                                 WHEN B.NUM IS NULL THEN A.NUM ELSE B.NUM
+                              END) AS NUM
+                        FROM TMP_QDSX_TIME A LEFT JOIN
+                        (SELECT * FROM (SELECT TO_CHAR(SYS_INSERT_DATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_QDSX_CLM WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE ORDER BY SYS_INSERT_DATE DESC) WHERE ROWNUM<8) B
+                        ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME";
         $result_rows = oci_parse($conn, $select_clm); // 配置SQL语句，执行SQL
         $clm_result_new_time = $method->search_long($result_rows);
         for($i=0;$i<7;$i++){
@@ -165,8 +206,11 @@ class HomeController extends Controller
         $tc_cursor = M();
         $tcSQl = $method->getTcSql();
         $res = $tc_cursor->query($tcSQl['home_sum']);
+        $select_cs = "SELECT TO_CHAR(NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME FROM TMP_QDSX_TIME";
+        $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+        $cs_result = $method->search_long($result_rows);
         for($i=0;$i<7;$i++){
-            $result[$i]['time_tc'] = $res[$i]['time'];
+            $result[$i]['time_tc'] = $cs_result[$i]['NEW_INSERT_TIME'];
             $result[$i]['new'] = $res[$i]['num'];
         }
         $res = $tc_cursor->query($tcSQl['sum']);

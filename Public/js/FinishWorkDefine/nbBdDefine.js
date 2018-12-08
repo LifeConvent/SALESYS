@@ -158,7 +158,7 @@ var TableInit = function () {
                 valign: 'middle',
                 align: 'center',
                 title: '操作员',
-                width:100
+                width:120
             }, {
                 field: 'organ_code',
                 sortable: true,

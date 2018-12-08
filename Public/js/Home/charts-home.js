@@ -117,7 +117,8 @@ function tableCLM(id, key, value) {
 //            pointFillColors: ['#00ff00']
     });
 }
-function tableTC(id, key, value) {
+
+function tableNB(id, key, value) {
     'use strict';
     Morris.Area({
         element: id,
@@ -145,18 +146,17 @@ function tableTC(id, key, value) {
         }],
         xkey: 'key',
         ykeys: ['value'],
-        labels: ['契约出单'],
+        labels: ['契约承保'],
         hideHover: 'auto',
         lineWidth: 1,
         pointSize: 10,
-        lineColors: ['#f7d254'],
+        lineColors: ['#a560f8'],
         fillOpacity: 1.0,
         resize: true,
         smooth: true
-//            pointFillColors: ['#00ff00']
     });
 }
-function tableNB(id, key, value) {
+function tableTC(id, key, value) {
     'use strict';
     Morris.Area({
         element: id,
@@ -188,7 +188,7 @@ function tableNB(id, key, value) {
         hideHover: 'auto',
         lineWidth: 1,
         pointSize: 10,
-        lineColors: ['#a560f8'],
+        lineColors: ['#f7d254'],
         fillOpacity: 1.0,
         resize: true,
         smooth: true

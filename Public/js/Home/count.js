@@ -46,18 +46,18 @@ $(function () {
     // # 理赔作业量-survey
     // # 保全作业量-is_match
 
-    cs_time = JSON.parse( cs_time );
-    clm_time = JSON.parse( clm_time );
-    nb_time = JSON.parse( nb_time );
-    tc_time = JSON.parse( tc_time );
+    cs_time = JSON.parse(cs_time);
+    clm_time = JSON.parse(clm_time);
+    nb_time = JSON.parse(nb_time);
+    tc_time = JSON.parse(tc_time);
 
     cs_data = eval(cs_data);
-    tc_data = eval(tc_data);
     nb_data = eval(nb_data);
     clm_data = eval(clm_data);
+    tc_data = eval(tc_data);
 
     $(document).ready(tableCS('weixin-num', cs_time, cs_data));
     $(document).ready(tableCLM('ce-num', clm_time, clm_data));
-    $(document).ready(tableTC('weixin-sub-num', tc_time, tc_data));
     $(document).ready(tableNB('weixin-new-num', nb_time, nb_data));
+    $(document).ready(tableTC('weixin-sub-num', tc_time, tc_data));
 });
