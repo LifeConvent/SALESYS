@@ -2,6 +2,7 @@
 namespace Home\Controller;
 
 use Think\Controller;
+use Think\Log;
 
 class IndexController extends Controller
 {
@@ -25,34 +26,39 @@ class IndexController extends Controller
     }
 
     public function searchUser($user,$pass){//登录账户用多种
+        Log::write('用户开始登录','INFO');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        Log::write('用户名：'.$user.'用户密码：'.$pass,'INFO');
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheck()==1){
+        if($method->publicCheck($user)==1){
             $result['status'] = "failed";
             $result['lock'] = "true";
-            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
+            $result['hint'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
+            Log::write('用户锁定','INFO');
             exit(json_encode($result));
-        }else if($method->publicCheck()==2){
+        }else if($method->publicCheck($user)==2){
             $result['status'] = "failed";
             $result['lock'] = "false";
-            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
+            $result['hint'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
+            Log::write('管理员灌数','INFO');
             exit(json_encode($result));
         }
         ############################################################################################################################################################
 //        $user = 'gaobiao_bx';
 //        $pass = '380c0aeaf0b49bba0fa630bdd7b52f3d';
         if (!$conn) {
+            Log::write('数据库连接失败','INFO');
             $result['status'] = 'failed';
             $result['hint'] = '数据库连接失败！';
-        }
-        else {
+        }else {
             $select = "Select ACCOUNT,PASS,TYPE,IS_LOCK from TMP_DAYPOST_USER where ACCOUNT ='".$user."'";
             $result_rows = oci_parse($conn, $select); // 配置SQL语句，执行SQL
             oci_execute($result_rows, OCI_DEFAULT); // 行数  OCI_DEFAULT表示不要自动commit
             $result = oci_fetch_array($result_rows,OCI_RETURN_NULLS);
 //            dump($result);
+            Log::write('用户查询SQL：'.$select.'用户登录结果：'.$result,'INFO');
             if(strcmp($result['ACCOUNT'],$user)!=0){
                 $result['status'] = 'failed';
                 $result['hint'] = '用户名不存在！';

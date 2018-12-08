@@ -238,12 +238,12 @@ class PersonDefineFinishWorkController extends Controller
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheck()==1){
+        if($method->publicCheckNoParam()==1){
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
-        }else if($method->publicCheck()==2){
+        }else if($method->publicCheckNoParam()==2){
             $result['status'] = "failed";
             $result['lock'] = "false";
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
@@ -299,12 +299,12 @@ class PersonDefineFinishWorkController extends Controller
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-//        if($method->publicCheck()==1){
+//        if($method->publicCheckNoParam()==1){
 //            $result['status'] = "failed";
 //            $result['lock'] = "true";
 //            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
 //            exit(json_encode($result));
-//        }else if($method->publicCheck()==2){
+//        }else if($method->publicCheckNoParam()==2){
 //            $result['status'] = "failed";
 //            $result['lock'] = "false";
 //            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
@@ -792,12 +792,12 @@ class PersonDefineFinishWorkController extends Controller
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheck()==1){
+        if($method->publicCheckNoParam()==1){
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
-        }else if($method->publicCheck()==2){
+        }else if($method->publicCheckNoParam()==2){
             $result['status'] = "failed";
             $result['lock'] = "false";
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
@@ -988,12 +988,12 @@ class PersonDefineFinishWorkController extends Controller
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheck()==1){
+        if($method->publicCheckNoParam()==1){
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
-        }else if($method->publicCheck()==2){
+        }else if($method->publicCheckNoParam()==2){
             $result['status'] = "failed";
             $result['lock'] = "false";
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
@@ -1186,12 +1186,12 @@ class PersonDefineFinishWorkController extends Controller
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheck()==1){
+        if($method->publicCheckNoParam()==1){
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
-        }else if($method->publicCheck()==2){
+        }else if($method->publicCheckNoParam()==2){
             $result['status'] = "failed";
             $result['lock'] = "false";
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
@@ -1239,12 +1239,12 @@ class PersonDefineFinishWorkController extends Controller
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheck()==1){
+        if($method->publicCheckNoParam()==1){
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
-        }else if($method->publicCheck()==2){
+        }else if($method->publicCheckNoParam()==2){
             $result['status'] = "failed";
             $result['lock'] = "false";
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";

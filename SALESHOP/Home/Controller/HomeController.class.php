@@ -211,7 +211,12 @@ class HomeController extends Controller
         $cs_result = $method->search_long($result_rows);
         for($i=0;$i<7;$i++){
             $result[$i]['time_tc'] = $cs_result[$i]['NEW_INSERT_TIME'];
-            $result[$i]['new'] = $res[$i]['num'];
+            $result[$i]['new'] = 0;
+            for($j=0;$j<7;$j++){
+                if(strcmp($cs_result[$i]['NEW_INSERT_TIME'],$res[$j]['time_tc'])==0){
+                    $result[$i]['new'] = $res[$j]['num'];
+                }
+            }
         }
         $res = $tc_cursor->query($tcSQl['sum']);
         $result['tc_sum'] = $res[0]['num'];

@@ -93,7 +93,7 @@ class MethodController extends Controller
         if (strcmp($info[2],"success") == 0) {
             $admin = $info[0];
             Log::write($admin.'用户登录，登录时间：'.date("h:i:sa")."<br>",'INFO');
-            if($this->publicCheck()==1){
+            if($this->publicCheck($admin)==1){
                 return false;
             }
             if ($info[1] - time() <= 7) {
@@ -2243,7 +2243,21 @@ class MethodController extends Controller
     }
 
     //日报系统公共校验
-    public function publicCheck(){
+    public function publicCheck($user){
+        //公共用户锁定校验部分
+//        $token = $_SESSION['token'];
+//        $token = $this->decode($token);
+////        dump($token);
+//        $info = explode('-', $token);
+//        if (strcmp($info[2],"success") == 0) {
+//            $admin = $info[0];
+//        }
+        Log::write('用户登录串码：'.$user,'INFO');
+        Log::write('用户锁定结果：'.$this->getUserLock($user),'INFO');
+        return $this->getUserLock($user);
+    }
+
+    public function publicCheckNoParam(){
         //公共用户锁定校验部分
         $token = $_SESSION['token'];
         $token = $this->decode($token);
@@ -2252,7 +2266,9 @@ class MethodController extends Controller
         if (strcmp($info[2],"success") == 0) {
             $admin = $info[0];
         }
-        return $this->getUserLock($admin);
+        Log::write('用户登录串码：'.$user,'INFO');
+        Log::write('用户锁定结果：'.$this->getUserLock($user),'INFO');
+        return $this->getUserLock($user);
     }
 
     //获取用户机构码
