@@ -1693,12 +1693,15 @@ class PersonDefineFinishWorkController extends Controller
         }else if((int)$userType==2){
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+//            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix =  " AND 1=1 ";
         }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+//            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND 1=1 ";
         }
         if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+//            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+            $where_type_fix =  " AND 1=1 ";
         }
 
         $num = 0;
