@@ -1506,7 +1506,7 @@ class PersonDefineFinishWorkController extends Controller
             $select_bqsl = "SELECT DISTINCT 
                                A.POLICY_CODE,
                                A.MEDIA_TYPE,
-                               TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
+                               TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,
                                A.BUSI_PROD_NAME,
                                A.USER_NAME,
                                A.ORGAN_CODE,
