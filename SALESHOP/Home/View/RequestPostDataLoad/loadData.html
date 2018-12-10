@@ -144,147 +144,41 @@
                 </div>
             </div>
 
-
-            <!-- 第一行数据统计  -->
-            <div class="row state-overview" style="visibility:hidden">
-
-                <!--四个统计框-->
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-tags blue">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class="count" style="display:none">{$count}</h1>
-
-                            <h1 class=" show_count">
-                                0
-                            </h1>
-
-                            <p>
-                                微信匹配用户总量
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-tasks red">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class="count1" style="display:none">{$count1}</h1>
-
-                            <h1 class=" show_count1">
-                                0
-                            </h1>
-
-                            <p>
-                                课程评价总数
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-user yellow">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class=" count2" style="display:none">{$count2}</h1>
-
-                            <h1 class=" show_count2">0</h1>
-
-                            <p>
-                                微信关注量
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-plus purple">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class=" count3" style="display:none">{$count3}</h1>
-
-                            <h1 class=" show_count3">
-                                0
-                            </h1>
-
-                            <p>
-                                新增用户数量
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-            </div>
-            <!--第一行数据统计-->
-
-            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信匹配数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-num" class="graph">
+            <div class="panel" id="execCs">
+                <header class="panel-heading">
+                    <span><strong>保全-确认正确批处理<span class="red" style="font-size: 3pt"> 每日仅可点击一次，错误时请在数据处理中进行反馈</span></strong></span>
+                </header>
+                <div class="panel-body ">
+                    <div style="margin-left: 20%">
+                        <div style="margin-left: 110pt">
+                            <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
+                                <button type="button" id="execCsAccept" class="btn btn-info col-sm-6"><strong>当日保全受理一键确认</strong></button>
+                            </div>
+                            <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
+                                <button type="button" id="execCsReview" class="btn btn-primary col-sm-6"><strong>当日保全复核一键确认</strong></button>
+                            </div>
                         </div>
                     </div>
-                </section>
+                </div>
             </div>
-
-            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        课程评价数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="ce-num" class="graph">
+            <div class="panel" id="execClm">
+                <header class="panel-heading">
+                    <span><strong>理赔-确认正确批处理<span class="red" style="font-size: 3pt"> 每日仅可点击一次，错误时请在数据处理中进行反馈</span></strong></span>
+                </header>
+                <div class="panel-body ">
+                    <div style="margin-left: 20%">
+                        <div style="margin-left: 110pt">
+                            <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
+                                <button type="button" id="execClmAccept" class="btn btn-info col-sm-6"><strong>当日理赔报案一键确认</strong></button>
+                            </div>
+                            <div class="col-sm-12"  style="margin-top:20pt;margin-left:25pt">
+                                <button type="button" id="execClmReview" class="btn btn-primary col-sm-6"><strong>当日理赔审核一键确认</strong></button>
+                            </div>
                         </div>
                     </div>
-                </section>
+                </div>
             </div>
 
-            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信关注量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-sub-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
             <!--测试用文本框-->
             <textarea id="list_output" rows="3" class="form-control" style="visibility:hidden"></textarea>
             <textarea id="username" style="display:none">{$username}</textarea>
@@ -333,6 +227,7 @@
     <include file="Public/footer-20"/>
     <p id="user_name" style="display:none">{$username}</p>
     <p id="user_type" style="display:none">{$user_type}</p>
+    <p id="exec_type" style="display:none">{$exec_type}</p>
     <p id="user_day_post" style="display:none">{$user_day_post}</p>
 
 </section>

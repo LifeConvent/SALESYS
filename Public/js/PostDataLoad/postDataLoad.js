@@ -4,6 +4,7 @@
 
 $(function () {
     var user_type = $('#usertype').val();
+
     if(user_type!='1'){
         $('#tc_data_load_exec').hide();
     }else{
@@ -13,10 +14,6 @@ $(function () {
     $('#course_sub').css('display', 'block');
     $('#course_info').attr('class', 'active');
 
-    // $('#loadProcess').modal('show');
-    //1.初始化Table
-    var oTable = new TableInit();
-    oTable.Init();
 //        $[sessionStorage] = oTable.queryParams;
 
     // startWithNotice();
@@ -24,7 +21,103 @@ $(function () {
     // var oButtonInit = new ButtonInit();
     // oButtonInit.Init();
 
+
+    // $('#loadProcess').modal('show');
+    //1.初始化Table
+    var oTable = new TableInit();
+    oTable.Init();
     // $('#loadProcess').modal('hide');
+
+    var exec_type = $('#exec_type').text();
+    if(user_type=='1'){
+        exec_type='99';
+    }
+    switch (exec_type) {
+                        case '99'://管理员
+                            $('#execCs').show();
+                            $('#execClm').show();
+                            break;
+                        case '1'://保全
+                            $('#execCs').show();
+                            $('#execClm').hide();
+                            break;
+                        case '1-1'://受理
+                            $('#execCs').show();
+                            $('#execCsReview').hide();
+                            $('#execClm').hide();
+                            break;
+                        case '1-2'://复核
+                            $('#execCs').show();
+                            $('#execCsAccept').hide();
+                            $('#execClm').hide();
+                            break;
+                        case '1-3'://短信
+                            $('#execCs').show();
+                            $('#execClm').hide();
+                            break;
+                        case '2':
+                            $('#execClm').show();
+                            $('#execCs').hide();
+                            break;
+                        default://全部隐藏
+                            $('#execCs').hide();
+                            $('#execClm').hide();
+                            break;
+                    }
+    // var user_name = $('#user_name').text();
+    // $.ajax({
+    //     type: "POST", //用POST方式传输
+    //     url: HOST + "index.php/Home/RequestPostDataLoad/getExecType", //目标地址.
+    //     dataType: "json", //数据格式:JSON
+    //     data: {
+    //         user_name: user_name
+    //     },
+    //     success: function (result) {
+    //         if (result.status == 'success') {
+    //             switch (result.exec_type) {
+    //                 case '99'://管理员
+    //                     $('#execCs').show();
+    //                     $('#execClm').show();
+    //                     break;
+    //                 case '1'://保全
+    //                     $('#execCs').show();
+    //                     $('#execClm').hide();
+    //                     break;
+    //                 case '1-1'://受理
+    //                     $('#execCs').show();
+    //                     $('#execCsReview').hide();
+    //                     $('#execClm').hide();
+    //                     break;
+    //                 case '1-2'://复核
+    //                     $('#execCs').show();
+    //                     $('#execCsAccept').hide();
+    //                     $('#execClm').hide();
+    //                     break;
+    //                 case '1-3'://短信
+    //                     $('#execCs').show();
+    //                     $('#execClm').hide();
+    //                     break;
+    //                 case '2':
+    //                     $('#execClm').show();
+    //                     $('#execCs').hide();
+    //                     break;
+    //                 default://全部隐藏
+    //                     $('#execCs').hide();
+    //                     $('#execClm').hide();
+    //                     break;
+    //             }
+    //         } else if (result.status == 'failed') {
+    //             debugger;
+    //             // $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+    //         }
+    //     },
+    //     error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //         alert(XMLHttpRequest);
+    //         alert(textStatus);
+    //         alert(errorThrown);
+    //     }
+    // });
+
 
 });
 
@@ -537,6 +630,76 @@ $('#endLoadData').click(function(){
             alert(errorThrown);
         }
     });
+});
+
+
+$('#execCsAccept').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'BQSL'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+
+$('#execCsReview').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'BQFH'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
 });
 
 

@@ -265,7 +265,7 @@ class DayPostController extends Controller
                                    SUM(CBYW_BUG_SUM) AS CBYW_BUG_SUM,
                                    DECODE(SUM(CBYW_SUM),0,'100.00%', trim(to_char((SUM(CBYW_SUM)-SUM(CBYW_BUG_SUM))/SUM(CBYW_SUM)*100,'999D99')||'%')) CBYW_RATE
                             FROM TMP_QDSX_NB_DAYPOST 
-                             WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','864700') ".$where_time_bqsl."
+                             WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','8600') ".$where_time_bqsl."
                             GROUP BY SYS_INSERT_DATE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);

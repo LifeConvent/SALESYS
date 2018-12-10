@@ -8,6 +8,7 @@
 
 namespace Home\Controller;
 use Think\Controller;
+use Think\Log;
 
 
 class RequestPostDataLoadController extends Controller
@@ -19,11 +20,13 @@ class RequestPostDataLoadController extends Controller
         $result = $method->checkIn($username);
         $type =  $method->getUserTypeBySql($username);
         $can =  $method->getCanDayPostBySql($username);
+        $exec_type = $this->getExecTypeStr($username);
         if ($result) {
             $this->assign('usertype', $type);
             $this->assign('user_type', $type);
             $this->assign('username', $username);
             $this->assign('user_name', $username);
+            $this->assign('exec_type', $exec_type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
             $this->display();
@@ -198,6 +201,77 @@ class RequestPostDataLoadController extends Controller
         } else {
             exit(json_encode(''));
         }
+    }
+
+    public function addExecRecord(){
+        $user_name = $_POST['user_name'];
+        $business_node = $_POST['business_node'];
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $insert_sql = "INSERT INTO TMP_QDSX_CS_YJQR (APPLY_NAME,BUSINESS_NODE,INSERT_DATE) VALUES('".$user_name."', '".$business_node."',TRUNC(SYSDATE))";
+        $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
+        Log::write($user_name.'一键确认插入SQL：'.$insert_sql,'INFO');
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = 'success';
+            $result['message'] = '确认成功!';
+        }else{
+            $result['status'] = 'failed';
+            $result['message'] = '确认失败,请稍后再试!';
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getExecType(){
+        $user_name = $_POST['user_name'];
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $select_sql = "SELECT EXEC_TYPE,TYPE FROM TMP_DAYPOST_USER WHERE ACCOUNT = '".$user_name."'";
+        $result_rows = oci_parse($conn, $select_sql); // 配置SQL语句，执行SQL
+        $request_result =  $method->search_long($result_rows);
+        Log::write($user_name.'用户一键确认权限：'.$request_result[0]['EXEC_TYPE'],'INFO');
+        if((int)$request_result[0]['EXEC_TYPE']!=0){
+            if((int)$request_result[0]['TYPE']==1){
+                $result['status'] = 'success';
+                $result['message'] = '确认成功!';
+                $result['exec_type'] = '99';
+                oci_free_statement($result_rows);
+                oci_close($conn);
+                exit(json_encode($result));
+            }
+        }
+        $result['status'] = 'success';
+        $result['message'] = '确认成功!';
+        $result['exec_type'] = $request_result[0]['EXEC_TYPE'];
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getExecTypeStr($user_name){
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $select_sql = "SELECT EXEC_TYPE,TYPE FROM TMP_DAYPOST_USER WHERE ACCOUNT = '".$user_name."'";
+        $result_rows = oci_parse($conn, $select_sql); // 配置SQL语句，执行SQL
+        $request_result =  $method->search_long($result_rows);
+        Log::write($user_name.'用户一键确认权限：'.$request_result[0]['EXEC_TYPE'],'INFO');
+        if((int)$request_result[0]['EXEC_TYPE']!=0){
+            if((int)$request_result[0]['TYPE']==1){
+                return '99';
+            }
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $request_result[0]['EXEC_TYPE'];
     }
 
 

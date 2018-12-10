@@ -131,7 +131,16 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '关键业务号',
                 width:200
-            }, {
+            },
+            //     {
+            //     field: 'policy_code',
+            //     sortable: true,
+            //     align: 'center',
+            //     valign: 'middle',
+            //     title: '投/保单号',
+            //     width:180
+            // },
+                {
                 field: 'user_name',
                 sortable: true,
                 valign: 'middle',
@@ -252,7 +261,7 @@ window.actionEvents = {
         // var link_business = $("#business"+index).val();
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
-        var policy_code = row.business_code;
+        var policy_code = row.policy_code;
         var business_code = row.business_code;
         var username = $("#username").text();
             $.ajax({
