@@ -2001,7 +2001,7 @@ class MethodController extends Controller
 //        }
         //重加载TC数据
 //        $tc_fix = $this->getTcFix();
-        $queryTc = "select bt.bug_new_id as tc_id,ut.username as tc_user_name,cfvt.value18 AS business_code,bt.date_submitted as create_date,bt.summary as description,bt.status as status,tp.tx_desc as status_desc,cfvt.value17 as find_node,cfvt.value16 as local,bt.severity,cfvt.value3 as sys
+        $queryTc = "select bt.bug_new_id as tc_id,ut.username as tc_user_name,cfvt.value18 AS business_code,bt.date_submitted as create_date,cfvt.value21 as description,bt.status as status,tp.tx_desc as status_desc,cfvt.value17 as find_node,cfvt.value16 as local,bt.severity,cfvt.value3 as sys
                     from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
                     where ut.id = bt.reporter_id and bt.id = cfvt.bug_id 
 										and tp.plname = 'bug_table_status' and tp.tx_value = bt.status";
@@ -2162,15 +2162,15 @@ class MethodController extends Controller
         $tc_fix = $this->getTcFix();
         $res = array(
             "home_sum"=>"SELECT DATE_FORMAT(bt.date_submitted,'%Y-%m-%d') AS TIME,COUNT(*) AS NUM FROM bug_table bt LEFT JOIN custom_field_value_table cfvt ON bt.id = cfvt.bug_id 
-                              WHERE 1=1 ".$tc_fix." GROUP BY DATE_FORMAT(bt.date_submitted,'%Y-%m-%d') ORDER BY bt.date_submitted ASC LIMIT 7;",
-            "sum" => "SELECT COUNT(*) AS NUM FROM bug_table bt LEFT JOIN custom_field_value_table cfvt ON bt.id = cfvt.bug_id WHERE 1=1 ".$tc_fix.";",
+                              WHERE 1=1  GROUP BY DATE_FORMAT(bt.date_submitted,'%Y-%m-%d') ORDER BY bt.date_submitted ASC LIMIT 7",
+            "sum" => "SELECT COUNT(*) AS num FROM bug_table bt  ",
             "pro_fix" => "select cfvt.value17,cfvt.value16,COUNT(*) AS NUM
                             from bug_table bt ,custom_field_value_table cfvt,`user_table` ut  
                             where ut.id = bt.reporter_id ".$tc_fix."
                             AND DATE_FORMAT(bt.last_updated,'%Y-%m-%d') = DATE_FORMAT('2018-08-31','%Y-%m-%d')
                             AND bt.id = cfvt.bug_id
                             AND bt.`status` IN ('8','11')
-                            GROUP BY cfvt.value17,cfvt.value16;"
+                            GROUP BY cfvt.value17,cfvt.value16"
         );
         return $res;
     }

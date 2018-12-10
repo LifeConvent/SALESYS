@@ -1,10 +1,14 @@
 function countUp(count, countClass) {
     'use strict';
-    var div_by = 50,
+    var div_by = 20,
         speed = Math.round(count / div_by),
         $display = $(countClass),
         run_count = 1,
         int_speed = 20;
+    if(div_by>=count){
+        $(countClass).text(count);
+        return;
+    }
     var int = setInterval(function () {
         if (run_count < div_by) {
             $display.text(speed * run_count);

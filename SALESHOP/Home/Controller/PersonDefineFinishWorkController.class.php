@@ -717,7 +717,7 @@ class PersonDefineFinishWorkController extends Controller
                                    --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                    (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS,
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS,
                                    A.BUSINESS_NODE,
                                    C.FIND_NODE
                                 FROM TMP_QDSX_CS_SLFH_GM A 
@@ -772,54 +772,6 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
-        }
-        #######################################################################################################################################
-        oci_free_statement($result_rows);
-        oci_close($conn);
-        if ($result) {
-            exit(json_encode($result));
-        } else {
-            exit(json_encode(''));
-        }
-    }
-
-    public function updateCsDefine(){
-        header('Content-type: text/html; charset=utf-8');
-        $user_name = $_POST['username'];
-        $business_name = $_POST['business_name'];
-        $policy_code = $_POST['policy_code'];
-        $accept_code = $_POST['accept_code'];
-        $method = new MethodController();
-        ##############################################################  公共JS处理部分  ############################################################################
-        //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheckNoParam()==1){
-            $result['status'] = "failed";
-            $result['lock'] = "true";
-            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
-            exit(json_encode($result));
-        }else if($method->publicCheckNoParam()==2){
-            $result['status'] = "failed";
-            $result['lock'] = "false";
-            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
-            exit(json_encode($result));
-        }
-        ############################################################################################################################################################
-        $conn = $method->OracleOldDBCon();
-        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
-        $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
-        $node_result = $method->search_long($result_rows);
-        #$sysDate = date('yyyy/mm/dd', time());
-        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
-        #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
-        Log::write($user_name.' 数据库查询SQL：'.$insert_sql,'INFO');
-        $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
-        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
-            $result['status'] = "success";
-            $result['message'] = "受理号：".$accept_code."-保单号：".$policy_code." 确认成功！";
-        }else{
-            $result['status'] = "failed";
-            $e = oci_error();
-            $result['message'] = "确认失败".$e['message'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -913,7 +865,7 @@ class PersonDefineFinishWorkController extends Controller
                                    --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                    (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                 FROM TMP_QDSX_CS_SLFH_WW A 
                                 LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                   ON A.ACCEPT_CODE = B.BUSINESS_CODE
@@ -968,54 +920,6 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
-        }
-        #######################################################################################################################################
-        oci_free_statement($result_rows);
-        oci_close($conn);
-        if ($result) {
-            exit(json_encode($result));
-        } else {
-            exit(json_encode(''));
-        }
-    }
-
-    public function updateCsOutDefine(){
-        header('Content-type: text/html; charset=utf-8');
-        $user_name = $_POST['username'];
-        $business_name = $_POST['business_name'];
-        $policy_code = $_POST['policy_code'];
-        $accept_code = $_POST['accept_code'];
-        $method = new MethodController();
-        ##############################################################  公共JS处理部分  ############################################################################
-        //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheckNoParam()==1){
-            $result['status'] = "failed";
-            $result['lock'] = "true";
-            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
-            exit(json_encode($result));
-        }else if($method->publicCheckNoParam()==2){
-            $result['status'] = "failed";
-            $result['lock'] = "false";
-            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
-            exit(json_encode($result));
-        }
-        ############################################################################################################################################################
-        $conn = $method->OracleOldDBCon();
-        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
-        $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
-        $node_result = $method->search_long($result_rows);
-        #$sysDate = date('yyyy/mm/dd', time());
-        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
-        #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
-        Log::write($user_name.' 数据库查询SQL：'.$insert_sql,'INFO');
-        $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
-        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
-            $result['status'] = "success";
-            $result['message'] = "受理号：".$accept_code."-保单号：".$policy_code." 确认成功！";
-        }else{
-            $result['status'] = "failed";
-            $e = oci_error();
-            $result['message'] = "确认失败".$e['message'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1110,7 +1014,7 @@ class PersonDefineFinishWorkController extends Controller
                                                --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                                (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                                --C.STATUS,
-                                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                             FROM TMP_QDSX_NB_TBXX A 
                                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                             ON A.APPLY_CODE = B.BUSINESS_CODE
@@ -1166,6 +1070,102 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function updateCsOutDefine(){
+        header('Content-type: text/html; charset=utf-8');
+        $user_name = $_POST['username'];
+        $business_name = $_POST['business_name'];
+        $policy_code = $_POST['policy_code'];
+        $accept_code = $_POST['accept_code'];
+        $method = new MethodController();
+        ##############################################################  公共JS处理部分  ############################################################################
+        //JS请求公共处理部分 TRUE锁定
+        if($method->publicCheckNoParam()==1){
+            $result['status'] = "failed";
+            $result['lock'] = "true";
+            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }else if($method->publicCheckNoParam()==2){
+            $result['status'] = "failed";
+            $result['lock'] = "false";
+            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }
+        ############################################################################################################################################################
+        $conn = $method->OracleOldDBCon();
+        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
+        $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
+        $node_result = $method->search_long($result_rows);
+        #$sysDate = date('yyyy/mm/dd', time());
+        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
+        #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
+        Log::write($user_name.' 数据库查询SQL：'.$insert_sql,'INFO');
+        $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = "success";
+            $result['message'] = "受理号：".$accept_code."-保单号：".$policy_code." 确认成功！";
+        }else{
+            $result['status'] = "failed";
+            $e = oci_error();
+            $result['message'] = "确认失败".$e['message'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function updateCsDefine(){
+        header('Content-type: text/html; charset=utf-8');
+        $user_name = $_POST['username'];
+        $business_name = $_POST['business_name'];
+        $policy_code = $_POST['policy_code'];
+        $accept_code = $_POST['accept_code'];
+        $method = new MethodController();
+        ##############################################################  公共JS处理部分  ############################################################################
+        //JS请求公共处理部分 TRUE锁定
+        if($method->publicCheckNoParam()==1){
+            $result['status'] = "failed";
+            $result['lock'] = "true";
+            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }else if($method->publicCheckNoParam()==2){
+            $result['status'] = "failed";
+            $result['lock'] = "false";
+            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }
+        ############################################################################################################################################################
+        $conn = $method->OracleOldDBCon();
+        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
+        $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
+        $node_result = $method->search_long($result_rows);
+        #$sysDate = date('yyyy/mm/dd', time());
+        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
+        #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
+        Log::write($user_name.' 数据库查询SQL：'.$insert_sql,'INFO');
+        $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = "success";
+            $result['message'] = "受理号：".$accept_code."-保单号：".$policy_code." 确认成功！";
+        }else{
+            $result['status'] = "failed";
+            $e = oci_error();
+            $result['message'] = "确认失败".$e['message'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1255,7 +1255,7 @@ class PersonDefineFinishWorkController extends Controller
         $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
-        #$sysDate = date('yyyy/mm/dd', time());
+        #$sysDate = date('yyyy/mm/dd', tim0e());
         if(empty($policy_code)){
             $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
         }else{
@@ -1354,7 +1354,7 @@ class PersonDefineFinishWorkController extends Controller
                                --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                --C.STATUS,
-                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                             FROM TMP_QDSX_NB_BXHT A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                               ON A.POLICY_CODE = B.BUSINESS_CODE
@@ -1481,7 +1481,7 @@ class PersonDefineFinishWorkController extends Controller
                                --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                --C.STATUS,
-                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                             FROM TMP_QDSX_NB_TZS A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                               ON A.DOCUMENT_NO = B.BUSINESS_CODE
@@ -1606,7 +1606,7 @@ class PersonDefineFinishWorkController extends Controller
                                --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                --C.STATUS,
-                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                            FROM TMP_QDSX_NB_CBYW A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                             ON A.APPLY_CODE = B.BUSINESS_CODE
@@ -1743,7 +1743,7 @@ class PersonDefineFinishWorkController extends Controller
                                --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                --C.STATUS,
-                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                             FROM TMP_QDSX_CLM A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                               ON A.case_no = B.BUSINESS_CODE
@@ -1877,7 +1877,7 @@ class PersonDefineFinishWorkController extends Controller
                                    --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                    (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                 FROM TMP_QDSX_UW A 
                                 LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                   ON  A.BUSINESS_CODE = B.BUSINESS_CODE
@@ -2011,7 +2011,7 @@ class PersonDefineFinishWorkController extends Controller
                                    --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                    (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                 FROM TMP_QDSX_CS_BQDX A 
                                 LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                   ON A.CONTENT_ID = B.BUSINESS_CODE
@@ -2161,7 +2161,7 @@ class PersonDefineFinishWorkController extends Controller
                                    --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                    (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_MOBILE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_MOBILE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_MOBILE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                   FROM TMP_QDSX_NB_CBDX A
                                   LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                      ON A.SEND_MOBILE = B.BUSINESS_CODE
@@ -2303,7 +2303,7 @@ class PersonDefineFinishWorkController extends Controller
                                        --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                        (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                        --C.STATUS,
-                                       (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                       (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                     FROM TMP_QDSX_CLM_DX A 
                                     LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                       ON  A.CONTEND_ID = B.BUSINESS_CODE   

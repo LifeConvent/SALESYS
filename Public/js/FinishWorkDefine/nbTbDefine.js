@@ -130,7 +130,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '二级机构',
-                width:80
+                width:100
             }, {
                 field: 'organ_code3',
                 sortable: true,
@@ -165,7 +165,7 @@ var TableInit = function () {
                 valign: 'middle',
                 align: 'center',
                 title: '投保单号',
-                width:150
+                width:170
             }, {
                 field: 'winning_start_flag',
                 sortable: true,

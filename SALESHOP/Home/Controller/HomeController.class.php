@@ -9,6 +9,7 @@
 namespace Home\Controller;
 
 use Think\Controller;
+use Think\Log;
 
 class HomeController extends Controller
 {
@@ -55,6 +56,7 @@ class HomeController extends Controller
                 $all_user_ = (int)$res['nb_sum'];
                 $survey_ = (int)$res['clm_sum'];
                 $is_match_ = (int)$res['cs_sum'];
+            Log::write('TC总数：'.$new_,'INFO');
             //发出微信端数据统计请求，访问数据库获取近来评价数据四数组大小为7，过7不与
             $this->assign('count', $is_match_);
             $this->assign('count1', $survey_);
@@ -213,13 +215,15 @@ class HomeController extends Controller
             $result[$i]['time_tc'] = $cs_result[$i]['NEW_INSERT_TIME'];
             $result[$i]['new'] = 0;
             for($j=0;$j<7;$j++){
-                if(strcmp($cs_result[$i]['NEW_INSERT_TIME'],$res[$j]['time_tc'])==0){
+                if(strcmp($cs_result[$i]['NEW_INSERT_TIME'],$res[$j]['time'])==0){
                     $result[$i]['new'] = $res[$j]['num'];
                 }
             }
         }
-        $res = $tc_cursor->query($tcSQl['sum']);
-        $result['tc_sum'] = $res[0]['num'];
+        Log::write('Oracle插入时间：'.$cs_result[$i]['NEW_INSERT_TIME'].'TC查询时间：'.$res[$j]['time'],'INFO');
+        $res_tc = $tc_cursor->query("SELECT COUNT(*) AS num FROM bug_table ");
+        $result['tc_sum'] = $res_tc[0]['num'];
+        Log::write('TC总数：'.$res_tc[0]['num'],'INFO');
         oci_free_statement($result_rows);
         oci_close($conn);
 //        dump($result);
