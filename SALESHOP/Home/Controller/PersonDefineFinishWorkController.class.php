@@ -1353,6 +1353,7 @@ class PersonDefineFinishWorkController extends Controller
         $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
+        Log::write($user_name.' 业务节点+关键业务号：'.$node_result[0]['BUSINESS_NODE'].$accept_code,'INFO');
         #$sysDate = date('yyyy/mm/dd', time());
         if(empty($policy_code)){
             if(empty($insert_date)){
@@ -2041,6 +2042,7 @@ class PersonDefineFinishWorkController extends Controller
                               A.USER_NAME       ,
                               A.ORGAN_CODE      ,
                               D.BUSINESS_NAME,
+                              TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
                                    (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                    --C.TC_ID,
                                    (CASE
@@ -2062,9 +2064,9 @@ class PersonDefineFinishWorkController extends Controller
                                 FROM TMP_QDSX_UW A 
                                 LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                   ON  A.BUSINESS_CODE = B.BUSINESS_CODE
-                                  AND A.POLICY_CODE = B.POLICY_CODE
+                                  --AND A.POLICY_CODE = B.POLICY_CODE
                                   AND B.BUSINESS_NODE = A.BUSINESS_NODE
-                                  AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                                  AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
                                 LEFT JOIN TMP_QDSX_TC_BUG C  
                                   ON C.BUSINESS_CODE = A.BUSINESS_CODE
                                   AND C.POLICY_CODE = A.POLICY_CODE
@@ -2082,6 +2084,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['user_name'] = $value['USER_NAME'];
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+                $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
                 }else{
