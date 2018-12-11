@@ -269,6 +269,13 @@ var TableInit = function () {
                 width:200
                 // formatter: "actionFormatter_status",
                 // events: "actionEvents_status",
+            },{
+                field: 'busi_insert_date',
+                sortable: true,
+                align: 'center',
+                visible:false,
+                title: '-',
+                width:120,
             }]
         });
     };
@@ -304,7 +311,7 @@ window.actionEvents = {
         var business_name = row.business_name;
         var accept_code = row.accept_code;
         var policy_code = row.policy_code;
-        var insert_date = row.insert_date;
+        var insert_date = row.busi_insert_date;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输

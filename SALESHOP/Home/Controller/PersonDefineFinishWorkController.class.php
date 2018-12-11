@@ -691,6 +691,7 @@ class PersonDefineFinishWorkController extends Controller
             $select_bqsl = "SELECT DISTINCT  A.ACCEPT_CODE,
                                    A.POLICY_CODE,
                                    TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
+                                   TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
                                    A.SERVICE_CODE,
                                    A.SERVICE_NAME,
                                    A.USER_NAME,
@@ -752,6 +753,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['accept_status'] = $value['ACCEPT_STATUS'];
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+                $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
                 }else{
