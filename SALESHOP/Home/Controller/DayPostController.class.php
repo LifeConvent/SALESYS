@@ -195,12 +195,13 @@ class DayPostController extends Controller
         $result[$bugSys["合计"]]['bug_this_sum'] = $bug_this_sum;
         $result[$bugSys["合计"]]['bug_this_close_sum'] = $bug_this_close_sum;
         Log::write("TC数据更新结束 ：".date("h:i:sa")."<br> ");
-//        dump($result);
-        for ($i = 0; $i < sizeof($result); $i++) {
-            $res[] = $result[$i];
+        for ($i = 0; $i < sizeof($result)-1; $i++) {
+            $res_out[] = $result[$i];
         }
-        if ($res) {
-            exit(json_encode($res));
+//        dump($res_out);
+//        dump($result);
+        if ($res_out) {
+            exit(json_encode($res_out));
         } else {
             exit(json_encode(''));
         }
