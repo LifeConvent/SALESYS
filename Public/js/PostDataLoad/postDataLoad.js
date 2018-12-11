@@ -105,9 +105,9 @@ $(function () {
                             $('#execNb').hide();
                             break;
                         case '5'://核保
+                            $('#execUw').show();
                             $('#execClm').hide();
                             $('#execCs').hide();
-                            $('#execUw').show();
                             $('#execNb').hide();
                             //承保短信、通知书子菜单
                             $('#execUwChat').show();
