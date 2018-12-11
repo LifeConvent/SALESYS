@@ -174,6 +174,13 @@ var TableInit = function () {
                 title: '业务节点',
                 width:100
             },{
+                field: 'business_time',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '确认时间',
+                width:100
+            },{
                 field: 'operation',
                 title: '操作',
                 align: 'center',
@@ -277,6 +284,7 @@ window.actionEvents = {
         var business_code = row.policy_code;
         var media_type = row.media_type;
         var insert_date = row.busi_insert_date;
+        // var business_time = row.business_time;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输
@@ -289,7 +297,8 @@ window.actionEvents = {
                         $.scojs_message(result.message, $.scojs_message.TYPE_OK);
                         //单行刷新数据
                         var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
-                        var _data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate }
+                        var sysTime = new Date().getHours()+':'+(new Date().getMinutes()) +':'+new Date().getSeconds();
+                        var _data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate ,"business_time":sysTime}
                         $('#daily_report2').bootstrapTable('updateRow', {index: index, row: _data});
                     } else if (result.status == 'failed') {
                         debugger;
