@@ -375,7 +375,7 @@ window.actionEvents = {
                         $.scojs_message(result.message, $.scojs_message.TYPE_OK);
                         //单行刷新数据
                         var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
-                        var _data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate }
+                        var _data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate };
                         $('#daily_report2').bootstrapTable('updateRow', {index: index, row: _data});
                     } else if (result.status == 'failed') {
                         debugger;

@@ -149,6 +149,16 @@ class DayPostController extends Controller
     }
 
     public function getTcCondition(){
+        $queryDateStart = $_GET{'queryDateStart'};
+        $queryDateEnd = $_GET{'queryDateEnd'};
+        $where = "";
+        if(!empty($queryDateStart)){
+            $where = " AND date_format(bt.date_submitted,'%Y-%m-%d') <= '".$queryDateStart."' ";
+            if(!empty($queryDateEnd)){
+                $where = " AND date_format(bt.date_submitted,'%Y-%m-%d') <= '".$queryDateEnd."' AND date_format(bt.date_submitted,'%Y-%m-%d') >= '".$queryDateStart."'";
+            }
+        }
+        Log::write("BUG查询条件 ：".$where."<br> ");
         Log::write("TC数据更新开始 ：".date("h:i:sa")."<br> ");
         $queryTc = "select  cfvt.value3 as sys,
                                 COUNT(bt.bug_new_id) as bug_sum,
@@ -160,8 +170,9 @@ class DayPostController extends Controller
                 where ut.id = bt.reporter_id 
                     and bt.id = cfvt.bug_id 
                     and tp.plname = 'bug_table_status' 
-                    and tp.tx_value = bt.status
+                    and tp.tx_value = bt.status ".$where."
                 GROUP BY cfvt.value3";
+        Log::write("BUG查询SQL ：".$queryTc."<br> ");
         //查询TC数据
         $method = new MethodController();
         $bugSys = $method->getBugSys();
@@ -195,7 +206,12 @@ class DayPostController extends Controller
         $result[$bugSys["合计"]]['bug_this_sum'] = $bug_this_sum;
         $result[$bugSys["合计"]]['bug_this_close_sum'] = $bug_this_close_sum;
         Log::write("TC数据更新结束 ：".date("h:i:sa")."<br> ");
-        for ($i = 0; $i < sizeof($result)-1; $i++) {
+        if(!empty($queryDateStart)){
+            $sum = sizeof($result);
+        }else if(!empty($result)){
+            $sum = sizeof($result)-1;
+        }
+        for ($i = 0; $i < $sum; $i++) {
             $res_out[] = $result[$i];
         }
 //        dump($res_out);

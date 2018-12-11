@@ -321,11 +321,11 @@ window.actionEvents = {
                 success: function (result) {
                     if (result.status == 'success') {
                         debugger;
-                        $.scojs_message(result.message, $.scojs_message.TYPE_OK);
                         //单行刷新数据
                         var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
-                        var _data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate }
-                        $('#daily_report2').bootstrapTable('updateRow', {index: index, row: _data});
+                        var data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate };
+                        $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
+                        $.scojs_message(result.message, $.scojs_message.TYPE_OK);
                     } else if (result.status == 'failed') {
                         debugger;
                         $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
