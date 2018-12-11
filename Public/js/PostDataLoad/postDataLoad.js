@@ -691,7 +691,6 @@ $('#endLoadData').click(function(){
 });
 
 
-
 $('#execCsAccept').click(function() {
     //加载TC原因
     var user_name = $('#user_name').text();
@@ -794,7 +793,7 @@ $('#execClmSh').click(function() {
     }
 });
 
-$('#execClmSp').click(function() {
+$('#execClmZh').click(function() {
     //加载TC原因
     var user_name = $('#user_name').text();
     var user_type = $('#user_type').text();
@@ -808,7 +807,7 @@ $('#execClmSp').click(function() {
             url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
             dataType: "json", //数据格式:JSON
             data: {
-                user_name: user_name,business_node:'LPSP'
+                user_name: user_name,business_node:'LPZH'
             },
             success: function (result) {
                 if (result.status == 'success') {
@@ -1100,7 +1099,7 @@ $('#execUwChat').click(function() {
     }
 });
 
-$('#execNbContract').click(function() {
+$('#execNbTb').click(function() {
     //加载TC原因
     var user_name = $('#user_name').text();
     var user_type = $('#user_type').text();
@@ -1114,7 +1113,7 @@ $('#execNbContract').click(function() {
             url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
             dataType: "json", //数据格式:JSON
             data: {
-                user_name: user_name,business_node:'BXHT'
+                user_name: user_name,business_node:'TBXX'
             },
             success: function (result) {
                 if (result.status == 'success') {
