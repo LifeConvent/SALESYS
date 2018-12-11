@@ -1511,10 +1511,12 @@ class PersonDefineFinishWorkController extends Controller
                                A.MEDIA_TYPE,
                                TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,
                                A.BUSI_PROD_NAME,
+                               A.CHARGE_PERIOD,
+                               A.RELATION_TO_PH,
+                               A.LEGAL_BENE,
                                A.USER_NAME,
                                A.ORGAN_CODE,
                                D.BUSINESS_NAME,
-                               B.BUSINESS_TIME,
                                TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
                                (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                --C.TC_ID,
@@ -1560,6 +1562,9 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
                 $result[$i]['business_time'] = $value['BUSINESS_TIME'];
+                $result[$i]['charge_period'] = $value['CHARGE_PERIOD'];
+                $result[$i]['relation_to_ph'] = $value['RELATION_TO_PH'];
+                $result[$i]['legal_bene'] = $value['LEGAL_BENE'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
                 }else{

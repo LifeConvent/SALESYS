@@ -36,32 +36,53 @@ $(function () {
                         case '99'://管理员
                             $('#execCs').show();
                             $('#execClm').show();
+                            $('#execUw').show();
+                            $('#execNb').show();
                             break;
                         case '1'://保全
                             $('#execCs').show();
                             $('#execClm').hide();
+                            $('#execUw').hide();
+                            $('#execNb').hide();
                             break;
                         case '1-1'://受理
                             $('#execCs').show();
                             $('#execCsReview').hide();
                             $('#execClm').hide();
+                            $('#execUw').hide();
+                            $('#execNb').hide();
                             break;
                         case '1-2'://复核
                             $('#execCs').show();
                             $('#execCsAccept').hide();
                             $('#execClm').hide();
+                            $('#execUw').hide();
+                            $('#execNb').hide();
+                            break;
+                        case '1-2-3'://复核
+                            $('#execCs').show();
+                            $('#execCsAccept').hide();
+                            $('#execClm').hide();
+                            $('#execUw').hide();
+                            $('#execNb').hide();
                             break;
                         case '1-3'://短信
                             $('#execCs').show();
                             $('#execClm').hide();
+                            $('#execUw').hide();
+                            $('#execNb').hide();
                             break;
                         case '2':
                             $('#execClm').show();
                             $('#execCs').hide();
+                            $('#execUw').hide();
+                            $('#execNb').hide();
                             break;
                         default://全部隐藏
                             $('#execCs').hide();
                             $('#execClm').hide();
+                            $('#execUw').hide();
+                            $('#execNb').hide();
                             break;
                     }
     // var user_name = $('#user_name').text();
@@ -633,6 +654,7 @@ $('#endLoadData').click(function(){
 });
 
 
+
 $('#execCsAccept').click(function() {
     //加载TC原因
     var user_name = $('#user_name').text();
@@ -667,7 +689,6 @@ $('#execCsAccept').click(function() {
     }
 });
 
-
 $('#execCsReview').click(function() {
     //加载TC原因
     var user_name = $('#user_name').text();
@@ -701,6 +722,349 @@ $('#execCsReview').click(function() {
         });
     }
 });
+
+$('#execClmSh').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'LPSH'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+$('#execClmSp').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'LPSP'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+$('#execUwCs').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'BQHB'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+$('#execUwNb').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'QYHB'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+$('#execUwNb').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'LPHB'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+$('#execNbChat').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'CBDX'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+$('#execNbNotice').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'CBDX'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+$('#execCsChat').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'BQDX'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+$('#execClmChat').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'LPDX'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+$('#execUwChat').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'HBDX'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+
+
 
 
 

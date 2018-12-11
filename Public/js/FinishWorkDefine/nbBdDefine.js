@@ -153,6 +153,27 @@ var TableInit = function () {
                 title: '险种名称（全部险种）',
                 width:300
             }, {
+                field: 'charge_period',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '主险交费频率',
+                width:180
+            }, {
+                field: 'relation_to_ph',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '投被保人关系',
+                width:180
+            },  {
+                field: 'legal_bene',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '是否法定受益人',
+                width:200
+            },{
                 field: 'user_name',
                 sortable: true,
                 valign: 'middle',
