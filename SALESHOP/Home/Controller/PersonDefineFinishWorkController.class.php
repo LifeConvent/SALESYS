@@ -1911,6 +1911,7 @@ class PersonDefineFinishWorkController extends Controller
                                 TO_CHAR(A.SIGN_TIME,'YYYY-MM-DD') AS SIGN_TIME,       
                                 A.CALC_PAY,
                                 A.FEE_AMOUNT,
+                                TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,   
                                 TO_CHAR(A.END_CASE_TIME,'YYYY-MM-DD') AS END_CASE_TIME,   
                                 TO_CHAR(A.FINISH_TIME,'YYYY-MM-DD') AS FINISH_TIME,
                                 A.USER_NAME,
@@ -1939,7 +1940,7 @@ class PersonDefineFinishWorkController extends Controller
                               ON A.case_no = B.BUSINESS_CODE
                               AND A.POLICY_CODE = B.POLICY_CODE
                               AND B.BUSINESS_NODE = A.BUSINESS_NODE
-                              AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                              AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
                             LEFT JOIN TMP_QDSX_TC_BUG C  
                               ON C.BUSINESS_CODE = A.case_no
                               --AND C.POLICY_CODE = A.POLICY_CODE
@@ -1966,6 +1967,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['user_name'] = $value['USER_NAME'];
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+                $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
                 }else{
@@ -2184,6 +2186,7 @@ class PersonDefineFinishWorkController extends Controller
                                   A.INSURED_NAME,
                                   A.INSURED_GENDER,
                                   A.BUSI_PROD_NAME,
+                                  TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
                                   TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
                                   TO_CHAR(A.VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,
                                   A.AGENT_NAME,
@@ -2215,7 +2218,7 @@ class PersonDefineFinishWorkController extends Controller
                                   LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                      ON A.SEND_ID = B.BUSINESS_CODE
                                      AND B.BUSINESS_NODE = A.BUSINESS_NODE
-                                     AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                                     AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
                                      LEFT JOIN TMP_QDSX_TC_BUG C  
                                      ON C.BUSINESS_CODE = A.SEND_ID
                                      AND C.FIND_NODE = A.BUSINESS_NODE
@@ -2247,6 +2250,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['user_name'] = $value['USER_NAME'];
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+                $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
                 }else{
@@ -2328,6 +2332,7 @@ class PersonDefineFinishWorkController extends Controller
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT  DISTINCT 
                                   TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
+                                  TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
                                   A.BUSINESS_CODE     ,
                                   A.CONTEND_ID,
                                   A.USER_NAME       ,
@@ -2357,7 +2362,7 @@ class PersonDefineFinishWorkController extends Controller
                                     LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                       ON  A.CONTEND_ID = B.BUSINESS_CODE   
                                       AND B.BUSINESS_NODE = A.BUSINESS_NODE
-                                      AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
+                                      AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
                                     LEFT JOIN TMP_QDSX_TC_BUG C  
                                       ON C.BUSINESS_CODE = A.CONTEND_ID
                                       --AND C.POLICY_CODE = A.POLICY_CODE
@@ -2376,6 +2381,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['contend_info'] = $value['CONTEND_INFO'];
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+                $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
                 }else{

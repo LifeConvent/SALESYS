@@ -78,6 +78,43 @@ $(function () {
                             $('#execUw').hide();
                             $('#execNb').hide();
                             break;
+                        case '3'://契约权限
+                            $('#execClm').hide();
+                            $('#execCs').hide();
+                            $('#execUw').hide();
+                            $('#execNb').show();
+                            //承保短信、通知书子菜单
+                            $('#execNbChat').show();
+                            $('#execNbNotice').hide();
+                            $('#execNbContract').hide();
+                            break;
+                        case '3-1'://契约权限短信-合同
+                            $('#execClm').hide();
+                            $('#execCs').hide();
+                            $('#execUw').hide();
+                            $('#execNb').show();
+                            //承保短信、通知书子菜单
+                            $('#execNbChat').show();
+                            $('#execNbNotice').hide();
+                            $('#execNbContract').show();
+                            break;
+                        case '4'://理赔
+                            $('#execClm').show();
+                            $('#execCs').hide();
+                            $('#execUw').hide();
+                            $('#execNb').hide();
+                            break;
+                        case '5'://核保
+                            $('#execClm').hide();
+                            $('#execCs').hide();
+                            $('#execUw').show();
+                            $('#execNb').hide();
+                            //承保短信、通知书子菜单
+                            $('#execUwChat').show();
+                            $('#execUwCs').hide();
+                            $('#execUwClm').show();
+                            $('#execUwNb').hide();
+                            break;
                         default://全部隐藏
                             $('#execCs').hide();
                             $('#execClm').hide();
@@ -1044,6 +1081,40 @@ $('#execUwChat').click(function() {
             dataType: "json", //数据格式:JSON
             data: {
                 user_name: user_name,business_node:'HBDX'
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+$('#execNbContract').click(function() {
+    //加载TC原因
+    var user_name = $('#user_name').text();
+    var user_type = $('#user_type').text();
+    debugger;
+    if (user_name == "") {
+        $.scojs_message('系统参数无法获取，请稍后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addExecRecord", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                user_name: user_name,business_node:'BXHT'
             },
             success: function (result) {
                 if (result.status == 'success') {

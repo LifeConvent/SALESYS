@@ -289,6 +289,13 @@ var TableInit = function () {
                 width:200
                 // formatter: "actionFormatter_status",
                 // events: "actionEvents_status",
+            },{
+                field: 'busi_insert_date',
+                sortable: true,
+                align: 'center',
+                visible:false,
+                title: '-',
+                width:120,
             }]
         });
     };
@@ -324,12 +331,13 @@ window.actionEvents = {
         var business_name = row.business_name;
         var policy_code = row.policy_code;
         var business_code = row.case_no;
+        var insert_date = row.busi_insert_date;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输
                 url: HOST + "index.php/Home/PersonDefineFinishWork/updatePublicDefine", //目标地址.
                 dataType: "json", //数据格式:JSON
-                data: {username: username, business_code: business_code, policy_code: policy_code, business_name:business_name},
+                data: {username: username, business_code: business_code, policy_code: policy_code, business_name:business_name,insert_date:insert_date},
                 success: function (result) {
                     if (result.status == 'success') {
                         debugger;
