@@ -208,6 +208,15 @@ class RequestPostDataLoadController extends Controller
         $business_node = $_POST['business_node'];
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        $select = "SELECT * FROM TMP_QDSX_CS_YJQR WHERE INSERT_DATE = TRUNC(SYSDATE) AND BUSINESS_NODE = '".$business_node."'";
+        $result_rows = oci_parse($conn, $select); // 配置SQL语句，执行SQL
+        $select_result = $method->search_long($result_rows);
+        Log::write($user_name.'一键确认查询SQL：'.$select,'INFO');
+        if(!empty($select_result[0]['APPLY_NAME'])){
+            $result['status'] = 'failed';
+            $result['message'] = '用户'.$select_result[0]['APPLY_NAME'].'已进行一键确认，数据会在发送给短信平台一小时前统一处理，无需再次点击！';
+            exit(json_encode($result));
+        }
         $insert_sql = "INSERT INTO TMP_QDSX_CS_YJQR (APPLY_NAME,BUSINESS_NODE,INSERT_DATE) VALUES('".$user_name."', '".$business_node."',TRUNC(SYSDATE))";
         $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
         Log::write($user_name.'一键确认插入SQL：'.$insert_sql,'INFO');
