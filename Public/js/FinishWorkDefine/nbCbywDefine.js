@@ -132,6 +132,13 @@ var TableInit = function () {
                 title: '投保单号',
                 width:200
             }, {
+                field: 'policy_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保单号',
+                width:150
+            },{
                 field: 'check_con',
                 sortable: true,
                 align: 'center',

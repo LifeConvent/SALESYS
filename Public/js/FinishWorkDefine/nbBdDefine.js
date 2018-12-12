@@ -194,16 +194,14 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '业务节点',
                 width:100
-            },
-            //     {
-            //     field: 'print',
-            //     sortable: true,
-            //     align: 'center',
-            //     valign: 'middle',
-            //     title: '保单是否下发',
-            //     width:120
-            // },
-                {
+            }, {
+                field: 'print',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保单下发状态',
+                width:120
+            }, {
                 field: 'business_time',
                 sortable: true,
                 align: 'center',

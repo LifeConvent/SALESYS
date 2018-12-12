@@ -1523,7 +1523,7 @@ class PersonDefineFinishWorkController extends Controller
             $select_bqsl = "SELECT DISTINCT 
                                A.POLICY_CODE,
                                A.MEDIA_TYPE,
-                               TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,
+                               TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
                                A.BUSI_PROD_NAME,
                                A.CHARGE_PERIOD,
                                A.RELATION_TO_PH,
@@ -1531,7 +1531,7 @@ class PersonDefineFinishWorkController extends Controller
                                A.USER_NAME,
                                A.ORGAN_CODE,
                                D.BUSINESS_NAME,
-                               B.BUSINESS_TIME,
+                               P.PRINT,
                                TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
                                (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                --C.TC_ID,
@@ -1563,6 +1563,8 @@ class PersonDefineFinishWorkController extends Controller
                               AND C.FIND_NODE = A.BUSINESS_NODE
                             LEFT JOIN TMP_BUSINESS_NODE D
                               ON D.BUSINESS_NODE = A.BUSINESS_NODE
+                            LEFT JOIN TMP_QDSX_NB_PRINT P
+                              ON A.POLICY_CODE = P.POLICY_CODE
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
@@ -1580,7 +1582,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['charge_period'] = $value['CHARGE_PERIOD'];
                 $result[$i]['relation_to_ph'] = $value['RELATION_TO_PH'];
                 $result[$i]['legal_bene'] = $value['LEGAL_BENE'];
-//                $result[$i]['print'] = $value['PRINT'];
+                $result[$i]['print'] = $value['PRINT'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
                 }else{
@@ -1789,6 +1791,7 @@ class PersonDefineFinishWorkController extends Controller
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT
                                 A.APPLY_CODE,
+                                A.POLICY_CODE,
                                A.CHECK_CON,
                                 A.USER_NAME,
                                 A.ORGAN_CODE,
@@ -1828,6 +1831,7 @@ class PersonDefineFinishWorkController extends Controller
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
                 $result[$i]['apply_code'] = $value['APPLY_CODE'];
+                $result[$i]['policy_code'] = $value['POLICY_CODE'];
                 $result[$i]['check_con'] = $value['CHECK_CON'];
                 $result[$i]['user_name'] = $value['USER_NAME'];
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
