@@ -162,10 +162,10 @@ class DayPostController extends Controller
         Log::write("TC数据更新开始 ：".date("h:i:sa")."<br> ");
         $queryTc = "select  cfvt.value3 as sys,
                                 COUNT(bt.bug_new_id) as bug_sum,
-                                count(case  when bt.`status` in ('8','11') then 1 else null end) as bug_close_sum,
-                                count(case  when bt.`status` not in ('8','11') then 1 else null end) as bug_no_close_sum,
+                                count(case  when bt.`status` in ('8','11','42') then 1 else null end) as bug_close_sum,
+                                count(case  when bt.`status` not in ('8','11','42') then 1 else null end) as bug_no_close_sum,
                                 count(case  when date_format(bt.date_submitted,'%Y%m%d') = date_format(now(),'%Y%m%d') then 1 else null end) as bug_this_sum,
-                                count(case  when date_format(bt.date_submitted,'%Y%m%d') = date_format(now(),'%Y%m%d') and bt.`status` in ('8','11') then 1 else null end) as bug_this_close_sum
+                                count(case  when date_format(bt.date_submitted,'%Y%m%d') = date_format(now(),'%Y%m%d') and bt.`status` in ('8','11','42') then 1 else null end) as bug_this_close_sum
                 from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
                 where ut.id = bt.reporter_id 
                     and bt.id = cfvt.bug_id 
