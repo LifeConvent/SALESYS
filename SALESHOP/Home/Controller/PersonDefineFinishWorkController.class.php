@@ -25,6 +25,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -42,6 +43,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
+//            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -59,6 +61,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -76,6 +79,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -93,6 +97,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -110,6 +115,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -127,6 +133,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -145,6 +152,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('user_type', $type);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -162,6 +170,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -179,6 +188,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -196,6 +206,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -213,6 +224,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -1568,6 +1580,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['charge_period'] = $value['CHARGE_PERIOD'];
                 $result[$i]['relation_to_ph'] = $value['RELATION_TO_PH'];
                 $result[$i]['legal_bene'] = $value['LEGAL_BENE'];
+//                $result[$i]['print'] = $value['PRINT'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
                 }else{

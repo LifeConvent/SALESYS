@@ -283,6 +283,4 @@ class RequestPostDataLoadController extends Controller
         return $request_result[0]['EXEC_TYPE'];
     }
 
-
-
 }

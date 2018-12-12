@@ -2266,9 +2266,9 @@ class MethodController extends Controller
         if (strcmp($info[2],"success") == 0) {
             $admin = $info[0];
         }
-        Log::write('用户登录串码：'.$user,'INFO');
-        Log::write('用户锁定结果：'.$this->getUserLock($user),'INFO');
-        return $this->getUserLock($user);
+        Log::write('用户登录串码：'.$admin,'INFO');
+        Log::write('用户锁定结果：'.$this->getUserLock($admin),'INFO');
+        return $this->getUserLock($admin);
     }
 
     //获取用户机构码

@@ -119,9 +119,6 @@ class IndexController extends Controller
 //        }
     }
 
-    /**
-     *
-     */
     public function test(){
 
         $db_host_name='10.1.168.5/DMGdb';
