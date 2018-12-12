@@ -159,12 +159,13 @@ class DayPostController extends Controller
         $queryDateStart = $_GET{'queryDateStart'};
         $queryDateEnd = $_GET{'queryDateEnd'};
         $where = "";
+        $endStart = "date_format(now(),'%Y-%m-%d')";
         if(!empty($queryDateStart)){
             $where = " AND date_format(bt.date_submitted,'%Y-%m-%d') <= '".$queryDateStart."' ";
-            $endStart = $queryDateStart;
+            $endStart = "'".$queryDateStart."'";
             if(!empty($queryDateEnd)){
                 $where = " AND date_format(bt.date_submitted,'%Y-%m-%d') <= '".$queryDateEnd."' AND date_format(bt.date_submitted,'%Y-%m-%d') >= '".$queryDateStart."'";
-                $endStart = $queryDateEnd;
+                $endStart = "'".$queryDateEnd."'";
             }
         }
         Log::write("BUG查询条件 ：".$where."<br> ");
@@ -173,8 +174,8 @@ class DayPostController extends Controller
                                 COUNT(bt.bug_new_id) as bug_sum,
                                 count(case  when bt.`status` in ('8','11','42') then 1 else null end) as bug_close_sum,
                                 count(case  when bt.`status` not in ('8','11','42') then 1 else null end) as bug_no_close_sum,
-                                count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = '".$endStart."' then 1 else null end) as bug_this_sum,
-                                count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = '".$endStart."' and bt.`status` in ('8','11','42') then 1 else null end) as bug_this_close_sum
+                                count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." then 1 else null end) as bug_this_sum,
+                                count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and bt.`status` in ('8','11','42') then 1 else null end) as bug_this_close_sum
                 from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
                 where ut.id = bt.reporter_id 
                     and bt.id = cfvt.bug_id 
