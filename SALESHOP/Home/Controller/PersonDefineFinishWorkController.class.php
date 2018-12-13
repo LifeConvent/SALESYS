@@ -1313,11 +1313,19 @@ class PersonDefineFinishWorkController extends Controller
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
         }
-        ############################################################################################################################################################
         $conn = $method->OracleOldDBCon();
         $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
+        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$accept_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND POLICY_CODE = '".$policy_code."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
+        ############################################################################################################################################################
+        $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
+        $select_result = $method->search_long($result_rows1);
+        if(!empty($select_result[0]['HD_USER_NAME'])){
+            $result['status'] = "failed";
+            $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已进行该业务核对，无需进行再次核对！";
+            exit(json_encode($result));
+        }
         #$sysDate = date('yyyy/mm/dd', time());
         $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'))";
         #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
@@ -1367,6 +1375,15 @@ class PersonDefineFinishWorkController extends Controller
         $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
+        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$accept_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
+        ############################################################################################################################################################
+        $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
+        $select_result = $method->search_long($result_rows1);
+        if(!empty($select_result[0]['HD_USER_NAME'])){
+            $result['status'] = "failed";
+            $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已进行该业务核对，无需进行再次核对！";
+            exit(json_encode($result));
+        }
         Log::write($user_name.' 业务节点+关键业务号：'.$node_result[0]['BUSINESS_NODE'].$accept_code,'INFO');
         #$sysDate = date('yyyy/mm/dd', time());
         if(empty($policy_code)){
@@ -1433,6 +1450,15 @@ class PersonDefineFinishWorkController extends Controller
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
         #$sysDate = date('yyyy/mm/dd', tim0e());
+        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$accept_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
+        ############################################################################################################################################################
+        $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
+        $select_result = $method->search_long($result_rows1);
+        if(!empty($select_result[0]['HD_USER_NAME'])){
+            $result['status'] = "failed";
+            $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已进行该业务核对，无需进行再次核对！";
+            exit(json_encode($result));
+        }
 
         if(empty($policy_code)){
             if(empty($insert_date)){
