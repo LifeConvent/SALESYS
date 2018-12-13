@@ -911,7 +911,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['receiptor_name'] = $value['RECEIPTOR_NAME'];
                 $result[$i]['phone'] = $value['PHONE'];
                 $result[$i]['chat_content'] = $value['CHAT_CONTENT'];
-                $result[$i]['bussiness_name'] = $value['BUSINESS_NAME'];
+                $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
@@ -1353,6 +1353,7 @@ class PersonDefineFinishWorkController extends Controller
         header('Content-type: text/html; charset=utf-8');
         $user_name = $_POST['username'];
         $business_name = $_POST['business_name'];
+        Log::write($user_name.' 业务节点：'.$business_name,'INFO');
         $policy_code = $_POST['policy_code'];
         $accept_code = $_POST['business_code'];
         $insert_date = $_POST['insert_date'];
@@ -1375,6 +1376,8 @@ class PersonDefineFinishWorkController extends Controller
         $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
+
+        Log::write($user_name.' 业务节点：'.$business_name,'INFO');
         $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$accept_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
         ############################################################################################################################################################
         $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
@@ -1400,7 +1403,7 @@ class PersonDefineFinishWorkController extends Controller
             }
         }
         #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
-        Log::write($user_name.' 数据库查询SQL：'.$insert_sql,'INFO');
+        Log::write($user_name.' 确认结果数据库插入SQL：'.$insert_sql,'INFO');
         $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
         if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
             $result['status'] = "success";

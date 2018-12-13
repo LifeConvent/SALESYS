@@ -238,7 +238,7 @@ var TableInit = function () {
                 title: '短信话术',
                 width:300
             },{
-                field: 'bussiness_name',
+                field: 'business_name',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
@@ -345,8 +345,8 @@ window.actionEvents = {
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
         var business_code = row.send_id;
-        var policy_code = row.accept_code;
-        var insert_date = row.sys_insert_date;
+        var policy_code = row.send_id;
+        var insert_date = row.busi_insert_date;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输
