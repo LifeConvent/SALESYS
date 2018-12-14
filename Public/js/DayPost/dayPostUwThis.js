@@ -32,7 +32,7 @@ $(function () {
         minView: 2,
         forceParse: 0
     }).on('changeDate', function(ev){
-        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getUwDayPostThis?queryDate="+$("#dtp_input2").val()+"&type=1"});
+        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getUwDayPostThis?queryDateStart="+$("#dtp_input2").val()+"&type=1"});
     });
 
     //1.初始化Table

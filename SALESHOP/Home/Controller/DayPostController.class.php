@@ -606,53 +606,123 @@ class DayPostController extends Controller
                 "clm_sum" => 0,"clm_bug_sum" => 0,"clm_solved_sum" => 0,"clm_rate" => 0);
         }
         $select_bqsl = "SELECT * FROM TMP_QDSX_LJ_DAYPOST WHERE 1=1 
-                            ".$where_time_bqsl."
-                            UNION ALL 
-                            SELECT SYS_INSERT_DATE,
-                                   '' AS ORGAN_CODE,
-                                   '合计' AS ORGAN_NAME,
-                                   SUM(NB_SUM) AS NB_SUM,
-                                   SUM(NB_BUG_SUM) AS NB_BUG_SUM,
-                                   SUM(NB_SOLVED_SUM)  AS NB_SOLVED_SUM,
-                                   DECODE(SUM(NB_SUM),0,'100.00%', trim(to_char((SUM(NB_SUM)-SUM(NB_BUG_SUM)+SUM(NB_SOLVED_SUM))/SUM(NB_SUM)*100,'999D99')||'%')) NB_RATE,
-                                   SUM(UW_SUM) AS UW_SUM,
-                                   SUM(UW_BUG_SUM) AS UW_BUG_SUM,
-                                   SUM(UW_SOLVED_SUM) AS UW_SOLVED_SUM,
-                                   DECODE(SUM(UW_SUM),0,'100.00%', trim(to_char((SUM(UW_SUM)-SUM(UW_BUG_SUM)+SUM(UW_SOLVED_SUM))/SUM(UW_SUM)*100,'999D99')||'%')) UW_RATE,
-                                   SUM(CS_SUM) AS CS_SUM,
-                                   SUM(CS_BUG_SUM) AS CS_BUG_SUM,
-                                   SUM(CS_SOLVED_SUM) AS CS_SOLVED_SUM,
-                                   DECODE(SUM(CS_SUM),0,'100.00%', trim(to_char((SUM(CS_SUM)-SUM(CS_BUG_SUM)+SUM(CS_SOLVED_SUM))/SUM(CS_SUM)*100,'999D99')||'%')) CS_RATE,     
-                                   SUM(CLM_SUM) AS CLM_SUM,
-                                   SUM(CLM_BUG_SUM) AS CLM_BUG_SUM,
-                                   SUM(CLM_SOLVED_SUM) AS CLM_SOLVED_SUM,
-                                   DECODE(SUM(CLM_SUM),0,'100.00%', trim(to_char((SUM(CLM_SUM)-SUM(CLM_BUG_SUM)+SUM(CLM_SOLVED_SUM))/SUM(CLM_SUM)*100,'999D99')||'%')) CLM_RATE
-                            FROM TMP_QDSX_LJ_DAYPOST 
-                             WHERE 1=1 ".$where_time_bqsl."
-                            GROUP BY SYS_INSERT_DATE
-                            UNION ALL
-                            SELECT SYS_INSERT_DATE,
-                                   '' AS ORGAN_CODE,
-                                   '小计' AS ORGAN_NAME,
-                                   SUM(NB_SUM) AS NB_SUM,
-                                   SUM(NB_BUG_SUM) AS NB_BUG_SUM,
-                                   SUM(NB_SOLVED_SUM)  AS NB_SOLVED_SUM,
-                                   DECODE(SUM(NB_SUM),0,'100.00%', trim(to_char((SUM(NB_SUM)-SUM(NB_BUG_SUM)+SUM(NB_SOLVED_SUM))/SUM(NB_SUM)*100,'999D99')||'%')) NB_RATE, 
-                                   SUM(UW_SUM) AS UW_SUM,
-                                   SUM(UW_BUG_SUM) AS UW_BUG_SUM,
-                                   SUM(UW_SOLVED_SUM) AS UW_SOLVED_SUM,
-                                   DECODE(SUM(UW_SUM),0,'100.00%', trim(to_char((SUM(UW_SUM)-SUM(UW_BUG_SUM)+SUM(UW_SOLVED_SUM))/SUM(UW_SUM)*100,'999D99')||'%')) UW_RATE,
-                                   SUM(CS_SUM) AS CS_SUM,
-                                   SUM(CS_BUG_SUM) AS CS_BUG_SUM,
-                                   SUM(CS_SOLVED_SUM) AS CS_SOLVED_SUM,
-                                   DECODE(SUM(CS_SUM),0,'100.00%', trim(to_char((SUM(CS_SUM)-SUM(CS_BUG_SUM)+SUM(CS_SOLVED_SUM))/SUM(CS_SUM)*100,'999D99')||'%')) CS_RATE,
-                                   SUM(CLM_SUM) AS CLM_SUM,
-                                   SUM(CLM_BUG_SUM) AS CLM_BUG_SUM,
-                                   SUM(CLM_SOLVED_SUM) AS CLM_SOLVED_SUM,
-                                   DECODE(SUM(CLM_SUM),0,'100.00%', trim(to_char((SUM(CLM_SUM)-SUM(CLM_BUG_SUM)+SUM(CLM_SOLVED_SUM))/SUM(CLM_SUM)*100,'999D99')||'%')) CLM_RATE
-                            FROM TMP_QDSX_LJ_DAYPOST 
-                            WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','8600') ".$where_time_bqsl."
-                            GROUP BY SYS_INSERT_DATE";
+                                ".$where_time_bqsl."
+                                UNION ALL 
+                                SELECT SYS_INSERT_DATE,
+                                       '' AS ORGAN_CODE,
+                                       '合计' AS ORGAN_NAME,
+                                       SUM(NB_SUM) AS NB_SUM,
+                                       SUM(NB_BUG_SUM) AS NB_BUG_SUM,
+                                       SUM(NB_SOLVED_SUM)  AS NB_SOLVED_SUM,
+                                       --DECODE(SUM(NB_SUM),0,'-', trim(to_char((SUM(NB_SUM)-SUM(NB_BUG_SUM)+SUM(NB_SOLVED_SUM))/SUM(NB_SUM)*100,'999D99')||'%')) NB_RATE,
+                                       (case
+                                           when SUM(NB_SUM) = '0' then
+                                            '-'
+                                           else
+                                            CONCAT(CAST(((SUM(NB_SUM) - SUM(NB_BUG_SUM) + SUM(NB_SOLVED_SUM)) * 100 /
+                                                        (SUM(NB_SUM))) AS DEC(18, 2)),
+                                                   '%')
+                                         end) AS NB_ACCURACY,
+                                       
+                                       SUM(UW_SUM) AS UW_SUM,
+                                       SUM(UW_BUG_SUM) AS UW_BUG_SUM,
+                                       SUM(UW_SOLVED_SUM) AS UW_SOLVED_SUM,
+                                       --DECODE(SUM(UW_SUM),0,'-', trim(to_char((SUM(UW_SUM)-SUM(UW_BUG_SUM)+SUM(UW_SOLVED_SUM))/SUM(UW_SUM)*100,'999D99')||'%')) UW_RATE,
+                                       (case
+                                           when SUM(UW_SUM) = '0' then
+                                            '-'
+                                           else
+                                            CONCAT(CAST(((SUM(UW_SUM) - SUM(UW_BUG_SUM) + SUM(UW_SOLVED_SUM)) * 100 /
+                                                        (SUM(UW_SUM))) AS DEC(18, 2)),
+                                                   '%')
+                                         end) AS UW_ACCURACY,
+                                       
+                                       SUM(CS_SUM) AS CS_SUM,
+                                       SUM(CS_BUG_SUM) AS CS_BUG_SUM,
+                                       SUM(CS_SOLVED_SUM) AS CS_SOLVED_SUM,
+                                       --DECODE(SUM(CS_SUM),0,'-', trim(to_char((SUM(CS_SUM)-SUM(CS_BUG_SUM)+SUM(CS_SOLVED_SUM))/SUM(CS_SUM)*100,'999D99')||'%')) CS_RATE,     
+                                       (case
+                                           when SUM(CS_SUM) = '0' then
+                                            '-'
+                                           else
+                                            CONCAT(CAST(((SUM(CS_SUM) - SUM(CS_BUG_SUM) + SUM(CS_SOLVED_SUM)) * 100 /
+                                                        (SUM(CS_SUM))) AS DEC(18, 2)),
+                                                   '%')
+                                         end) AS CS_ACCURACY,
+                                       
+                                       SUM(CLM_SUM) AS CLM_SUM,
+                                       SUM(CLM_BUG_SUM) AS CLM_BUG_SUM,
+                                       SUM(CLM_SOLVED_SUM) AS CLM_SOLVED_SUM,
+                                       --DECODE(SUM(CLM_SUM),0,'-', trim(to_char((SUM(CLM_SUM)-SUM(CLM_BUG_SUM)+SUM(CLM_SOLVED_SUM))/SUM(CLM_SUM)*100,'999D99')||'%')) CLM_RATE
+                                       (case
+                                           when SUM(CLM_SUM) = '0' then
+                                            '-'
+                                           else
+                                            CONCAT(CAST(((SUM(CLM_SUM) - SUM(CLM_BUG_SUM) + SUM(CLM_SOLVED_SUM)) * 100 /
+                                                        (SUM(CLM_SUM))) AS DEC(18, 2)),
+                                                   '%')
+                                         end) AS CLM_ACCURACY
+                                FROM TMP_QDSX_LJ_DAYPOST 
+                                 WHERE 1=1 ".$where_time_bqsl."
+                                GROUP BY SYS_INSERT_DATE
+                                UNION ALL
+                                SELECT SYS_INSERT_DATE,
+                                       '' AS ORGAN_CODE,
+                                       '小计' AS ORGAN_NAME,
+                                       SUM(NB_SUM) AS NB_SUM,
+                                       SUM(NB_BUG_SUM) AS NB_BUG_SUM,
+                                       SUM(NB_SOLVED_SUM)  AS NB_SOLVED_SUM,
+                                       --DECODE(SUM(NB_SUM),0,'-', trim(to_char((SUM(NB_SUM)-SUM(NB_BUG_SUM)+SUM(NB_SOLVED_SUM))/SUM(NB_SUM)*100,'999D99')||'%')) NB_RATE, 
+                                       (case
+                                           when SUM(NB_SUM) = '0' then
+                                            '-'
+                                           else
+                                            CONCAT(CAST(((SUM(NB_SUM) - SUM(NB_BUG_SUM) + SUM(NB_SOLVED_SUM)) * 100 /
+                                                        (SUM(NB_SUM))) AS DEC(18, 2)),
+                                                   '%')
+                                         end) AS NB_ACCURACY,
+                                       
+                                       SUM(UW_SUM) AS UW_SUM,
+                                       SUM(UW_BUG_SUM) AS UW_BUG_SUM,
+                                       SUM(UW_SOLVED_SUM) AS UW_SOLVED_SUM,
+                                       --DECODE(SUM(UW_SUM),0,'-', trim(to_char((SUM(UW_SUM)-SUM(UW_BUG_SUM)+SUM(UW_SOLVED_SUM))/SUM(UW_SUM)*100,'999D99')||'%')) UW_RATE,
+                                       (case
+                                           when SUM(UW_SUM) = '0' then
+                                            '-'
+                                           else
+                                            CONCAT(CAST(((SUM(UW_SUM) - SUM(UW_BUG_SUM) + SUM(UW_SOLVED_SUM)) * 100 /
+                                                        (SUM(UW_SUM))) AS DEC(18, 2)),
+                                                   '%')
+                                         end) AS UW_ACCURACY,
+                                       
+                                       SUM(CS_SUM) AS CS_SUM,
+                                       SUM(CS_BUG_SUM) AS CS_BUG_SUM,
+                                       SUM(CS_SOLVED_SUM) AS CS_SOLVED_SUM,
+                                       --DECODE(SUM(CS_SUM),0,'-', trim(to_char((SUM(CS_SUM)-SUM(CS_BUG_SUM)+SUM(CS_SOLVED_SUM))/SUM(CS_SUM)*100,'999D99')||'%')) CS_RATE,
+                                       (case
+                                           when SUM(CS_SUM) = '0' then
+                                            '-'
+                                           else
+                                            CONCAT(CAST(((SUM(CS_SUM) - SUM(CS_BUG_SUM) + SUM(CS_SOLVED_SUM)) * 100 /
+                                                        (SUM(CS_SUM))) AS DEC(18, 2)),
+                                                   '%')
+                                         end) AS CS_ACCURACY,
+                                       
+                                       SUM(CLM_SUM) AS CLM_SUM,
+                                       SUM(CLM_BUG_SUM) AS CLM_BUG_SUM,
+                                       SUM(CLM_SOLVED_SUM) AS CLM_SOLVED_SUM,
+                                       --DECODE(SUM(CLM_SUM),0,'-', trim(to_char((SUM(CLM_SUM)-SUM(CLM_BUG_SUM)+SUM(CLM_SOLVED_SUM))/SUM(CLM_SUM)*100,'999D99')||'%')) CLM_RATE
+                                       (case
+                                           when SUM(CLM_SUM) = '0' then
+                                            '-'
+                                           else
+                                            CONCAT(CAST(((SUM(CLM_SUM) - SUM(CLM_BUG_SUM) + SUM(CLM_SOLVED_SUM)) * 100 /
+                                                        (SUM(CLM_SUM))) AS DEC(18, 2)),
+                                                   '%')
+                                         end) AS CLM_ACCURACY
+                                FROM TMP_QDSX_LJ_DAYPOST 
+                                WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','8600') ".$where_time_bqsl."
+                                GROUP BY SYS_INSERT_DATE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
