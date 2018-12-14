@@ -47,6 +47,7 @@
                     </li>
                 </ul>
             </li>
+
             <li class="sub-menu">
                 <a href="javascript:;" id="day_post_two">
                     <i class="fa fa-laptop"></i>
@@ -65,6 +66,7 @@
                     </li>
                 </ul>
             </li>
+
             <li class="sub-menu">
                 <a href="javascript:;" id="day_post_other">
                     <i class="fa fa-laptop"></i>
@@ -127,7 +129,6 @@
                               1
                             </span>
                 </a>
-
                 <ul class="sub" id="course_sub">
                     <li id="course_info">
                         <a href="{:U('Home/RequestPostDataLoad/loadData')}" style="font-size: 12px;">
@@ -158,51 +159,50 @@
             </li>
 
             <!--菜单四-->
-            <!--<li class="sub-menu">-->
-                <!--<a href="javascript:;" id="data">-->
-                    <!--<i class="fa fa-tasks">-->
-                    <!--</i>-->
-                            <!--<span style="font-size: 14px;">-->
-                              <!--完成申请-->
-                            <!--</span>-->
-                            <!--<span class="label label-info span-sidebar">-->
-                              <!--2-->
-                            <!--</span>-->
-                <!--</a>-->
-
-                <!--<ul class="sub" id="data_sub">-->
-                    <!--<li id="data_course">-->
-                        <!--<a href="{:U('Home/DataManage/userCourse')}" style="font-size: 12px;">-->
-                             <!--待处理完成申请-->
+            <li class="sub-menu">
+                <a href="javascript:;" id="data_export">
+                    <i class="fa fa-tasks">
+                    </i>
+                            <span style="font-size: 14px;">
+                              清单数据导出
+                            </span>
+                            <span class="label label-info span-sidebar">
+                              2
+                            </span>
+                </a>
+                <ul class="sub" id="data_out">
+                    <li id="data_out_ct">
+                        <a href="{:U('Home/DataOut/csOutCt')}" style="font-size: 12px;">
+                             保全除退保数据
+                        </a>
+                    </li>
+                    <li id="data_ct_all">
+                        <a href="{:U('Home/DataOut/csCtAll')}" style="font-size: 12px;">
+                            保全退保数据
+                        </a>
+                    </li>
+                    <!--<li id="data_user_info">-->
+                        <!--<a href="{:U('Home/DataManage/userInfo')}" style="font-size: 12px;">-->
+                            <!--用户信息维护-->
                         <!--</a>-->
                     <!--</li>-->
-                    <!--&lt;!&ndash;<li id="data_sys_course">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a href="{:U('Home/DataManage/sysCourse')}" style="font-size: 12px;">&ndash;&gt;-->
-                            <!--&lt;!&ndash;系统课程维护&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li id="data_user_info">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a href="{:U('Home/DataManage/userInfo')}" style="font-size: 12px;">&ndash;&gt;-->
-                            <!--&lt;!&ndash;用户信息维护&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
                     <!--<li id="data_count">-->
                         <!--<a href="{:U('Home/DataManage/surveyCount')}" style="font-size: 12px;">-->
                             <!--提交完成申请-->
                         <!--</a>-->
                     <!--</li>-->
-                    <!--&lt;!&ndash;<li class="dis-none">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a href="">&ndash;&gt;-->
-                            <!--&lt;!&ndash;子菜单&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<li class="dis-none">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<a href="">&ndash;&gt;-->
-                            <!--&lt;!&ndash;子菜单&ndash;&gt;-->
-                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
-                <!--</ul>-->
-            <!--</li>-->
+                    <!--<li class="dis-none">-->
+                        <!--<a href="">-->
+                            <!--子菜单-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li class="dis-none">-->
+                        <!--<a href="">-->
+                            <!--子菜单-->
+                        <!--</a>-->
+                    <!--</li>-->
+                </ul>
+            </li>
 
             <!--主菜单-->
             <li class="sub-menu">
@@ -216,11 +216,6 @@
                         </span>
                 </a>
                 <ul class="sub" id="data_ub">
-                    <!--<li id="data_ount">-->
-                        <!--<a href="{:U('Home/PersonDefineFinishWork/perDefine')}" style="font-size: 12px;">-->
-                            <!--个人待确认-->
-                        <!--</a>-->
-                    <!--</li>-->
                     <li id="cs_difine">
                         <a href="{:U('Home/PersonDefineFinishWork/csDefine')}" style="font-size: 12px;">
                             保全柜面清单
@@ -289,6 +284,7 @@
                         </span>
                 </a>
             </li>
+
         </ul>
     </div>
 </aside>
