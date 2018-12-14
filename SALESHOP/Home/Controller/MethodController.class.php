@@ -2048,7 +2048,9 @@ class MethodController extends Controller
             $query_insert = "INSERT INTO TMP_QDSX_TC_BUG(TC_ID,CREATE_DATE,TC_USER_NAME,BUSINESS_CODE,DESCRIPTION,STATUS,FIND_NODE,LOCAL,PONDERANCE,STATUS_DESC,SYS) VALUES('".$TC_ID."',to_date('".$CREATE_DATE."','YYYY/MM/DD hh24:mi:ss'),'".$TC_USER_NAME."','".$BUSINESS_CODE."','".$DESCRIPTION."','".$STATUS."','".$FIND_NODE."','".$LOCAL."','".$PONDERANCE."','".$STATUS_DESC."','".$SYS."')";
 //          echo $query_insert;
             $statement = oci_parse($conn,$query_insert);
-            echo $TC_ID."单条插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
+            echo $TC_ID."单条插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." - ";
+            echo "   -   ".$query_insert."   -   ";
+            echo $TC_ID."单条插入 执行结果：".oci_error($statement)." <br>";
         }
         oci_free_statement($statement);
         oci_close($conn);
