@@ -23,7 +23,7 @@ $(function () {
     }
     var user_name = $('#user_name').text();
     var user_type = $('#user_type').text();
-    if(user_name=='zhuxj_qd'||user_name=='quanli'||user_type=='1'){
+    if(user_name=='zhuxj_qd'||user_name=='quanli'||user_name=='cuizhan'||user_type=='1'){
     }else{
         $('#data_export').hide();
         $('#data_out').hide();
