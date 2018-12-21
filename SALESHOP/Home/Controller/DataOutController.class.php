@@ -223,7 +223,7 @@ class DataOutController extends Controller
             $where_time_bqsl = " AND TRUNC(DUE_TIME) = TRUNC(SYSDATE-1) ";
         }
         $select_bqsl = "select c.*,TUU.USER_NAME,TUU.REAL_NAME,TCAC.INSERT_OPERATOR_ID from 
-                            (select t.unit_number UNIT_NUMBER,max(bs.biz_source_name) BIZ_SOURCE_NAME,max(t.business_code) BUSINESS_CODE,max(t.organ_code) ORGAN_CODE,sum(case when t.arap_flag='1' then t.fee_amount else -t.fee_amount end) FEE_AMOUNT,max(t.due_time) DUE_TIME,
+                            (select t.unit_number UNIT_NUMBER,max(bs.biz_source_name) BIZ_SOURCE_NAME,max(t.business_code) BUSINESS_CODE,max(t.organ_code) ORGAN_CODE,sum(case when t.arap_flag='1' then t.fee_amount else -t.fee_amount end) FEE_AMOUNT,max(to_char(t.due_time,'YYYY-MM-DD')) DUE_TIME,
                             max(p.name) NAME,max(s.status_name) STATUS_NAME,max(t.bank_code) BANK_CODE,max(d.business_type_name) BUSINESS_TYPE_NAME,max(brc.bank_ret_name) BANK_RET_NAME
                              from dev_cap.t_prem_arap@bxpas16 t 
                              left join dev_cap.t_bank_text_detail@bxpas16 btd on t.seq_no = btd.seq_no 
