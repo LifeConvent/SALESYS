@@ -14,6 +14,82 @@ use Think\Log;
 class DataOutController extends Controller
 {
 
+    public function capCsBack()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
+        if ($result) {
+            $this->assign('username', $username);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
+    public function capNbNoArrive()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
+        if ($result) {
+            $this->assign('username', $username);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
+    public function capNb()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
+        if ($result) {
+            $this->assign('username', $username);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
+    public function capCs()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
+        if ($result) {
+            $this->assign('username', $username);
+            $this->assign('user_name', $username);
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function nbOutYs()
     {
         $username = '';
@@ -137,6 +213,301 @@ class DataOutController extends Controller
         echo $type;
     }
 
+    public function getCapCsBack(){
+        $queryDateStart = I('get.queryDateStart');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(DUE_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+        } else {
+            $where_time_bqsl = " AND TRUNC(DUE_TIME) = TRUNC(SYSDATE-1) ";
+        }
+        $select_bqsl = "select c.*,TUU.USER_NAME,TUU.REAL_NAME,TCAC.INSERT_OPERATOR_ID from 
+                            (select t.unit_number UNIT_NUMBER,max(bs.biz_source_name) BIZ_SOURCE_NAME,max(t.business_code) BUSINESS_CODE,max(t.organ_code) ORGAN_CODE,sum(case when t.arap_flag='1' then t.fee_amount else -t.fee_amount end) FEE_AMOUNT,max(t.due_time) DUE_TIME,
+                            max(p.name) NAME,max(s.status_name) STATUS_NAME,max(t.bank_code) BANK_CODE,max(d.business_type_name) BUSINESS_TYPE_NAME,max(brc.bank_ret_name) BANK_RET_NAME
+                             from dev_cap.t_prem_arap@bxpas16 t 
+                             left join dev_cap.t_bank_text_detail@bxpas16 btd on t.seq_no = btd.seq_no 
+                             left join dev_cap.T_BANK_RET_CONF@bxpas16 brc on btd.rtn_code=brc.bank_ret_code 
+                             left join dev_cap.t_pay_mode@bxpas16 p on t.pay_mode = p.code 
+                             left join dev_cap.t_fee_status@bxpas16 s on t.fee_status = s.status_code
+                             left join dev_cap.t_business_type_def@bxpas16 d on t.business_type = d.business_type
+                             left join dev_cap.t_biz_source@bxpas16 bs on bs.biz_source_code = t.deriv_type 
+                             where 1=1 ".$where_time_bqsl." and t.fee_status in ('00','03','04','01')
+                            and t.deriv_type IN ('001','005','004') --and t.pay_mode = '32'
+                            group by t.unit_number)c 
+                            LEFT JOIN APP___PAS__DBUSER.T_CS_ACCEPT_CHANGE@bxpas16 TCAC
+                            ON c.BUSINESS_CODE = TCAC.ACCEPT_CODE
+                            LEFT JOIN APP___PAS__DBUSER.T_UDMP_USER@bxpas16 TUU
+                            ON TCAC.INSERT_BY = TUU.USER_ID
+                            where c.FEE_AMOUNT <> 0";
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['unit_number'] = $value['UNIT_NUMBER'];
+            $result[$i]['biz_source_name'] = $value['BIZ_SOURCE_NAME'];
+            $result[$i]['business_code'] = $value['BUSINESS_CODE'];
+            $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+            $result[$i]['fee_amount'] = $value['FEE_AMOUNT'];
+            $result[$i]['due_time'] = $value['DUE_TIME'];
+            $result[$i]['name'] = $value['NAME'];
+            $result[$i]['status_name'] = $value['STATUS_NAME'];
+            $result[$i]['bank_code'] = $value['BANK_CODE'];
+            $result[$i]['business_type_name'] = $value['BUSINESS_TYPE_NAME'];
+            $result[$i]['bank_ret_name'] = $value['BANK_RET_NAME'];
+            $result[$i]['user_name'] = $value['USER_NAME'];
+            $result[$i]['real_name'] = $value['REAL_NAME'];
+            $result[$i]['insert_operator_id'] = $value['INSERT_OPERATOR_ID'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getCapCs(){
+        $queryDateStart = I('get.queryDateStart');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(APPLY_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+        } else {
+            $where_time_bqsl = " AND TRUNC(APPLY_DATE) = TRUNC(SYSDATE) ";
+        }
+        $where_time_bqsl = "";
+        $select_bqsl = "SELECT A.*,B.FEE_AMOUNT AS CS_FEE_AMOUNT,
+                            (CASE 
+                                WHEN B.FEE_AMOUNT = A.fee_amount THEN '是'
+                                WHEN -B.FEE_AMOUNT = A.fee_amount THEN '是'
+                                 ELSE '否'
+                             END) AS IS_SAME
+                             FROM(select tpa.unit_number unit_number,
+                                   max(t.group_num) group_num,
+                                   max(tpa.business_code) business_code,
+                                   max(tpa.policy_code) policy_code,
+                                   max(dt.bank_account) bank_account,
+                                   max(dt.bank_code) bank_code,
+                                   max(dt.acco_name) acco_name,
+                                   max(tpa.due_time) due_time,
+                                   max(bs.biz_source_name) biz_source_name,
+                                   case when max(dt.arap_flag) =1 then '收费' else '付费' end arap_flag,
+                                   max(dt.fee_amount) fee_amount,
+                                   max(to_char(dt.insert_time,'YYYY-MM-DD')) insert_time,
+                                   max(sc.sales_channel_name) sales_channel_name
+                              from dev_cap.t_bank_text@bxpas16 t
+                              left join dev_cap.t_bank_text_detail@bxpas16 dt
+                                on dt.send_id = t.send_id
+                              left join dev_cap.t_prem_arap@bxpas16 tpa
+                                on tpa.seq_no = dt.seq_no
+                                left join dev_cap.T_SALES_CHANNEL@bxpas16 sc on tpa.channel_type =sc.sales_channel_code
+                                left join dev_cap.t_biz_source@bxpas16 bs on dt.deriv_type = bs.biz_source_code
+                             where t.bank_text_status = '2' 
+                               and t.disc_no = '000000'
+                               and t.send_id <1000000 and t.deriv_type='004'
+                             group by tpa.unit_number order by max(t.bank_code),max(t.deriv_type),max(tpa.due_time))A
+                             LEFT JOIN 
+                             (SELECT A.ACCEPT_CODE,A.POLICY_CODE,SUM(A.FEE_AMOUNT) AS FEE_AMOUNT FROM (
+                            SELECT TCPA.BUSINESS_CODE AS ACCEPT_CODE,
+                                   TS.SERVICE_NAME AS SERVICE_NAME,
+                                   TO_CHAR(TCAC.UPDATE_TIME,'YYYY-MM-DD') AS UPDATE_TIME,
+                                   TCPA.POLICY_CODE AS POLICY_CODE,
+                                   TCPA.BUSI_PROD_CODE,
+                                   TFS.STATUS_NAME AS STATUS_NAME,
+                                   (CASE 
+                                      WHEN TCPA.ARAP_FLAG = '2' THEN '付费'
+                                      ELSE '收费'
+                                    END) AS ARAP_FLAG,
+                                    tft.TYPE_NAME,
+                                   CASE WHEN TCPA.ARAP_FLAG='2' THEN -TCPA.FEE_AMOUNT ELSE TCPA.FEE_AMOUNT END AS FEE_AMOUNT
+                                FROM APP___PAS__DBUSER.T_CS_PREM_ARAP@bxpas16 TCPA
+                                LEFT JOIN APP___PAS__DBUSER.T_CS_ACCEPT_CHANGE@bxpas16 TCAC
+                                ON TCAC.ACCEPT_CODE = TCPA.BUSINESS_CODE
+                                    LEFT JOIN APP___PAS__DBUSER.T_SERVICE@bxpas16 TS
+                                    ON TCAC.SERVICE_CODE = TS.SERVICE_CODE
+                                    LEFT JOIN APP___PAS__DBUSER.T_UDMP_USER@bxpas16 TUU
+                                    ON TCAC.INSERT_BY = TUU.USER_ID
+                                    LEFT JOIN APP___PAS__DBUSER.T_FEE_STATUS@bxpas16 TFS
+                                    ON TFS.STATUS_CODE = TCPA.FEE_STATUS
+                                    LEFT JOIN APP___PAS__DBUSER.t_fee_type@bxpas16 tft 
+                                    ON TCPA.fee_type=tft.code 
+                                WHERE 1=1
+                                    AND TCPA.DERIV_TYPE = '004'
+                                    AND TCPA.ORGAN_CODE LIKE '8647%' 
+                                    AND TCPA.FEE_STATUS NOT IN ('16','02')
+                                    --AND TCAC.ACCEPT_STATUS = '18'  --受理状态生效
+                                    --AND TRUNC(TCAC.UPDATE_TIME) >= TRUNC(SYSDATE-13) --生效时间
+                                ORDER BY TCPA.BUSINESS_CODE,TCPA.POLICY_CODE)A
+                              GROUP BY A.ACCEPT_CODE,A.POLICY_CODE)B
+                              ON B.ACCEPT_CODE = A.business_code AND B.POLICY_CODE = A.policy_code 
+                         WHERE 1=1 ".$where_time_bqsl;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['unit_number'] = $value['UNIT_NUMBER'];
+            $result[$i]['group_num'] = $value['GROUP_NUM'];
+            $result[$i]['business_code'] = $value['BUSINESS_CODE'];
+            $result[$i]['policy_code'] = $value['POLICY_CODE'];
+            $result[$i]['bank_account'] = $value['BANK_ACCOUNT'];
+            $result[$i]['bank_code'] = $value['BANK_CODE'];
+            $result[$i]['acco_name'] = $value['ACCO_NAME'];
+            $result[$i]['due_time'] = $value['DUE_TIME'];
+            $result[$i]['biz_source_name'] = $value['BIZ_SOURCE_NAME'];
+            $result[$i]['arap_flag'] = $value['ARAP_FLAG'];
+            $result[$i]['fee_amount'] = $value['FEE_AMOUNT'];
+            $result[$i]['insert_time'] = $value['INSERT_TIME'];
+            $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
+            $result[$i]['fee_amount'] = $value['FEE_AMOUNT'];
+            $result[$i]['cs_fee_amount'] = $value['CS_FEE_AMOUNT'];
+            $result[$i]['is_same'] = $value['IS_SAME'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getCapNb(){
+        $queryDateStart = I('get.queryDateStart');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(APPLY_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+        } else {
+            $where_time_bqsl = " AND TRUNC(APPLY_DATE) = TRUNC(SYSDATE) ";
+        }
+        $select_bqsl = "SELECT TPA.UNIT_NUMBER UNIT_NUMBER,
+                               MAX(T.GROUP_NUM) GROUP_NUM,
+                               MAX(TPA.BUSINESS_CODE) BUSINESS_CODE,
+                               MAX(DT.BANK_ACCOUNT) BANK_ACCOUNT,
+                               MAX(DT.BANK_CODE) BANK_CODE,
+                               MAX(DT.ACCO_NAME) ACCO_NAME,
+                               MAX(TO_CHAR(TPA.DUE_TIME,'YYYY-MM-DD')) DUE_TIME,
+                               MAX(BS.BIZ_SOURCE_NAME) BIZ_SOURCE_NAME,
+                               CASE WHEN MAX(DT.ARAP_FLAG) =1 THEN '收费' ELSE '付费' END ARAP_FLAG,
+                               MAX(DT.FEE_AMOUNT) FEE_AMOUNT,
+                               MAX(TO_CHAR(DT.INSERT_TIME,'YYYY-MM-DD')) INSERT_TIME,
+                               MAX(SC.SALES_CHANNEL_NAME) SALES_CHANNEL_NAME,
+                               MAX(NBPREMSUM.SUM_TOTAL_PREM_AF)  AS SUM_TOTAL_PREM_AF,
+                               (CASE 
+                                  WHEN MAX(DT.FEE_AMOUNT) = MAX(NBPREMSUM.SUM_TOTAL_PREM_AF) THEN '是'
+                                    ELSE '否'
+                                END) AS IS_SAME
+                          FROM DEV_CAP.T_BANK_TEXT@BXPAS16                    T
+                          LEFT JOIN DEV_CAP.T_BANK_TEXT_DETAIL@BXPAS16        DT
+                            ON DT.SEND_ID = T.SEND_ID
+                          LEFT JOIN DEV_CAP.T_PREM_ARAP@BXPAS16               TPA
+                            ON TPA.SEQ_NO = DT.SEQ_NO
+                          LEFT JOIN DEV_CAP.T_SALES_CHANNEL@BXPAS16           SC 
+                            ON TPA.CHANNEL_TYPE =SC.SALES_CHANNEL_CODE
+                          LEFT JOIN DEV_CAP.T_BIZ_SOURCE@BXPAS16              BS 
+                            ON DT.DERIV_TYPE = BS.BIZ_SOURCE_CODE
+                          LEFT JOIN (SELECT TNCP.APPLY_CODE,
+                                            SUM(TNCP.TOTAL_PREM_AF) AS SUM_TOTAL_PREM_AF 
+                                       FROM APP___NB__DBUSER.T_NB_CONTRACT_PRODUCT@BXNBS15 TNCP 
+                                       GROUP BY TNCP.APPLY_CODE HAVING COUNT(TNCP.APPLY_CODE) > 0 ) NBPREMSUM --新契约保费
+                            ON TPA.BUSINESS_CODE = NBPREMSUM.APPLY_CODE
+                         WHERE T.BANK_TEXT_STATUS = '2' and t.deriv_type='001'
+                           AND T.DISC_NO = '000000'
+                           AND T.SEND_ID <1000000
+                         GROUP BY TPA.UNIT_NUMBER ORDER BY MAX(T.BANK_CODE),MAX(T.DERIV_TYPE),MAX(TPA.DUE_TIME)";
+//                         WHERE 1=1 ".$where_time_bqsl;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['unit_number'] = $value['UNIT_NUMBER'];
+            $result[$i]['group_num'] = $value['GROUP_NUM'];
+            $result[$i]['business_code'] = $value['BUSINESS_CODE'];
+            $result[$i]['bank_account'] = $value['BANK_ACCOUNT'];
+            $result[$i]['bank_code'] = $value['BANK_CODE'];
+            $result[$i]['acco_name'] = $value['ACCO_NAME'];
+            $result[$i]['due_time'] = $value['DUE_TIME'];
+            $result[$i]['biz_source_name'] = $value['BIZ_SOURCE_NAME'];
+            $result[$i]['arap_flag'] = $value['ARAP_FLAG'];
+            $result[$i]['fee_amount'] = $value['FEE_AMOUNT'];
+            $result[$i]['insert_time'] = $value['INSERT_TIME'];
+            $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
+            $result[$i]['sum_total_prem_af'] = $value['SUM_TOTAL_PREM_AF'];
+            $result[$i]['is_same'] = $value['IS_SAME'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getNbNoArrive(){
+        $queryDateStart = I('get.queryDateStart');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(APPLY_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+        } else {
+            $where_time_bqsl = " AND TRUNC(APPLY_DATE) = TRUNC(SYSDATE) ";
+        }
+        $where_time_bqsl = " ";
+        $select_bqsl = "SELECT UNIT_NUMBER,--唯一号,
+                               BUSINESS_CODE,--业务号,
+                               ORGAN_CODE,--机构代码,
+                               FEE_AMOUNT,--金额,
+                               TO_CHAR(DUE_TIME,'YYYY-MM-DD') AS DUE_TIME,--应缴日期,
+                               PAY_NAME,--收付方式,
+                               STATUS_NAME,--收付状态,
+                               BANK_CODE,--银行代码,
+                               BUSINESS_TYPE_NAME,--业务类型,
+                               BANK_RET_NAME--失败原因
+                          FROM TMP_QDSX_NB_QD_WDZ
+                         WHERE 1=1 ".$where_time_bqsl;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['unit_number'] = $value['UNIT_NUMBER'];
+            $result[$i]['business_code'] = $value['BUSINESS_CODE'];
+            $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+            $result[$i]['fee_amount'] = $value['FEE_AMOUNT'];
+            $result[$i]['due_time'] = $value['DUE_TIME'];
+            $result[$i]['pay_name'] = $value['PAY_NAME'];
+            $result[$i]['status_name'] = $value['STATUS_NAME'];
+            $result[$i]['bank_code'] = $value['BANK_CODE'];
+            $result[$i]['business_type_name'] = $value['BUSINESS_TYPE_NAME'];
+            $result[$i]['bank_ret_name'] = $value['BANK_RET_NAME'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
     public function getNbYs(){
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
@@ -203,7 +574,6 @@ class DataOutController extends Controller
         }
     }
 
-
     public function expNbYs()
     {//导出Excel
         $xlsName = "新契约预收清单";
@@ -256,7 +626,7 @@ class DataOutController extends Controller
             $value = $bqsl_result_time[$i];
             $result[$i]['policy_code'] = $value['POLICY_CODE'];
             $result[$i]['product_code'] = $value['PRODUCT_CODE'];
-            $result[$i]['apply_code'] = $value['APPLY_CODE'];
+            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
             $result[$i]['status_desc'] = $value['STATUS_DESC'];
             $result[$i]['agent_code'] = $value['AGENT_CODE'];
             $result[$i]['agent_name'] = $value['AGENT_NAME'];
@@ -275,7 +645,7 @@ class DataOutController extends Controller
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
-        $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
+        $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
     public function getNbHz(){
