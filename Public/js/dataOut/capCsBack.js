@@ -135,7 +135,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '业务号',
-                width:150
+                width:170
             }, {
                 field: 'organ_code',
                 sortable: true,
