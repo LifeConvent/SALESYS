@@ -60,6 +60,10 @@ $(function () {
 
 });
 
+function exportExcel() {
+    window.location.href = HOST + "index.php/Home/PersonDefineFinishWork/expNbBd";
+}
+
 var TableInit = function () {
     countFooter =  function(v){
         var count = 0;

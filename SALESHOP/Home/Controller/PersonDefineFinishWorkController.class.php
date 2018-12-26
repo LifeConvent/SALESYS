@@ -1644,6 +1644,116 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
+    public function expNbBd()
+    {//导出Excel
+        $xlsName = "新契约保险合同清单";
+        $xlsTitle = "新契约保险合同清单";
+        $xlsCell = array( //设置字段名和列名的映射
+            array('policy_code', '保单号'),
+            array('media_type', '保单方式(纸质/电子)'),
+            array('issue_date', '签单日期'),
+            array('busi_prod_name', '险种名称（全部险种）'),
+            array('charge_period', '主险交费频率'),
+            array('relation_to_ph', '投被保人关系'),
+            array('legal_bene', '是否法定受益人'),
+            array('user_name', '操作员'),
+            array('organ_code', '作业机构'),
+            array('business_name', '业务节点'),
+            array('print', '保单下发状态'),
+            array('business_time', '确认时间'),
+            array('tc_id', '缺陷号')
+        );
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $select_bqsl = "SELECT DISTINCT 
+                               A.POLICY_CODE,
+                               A.MEDIA_TYPE,
+                               TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
+                               A.BUSI_PROD_NAME,
+                               A.CHARGE_PERIOD,
+                               A.RELATION_TO_PH,
+                               A.LEGAL_BENE,
+                               A.USER_NAME,
+                               A.ORGAN_CODE,
+                               D.BUSINESS_NAME,
+                               B.BUSINESS_TIME,
+                               P.PRINT,
+                               TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
+                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                               --C.TC_ID,
+                               (CASE
+                                  WHEN C.TC_ID IS NULL THEN B.RESULT
+                                    ELSE '错误'
+                                END) AS RESULT,
+                               (CASE
+                                  WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
+                                    ELSE C.TC_USER_NAME
+                                END) AS HD_USER_NAME,
+                               (CASE
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                END) AS SYS_INSERT_DATE,
+                              --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
+                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                               --C.STATUS,
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                            FROM TMP_QDSX_NB_BXHT A 
+                            LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                              ON A.POLICY_CODE = B.BUSINESS_CODE
+                              AND A.MEDIA_TYPE = B.MEDIA_TYPE
+                              AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                              AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
+                            LEFT JOIN TMP_QDSX_TC_BUG C  
+                              ON C.BUSINESS_CODE = A.POLICY_CODE
+                              --AND C.POLICY_CODE = A.POLICY_CODE
+                              AND C.FIND_NODE = A.BUSINESS_NODE
+                            LEFT JOIN TMP_BUSINESS_NODE D
+                              ON D.BUSINESS_NODE = A.BUSINESS_NODE
+                            LEFT JOIN TMP_QDSX_NB_PRINT P
+                              ON A.POLICY_CODE = P.POLICY_CODE
+                          WHERE 1=1 ";
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['policy_code'] = $value['POLICY_CODE'];
+            $result[$i]['media_type'] = $value['MEDIA_TYPE'];
+            $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+            $result[$i]['busi_prod_name'] = $value['BUSI_PROD_NAME'];
+            $result[$i]['user_name'] = $value['USER_NAME'];
+            $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+            $result[$i]['business_name'] = $value['BUSINESS_NAME'];
+            $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
+            $result[$i]['business_time'] = $value['BUSINESS_TIME'];
+            $result[$i]['charge_period'] = $value['CHARGE_PERIOD'];
+            $result[$i]['relation_to_ph'] = $value['RELATION_TO_PH'];
+            $result[$i]['legal_bene'] = $value['LEGAL_BENE'];
+            $result[$i]['print'] = $value['PRINT'];
+            if(empty( $value['TC_ID'])){
+                $result[$i]['tc_id'] = "-";
+            }else{
+                $result[$i]['tc_id'] = $value['TC_ID'];
+            }
+            if(empty( $value['RESULT'])){
+                $result[$i]['result'] = "-";
+            }else{
+                $result[$i]['result'] = $value['RESULT'];
+            }
+            $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
+            $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+            if (empty($value['DESCRIPTION'])) {
+                $result[$i]['description'] = "-";
+            } else {
+                $result[$i]['description'] = $value['DESCRIPTION'];
+            }
+            $result[$i]['status'] = $value['STATUS'];
+        }
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
+    }
+
     public function getNbNoticeDefine(){
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
