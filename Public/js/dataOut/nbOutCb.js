@@ -128,13 +128,20 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '管理机构',
-                width:170
+                width:140
             }, {
-                field: 'policy_code',
+                field: 'apply_code',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
                 title: '投保单号',
+                width:150
+            },{
+                field: 'policy_code',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '保单号',
                 width:150
             },{
                 field: 'issue_date',
@@ -156,7 +163,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '首期缴费日',
-                width:200
+                width:140
             }, {
                 field: 'charge_year',
                 sortable: true,
@@ -193,6 +200,13 @@ var TableInit = function () {
                 title: '投保单状态',
                 width:100
             }, {
+                field: 'billcard_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '单证UA031扫描状态',
+                width:140
+            },{
                 field: 'customer_name',
                 sortable: true,
                 align: 'center',

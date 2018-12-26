@@ -585,6 +585,7 @@ class DataOutController extends Controller
             array('product_code', '险种代码'),
             array('apply_code', '投保单号'),
             array('status_desc', '投保单状态'),
+            array('winning_start_flag', '是否预承保'),
             array('agent_code', '业务员号码'),
             array('agent_name', '业务员姓名'),
             array('total_prem_af', '规模保费'),
@@ -605,6 +606,7 @@ class DataOutController extends Controller
                                PRODUCT_CODE,
                                APPLY_CODE,
                                STATUS_DESC,
+                               WINNING_START_FLAG,--是否预承保
                                AGENT_CODE,
                                AGENT_NAME,
                                TOTAL_PREM_AF,
@@ -630,6 +632,7 @@ class DataOutController extends Controller
             $result[$i]['product_code'] = $value['PRODUCT_CODE'];
             $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
             $result[$i]['status_desc'] = $value['STATUS_DESC'];
+            $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
             $result[$i]['agent_code'] = $value['AGENT_CODE'];
             $result[$i]['agent_name'] = $value['AGENT_NAME'];
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
@@ -718,6 +721,7 @@ class DataOutController extends Controller
                                SALES_CHANNEL_NAME,
                                CHANNEL_NAME,
                                STATUS_DESC,
+                               BILLCARD_CODE,--单证UA031扫描状态
                                CUSTOMER_NAME,
                                BANK_NAME,
                                ACCOUNT_BANK,
@@ -749,6 +753,7 @@ class DataOutController extends Controller
             $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
             $result[$i]['channel_name'] = $value['CHANNEL_NAME'];
             $result[$i]['status_desc'] = $value['STATUS_DESC'];
+            $result[$i]['billcard_code'] = $value['BILLCARD_CODE'];
             $result[$i]['customer_name'] = $value['CUSTOMER_NAME'];
             $result[$i]['bank_name'] = $value['BANK_NAME'];
             $result[$i]['account_bank'] = $value['ACCOUNT_BANK'];
@@ -796,6 +801,7 @@ class DataOutController extends Controller
                                SALES_CHANNEL_NAME,
                                CHANNEL_NAME,
                                STATUS_DESC,
+                               BILLCARD_CODE,--单证UA031扫描状态
                                CUSTOMER_NAME,
                                BANK_NAME,
                                ACCOUNT_BANK,
@@ -827,6 +833,7 @@ class DataOutController extends Controller
             $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
             $result[$i]['channel_name'] = $value['CHANNEL_NAME'];
             $result[$i]['status_desc'] = $value['STATUS_DESC'];
+            $result[$i]['billcard_code'] = $value['BILLCARD_CODE'];
             $result[$i]['customer_name'] = $value['CUSTOMER_NAME'];
             $result[$i]['bank_name'] = $value['BANK_NAME'];
             $result[$i]['account_bank'] = $value['ACCOUNT_BANK'];
