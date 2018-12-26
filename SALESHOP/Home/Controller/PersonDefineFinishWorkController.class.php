@@ -43,7 +43,7 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_name', $username);
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
-//            $this->assign('TITLE', TITLE);
+            $this->assign('TITLE', TITLE);
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -1661,7 +1661,12 @@ class PersonDefineFinishWorkController extends Controller
             array('business_name', '业务节点'),
             array('print', '保单下发状态'),
             array('business_time', '确认时间'),
-            array('tc_id', '缺陷号')
+            array('tc_id', '缺陷号'),
+            array('result', '核对结果'),
+            array('hd_user_name', '核对人'),
+            array('sys_insert_date', '核对日期'),
+            array('description', '存在问题'),
+            array('status', '解决进度')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
