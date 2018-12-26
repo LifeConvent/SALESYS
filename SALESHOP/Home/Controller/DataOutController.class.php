@@ -522,6 +522,7 @@ class DataOutController extends Controller
                                PRODUCT_CODE,
                                APPLY_CODE,
                                STATUS_DESC,
+                               WINNING_START_FLAG,--是否预承保
                                AGENT_CODE,
                                AGENT_NAME,
                                TOTAL_PREM_AF,
@@ -547,6 +548,7 @@ class DataOutController extends Controller
             $result[$i]['product_code'] = $value['PRODUCT_CODE'];
             $result[$i]['apply_code'] = $value['APPLY_CODE'];
             $result[$i]['status_desc'] = $value['STATUS_DESC'];
+            $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
             $result[$i]['agent_code'] = $value['AGENT_CODE'];
             $result[$i]['agent_name'] = $value['AGENT_NAME'];
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];

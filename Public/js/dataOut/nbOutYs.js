@@ -148,6 +148,13 @@ var TableInit = function () {
                 title: '投保单状态',
                 width:120
             }, {
+                field: 'winning_start_flag',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '是否预承保',
+                width:120
+            },{
                 field: 'agent_code',
                 sortable: true,
                 align: 'center',

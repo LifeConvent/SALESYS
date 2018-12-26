@@ -2164,7 +2164,7 @@ class MethodController extends Controller
         $tc_fix = $this->getTcFix();
         $res = array(
             "home_sum"=>"SELECT DATE_FORMAT(bt.date_submitted,'%Y-%m-%d') AS TIME,COUNT(*) AS NUM FROM bug_table bt LEFT JOIN custom_field_value_table cfvt ON bt.id = cfvt.bug_id 
-                              WHERE 1=1  GROUP BY DATE_FORMAT(bt.date_submitted,'%Y-%m-%d') ORDER BY bt.date_submitted ASC LIMIT 7",
+                              WHERE 1=1  GROUP BY DATE_FORMAT(bt.date_submitted,'%Y-%m-%d') ORDER BY bt.date_submitted DESC LIMIT 7",
             "sum" => "SELECT COUNT(*) AS num FROM bug_table bt  ",
             "pro_fix" => "select cfvt.value17,cfvt.value16,COUNT(*) AS NUM
                             from bug_table bt ,custom_field_value_table cfvt,`user_table` ut  

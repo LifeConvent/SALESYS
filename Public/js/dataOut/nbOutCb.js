@@ -170,7 +170,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '是否预承保',
-                width:100
+                width:120
             }, {
                 field: 'sales_channel_name',
                 sortable: true,

@@ -160,7 +160,7 @@ class HomeController extends Controller
                               END) AS NUM
                         FROM TMP_QDSX_TIME A LEFT JOIN
                         (SELECT * FROM (SELECT TO_CHAR(SYS_INSERT_DATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_QDSX_CS_SLFH_GM WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE ORDER BY SYS_INSERT_DATE DESC) WHERE ROWNUM<8) B
-                        ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME";
+                        ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME  ORDER BY TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') ";
         $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
         $cs_result_new_time = $method->search_long($result_rows);
         for($i=0;$i<7;$i++){
@@ -179,7 +179,7 @@ class HomeController extends Controller
                               END) AS NUM
                         FROM TMP_QDSX_TIME A LEFT JOIN
                         (SELECT * FROM (SELECT TO_CHAR(SYS_INSERT_DATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_QDSX_NB_BXHT WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE ORDER BY SYS_INSERT_DATE DESC) WHERE ROWNUM<8) B
-                        ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME";
+                        ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME  ORDER BY TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') ";
         $result_rows = oci_parse($conn, $select_nb); // 配置SQL语句，执行SQL
         $nb_result_new_time = $method->search_long($result_rows);
         for($i=0;$i<7;$i++){
@@ -198,7 +198,7 @@ class HomeController extends Controller
                               END) AS NUM
                         FROM TMP_QDSX_TIME A LEFT JOIN
                         (SELECT * FROM (SELECT TO_CHAR(SYS_INSERT_DATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_QDSX_CLM WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE ORDER BY SYS_INSERT_DATE DESC) WHERE ROWNUM<8) B
-                        ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME";
+                        ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME  ORDER BY TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') ";
         $result_rows = oci_parse($conn, $select_clm); // 配置SQL语句，执行SQL
         $clm_result_new_time = $method->search_long($result_rows);
         for($i=0;$i<7;$i++){
