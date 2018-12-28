@@ -199,12 +199,19 @@ var TableInit = function () {
                 title: '业务节点',
                 width:100
             }, {
-                field: 'print',
+                field: 'print_dz',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '保单下发状态',
-                width:120
+                title: '电子保单下发状态',
+                width:160
+            }, {
+                field: 'print_zz',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '纸质保单下发状态',
+                width:160
             }, {
                 field: 'business_time',
                 sortable: true,
