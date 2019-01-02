@@ -1585,7 +1585,7 @@ class PersonDefineFinishWorkController extends Controller
                             FROM TMP_QDSX_NB_BXHT A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                               ON A.POLICY_CODE = B.BUSINESS_CODE
-                              AND A.MEDIA_TYPE = B.MEDIA_TYPE
+                              --AND A.MEDIA_TYPE = B.MEDIA_TYPE
                               AND B.BUSINESS_NODE = A.BUSINESS_NODE
                               AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
                             LEFT JOIN TMP_QDSX_TC_BUG C  
@@ -1711,7 +1711,7 @@ class PersonDefineFinishWorkController extends Controller
                             FROM TMP_QDSX_NB_BXHT A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                               ON A.POLICY_CODE = B.BUSINESS_CODE
-                              AND A.MEDIA_TYPE = B.MEDIA_TYPE
+                              --AND A.MEDIA_TYPE = B.MEDIA_TYPE
                               AND B.BUSINESS_NODE = A.BUSINESS_NODE
                               AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
                             LEFT JOIN TMP_QDSX_TC_BUG C  
