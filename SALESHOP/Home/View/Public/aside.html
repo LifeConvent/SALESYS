@@ -3,17 +3,17 @@
     <div id="sidebar" class="nav-collapse">
         <ul class="sidebar-menu" id="nav-accordion">
 
-            <!--主菜单-->
+            <!--实时监控-->
             <li>
                 <a href="{:U('Home/Home/postHome')}" id="sale">
                     <i class="fa fa-dashboard"></i>
                         <span style="font-size: 14px;">
-                          TC实时监控
+                          实时监控
                         </span>
                 </a>
             </li>
 
-            <!--菜单一-->
+            <!--当日日报-->
             <li class="sub-menu">
                 <a href="javascript:;" id="day_post">
                     <i class="fa fa-laptop"></i>
@@ -48,6 +48,7 @@
                 </ul>
             </li>
 
+            <!--累计日报-->
             <li class="sub-menu">
                 <a href="javascript:;" id="day_post_two">
                     <i class="fa fa-laptop"></i>
@@ -67,6 +68,7 @@
                 </ul>
             </li>
 
+            <!--缺陷日报-->
             <li class="sub-menu">
                 <a href="javascript:;" id="day_post_other">
                     <i class="fa fa-laptop"></i>
@@ -86,7 +88,7 @@
                 </ul>
             </li>
 
-            <!--菜单二-->
+            <!--用户管理-->
             <li class="sub-menu">
                 <a href="javascript:;" id="user">
                     <i class="fa fa-book">
@@ -117,7 +119,7 @@
                 </ul>
             </li>
 
-            <!--菜单三-->
+            <!--数据管理-->
             <li class="sub-menu">
                 <a href="javascript:;" id="course">
                     <i class="fa fa-cogs">
@@ -158,7 +160,7 @@
                 </ul>
             </li>
 
-            <!--菜单四-->
+            <!--清单数据导出-->
             <li class="sub-menu">
                 <a href="javascript:;" id="data_export">
                     <i class="fa fa-tasks">
@@ -224,7 +226,48 @@
                 </ul>
             </li>
 
-            <!--主菜单-->
+            <!--新契约报表-->
+            <li class="sub-menu">
+                <a href="javascript:;" id="nb_post">
+                    <i class="fa fa-cogs">
+                    </i>
+                    <span style="font-size: 14px;">
+                              新契约报表
+                            </span>
+                    <span class="label btn-warning span-sidebar">
+                              1
+                            </span>
+                </a>
+                <ul class="sub" id="nb_post_table">
+                    <li id="nb_post_table_stream">
+                        <a href="{:U('Home/PostTable/nbPostStream')}" style="font-size: 12px;">
+                           新契约流程清单
+                        </a>
+                    </li>
+                    <!--<li id="course_survey">-->
+                    <!--<a href="{:U('Home/CourseManage/surveyManage')}" style="font-size: 12px;">-->
+                    <!--课程问卷管理-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li id="course_survey_publish">-->
+                    <!--<a href="{:U('Home/CourseManage/surveyPublish')}" style="font-size: 12px;">-->
+                    <!--课程问卷发布-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li id="course_count">-->
+                    <!--<a href="{:U('Home/CourseManage/surveyCondition')}" style="font-size: 12px;">-->
+                    <!--问卷完成情况-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--<li id="course_survey_demo_publish">-->
+                    <!--<a href="{:U('Home/CourseManage/coursePublish')}" style="font-size: 12px;">-->
+                    <!--按课程发布模版问卷-->
+                    <!--</a>-->
+                    <!--</li>-->
+                </ul>
+            </li>
+
+            <!--待确认队列-->
             <li class="sub-menu">
                 <a href="javascript:;" id="home">
                     <i class="fa fa-dashboard"></i>

@@ -1552,6 +1552,7 @@ class PersonDefineFinishWorkController extends Controller
             $select_bqsl = "SELECT DISTINCT 
                                A.POLICY_CODE,
                                A.MEDIA_TYPE,
+                               TO_CHAR(A.FTP_DATE,'YYYY-MM-DD') AS FTP_DATE,--FTP路径
                                TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
                                A.BUSI_PROD_NAME,
                                A.CHARGE_PERIOD,
@@ -1560,9 +1561,9 @@ class PersonDefineFinishWorkController extends Controller
                                A.USER_NAME,
                                A.ORGAN_CODE,
                                D.BUSINESS_NAME,
-                               B.BUSINESS_TIME,
-                               DZ.PRINT_DZ,--电子保单下发状态
-                               ZZ.PRINT_ZZ,--纸质保单下发状态
+                               DZ.PRINT_DZ,
+                               ZZ.PRINT_ZZ,
+                               TO_CHAR(TPP.BPO_PRINT_DATE,'YYYY-MM-DD') AS BPO_PRINT_DATE,--外包打印日期
                                TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
                                (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                --C.TC_ID,
@@ -1598,6 +1599,11 @@ class PersonDefineFinishWorkController extends Controller
                             ON  A.POLICY_CODE = DZ.POLICY_CODE
                             LEFT JOIN TMP_QDSX_NB_PRINT_ZZ  ZZ
                             ON A.POLICY_CODE = ZZ.POLICY_CODE
+                            LEFT JOIN (SELECT TPP.POLICY_CODE,
+                                              TPP.BPO_PRINT_DATE
+                                         FROM APP___NB__DBUSER.T_POLICY_PRINT@BXNBS15     TPP
+                                        WHERE TPP.PRINT_TYPE = '1')                       TPP
+                            ON TPP.POLICY_CODE = A.POLICY_CODE
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
@@ -1605,6 +1611,7 @@ class PersonDefineFinishWorkController extends Controller
                 $value = $bqsl_result_time[$i];
                 $result[$i]['policy_code'] = $value['POLICY_CODE'];
                 $result[$i]['media_type'] = $value['MEDIA_TYPE'];
+                $result[$i]['ftp_date'] = $value['FTP_DATE'];
                 $result[$i]['issue_date'] = $value['ISSUE_DATE'];
                 $result[$i]['busi_prod_name'] = $value['BUSI_PROD_NAME'];
                 $result[$i]['user_name'] = $value['USER_NAME'];
@@ -1617,6 +1624,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['legal_bene'] = $value['LEGAL_BENE'];
                 $result[$i]['print_dz'] = $value['PRINT_DZ'];
                 $result[$i]['print_zz'] = $value['PRINT_ZZ'];
+                $result[$i]['bpo_print_date'] = $value['BPO_PRINT_DATE'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
                 }else{
@@ -1655,6 +1663,7 @@ class PersonDefineFinishWorkController extends Controller
         $xlsCell = array( //设置字段名和列名的映射
             array('policy_code', '保单号'),
             array('media_type', '保单方式(纸质/电子)'),
+            array('ftp_date', 'FTP路径'),
             array('issue_date', '签单日期'),
             array('busi_prod_name', '险种名称（全部险种）'),
             array('charge_period', '主险交费频率'),
@@ -1665,6 +1674,7 @@ class PersonDefineFinishWorkController extends Controller
             array('business_name', '业务节点'),
             array('print_dz', '电子保单下发状态'),
             array('print_zz', '纸质保单下发状态'),
+            array('bpo_print_date', '外包打印日期'),
             array('business_time', '确认时间'),
             array('tc_id', '缺陷号'),
             array('result', '核对结果'),
@@ -1678,6 +1688,7 @@ class PersonDefineFinishWorkController extends Controller
         $select_bqsl = "SELECT DISTINCT 
                                A.POLICY_CODE,
                                A.MEDIA_TYPE,
+                               TO_CHAR(A.FTP_DATE,'YYYY-MM-DD') AS FTP_DATE,--FTP路径
                                TO_CHAR(A.ISSUE_DATE,'YYYY-MM-DD') AS ISSUE_DATE,
                                A.BUSI_PROD_NAME,
                                A.CHARGE_PERIOD,
@@ -1686,9 +1697,9 @@ class PersonDefineFinishWorkController extends Controller
                                A.USER_NAME,
                                A.ORGAN_CODE,
                                D.BUSINESS_NAME,
-                               B.BUSINESS_TIME,
-                               DZ.PRINT_DZ,--电子保单下发状态
-                               ZZ.PRINT_ZZ,--纸质保单下发状态
+                               DZ.PRINT_DZ,
+                               ZZ.PRINT_ZZ,
+                               TO_CHAR(TPP.BPO_PRINT_DATE,'YYYY-MM-DD') AS BPO_PRINT_DATE,--外包打印日期
                                TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
                                (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                --C.TC_ID,
@@ -1724,6 +1735,11 @@ class PersonDefineFinishWorkController extends Controller
                             ON  A.POLICY_CODE = DZ.POLICY_CODE
                             LEFT JOIN TMP_QDSX_NB_PRINT_ZZ  ZZ
                             ON A.POLICY_CODE = ZZ.POLICY_CODE
+                            LEFT JOIN (SELECT TPP.POLICY_CODE,
+                                              TPP.BPO_PRINT_DATE
+                                         FROM APP___NB__DBUSER.T_POLICY_PRINT@BXNBS15     TPP
+                                        WHERE TPP.PRINT_TYPE = '1')                       TPP
+                            ON TPP.POLICY_CODE = A.POLICY_CODE
                           WHERE 1=1 ";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
@@ -1731,6 +1747,7 @@ class PersonDefineFinishWorkController extends Controller
             $value = $bqsl_result_time[$i];
             $result[$i]['policy_code'] = $value['POLICY_CODE'];
             $result[$i]['media_type'] = $value['MEDIA_TYPE'];
+            $result[$i]['ftp_date'] = $value['FTP_DATE'];
             $result[$i]['issue_date'] = $value['ISSUE_DATE'];
             $result[$i]['busi_prod_name'] = $value['BUSI_PROD_NAME'];
             $result[$i]['user_name'] = $value['USER_NAME'];
@@ -1743,6 +1760,7 @@ class PersonDefineFinishWorkController extends Controller
             $result[$i]['legal_bene'] = $value['LEGAL_BENE'];
             $result[$i]['print_dz'] = $value['PRINT_DZ'];
             $result[$i]['print_zz'] = $value['PRINT_ZZ'];
+            $result[$i]['bpo_print_date'] = $value['BPO_PRINT_DATE'];
             if(empty( $value['TC_ID'])){
                 $result[$i]['tc_id'] = "-";
             }else{

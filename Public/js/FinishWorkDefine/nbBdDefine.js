@@ -143,6 +143,13 @@ var TableInit = function () {
                 title: '保单方式(纸质/电子)',
                 width:200
             }, {
+                field: 'ftp_date',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: 'FTP路径',
+                width:200
+            }, {
                 field: 'issue_date',
                 sortable: true,
                 valign: 'middle',
@@ -213,6 +220,13 @@ var TableInit = function () {
                 title: '纸质保单下发状态',
                 width:160
             }, {
+                field: 'bpo_print_date',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '外包打印日期',
+                width:160
+            },{
                 field: 'business_time',
                 sortable: true,
                 align: 'center',
