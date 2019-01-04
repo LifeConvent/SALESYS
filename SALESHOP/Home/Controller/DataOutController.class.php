@@ -809,6 +809,7 @@ class DataOutController extends Controller
                                AGENT_CODE,
                                AGENT_NAME,
                                UNIT,
+                               MASTER_BUSI,--主附险标记
                                PRODUCT_CODE_SYS,
                                PRODUCT_NAME_SYS,
                                AMOUNT,
@@ -841,6 +842,7 @@ class DataOutController extends Controller
             $result[$i]['agent_code'] = $value['AGENT_CODE'];
             $result[$i]['agent_name'] = $value['AGENT_NAME'];
             $result[$i]['unit'] = $value['UNIT'];
+            $result[$i]['master_busi'] = $value['MASTER_BUSI'];
             $result[$i]['product_code_sys'] = $value['PRODUCT_CODE_SYS'];
             $result[$i]['product_name_sys'] = $value['PRODUCT_NAME_SYS'];
             $result[$i]['amount'] = $value['AMOUNT'];

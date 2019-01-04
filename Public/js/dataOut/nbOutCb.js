@@ -247,15 +247,22 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '业务员姓名',
-                width:100
+                width:160
             }, {
                 field: 'unit',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '份数',
-                width:100
+                width:160
             }, {
+                field: 'master_busi',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '主附险标记',
+                width:160
+            },{
                 field: 'product_code_sys',
                 sortable: true,
                 align: 'center',
