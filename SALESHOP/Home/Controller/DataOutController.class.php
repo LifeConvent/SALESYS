@@ -795,17 +795,23 @@ class DataOutController extends Controller
                                POLICY_CODE,
                                TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,
                                TO_CHAR(VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,
-                               TO_CHAR(INITIAL_PREM_DATE,'YYYY-MM-DD') AS INITIAL_PREM_DATE,
+                               TO_CHAR(FINISH_TIME,'YYYY-MM-DD') AS FINISH_TIME,--到账日期
+                               --TO_CHAR(INITIAL_PREM_DATE,'YYYY-MM-DD') AS INITIAL_PREM_DATE,
                                CHARGE_YEAR,
                                WINNING_START_FLAG,
                                SALES_CHANNEL_NAME,
                                CHANNEL_NAME,
                                STATUS_DESC,
-                               BILLCARD_CODE,--单证UA031扫描状态
+                               STATUS_NAME,--保单效力状态,
+                               CAUSE_NAME,--终止原因,
+                               TO_CHAR(CANCEL_DATE,'YYYY-MM-DD') AS CANCEL_DATE,--撤单日期,
                                CUSTOMER_NAME,
+                               BILLCARD_CODE,--单证UA031扫描状态
                                BANK_NAME,
                                ACCOUNT_BANK,
                                ACCOUNT,
+                               SERVICE_BANK_BRANCH,--银代银行网点代码,
+                               BANK_BRANCH_NAME,--银代银行网点名称,
                                AGENT_CODE,
                                AGENT_NAME,
                                UNIT,
@@ -817,28 +823,34 @@ class DataOutController extends Controller
                                FEE_STATUS
                           FROM TMP_QDSX_NB_QD_CB
                          WHERE 1=1 ".$where_time_bqsl."
-                         ORDER BY ISSUE_DATE";
+                         ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['apply_date'] = $value['APPLY_DATE'];
             $result[$i]['organ_code'] = $value['ORGAN_CODE'];
-            $result[$i]['apply_code'] = $value['APPLY_CODE'];
+            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
             $result[$i]['policy_code'] = $value['POLICY_CODE'];
             $result[$i]['issue_date'] = $value['ISSUE_DATE'];
             $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
-            $result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
+            $result[$i]['finish_time'] = $value['FINISH_TIME'];
+            #$result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
             $result[$i]['charge_year'] = $value['CHARGE_YEAR'];
             $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
             $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
             $result[$i]['channel_name'] = $value['CHANNEL_NAME'];
             $result[$i]['status_desc'] = $value['STATUS_DESC'];
+            $result[$i]['status_name'] = $value['STATUS_NAME'];
+            $result[$i]['cause_name'] = $value['CAUSE_NAME'];
+            $result[$i]['cancel_date'] = $value['CANCEL_DATE'];
             $result[$i]['billcard_code'] = $value['BILLCARD_CODE'];
             $result[$i]['customer_name'] = $value['CUSTOMER_NAME'];
             $result[$i]['bank_name'] = $value['BANK_NAME'];
             $result[$i]['account_bank'] = $value['ACCOUNT_BANK'];
             $result[$i]['account'] = $value['ACCOUNT'];
+            $result[$i]['service_bank_branch'] = $value['SERVICE_BANK_BRANCH'];
+            $result[$i]['bank_branch_name'] = $value['BANK_BRANCH_NAME'];
             $result[$i]['agent_code'] = $value['AGENT_CODE'];
             $result[$i]['agent_name'] = $value['AGENT_NAME'];
             $result[$i]['unit'] = $value['UNIT'];
@@ -941,4 +953,120 @@ class DataOutController extends Controller
         }
     }
 
+    public function expNbOutCb()
+    {//导出Excel
+        $xlsName = "新契约承保清单";
+        $xlsTitle = "新契约承保清单";
+        $xlsCell = array( //设置字段名和列名的映射
+            array('apply_date', '投保日期'),
+            array('organ_code', '管理机构'),
+            array('apply_code', '投保单号'),
+            array('policy_code', '保单号'),
+            array('issue_date', '承保日期'),
+            array('validate_date', '保单生效日'),
+            array('finish_time', '到账日期'),
+            array('charge_year', '缴费年期'),
+            array('winning_start_flag', '是否预承保'),
+            array('sales_channel_name', '投保渠道'),
+            array('channel_name', '投保方式'),
+            array('status_desc', '投保单状态'),
+            array('status_name', '保单效力状态'),
+            array('cause_name', '终止原因'),
+            array('cancel_date', '撤单日期'),
+            array('billcard_code', '单证UA031扫描状态'),
+            array('customer_name', '投保人姓名'),
+            array('bank_name', '银行'),
+            array('account_bank', '银行代码'),
+            array('account', '银行账户'),
+            array('service_bank_branch', '银代银行网点代码'),
+            array('bank_branch_name', '银代银行网点名称'),
+            array('agent_code', '业务员代码'),
+            array('agent_name', '业务员姓名'),
+            array('unit', '份数'),
+            array('master_busi', '主附险标志'),
+            array('product_code_sys', '险种代码'),
+            array('product_name_sys', '险种名称'),
+            array('amount', '保额'),
+            array('total_prem_af', '保费'),
+            array('fee_status', '保费是否到账')
+        );
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
+                               ORGAN_CODE,
+                               APPLY_CODE,
+                               POLICY_CODE,
+                               TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,
+                               TO_CHAR(VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,
+                               TO_CHAR(FINISH_TIME,'YYYY-MM-DD') AS FINISH_TIME,--到账日期
+                               --TO_CHAR(INITIAL_PREM_DATE,'YYYY-MM-DD') AS INITIAL_PREM_DATE,
+                               CHARGE_YEAR,
+                               WINNING_START_FLAG,
+                               SALES_CHANNEL_NAME,
+                               CHANNEL_NAME,
+                               STATUS_DESC,
+                               STATUS_NAME,--保单效力状态,
+                               CAUSE_NAME,--终止原因,
+                               TO_CHAR(CANCEL_DATE,'YYYY-MM-DD') AS CANCEL_DATE,--撤单日期,
+                               CUSTOMER_NAME,
+                               BILLCARD_CODE,--单证UA031扫描状态
+                               BANK_NAME,
+                               ACCOUNT_BANK,
+                               ACCOUNT,
+                               SERVICE_BANK_BRANCH,--银代银行网点代码,
+                               BANK_BRANCH_NAME,--银代银行网点名称,
+                               AGENT_CODE,
+                               AGENT_NAME,
+                               UNIT,
+                               MASTER_BUSI,--主附险标记
+                               PRODUCT_CODE_SYS,
+                               PRODUCT_NAME_SYS,
+                               AMOUNT,
+                               TOTAL_PREM_AF,
+                               FEE_STATUS
+                          FROM TMP_QDSX_NB_QD_CB
+                           --AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE)
+                         ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['apply_date'] = $value['APPLY_DATE'];
+            $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+            $result[$i]['policy_code'] = $value['POLICY_CODE'];
+            $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+            $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
+            $result[$i]['finish_time'] = $value['FINISH_TIME'];
+            #$result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
+            $result[$i]['charge_year'] = $value['CHARGE_YEAR'];
+            $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
+            $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
+            $result[$i]['channel_name'] = $value['CHANNEL_NAME'];
+            $result[$i]['status_desc'] = $value['STATUS_DESC'];
+            $result[$i]['status_name'] = $value['STATUS_NAME'];
+            $result[$i]['cause_name'] = $value['CAUSE_NAME'];
+            $result[$i]['cancel_date'] = $value['CANCEL_DATE'];
+            $result[$i]['billcard_code'] = $value['BILLCARD_CODE'];
+            $result[$i]['customer_name'] = $value['CUSTOMER_NAME'];
+            $result[$i]['bank_name'] = $value['BANK_NAME'];
+            $result[$i]['account_bank'] = $value['ACCOUNT_BANK'];
+            $result[$i]['account'] = $value['ACCOUNT'];
+            $result[$i]['service_bank_branch'] = $value['SERVICE_BANK_BRANCH'];
+            $result[$i]['bank_branch_name'] = $value['BANK_BRANCH_NAME'];
+            $result[$i]['agent_code'] = $value['AGENT_CODE'];
+            $result[$i]['agent_name'] = $value['AGENT_NAME'];
+            $result[$i]['unit'] = $value['UNIT'];
+            $result[$i]['master_busi'] = $value['MASTER_BUSI'];
+            $result[$i]['product_code_sys'] = $value['PRODUCT_CODE_SYS'];
+            $result[$i]['product_name_sys'] = $value['PRODUCT_NAME_SYS'];
+            $result[$i]['amount'] = $value['AMOUNT'];
+            $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
+            $result[$i]['fee_status'] = $value['FEE_STATUS'];
+        }
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
+    }
 }

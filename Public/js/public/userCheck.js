@@ -30,4 +30,15 @@ $(function () {
         $('#data_ct_all').hide();
         $('#data_out_ct').hide();
     }
+    if(user_name=='yindai'){
+        $('#day_post').hide();
+        $('#day_post_two').hide();
+        $('#day_post_other').hide();
+        $('#user').hide();
+        $('#course').hide();
+        $('#data_export').hide();
+        $('#nb_post').hide();
+        $('#home').hide();
+        $('#sale').hide();
+    }
 });

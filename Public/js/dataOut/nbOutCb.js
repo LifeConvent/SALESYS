@@ -61,6 +61,11 @@ $(function () {
 
 });
 
+
+function exportExcel() {
+    window.location.href = HOST + "index.php/Home/DataOut/expNbOutCb";
+}
+
 var TableInit = function () {
     var oTableInit = new Object();
     //初始化Table
@@ -157,147 +162,191 @@ var TableInit = function () {
                 align: 'center',
                 title: '保单生效日',
                 width:100
-            }, {
-                field: 'initial_prem_date',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '首期缴费日',
-                width:140
-            }, {
-                field: 'charge_year',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '缴费年期',
-                width:100
-            },{
-                field: 'winning_start_flag',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '是否预承保',
-                width:120
-            }, {
-                field: 'sales_channel_name',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '投保渠道',
-                width:140
-            }, {
-                field: 'channel_name',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '投保方式',
-                width:140
-            }, {
-                field: 'status_desc',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '投保单状态',
-                width:100
-            }, {
-                field: 'billcard_code',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '单证UA031扫描状态',
-                width:140
-            },{
-                field: 'customer_name',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '投保人姓名',
-                width:100
-            }, {
-                field: 'bank_name',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '银行',
-                width:100
-            }, {
-                field: 'account_bank',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '银行代码',
-                width:100
-            }, {
-                field: 'account',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '银行账户',
-                width:200
-            }, {
-                field: 'agent_code',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '业务员代码',
-                width:100
-            }, {
-                field: 'agent_name',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '业务员姓名',
-                width:160
-            }, {
-                field: 'unit',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '份数',
-                width:160
-            }, {
-                field: 'master_busi',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '主附险标记',
-                width:160
-            },{
-                field: 'product_code_sys',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '险种代码',
-                width:100
-            }, {
-                field: 'product_name_sys',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '险种名称',
-                width:100
-            }, {
-                field: 'amount',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '保额',
-                width:100
-            }, {
-                field: 'total_prem_af',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '保费',
-                width:100
-            }, {
-                field: 'fee_status',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '保费是否到账',
-                width:100
-            }]
+            },
+            // {
+            //     field: 'initial_prem_date',
+            //     sortable: true,
+            //     align: 'center',
+            //     valign: 'middle',
+            //     title: '首期缴费日',
+            //     width:140
+            // },
+                {
+                    field: 'finish_time',
+                    sortable: true,
+                    valign: 'middle',
+                    align: 'center',
+                    title: '到账日期',
+                    width:100
+                }, {
+                    field: 'charge_year',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '缴费年期',
+                    width:100
+                },{
+                    field: 'winning_start_flag',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '是否预承保',
+                    width:120
+                }, {
+                    field: 'sales_channel_name',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '投保渠道',
+                    width:140
+                }, {
+                    field: 'channel_name',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '投保方式',
+                    width:140
+                }, {
+                    field: 'status_desc',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '投保单状态',
+                    width:100
+                }, {
+                    field: 'status_name',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '保单效力状态',
+                    width:100
+                }, {
+                    field: 'cause_name',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '终止原因',
+                    width:100
+                }, {
+                    field: 'cancel_date',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '撤单日期',
+                    width:100
+                }, {
+                    field: 'billcard_code',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '单证UA031扫描状态',
+                    width:140
+                },{
+                    field: 'customer_name',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '投保人姓名',
+                    width:100
+                }, {
+                    field: 'bank_name',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '银行',
+                    width:100
+                }, {
+                    field: 'account_bank',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '银行代码',
+                    width:100
+                }, {
+                    field: 'account',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '银行账户',
+                    width:200
+                }, {
+                    field: 'service_bank_branch',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '银代银行网点代码',
+                    width:200
+                }, {
+                    field: 'bank_branch_name',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '银代银行网点名称',
+                    width:200
+                }, {
+                    field: 'agent_code',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '业务员代码',
+                    width:100
+                }, {
+                    field: 'agent_name',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '业务员姓名',
+                    width:160
+                }, {
+                    field: 'unit',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '份数',
+                    width:160
+                }, {
+                    field: 'master_busi',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '主附险标记',
+                    width:160
+                },{
+                    field: 'product_code_sys',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '险种代码',
+                    width:100
+                }, {
+                    field: 'product_name_sys',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '险种名称',
+                    width:100
+                }, {
+                    field: 'amount',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '保额',
+                    width:100
+                }, {
+                    field: 'total_prem_af',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '保费',
+                    width:100
+                }, {
+                    field: 'fee_status',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '保费是否到账',
+                    width:100
+                }]
         });
     };
 
