@@ -60,9 +60,11 @@ class PostTableController extends Controller
             array('apply_code', '投保单号'),
             array('policy_code', '保单号'),
             array('apply_date', '投保日期'),
+            array('insert_time', '入库时间'),
             array('busi_apply_date', '预收申请日期'),
             array('finish_time', '到账日期'),
             array('issue_date', '承保日期'),
+            array('sign_time', '签单时间'),
             array('validate_date', '保单生效日'),
             array('insert_time_zz', '纸质保单核心推送打印日期'),
             array('print_time_zz', '纸质保单打印推送外包商日期'),
@@ -99,8 +101,8 @@ class PostTableController extends Controller
             array('total_prem_af', '保费'),
             array('fee_status', '保费是否到账'),
             array('dz_sign', '是否电子签名'),
-            array('dz_sign_type', '电子签名质检类型'),
-            array('dz_sign_status', '电子签名质检结论'),
+            array('dz_sign_type', '电子签名质检类型及质检结论'),
+            #array('dz_sign_status', '电子签名质检结论'),
             array('drq_flag', '是否双录保单'),
             array('sl_send_date', '双录影音接收时间'),
             array('sl_check_date', '双录发送外包商质检时间'),
@@ -112,11 +114,12 @@ class PostTableController extends Controller
                                APPLY_CODE,--投保单号,
                                POLICY_CODE,--保单号,
                                TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE, --投保日期,
+                               TO_CHAR(INSERT_TIME,'YYYY-MM-DD HH24:MI:SS') AS INSERT_TIME, --入库时间,
                                TO_CHAR(BUSI_APPLY_DATE,'YYYY-MM-DD') AS BUSI_APPLY_DATE,--预收申请日期,
                                --TO_CHAR(INITIAL_PREM_DATE,'YYYY-MM-DD HH24:MI:SS') AS INITIAL_PREM_DATE,--首期缴费日,
                                TO_CHAR(FINISH_TIME,'YYYY-MM-DD HH24:MI:SS') AS FINISH_TIME,--到账日期,
                                TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,--承保日期,
-                               --TIO.OPERATION_TIME        AS 实际签单时点,
+                               TO_CHAR(SIGN_TIME,'YYYY-MM-DD HH24:MI:SS') AS SIGN_TIME,--签单时间,
                                TO_CHAR(VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,--保单生效日,
                                TO_CHAR(INSERT_TIME_ZZ,'YYYY-MM-DD HH24:MI:SS') AS INSERT_TIME_ZZ,--纸质保单核心推送打印日期, 
                                TO_CHAR(PRINT_TIME_ZZ,'YYYY-MM-DD HH24:MI:SS')  AS PRINT_TIME_ZZ,--纸质保单打印推送外包商日期,
@@ -154,7 +157,7 @@ class PostTableController extends Controller
                                FEE_STATUS,--保费是否到账
                                DZ_SIGN,--是否电子签名
                                DZ_SIGN_TYPE,   --电子签名质检类型
-                               DZ_SIGN_STATUS,   --电子签名质检结论
+                               --DZ_SIGN_STATUS,   --电子签名质检结论
                                DRQ_FLAG,
                                TO_CHAR(SL_SEND_DATE,'YYYY-MM-DD HH24:MI:SS') AS SL_SEND_DATE,--双录影音接收时间
                                TO_CHAR(SL_CHECK_DATE,'YYYY-MM-DD HH24:MI:SS') AS SL_CHECK_DATE,--双录发送外包商质检时间
@@ -169,10 +172,12 @@ class PostTableController extends Controller
             $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
             $result[$i]['policy_code'] = "'".$value['POLICY_CODE'];
             $result[$i]['apply_date'] = $value['APPLY_DATE'];
+            $result[$i]['insert_time'] = $value['INSERT_TIME'];
             $result[$i]['busi_apply_date'] = $value['BUSI_APPLY_DATE'];
             #$result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
             $result[$i]['finish_time'] = $value['FINISH_TIME'];
             $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+            $result[$i]['sign_time'] = $value['SIGN_TIME'];
             $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
             $result[$i]['insert_time_zz'] = $value['INSERT_TIME_ZZ'];
             $result[$i]['print_time_zz'] = $value['PRINT_TIME_ZZ'];
@@ -210,7 +215,7 @@ class PostTableController extends Controller
             $result[$i]['customer_birthday'] = $value['CUSTOMER_BIRTHDAY'];
             $result[$i]['dz_sign'] = $value['DZ_SIGN'];
             $result[$i]['dz_sign_type'] = $value['DZ_SIGN_TYPE'];
-            $result[$i]['dz_sign_status'] = $value['DZ_SIGN_STATUS'];
+            #$result[$i]['dz_sign_status'] = $value['DZ_SIGN_STATUS'];
             $result[$i]['drq_flag'] = $value['DRQ_FLAG'];
             $result[$i]['sl_send_date'] = $value['SL_SEND_DATE'];
             $result[$i]['sl_check_date'] = $value['SL_CHECK_DATE'];
