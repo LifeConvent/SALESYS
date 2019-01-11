@@ -65,6 +65,10 @@ function exportExcel() {
     window.location.href = HOST + "index.php/Home/PostTable/expNbPostStream";
 }
 
+function exportExcelScan() {
+    window.location.href = HOST + "index.php/Home/PostTable/expNbScan";
+}
+
 var TableInit = function () {
     var oTableInit = new Object();
     //初始化Table

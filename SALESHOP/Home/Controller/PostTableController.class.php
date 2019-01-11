@@ -87,6 +87,7 @@ class PostTableController extends Controller
             array('customer_name', '投保人姓名'),
             array('customer_birthday', '投保人生日'),
             array('billcard_status', '单证UA031扫描状态'),
+            array('billcard_status_ua008', '单证UA008扫描状态'),
             array('bank_name', '银行'),
             array('account_bank', '银行代码'),
             array('account', '银行账户'),
@@ -94,11 +95,11 @@ class PostTableController extends Controller
             array('bank_branch_name', '银代银行网点名称'),
             array('agent_code', '业务员代码'),
             array('agent_name', '业务员姓名'),
-            array('unit', '份数'),
-            array('product_code_sys', '险种代码'),
-            array('product_name_sys', '险种名称'),
-            array('amount', '保额'),
-            array('total_prem_af', '保费'),
+            array('unit', '主险份数'),
+            array('product_code_sys', '主险种代码'),
+            array('product_name_sys', '主险种名称'),
+            array('amount', '主险保额'),
+            array('total_prem_af', '总保费'),
             array('fee_status', '保费是否到账'),
             array('dz_sign', '是否电子签名'),
             array('dz_sign_type', '电子签名质检类型及质检结论'),
@@ -142,6 +143,7 @@ class PostTableController extends Controller
                                CUSTOMER_NAME,--投保人姓名
                                TO_CHAR(CUSTOMER_BIRTHDAY,'YYYY-MM-DD') AS CUSTOMER_BIRTHDAY,--投保人生日
                                BILLCARD_STATUS,--单证UA031扫描状态
+                               BILLCARD_STATUS_UA008,--单证UA008扫描状态
                                BANK_NAME,--银行
                                ACCOUNT_BANK,--银行代码
                                ACCOUNT,--银行账户
@@ -197,6 +199,7 @@ class PostTableController extends Controller
             $result[$i]['cancel_date'] = $value['CANCEL_DATE'];
             $result[$i]['customer_name'] = $value['CUSTOMER_NAME'];
             $result[$i]['billcard_status'] = $value['BILLCARD_STATUS'];
+            $result[$i]['billcard_status_ua008'] = $value['BILLCARD_STATUS_UA008'];
             $result[$i]['bank_name'] = $value['BANK_NAME'];
             $result[$i]['account_bank'] = $value['ACCOUNT_BANK'];
             $result[$i]['account'] = "'".$value['ACCOUNT'];
@@ -420,6 +423,57 @@ class PostTableController extends Controller
             $result[$i]['amount'] = $value['AMOUNT'];
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
+        }
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        $method->exportExcelNbPostStream($xlsTitle, $xlsCell, $res, $xlsName);
+    }
+
+    public function expNbScan()
+    {
+        //导出Excel
+        $xlsName = "新契约签单扫描及回单清单";
+        $xlsTitle = "新契约签单扫描及回单清单";
+        $xlsCell = array( //设置字段名和列名的映射
+            array('apply_code', '投保单号'),
+            array('policy_code', '保单号'),
+            array('issue_date', '承保日期'),
+            array('sales_channel_name', '投保渠道'),
+            array('organ_code', '管理机构'),
+            array('agent_code', '业务员代码'),
+            array('agent_name', '业务员姓名'),
+            array('status_desc', '投保单状态'),
+            array('billcard_code', '单证UA031扫描状态')
+        );
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $select_bqsl = "SELECT DISTINCT
+                               APPLY_CODE,--           AS 投保单号,
+                               POLICY_CODE,--          AS 保单号,
+                               TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,--           AS 承保日期, 
+                               --TIO.OPERATION_TIME        AS 签单日期,
+                               SALES_CHANNEL_NAME,--    AS 投保渠道,
+                               ORGAN_CODE,--           AS 管理机构,
+                               AGENT_CODE,--             AS 业务员代码,
+                               AGENT_NAME,--             AS 业务员姓名,
+                               STATUS_DESC,--            AS 投保单状态,
+                               BILLCARD_CODE  -- 单证UA031扫描状态
+                          FROM TMP_QDSX_NB_QD_SMHD 
+                          WHERE 1=1 ";
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+            $result[$i]['policy_code'] = "'".$value['POLICY_CODE'];
+            $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+            $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
+            $result[$i]['status_desc'] = $value['STATUS_DESC'];
+            $result[$i]['billcard_code'] = $value['BILLCARD_CODE'];
+            $result[$i]['agent_code'] = $value['AGENT_CODE'];
+            $result[$i]['agent_name'] = $value['AGENT_NAME'];
         }
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];

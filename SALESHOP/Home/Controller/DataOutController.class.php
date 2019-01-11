@@ -1038,7 +1038,7 @@ class DataOutController extends Controller
             $result[$i]['issue_date'] = $value['ISSUE_DATE'];
             $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
             $result[$i]['finish_time'] = $value['FINISH_TIME'];
-            #$result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
+//            $result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
             $result[$i]['charge_year'] = $value['CHARGE_YEAR'];
             $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
             $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
@@ -1058,6 +1058,7 @@ class DataOutController extends Controller
             $result[$i]['agent_name'] = $value['AGENT_NAME'];
             $result[$i]['unit'] = $value['UNIT'];
             $result[$i]['master_busi'] = $value['MASTER_BUSI'];
+
             $result[$i]['product_code_sys'] = $value['PRODUCT_CODE_SYS'];
             $result[$i]['product_name_sys'] = $value['PRODUCT_NAME_SYS'];
             $result[$i]['amount'] = $value['AMOUNT'];
@@ -1067,6 +1068,6 @@ class DataOutController extends Controller
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
-        $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
+        $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
 }

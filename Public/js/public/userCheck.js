@@ -36,9 +36,21 @@ $(function () {
         $('#day_post_other').hide();
         $('#user').hide();
         $('#course').hide();
-        $('#data_export').hide();
         $('#nb_post').hide();
         $('#home').hide();
         $('#sale').hide();
+        $('#data_export').show();
+        $('#data_out_ct').show();
+        $('#data_ct_all').show();
+        $('#data_nb_cb').hide();
+        $('#data_nb_tb').hide();
+        $('#data_nb_hz').hide();
+        $('#data_nb_ys').hide();
+        $('#data_cap_cs').hide();
+        $('#data_cap_nb').hide();
+        $('#data_cap_nb_no_arrive').hide();
+        $('#data_cap_cs_back').hide();
+        $('#data_export_num').text(2);
+        // $('#data_export').hide();
     }
 });
