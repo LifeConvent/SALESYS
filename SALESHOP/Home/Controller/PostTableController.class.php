@@ -12,6 +12,7 @@ use Think\Log;
 
 class PostTableController extends Controller
 {
+
     public function nbPostStream()
     {
         $username = '';
@@ -30,7 +31,6 @@ class PostTableController extends Controller
             $this->redirect('Index/index');
         }
     }
-
     public function ydPostTb()
     {
         $username = '';
@@ -87,7 +87,9 @@ class PostTableController extends Controller
             array('customer_name', '投保人姓名'),
             array('customer_birthday', '投保人生日'),
             array('billcard_status', '单证UA031扫描状态'),
+            array('ua031_scan_time', '单证UA031扫描时间'),
             array('billcard_status_ua008', '单证UA008扫描状态'),
+            array('ua008_scan_time', '单证UA008扫描时间'),
             array('bank_name', '银行'),
             array('account_bank', '银行代码'),
             array('account', '银行账户'),
@@ -118,7 +120,7 @@ class PostTableController extends Controller
                                TO_CHAR(INSERT_TIME,'YYYY-MM-DD HH24:MI:SS') AS INSERT_TIME, --入库时间,
                                TO_CHAR(BUSI_APPLY_DATE,'YYYY-MM-DD') AS BUSI_APPLY_DATE,--预收申请日期,
                                --TO_CHAR(INITIAL_PREM_DATE,'YYYY-MM-DD HH24:MI:SS') AS INITIAL_PREM_DATE,--首期缴费日,
-                               TO_CHAR(FINISH_TIME,'YYYY-MM-DD HH24:MI:SS') AS FINISH_TIME,--到账日期,
+                               TO_CHAR(FINISH_TIME,'YYYY-MM-DD') AS FINISH_TIME,--到账日期,
                                TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,--承保日期,
                                TO_CHAR(SIGN_TIME,'YYYY-MM-DD HH24:MI:SS') AS SIGN_TIME,--签单时间,
                                TO_CHAR(VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,--保单生效日,
@@ -143,7 +145,9 @@ class PostTableController extends Controller
                                CUSTOMER_NAME,--投保人姓名
                                TO_CHAR(CUSTOMER_BIRTHDAY,'YYYY-MM-DD') AS CUSTOMER_BIRTHDAY,--投保人生日
                                BILLCARD_STATUS,--单证UA031扫描状态
+                               TO_CHAR(UA031_SCAN_TIME,'YYYY-MM-DD') AS UA031_SCAN_TIME,--单证UA031扫描时间,
                                BILLCARD_STATUS_UA008,--单证UA008扫描状态
+                               TO_CHAR(UA008_SCAN_TIME,'YYYY-MM-DD') AS UA008_SCAN_TIME,--单证UA008扫描时间,
                                BANK_NAME,--银行
                                ACCOUNT_BANK,--银行代码
                                ACCOUNT,--银行账户
@@ -199,7 +203,9 @@ class PostTableController extends Controller
             $result[$i]['cancel_date'] = $value['CANCEL_DATE'];
             $result[$i]['customer_name'] = $value['CUSTOMER_NAME'];
             $result[$i]['billcard_status'] = $value['BILLCARD_STATUS'];
+            $result[$i]['ua031_scan_time'] = $value['UA031_SCAN_TIME'];
             $result[$i]['billcard_status_ua008'] = $value['BILLCARD_STATUS_UA008'];
+            $result[$i]['ua008_scan_time'] = $value['UA008_SCAN_TIME'];
             $result[$i]['bank_name'] = $value['BANK_NAME'];
             $result[$i]['account_bank'] = $value['ACCOUNT_BANK'];
             $result[$i]['account'] = "'".$value['ACCOUNT'];
