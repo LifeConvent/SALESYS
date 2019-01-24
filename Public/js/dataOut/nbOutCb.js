@@ -346,6 +346,13 @@ var TableInit = function () {
                     valign: 'middle',
                     title: '保费是否到账',
                     width:100
+                }, {
+                    field: 'fyc',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: 'FYC',
+                    width:100
                 }]
         });
     };

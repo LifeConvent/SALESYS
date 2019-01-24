@@ -820,7 +820,8 @@ class DataOutController extends Controller
                                PRODUCT_NAME_SYS,
                                AMOUNT,
                                TOTAL_PREM_AF,
-                               FEE_STATUS
+                               FEE_STATUS,
+                               FYC
                           FROM TMP_QDSX_NB_QD_CB
                          WHERE 1=1 ".$where_time_bqsl."
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
@@ -860,6 +861,7 @@ class DataOutController extends Controller
             $result[$i]['amount'] = $value['AMOUNT'];
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
+            $result[$i]['fyc'] = $value['FYC'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -988,7 +990,8 @@ class DataOutController extends Controller
             array('product_name_sys', '险种名称'),
             array('amount', '保额'),
             array('total_prem_af', '保费'),
-            array('fee_status', '保费是否到账')
+            array('fee_status', '保费是否到账'),
+            array('fyc', 'FYC')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -1023,7 +1026,8 @@ class DataOutController extends Controller
                                PRODUCT_NAME_SYS,
                                AMOUNT,
                                TOTAL_PREM_AF,
-                               FEE_STATUS
+                               FEE_STATUS,
+                               FYC
                           FROM TMP_QDSX_NB_QD_CB
                            --AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE)
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
@@ -1058,12 +1062,12 @@ class DataOutController extends Controller
             $result[$i]['agent_name'] = $value['AGENT_NAME'];
             $result[$i]['unit'] = $value['UNIT'];
             $result[$i]['master_busi'] = $value['MASTER_BUSI'];
-
             $result[$i]['product_code_sys'] = $value['PRODUCT_CODE_SYS'];
             $result[$i]['product_name_sys'] = $value['PRODUCT_NAME_SYS'];
             $result[$i]['amount'] = $value['AMOUNT'];
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
+            $result[$i]['fyc'] = $value['FYC'];
         }
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
