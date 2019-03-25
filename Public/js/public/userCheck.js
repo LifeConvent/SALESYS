@@ -53,4 +53,105 @@ $(function () {
         $('#data_export_num').text(2);
         // $('#data_export').hide();
     }
+    //清单类型权限控制
+    var list_type = $('#list_type').text();
+    switch (list_type) {
+        case '99'://管理员
+            //清单导出
+            $('#list_out').show();
+            $('#data_export').show();
+            $('#data_out_ct').show();
+            $('#data_ct_all').show();
+            $('#data_nb_cb').show();
+            $('#data_nb_tb').show();
+            $('#data_nb_hz').show();
+            $('#data_nb_ys').show();
+            $('#data_cap_cs').show();
+            $('#data_cap_nb').show();
+            $('#data_cap_nb_no_arrive').show();
+            $('#data_cap_cs_back').show();
+            //契约清单
+            $('#list_nb').show();
+            $('#nb_post_table_stream').show();
+            //银代清单
+            $('#list_yd').show();
+            $('#yd_post_table').show();
+            break;
+        case '0':
+            $('#list_out').hide();
+            $('#list_nb').hide();
+            $('#list_yd').hide();
+            break;
+        case '1'://保全
+            $('#list_out').show();
+            $('#data_export').show();
+            $('#data_out_ct').show();
+            $('#data_ct_all').show();
+            $('#data_cap_cs').show();
+            $('#data_cap_cs_back').show();
+            $('#data_export_num').text(4);
+            //契约
+            $('#data_nb_cb').hide();
+            $('#data_nb_tb').hide();
+            $('#data_nb_hz').hide();
+            $('#data_nb_ys').hide();
+            $('#data_cap_nb').hide();
+            $('#data_cap_nb_no_arrive').hide();
+            //银代契约
+            $('#list_nb').hide();
+            $('#list_yd').hide();
+            break;
+        case '2'://契约
+            $('#list_out').show();
+            $('#data_export').show();
+            //保全
+            $('#data_out_ct').hide();
+            $('#data_ct_all').hide();
+            $('#data_cap_cs').hide();
+            $('#data_cap_cs_back').hide();
+            //契约
+            $('#data_nb_cb').show();
+            $('#data_nb_tb').show();
+            $('#data_nb_hz').show();
+            $('#data_nb_ys').show();
+            $('#data_cap_nb').show();
+            $('#data_cap_nb_no_arrive').show();
+            $('#data_export_num').text(6);
+            //银代契约
+            $('#list_nb').hide();
+            $('#list_yd').hide();
+            break;
+        case '3':
+            break;
+        case '4':
+            break;
+        case '5':
+            break;
+        case '6':
+            //银代财富
+            $('#list_yd').show();
+            $('#yd_post_table').show();
+            //导出清单
+            $('#list_out').show();
+            $('#data_export').show();
+            $('#data_out_ct').show();
+            $('#data_ct_all').show();
+            $('#data_export_num').text(2);
+            $('#data_nb_cb').hide();
+            $('#data_nb_tb').hide();
+            $('#data_nb_hz').hide();
+            $('#data_nb_ys').hide();
+            $('#data_cap_cs').hide();
+            $('#data_cap_nb').hide();
+            $('#data_cap_nb_no_arrive').hide();
+            $('#data_cap_cs_back').hide();
+            //契约清单
+            $('#list_nb').hide();
+            break;
+        default://全部隐藏
+            $('#list_out').hide();
+            $('#list_nb').hide();
+            $('#list_yd').hide();
+            break;
+    }
 });

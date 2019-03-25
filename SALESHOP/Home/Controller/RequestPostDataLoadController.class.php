@@ -29,6 +29,7 @@ class RequestPostDataLoadController extends Controller
             $this->assign('exec_type', $exec_type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
+            $this->assign('list_type',  $method->getListTypeBySql($username));
             $this->display();
         } else {
             $this->redirect('Index/index');

@@ -26,6 +26,7 @@ class PostTableController extends Controller
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
+            $this->assign('list_type',  $method->getListTypeBySql($username));
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -44,6 +45,7 @@ class PostTableController extends Controller
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
+            $this->assign('list_type',  $method->getListTypeBySql($username));
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -97,6 +99,9 @@ class PostTableController extends Controller
             array('bank_branch_name', '银代银行网点名称'),
             array('agent_code', '业务员代码'),
             array('agent_name', '业务员姓名'),
+            array('agent_area', '营业区'),
+            array('agent_part', '营业部'),
+            array('agent_group', '营业组'),
             array('unit', '主险份数'),
             array('product_code_sys', '主险种代码'),
             array('product_name_sys', '主险种名称'),
@@ -113,6 +118,17 @@ class PostTableController extends Controller
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
         $select_bqsl = "SELECT ORGAN_CODE,--管理机构,
                                APPLY_CODE,--投保单号,
                                POLICY_CODE,--保单号,
@@ -155,6 +171,9 @@ class PostTableController extends Controller
                                BANK_BRANCH_NAME,--银代银行网点名称
                                AGENT_CODE,--业务员代码
                                AGENT_NAME,--业务员姓名
+                               AGENT_AREA,--业务员营业区
+                               AGENT_PART,--业务员营业部
+                               AGENT_GROUP,--业务员营业组
                                UNIT,--份数
                                PRODUCT_CODE_SYS,--险种代码
                                PRODUCT_NAME_SYS,--险种名称
@@ -169,7 +188,7 @@ class PostTableController extends Controller
                                TO_CHAR(SL_CHECK_DATE,'YYYY-MM-DD HH24:MI:SS') AS SL_CHECK_DATE,--双录发送外包商质检时间
                                SL_CHECK_STATUS--双录外包商质检状态
                           FROM TMP_QDSX_NB_QD_LC
-                          WHERE 1=1 ";
+                          WHERE 1=1 ".$where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -213,6 +232,9 @@ class PostTableController extends Controller
             $result[$i]['bank_branch_name'] = $value['BANK_BRANCH_NAME'];
             $result[$i]['agent_code'] = $value['AGENT_CODE'];
             $result[$i]['agent_name'] = $value['AGENT_NAME'];
+            $result[$i]['agent_area'] = $value['AGENT_AREA'];
+            $result[$i]['agent_part'] = $value['AGENT_PART'];
+            $result[$i]['agent_group'] = $value['AGENT_GROUP'];
             $result[$i]['unit'] = $value['UNIT'];
             $result[$i]['product_code_sys'] = $value['PRODUCT_CODE_SYS'];
             $result[$i]['product_name_sys'] = $value['PRODUCT_NAME_SYS'];
@@ -245,6 +267,17 @@ class PostTableController extends Controller
         } else {
             $where_time_bqsl = " AND TRUNC(APPLY_DATE) = TRUNC(SYSDATE) ";
         }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
         $select_bqsl = "SELECT DISTINCT
                            TO_CHAR(APPLY_DATE,'YYYY-MM-DD HH24:MI:SS') AS APPLY_DATE,--            AS 投保日期,
                            ORGAN_CODE,--            AS 管理机构,
@@ -276,7 +309,7 @@ class PostTableController extends Controller
                            TOTAL_PREM_AF,  --                   AS 保费,
                            FEE_STATUS   -- AS 保费是否到账
                      FROM TMP_QDSX_NB_QD_TB_YD
-                     WHERE 1=1 ".$where_time_bqsl."
+                     WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
                      ORDER BY APPLY_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
@@ -363,6 +396,17 @@ class PostTableController extends Controller
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
         $select_bqsl = "SELECT DISTINCT
                            TO_CHAR(APPLY_DATE,'YYYY-MM-DD HH24:MI:SS') AS APPLY_DATE,--            AS 投保日期,
                            ORGAN_CODE,--            AS 管理机构,
@@ -394,7 +438,7 @@ class PostTableController extends Controller
                            TOTAL_PREM_AF,  --                   AS 保费,
                            FEE_STATUS   -- AS 保费是否到账
                      FROM TMP_QDSX_NB_QD_TB_YD
-                     WHERE 1=1 
+                     WHERE 1=1 ".$where_type_fix."
                      ORDER BY APPLY_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
@@ -449,11 +493,25 @@ class PostTableController extends Controller
             array('organ_code', '管理机构'),
             array('agent_code', '业务员代码'),
             array('agent_name', '业务员姓名'),
+            array('agent_area', '营业区'),
+            array('agent_part', '营业部'),
+            array('agent_group', '营业组'),
             array('status_desc', '投保单状态'),
             array('billcard_code', '单证UA031扫描状态')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
         $select_bqsl = "SELECT DISTINCT
                                APPLY_CODE,--           AS 投保单号,
                                POLICY_CODE,--          AS 保单号,
@@ -463,10 +521,13 @@ class PostTableController extends Controller
                                ORGAN_CODE,--           AS 管理机构,
                                AGENT_CODE,--             AS 业务员代码,
                                AGENT_NAME,--             AS 业务员姓名,
+                               AGENT_AREA,--业务员营业区
+                               AGENT_PART,--业务员营业部
+                               AGENT_GROUP,--业务员营业组
                                STATUS_DESC,--            AS 投保单状态,
                                BILLCARD_CODE  -- 单证UA031扫描状态
                           FROM TMP_QDSX_NB_QD_SMHD 
-                          WHERE 1=1 ";
+                          WHERE 1=1 ".$where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -480,6 +541,9 @@ class PostTableController extends Controller
             $result[$i]['billcard_code'] = $value['BILLCARD_CODE'];
             $result[$i]['agent_code'] = $value['AGENT_CODE'];
             $result[$i]['agent_name'] = $value['AGENT_NAME'];
+            $result[$i]['agent_area'] = $value['AGENT_AREA'];
+            $result[$i]['agent_part'] = $value['AGENT_PART'];
+            $result[$i]['agent_group'] = $value['AGENT_GROUP'];
         }
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
