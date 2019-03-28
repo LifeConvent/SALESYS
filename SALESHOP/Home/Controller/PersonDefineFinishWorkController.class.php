@@ -744,10 +744,10 @@ class PersonDefineFinishWorkController extends Controller
                                    A.ACCEPT_STATUS,
                                    A.ORGAN_CODE,
                                    D.BUSINESS_NAME,
-                                   --(SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
-                                   B.LINK_BUSINESS_CODE AS TC_ID,
+                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                   --C.TC_ID,
                                    (CASE
-                                      WHEN B.LINK_BUSINESS_CODE IS NULL THEN B.RESULT
+                                      WHEN C.TC_ID IS NULL THEN B.RESULT
                                         ELSE '错误'
                                     END) AS RESULT,
                                    (CASE
@@ -758,11 +758,10 @@ class PersonDefineFinishWorkController extends Controller
                                   WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
                                   ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
-                                B.DESCRIPTION AS DESCRIPTION,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                   --(SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   --(SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS,
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS,
                                    A.BUSINESS_NODE,
                                    C.FIND_NODE
                                 FROM TMP_QDSX_CS_SLFH_GM A 
@@ -1332,15 +1331,6 @@ class PersonDefineFinishWorkController extends Controller
         $policy_code = $_POST['policy_code'];
         $insert_date = $_POST['insert_date'];
         $accept_code = $_POST['accept_code'];
-        $accept_code = $_POST['business_code'];
-        $description = $_POST['description'];
-        $link_business = $_POST['link_business'];
-        if(empty($description)){
-            $description = "";
-        }
-        if(empty($link_business)){
-            $link_business = "";
-        }
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
@@ -1369,21 +1359,8 @@ class PersonDefineFinishWorkController extends Controller
             exit(json_encode($result));
         }
         #$sysDate = date('yyyy/mm/dd', time());
-//        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'))";
+        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'))";
         #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
-        if(empty($policy_code)){
-            if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
-            }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
-            }
-        }else{
-            if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
-            }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
-            }
-        }
         Log::write($user_name.' 数据库查询SQL：'.$insert_sql,'INFO');
         $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
         if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
@@ -1407,20 +1384,11 @@ class PersonDefineFinishWorkController extends Controller
     public function updatePublicDefine(){
         header('Content-type: text/html; charset=utf-8');
         $user_name = $_POST['username'];
-        $result_des = $_POST['result'];
         $business_name = $_POST['business_name'];
         Log::write($user_name.' 业务节点：'.$business_name,'INFO');
         $policy_code = $_POST['policy_code'];
         $accept_code = $_POST['business_code'];
         $insert_date = $_POST['insert_date'];
-        $description = $_POST['description'];
-        $link_business = $_POST['link_business'];
-        if(empty($description)){
-            $description = "";
-        }
-        if(empty($link_business)){
-            $link_business = "";
-        }
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
@@ -1453,30 +1421,17 @@ class PersonDefineFinishWorkController extends Controller
         }
         Log::write($user_name.' 业务节点+关键业务号：'.$node_result[0]['BUSINESS_NODE'].$accept_code,'INFO');
         #$sysDate = date('yyyy/mm/dd', time());
-//        if(empty($policy_code)){
-//            if(empty($insert_date)){
-//                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
-//            }else{
-//                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'))";
-//            }
-//        }else{
-//            if(empty($insert_date)){
-//                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
-//            }else{
-//                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'))";
-//            }
-//        }
         if(empty($policy_code)){
             if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
             }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'))";
             }
         }else{
             if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
             }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'))";
             }
         }
         #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
