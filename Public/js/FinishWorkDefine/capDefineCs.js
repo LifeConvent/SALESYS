@@ -4,9 +4,9 @@
 
 $(function () {
 
-    $('#home').attr('class','active');
-    $('#data_ub').css('display','block');
-    $('#cs_difine').attr('class','active');
+    $('#cap_define').attr('class','active');
+    $('#cap_define_list').css('display','block');
+    $('#cap_define_cs').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
@@ -216,8 +216,6 @@ var TableInit = function () {
                 sortable: true,
                 title: '核对结果',
                 width:100
-                // formatter: "actionFormatter_result",
-                // events: "actionEvents_result",
             },{
                 field: 'hd_user_name',
                 align: 'center',
@@ -252,7 +250,7 @@ var TableInit = function () {
                 title: '存在问题',
                 width:230,
                 formatter: "actionFormatter_result",
-                events: "actionEvents_result"
+                events: "actionEvents_result",
             },{
                 field: 'operation',
                 title: '操作',
@@ -262,24 +260,13 @@ var TableInit = function () {
                 events: "actionEvents",
                 width:150,
                 clickToSelect: false
-            },
-            //     {
-            //     field: 'status',
-            //     align: 'center',
-            //     valign: 'middle',
-            //     title: '解决进度',
-            //     sortable: true,
-            //     width:200,
-            //     formatter: "actionFormatter_status",
-            //     events: "actionEvents_status",
-            // },
-                {
+            },{
                 field: 'busi_insert_date',
                 sortable: true,
                 align: 'center',
                 visible:false,
                 title: '-',
-                width:120
+                width:120,
             }]
         });
     };
@@ -306,48 +293,6 @@ function actionFormatter(value, row, index) {
     }
 }
 
-// window.actionEvents = {
-//     'click .modify': function (e, value, row, index) {
-//         // ajax提交数据
-//         debugger;
-//         // var link_business = $("#business"+index).val();
-//         // var description = $("#des"+index).val();
-//         var business_name = row.business_name;
-//         var accept_code = row.accept_code;
-//         var policy_code = row.policy_code;
-//         var insert_date = row.busi_insert_date;
-//         var username = $("#username").text();
-//             $.ajax({
-//                 type: "POST", //用POST方式传输
-//                 url: HOST + "index.php/Home/PersonDefineFinishWork/updateCsDefine", //目标地址.
-//                 dataType: "json", //数据格式:JSON
-//                 data: {username: username, accept_code: accept_code, policy_code: policy_code, business_name:business_name,insert_date:insert_date},
-//                 success: function (result) {
-//                     if (result.status == 'success') {
-//                         debugger;
-//                         //单行刷新数据
-//                         var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
-//                         var data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate };
-//                         $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
-//                         $.scojs_message(result.message, $.scojs_message.TYPE_OK);
-//                     } else if (result.status == 'failed') {
-//                         debugger;
-//                         $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
-//                         if(result.lock == 'true'){
-//                             window.location.href = HOST + "index.php/Home/Index/index";
-//                         }
-//                     }
-//                 },
-//                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-//                     alert(XMLHttpRequest);
-//                     alert(textStatus);
-//                     alert(errorThrown);
-//                 }
-//             });
-//     }
-// };
-
-
 window.actionEvents = {
     'click .modify': function (e, value, row, index) {
         // ajax提交数据
@@ -359,35 +304,35 @@ window.actionEvents = {
         var policy_code = row.policy_code;
         var insert_date = row.busi_insert_date;
         var username = $("#username").text();
-        $.ajax({
-            type: "POST", //用POST方式传输
-            url: HOST + "index.php/Home/PersonDefineFinishWork/updateCsDefine", //目标地址.
-            dataType: "json", //数据格式:JSON
-            data: {result: "正确",username: username, business_code: accept_code, policy_code: policy_code, business_name:business_name,insert_date:insert_date},
-            success: function (result) {
-                if (result.status == 'success') {
-                    debugger;
-                    //单行刷新数据
-                    var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
-                    var data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate };
-                    $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
-                    $("#tc"+index).disabled = true;//BUG号
-                    $("#des"+index).disabled = true;//存在问题
-                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
-                } else if (result.status == 'failed') {
-                    debugger;
-                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
-                    if(result.lock == 'true'){
-                        window.location.href = HOST + "index.php/Home/Index/index";
+            $.ajax({
+                type: "POST", //用POST方式传输
+                url: HOST + "index.php/Home/PersonDefineFinishWork/updateCapDefineCs", //目标地址.
+                dataType: "json", //数据格式:JSON
+                data: {result: "正确",username: username, business_code: accept_code, policy_code: policy_code, business_name:business_name,insert_date:insert_date},
+                success: function (result) {
+                    if (result.status == 'success') {
+                        debugger;
+                        //单行刷新数据
+                        var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
+                        var data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate };
+                        $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
+                        $("#tc"+index).disabled = true;//BUG号
+                        $("#des"+index).disabled = true;//存在问题
+                        $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                    } else if (result.status == 'failed') {
+                        debugger;
+                        $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                        if(result.lock == 'true'){
+                            window.location.href = HOST + "index.php/Home/Index/index";
+                        }
                     }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest);
+                    alert(textStatus);
+                    alert(errorThrown);
                 }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert(XMLHttpRequest);
-                alert(textStatus);
-                alert(errorThrown);
-            }
-        });
+            });
     },
     'click .modify_danger': function (e, value, row, index) {
         // ajax提交数据
@@ -412,7 +357,7 @@ window.actionEvents = {
          * */
         $.ajax({
             type: "POST", //用POST方式传输
-            url: HOST + "index.php/Home/PersonDefineFinishWork/updateCsDefine", //目标地址.
+            url: HOST + "index.php/Home/PersonDefineFinishWork/updateCapDefineCs", //目标地址.
             dataType: "json", //数据格式:JSON
             data: {result: "错误",username: username, business_code: accept_code, policy_code: policy_code, business_name:business_name,insert_date:insert_date,description:description,link_business:link_business},
             success: function (result) {

@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
     var user_day_post = $('#user_day_post').text();
     if(user_day_post!='1'){
         $('#day_post').hide();
@@ -75,12 +75,19 @@ $(function () {
             $('#nb_post_table_stream').show();
             //银代清单
             $('#list_yd').show();
-            $('#yd_post_table').show();
+            //收付费
+            $('#cap_menu').show();
+            $('#cap_define').show();
+            $('#cap_define_cs').show();
+            $('#cap_define_nb').show();
+            $('#cap_define_clm').show();
+            $('#cap_define_pa').show();
             break;
         case '0':
             $('#list_out').hide();
             $('#list_nb').hide();
             $('#list_yd').hide();
+            $('#cap_menu').hide();
             break;
         case '1'://保全
             $('#list_out').show();
@@ -100,6 +107,7 @@ $(function () {
             //银代契约
             $('#list_nb').hide();
             $('#list_yd').hide();
+            $('#cap_menu').hide();
             break;
         case '2'://契约
             $('#list_out').show();
@@ -120,6 +128,7 @@ $(function () {
             //银代契约
             $('#list_nb').hide();
             $('#list_yd').hide();
+            $('#cap_menu').hide();
             break;
         case '3':
             break;
@@ -147,11 +156,13 @@ $(function () {
             $('#data_cap_cs_back').hide();
             //契约清单
             $('#list_nb').hide();
+            $('#cap_menu').hide();
             break;
         default://全部隐藏
             $('#list_out').hide();
             $('#list_nb').hide();
             $('#list_yd').hide();
+            $('#cap_menu').hide();
             break;
     }
 });
