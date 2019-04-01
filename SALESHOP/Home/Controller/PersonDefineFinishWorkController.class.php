@@ -1275,6 +1275,135 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
+    public function getCapDefineCs(){
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        //获取用户权限类型-1-管理员2-机构组长3-个人
+        $userType = $method->getUserType();
+        $otherUser = $method->getOtherUser();
+
+        ##############################################################  公共条件处理部分-无用户区分  ############################################################################
+        if (!empty($queryDateStart)) {
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND A.SYS_INSERT_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            } else {
+                $where_time_bqsl = " AND A.SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " AND A.SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+        }
+        ##############################################################  测试数据  ############################################################################
+        #$where_time_bqsl = "";
+        ##############################################################  测试数据  ############################################################################
+        $user_name = "";
+        $method->checkIn($user_name);
+        #33 保全受理、复核处理个人待查询列表
+        $orgName = $method->getOrgName();
+        $fuhe_user = $method->getFuheUser();
+        $clm_user = $method->getClmUser();
+        $uw_user = $method->getUwUser();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+//            dump($organCode);
+            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+        }
+        if(in_array($user_name,$otherUser)){
+            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        }
+        Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
+        $num = 0;
+        ################################################################   保全受理   #######################################################################
+        //保全室、理赔室、核保室不参与
+        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+            #033 个人待确认保全受理查询
+            $select_bqsl = "SELECT A.UNIT_NUMBER,
+                                A.GROUP_NUM,
+                                A.BUSINESS_CODE,
+                                A.POLICY_CODE,
+                                A.BANK_ACCOUNT,
+                                A.BANK_CODE,
+                                A.ACCO_NAME,
+                                TO_CHAR(A.DUE_TIME,'YYYY-MM-DD') AS DUE_TIME,
+                                A.BIZ_SOURCE_NAME,
+                                A.ARAP_FLAG,
+                                A.FEE_AMOUNT,
+                                TO_CHAR(A.BUSINESS_DATE,'YYYY-MM-DD') AS BUSINESS_DATE,
+                                A.SALES_CHANNEL_NAME,
+                                A.BUSI_FEE_AMOUNT,
+                                A.IS_SAME,
+                                D.BUSINESS_NAME,
+                                TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS SYS_INSERT_DATE,
+                                B.HD_USER_NAME,
+                                B.DESCRIPTION,
+                            B.LINK_BUSINESS_CODE TC_ID,
+                            B.RESULT
+                         FROM TMP_SX_CAP_PRE_DETAIL A
+                          LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                                  ON A.UNIT_NUMBER = B.BUSINESS_CODE
+                                  AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                                  AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
+                                LEFT JOIN TMP_BUSINESS_NODE D
+                                  ON D.BUSINESS_NODE = A.BUSINESS_NODE
+                                 WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+            $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+            $bqsl_result_time = null;
+            $bqsl_result_time = $method->search_long($result_rows);
+            Log::write($user_name.' 数据库查询SQL：'.$select_bqsl,'INFO');
+            Log::write($user_name.' 数据库查询看结果：'.$bqsl_result_time,'INFO');
+            for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
+                $value = $bqsl_result_time[$i];
+                $result[$i]['unit_number'] = $value['UNIT_NUMBER'];
+                $result[$i]['business_code'] = $value['BUSINESS_CODE'];
+                $result[$i]['policy_code'] = $value['POLICY_CODE'];
+                $result[$i]['bank_account'] = $value['BANK_ACCOUNT'];
+                $result[$i]['bank_code'] = $value['BANK_CODE'];
+                $result[$i]['acco_name'] = $value['ACCO_NAME'];
+                $result[$i]['due_time'] = $value['DUE_TIME'];
+                $result[$i]['biz_source_name'] = $value['BIZ_SOURCE_NAME'];
+                $result[$i]['arap_flag'] = $value['ARAP_FLAG'];
+                $result[$i]['fee_amount'] = $value['FEE_AMOUNT'];
+                $result[$i]['business_date'] = $value['BUSINESS_DATE'];
+                $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
+                $result[$i]['busi_fee_amount'] = $value['BUSI_FEE_AMOUNT'];
+                $result[$i]['is_same'] = $value['IS_SAME'];
+                $result[$i]['business_name'] = $value['SYS_INSERT_DATE'];
+                $result[$i]['result'] = $value['RESULT'];
+                if(empty( $value['RESULT'])){
+                    $result[$i]['result'] = "-";
+                }else{
+                    $result[$i]['result'] = $value['RESULT'];
+                }
+                $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
+                $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+                if (empty($value['DESCRIPTION'])) {
+                    $result[$i]['description'] = "-";
+                } else {
+                    $result[$i]['description'] = $value['DESCRIPTION'];
+                }
+                if(empty( $value['TC_ID'])){
+                    $result[$i]['tc_id'] = "-";
+                }else{
+                    $result[$i]['tc_id'] = $value['TC_ID'];
+                }
+            }
+            $num += sizeof($bqsl_result_time);
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
     public function updateCsOutDefine(){
         header('Content-type: text/html; charset=utf-8');
         $user_name = $_POST['username'];
@@ -2259,6 +2388,8 @@ class PersonDefineFinishWorkController extends Controller
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
+            Log::write($user_name.' 数据库查询SQL：'.$select_bqsl,'INFO');
+            Log::write($user_name.' 数据库查询看结果：'.$bqsl_result_time,'INFO');
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
                 $result[$i]['case_no'] = $value['CASE_NO'];
@@ -2366,8 +2497,8 @@ class PersonDefineFinishWorkController extends Controller
                                    (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                    --C.TC_ID,
                                    (CASE
-                                      WHEN C.TC_ID IS NULL THEN B.RESULT
-                                        ELSE '错误'
+                                      WHEN (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) IS NOT NULL THEN '错误'
+                                        ELSE B.RESULT
                                     END) AS RESULT,
                                    (CASE
                                       WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
@@ -2380,7 +2511,7 @@ class PersonDefineFinishWorkController extends Controller
                                --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
                                    (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                 FROM TMP_QDSX_UW A 
                                 LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                   ON  A.BUSINESS_CODE = B.BUSINESS_CODE
@@ -2396,6 +2527,8 @@ class PersonDefineFinishWorkController extends Controller
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
+            Log::write($user_name.' 数据库查询SQL：'.$select_bqsl,'INFO');
+            Log::write($user_name.' 数据库查询看结果：'.$bqsl_result_time,'INFO');
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
                 $result[$i]['insert_date'] = $value['INSERT_DATE'];

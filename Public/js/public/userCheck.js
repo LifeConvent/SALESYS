@@ -53,6 +53,11 @@ $(function() {
         $('#data_export_num').text(2);
         // $('#data_export').hide();
     }
+    if(user_type!='1'){
+        $('#user_control').hide();
+        $('#post_day_this').hide();
+        $('#post_day_all').hide();
+    }
     //清单类型权限控制
     var list_type = $('#list_type').text();
     switch (list_type) {
@@ -134,7 +139,15 @@ $(function() {
             break;
         case '4':
             break;
-        case '5':
+        case '5'://收付费
+            $('#list_out').hide();
+            $('#list_nb').hide();
+            $('#list_yd').hide();
+            $('#cap_menu').show();
+            $('#cap_define_cs').show();
+            $('#cap_define_nb').show();
+            $('#cap_define_clm').show();
+            $('#cap_define_pa').show();
             break;
         case '6':
             //银代财富

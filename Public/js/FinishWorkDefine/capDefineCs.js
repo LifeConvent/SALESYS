@@ -22,7 +22,7 @@ $(function () {
         //     // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         // }
         $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCapDefineCs?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     $('#form_date2').datetimepicker({
@@ -40,7 +40,7 @@ $(function () {
             return;
         }
     $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PersonDefineFinishWork/getCapDefineCs?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     //1.初始化Table
@@ -76,7 +76,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
-            url: HOST + "index.php/Home/PersonDefineFinishWork/getCsDefine",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/PersonDefineFinishWork/getCapDefineCs",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             showExport: true,
@@ -91,7 +91,7 @@ var TableInit = function () {
             queryParams: oTableInit.queryParams,//传递参数（*）
 //                sidePagination: "server",   //分页方式：client客户端分页，server服务端分页（*）
             pageNumber: 1,      //初始化加载第一页，默认第一页
-            pageSize: 10,      //每页的记录行数（*）
+            pageSize: 5,      //每页的记录行数（*）
             pageList: [10,15,25,30,50,100],
             search: true,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
             strictSearch: false,
@@ -126,11 +126,18 @@ var TableInit = function () {
                     return index+1;
                 }
             }, {
-                field: 'accept_code',
+                field: 'unit_number',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '受理号',
+                title: '唯一号',
+                width:170
+            }, {
+                field: 'business_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务号',
                 width:170
             }, {
                 field: 'policy_code',
@@ -139,68 +146,75 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '保单号',
                 width:170
-            }, {
-                field: 'insert_date',
+            },  {
+                field: 'bank_account',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '操作日期',
+                title: '银行账户',
+                width:250
+            }, {
+                field: 'bank_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '银行代码',
                 width:100
             }, {
-                field: 'service_code',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '保全项',
-                width:100
-            }, {
-                field: 'service_name',
+                field: 'acco_name',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '保全项目名称',
+                title: '户名',
                 width:150
             }, {
-                field: 'user_name',
+                field: 'due_time',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '操作员',
+                title: '应缴日期',
                 width:100
             }, {
-                field: 'get_money',
+                field: 'biz_source_name',
                 sortable: true,
-                align: 'center',
                 valign: 'middle',
-                title: '金额',
+                align: 'center',
+                title: '业务来源',
                 width:100
             }, {
-                field: 'apply_date',
+                field: 'arap_flag',
                 sortable: true,
-                align: 'center',
                 valign: 'middle',
-                title: '申请日期',
+                align: 'center',
+                title: '收付标志',
                 width:100
             }, {
-                field: 'service_type',
+                field: 'business_date',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '申请方式',
+                title: '制盘时间',
                 width:100
             }, {
-                field: 'accept_status',
+                field: 'sales_channel_name',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '受理状态',
+                title: '渠道',
                 width:100
             }, {
-                field: 'organ_code',
+                field: 'fee_amount',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '作业机构',
+                title: '收付费金额',
+                width:120
+            }, {
+                field: 'busi_fee_amount',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保全金额',
                 width:100
             }, {
                 field: 'business_name',
@@ -209,6 +223,13 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '业务节点',
                 width:100
+            },{
+                field: 'is_same',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '系统比对是否一致',
+                width:150
             },{
                 field: 'result',
                 align: 'center',
@@ -239,7 +260,7 @@ var TableInit = function () {
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: 'ITSM工单号',
+                title: '缺陷号',
                 width:190,
                 formatter: "actionFormatter_tc",
                 events: "actionEvents_tc",
