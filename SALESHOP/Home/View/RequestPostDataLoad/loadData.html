@@ -96,6 +96,45 @@
                         </section>
                     </div>
 
+
+            <div class="panel" id="pa_risk_set">
+                <header class="panel-heading">
+                    <span><strong>保单核对拦截配置</strong></span>
+                </header>
+                <div class="panel-body">
+                    <div style="padding-top:10pt;">
+                        <div>
+                            <div class="col-sm-6"><span class="red">*</span><span><strong>首单保单号: </strong></span><span class="red" style="font-size:3pt"><strong>不带空格首单保单号</strong> </span><input type="text" class="form-control add_user" id="pa_risk_policy_code" placeholder="请输入首次核对正确的保单号"></div>
+                            <div class="col-sm-6"><span><strong>开始日期: <span class="red">*</span>示例：2018-04-06<span class="red" style="font-size:3pt"><strong> 需大于等于当前日期</strong> </span><input type="text" class="form-control add_user" id="pa_risk_start_date"placeholder="请输入核对开始日期"></strong></span></div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div  style="margin-top: 14pt"><span class="red">*</span><span><strong>险种组合: <span class="red">*</span>示例：946,959,976,958<span class="red" style="font-size:3pt"><strong>请使用英文格式下','否则匹配无法使用</strong> </span>
+                                <!--<span class="red">*</span>理赔核保/<span class="red">*</span>理赔审核/<span class="red">*</span>理赔自核/<span class="red">*</span>其他承保业务/<span class="red">*</span>契约核保/<span class="red">*</span>通知书/<span class="red">*</span>投保信息/<span class="red">*</span>续保核保</strong></span>-->
+                                <!--<span class="red" style="font-size:3pt"><strong>同时加载多项时分号隔开</strong> </span>-->
+                                <input type="text" class="form-control add_user" id="pa_risk_code" placeholder="请输入险种组合升序逗号隔开"></div>
+                        </div>
+                        <div>
+                            <div class="col-sm-6" style="margin-top: 14pt"><span class="red">*</span><span><strong>核对轮次: </strong></span><span class="red" style="font-size:3pt"><strong> 请在保单拦截记录信息中查询后填写，尽可填写当前或新增轮次</strong> </span><input type="text" class="form-control add_user" id="pa_risk_times" placeholder="请输入核对轮次"></div>
+                            <div class="col-sm-6" style="margin-top: 14pt"><span><strong>险种组合拦截类型: <span class="red">*</span>包含不拦截/<span class="red">*</span>除外不拦截</strong></span><span class="red" style="font-size:3pt"><strong> 当前不提供修改功能</strong> </span><input type="text" class="form-control add_user" id="pa_risk_type" value="包含不拦截" readonly></div>
+                        </div>
+                        <div class="col-sm-12" style="margin-top:20pt;margin-left:25%">
+                            <button type="button" id="pa_risk_submit" class="btn btn-primary col-sm-6">提交保单拦截配置</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <section class="panel">
+                    <header class="panel-heading">
+                        <span><strong>保单核对拦截记录</strong></span>
+                    </header>
+                    <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
+                        <table id="pa_risk_recode_table" style="table-layout: fixed;"></table>
+                    </div>
+                </section>
+            </div>
+
             <div class="panel" id="tc_data_load_exec">
                 <header class="panel-heading">
                     <span><strong>数据加载<span class="red" style="font-size: 3pt"> 系统损耗较大，谨慎点击</span></strong></span>

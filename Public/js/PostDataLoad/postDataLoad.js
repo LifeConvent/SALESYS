@@ -14,19 +14,10 @@ $(function () {
     $('#course_sub').css('display', 'block');
     $('#course_info').attr('class', 'active');
 
-//        $[sessionStorage] = oTable.queryParams;
-
-    // startWithNotice();
-    //2.初始化Button的点击事件
-    // var oButtonInit = new ButtonInit();
-    // oButtonInit.Init();
-
-
-    // $('#loadProcess').modal('show');
-    //1.初始化Table
     var oTable = new TableInit();
     oTable.Init();
-    // $('#loadProcess').modal('hide');
+    var oTable1 = new TableInit1();
+    oTable1.Init();
 
     var exec_type = $('#exec_type').text();
     if(user_type=='1'){
@@ -122,83 +113,7 @@ $(function () {
                             $('#execNb').hide();
                             break;
                     }
-    // var user_name = $('#user_name').text();
-    // $.ajax({
-    //     type: "POST", //用POST方式传输
-    //     url: HOST + "index.php/Home/RequestPostDataLoad/getExecType", //目标地址.
-    //     dataType: "json", //数据格式:JSON
-    //     data: {
-    //         user_name: user_name
-    //     },
-    //     success: function (result) {
-    //         if (result.status == 'success') {
-    //             switch (result.exec_type) {
-    //                 case '99'://管理员
-    //                     $('#execCs').show();
-    //                     $('#execClm').show();
-    //                     break;
-    //                 case '1'://保全
-    //                     $('#execCs').show();
-    //                     $('#execClm').hide();
-    //                     break;
-    //                 case '1-1'://受理
-    //                     $('#execCs').show();
-    //                     $('#execCsReview').hide();
-    //                     $('#execClm').hide();
-    //                     break;
-    //                 case '1-2'://复核
-    //                     $('#execCs').show();
-    //                     $('#execCsAccept').hide();
-    //                     $('#execClm').hide();
-    //                     break;
-    //                 case '1-3'://短信
-    //                     $('#execCs').show();
-    //                     $('#execClm').hide();
-    //                     break;
-    //                 case '2':
-    //                     $('#execClm').show();
-    //                     $('#execCs').hide();
-    //                     break;
-    //                 default://全部隐藏
-    //                     $('#execCs').hide();
-    //                     $('#execClm').hide();
-    //                     break;
-    //             }
-    //         } else if (result.status == 'failed') {
-    //             debugger;
-    //             // $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
-    //         }
-    //     },
-    //     error: function (XMLHttpRequest, textStatus, errorThrown) {
-    //         alert(XMLHttpRequest);
-    //         alert(textStatus);
-    //         alert(errorThrown);
-    //     }
-    // });
-
-
 });
-
-// function longPolling() {
-//     // alert(Date.parse(new Date())/1000);
-//     $.ajax({
-//         type: "POST", //用POST方式传输
-//         url: HOST + "index.php/Home/Method/getNotice",
-//         dataType: "json",
-//         timeout: 5000,//5秒超时，可自定义设置
-//         error: function (XMLHttpRequest, textStatus, errorThrown) {
-//             // $("#state").append("[state: " + textStatus + ", error: " + errorThrown + " ]<br/>");
-//             longPolling();
-//         },
-//         success: function (result) {
-//             // $("#state").append("[state: " + textStatus + ", data: { " + data + "} ]<br/>");
-//             if (result.status == "success") { // 请求成功
-//                 $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
-//                 longPolling();
-//             }
-//         }
-//     });
-// }
 
 var TableInit = function () {
     countFooter =  function(v){
@@ -1132,6 +1047,277 @@ $('#execNbTb').click(function() {
         });
     }
 });
+
+$('#pa_risk_submit').click(function() {
+    //加载TC原因
+    var pa_risk_policy_code = $('#pa_risk_policy_code').val();
+    var pa_risk_start_date = $('#pa_risk_start_date').val();
+    var pa_risk_code = $('#pa_risk_code').val();
+    var pa_risk_times = $('#pa_risk_times').val();
+    var pa_risk_type = $('#pa_risk_type').val();
+    debugger;
+    if (pa_risk_policy_code == "" ||pa_risk_start_date == ""  ||pa_risk_code == ""  ||pa_risk_times == ""  ||pa_risk_type == "" ) {
+        $.scojs_message('请填写必填项后再提交！', $.scojs_message.TYPE_ERROR);
+    } else {
+        if(pa_risk_type==''){
+            pa_risk_type = '1';
+        }else{
+            pa_risk_type = '2';
+        }
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/addPaRiskSet", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                pa_risk_policy_code: pa_risk_policy_code,
+                pa_risk_start_date:pa_risk_start_date,
+                pa_risk_code:pa_risk_code,
+                pa_risk_times:pa_risk_times,
+                pa_risk_type:pa_risk_type
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
+var TableInit1 = function () {
+    var oTableInit1 = new Object();
+    //初始化Table
+    oTableInit1.Init = function () {
+        $('#pa_risk_recode_table').bootstrapTable({
+            url: HOST + "index.php/Home/RequestPostDataLoad/getPaRiskSet",   //请求后台的URL（*）
+            method: 'get',      //请求方式（*）
+            showExport: true,
+            exportDataType: 'all',
+            exportTypes:[ 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf'],
+            toolbar: '#toolbar',    //工具按钮用哪个容器
+            striped: true,      //是否显示行间隔色
+            cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,     //是否显示分页（*）
+            sortable: true,      //是否启用排序
+            sortName: 'ID', // 设置默认排序为 name
+            sortOrder: 'asc', // 设置排序为正序 asc
+            queryParams: oTableInit1.queryParams,//传递参数（*）
+//                sidePagination: "server",   //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,      //初始化加载第一页，默认第一页
+            pageSize: 16,      //每页的记录行数（*）
+            search: true,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: false,
+            showColumns: true,     //是否显示所有的列
+            showRefresh: true,     //是否显示刷新按钮
+            minimumCountColumns: 2,    //最少允许的列数
+            clickToSelect: true,    //是否启用点击选中行
+            // height: 500,      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "ID",      //每一行的唯一标识，一般为主键列
+            showToggle: true,     //是否显示详细视图和列表视图的切换按钮
+            cardView: false,     //是否显示详细视图
+            detailView: false,     //是否显示父子表
+            showFooter: false,
+            silent: true,  //刷新事件必须设置
+            formatLoadingMessage: function () {
+                return "请稍等，正在加载中...";
+            },
+            formatNoMatches: function () {  //没有匹配的结果
+                return '无符合条件的记录';
+            },
+            formatSearch: function () {
+                return '搜索';
+            },
+            columns: [
+                {
+                    field: 'ID',
+                    sortable: true,
+                    align: 'center',
+                    width:40,
+                    title: '序号',
+                    formatter: function (value, row, index) {
+                        return index+1;
+                    }
+                }, {
+                    field: 'first_policy_code',
+                    sortable: true,
+                    align: 'center',
+                    title: '首单正确保单号',
+                    width:140,
+                },
+                // {
+                //     field: 'asc_code_list',//TC-1 业务-0
+                //     sortable: true,
+                //     align: 'center',
+                //     title: '险种组合',
+                //     width:100
+                // },
+                {
+                    field: 'asc_out_code_list',
+                    sortable: true,
+                    align: 'center',
+                    formatter: "actionFormatter_risklist",
+                    events: "actionEvents_risklist",
+                    title: '险种组合',
+                    width:200
+                },
+                {
+                    field: 'times',
+                    sortable: true,
+                    align: 'center',
+                    title: '核对轮次',
+                    width:100
+                },
+                {
+                    field: 'statua',
+                    sortable: true,
+                    align: 'center',
+                    title: '核对状态(有效/关闭)',
+                    formatter: "actionFormatter_pastatus",
+                    events: "actionEvents_pastatus",
+                    width:170
+                },{
+                    field: 'check_type',
+                    sortable: true,
+                    align: 'center',
+                    title: '核对类型',//0-未完成  1-完成
+                    width:100,
+                },{
+                    field: 'start_date',
+                    sortable: true,
+                    align: 'center',
+                    title: '开始日期',
+                    width:120,
+                },  {
+                    field: 'end_date',
+                    sortable: true,
+                    align: 'center',
+                    title: '结束日期',
+                    width:100,
+                }, {
+                    field: 'insert_date',
+                    sortable: true,
+                    align: 'center',
+                    title: '创建时间',
+                    width:180,
+                }, {
+                    field: 'operation',
+                    title: '操作',
+                    align: 'center',
+                    formatter: "actionFormatter_risk",
+                    events: "actionEvents_risk",
+                    width:190,
+                    clickToSelect: false
+                }]
+        });
+    };
+
+
+    //得到查询的参数
+    oTableInit1.queryParams = function (params) {
+        var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+            limit: params.limit, //页面大小
+            offset: params.offset, //页码
+            search: params.search
+        };
+        return temp;
+    };
+
+    return oTableInit1;
+};
+
+function actionFormatter_risklist(value, row, index) {
+    var valueShow = '';
+    valueShow = ' value="'+ row.asc_out_code_list +'" ';
+    return '<input id="pa_risklist'+ index+'" class="form-control nopass" style="height: 20pt;width:140pt;" disabled '+valueShow+'/>';
+}
+
+function actionFormatter_pastatus(value, row, index) {
+    var valueShow = '';
+    valueShow = ' value="'+ row.statua +'" ';
+    return '<input id="pa_status'+ index+'" class="form-control nopass" style="height: 20pt;width:120pt;" disabled '+valueShow+'/>';
+}
+
+function actionFormatter_risk(value, row, index) {
+    return '<button type="button" class="btn btn-primary modify" style="height: 20pt;width: 30pt"><span style="margin-left:-5pt;">解锁</span></button><button type="button" class="btn btn-danger modify_danger" style="height: 20pt;width: 30pt;margin-left: 5pt"><span style="margin-left:-5pt;">修改</span></button>';
+}
+
+window.actionEvents_risklist = {};
+window.actionEvents_pastatus = {};
+
+window.actionEvents_risk = {
+    'click .modify': function (e, value, row, index) {
+        $('#pa_risklist'+index).attr("disabled",false);
+        $('#pa_status'+index).attr("disabled",false);
+    },
+    'click .modify_danger': function (e, value, row, index) {
+        //修改数据库执行人，修改是否完成，更新该行数据
+        var pa_risklist = $('#pa_risklist'+index).val();
+        var pa_status = $('#pa_status'+index).val();
+        var first_policy_code = row.first_policy_code;
+        pa_status_show = pa_status;
+        if(pa_status=='有效'){
+            pa_status = '1';
+        }else if(pa_status=='关闭'){
+            pa_status = '0';
+        }else{
+            $.scojs_message('请正确输入核对状态，核对状态仅可输入有效或关闭！', $.scojs_message.TYPE_ERROR);
+            return;
+        }
+        if(pa_risklist==''){
+            $.scojs_message('请输入险种组合列表后进行修改！', $.scojs_message.TYPE_ERROR);
+            return;
+        }
+        var rows = {
+            index : index,  //更新列所在行的索引
+            field : "status", //要更新列的field
+            value : pa_status_show //要更新列的数据
+        };
+        var rows1 = {
+            index : index,  //更新列所在行的索引
+            field : "asc_out_code_list", //要更新列的field
+            value : pa_risklist //要更新列的数据
+        };
+        debugger;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/RequestPostDataLoad/updatePaRiskSet", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                status:pa_status,
+                asc_out_code_list:pa_risklist,
+                first_policy_code:first_policy_code
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                    //刷新该行数据
+                    $('#pa_risklist'+index).attr("disabled",true);
+                    $('#pa_status'+index).attr("disabled",true);
+                    $('#user_list_table').bootstrapTable("updateCell",rows);
+                    $('#user_list_table').bootstrapTable("updateCell",rows1);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                }},
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+};
 
 
 

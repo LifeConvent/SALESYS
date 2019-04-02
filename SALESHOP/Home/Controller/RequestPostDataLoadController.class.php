@@ -204,6 +204,84 @@ class RequestPostDataLoadController extends Controller
         }
     }
 
+    public function updatePaRiskSet(){
+        $status = $_POST['status'];
+        $asc_out_code_list = $_POST['asc_out_code_list'];
+        $first_policy_code = $_POST['first_policy_code'];
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if((int)$status == 0){
+            $update_sql = "UPDATE TMP_PA_RISK_SET SET STATUS = '".$status."',ASC_OUT_CODE_LIST = '".$asc_out_code_list."',END_DATE = SYSDATE WHERE FIRST_POLICY_CODE = '".$first_policy_code."'";
+        }else{
+            $update_sql = "UPDATE TMP_PA_RISK_SET SET STATUS = '".$status."',ASC_OUT_CODE_LIST = '".$asc_out_code_list."' WHERE FIRST_POLICY_CODE = '".$first_policy_code."'";
+        }
+        Log::write(' 数据库查询SQL：'.$update_sql,'INFO');
+        $result_rows = oci_parse($conn, $update_sql); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = 'success';
+            $result['message'] = '修改成功!';
+        }else{
+            $result['status'] = 'failed';
+            $result['message'] = '修改失败,请联系管理员或稍后再试!';
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function addPaRiskSet(){
+        $first_policy_code = $_POST['pa_risk_policy_code'];
+        $asc_out_code_list = $_POST['pa_risk_code'];
+        $start_date = $_POST['pa_risk_start_date'];
+        $times = $_POST['pa_risk_times'];
+        $check_type = $_POST['pa_risk_type'];
+        $status = '1';
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        //检查核对轮次
+        $select = "SELECT MAX(TIMES) AS TIMES FROM TMP_PA_RISK_SET";
+        $result_rows = oci_parse($conn, $select); // 配置SQL语句，执行SQL
+        $request_result =  $method->search_long($result_rows);
+        if(!strcmp($request_result[0]['TIMES'],$times)==0){
+            $result['status'] = 'failed';
+            $result['message'] = '配置失败,新增批次时，请关闭当前批次所有拦截任务!';
+            exit(json_encode($result));
+        }
+        $times_correct = $request_result[0]['TIMES'];
+        Log::write(' 数据库查询SQL：'.$select,'INFO');
+        $select = "SELECT CHECK_TYPE FROM TMP_PA_RISK_SET WHERE TIMES = '".$times_correct."'";
+        $result_rows = oci_parse($conn, $select); // 配置SQL语句，执行SQL
+        $request_result =  $method->search_long($result_rows);
+        Log::write($first_policy_code.'保单'.$times.' 批次类型：'.$request_result[0]['CHECK_TYPE'],'INFO');
+        if(!strcmp($request_result[0]['CHECK_TYPE'],$check_type)==0){
+            $result['status'] = 'failed';
+            $result['message'] = '配置失败,同一核对批次只可核对一次类型!';
+            exit(json_encode($result));
+        }
+        Log::write(' 数据库查询SQL：'.$select,'INFO');
+        $update_sql = "INSERT INTO TMP_PA_RISK_SET (FIRST_POLICY_CODE,ASC_OUT_CODE_LIST,START_DATE,TIMES,CHECK_TYPE,STATUS,INSERT_DATE) VALUES( '".$first_policy_code."','".$asc_out_code_list."',TO_DATE('".$start_date."','YYYY-MM-DD'),'".$times."','".$check_type."','".$status."',SYSDATE)";
+        Log::write(' 数据库查询SQL：'.$update_sql,'INFO');
+        $result_rows = oci_parse($conn, $update_sql); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = 'success';
+            $result['message'] = '配置成功!';
+        }else{
+            $result['status'] = 'failed';
+            $result['message'] = '配置失败,请检查填写格式是否正确或联系管理员!';
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
     public function addExecRecord(){
         $user_name = $_POST['user_name'];
         $business_node = $_POST['business_node'];
@@ -282,6 +360,64 @@ class RequestPostDataLoadController extends Controller
         oci_free_statement($result_rows);
         oci_close($conn);
         return $request_result[0]['EXEC_TYPE'];
+    }
+
+    public function getPaRiskSet(){
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+//        $userType = $method->getUserType();
+//        $userName = $method->getUserName();
+        $where = "";
+        $request_select  = "SELECT MAX(TIMES) AS TIMES FROM TMP_PA_RISK_SET";
+        $result_rows = oci_parse($conn, $request_select); // 配置SQL语句，执行SQL
+        $times =  $method->search_long($result_rows);
+        $where = " WHERE A.TIMES = '".$times[0]['TIMES']."' ";
+        $request_select  = "SELECT A.CODE_LIST,
+                                    A.ASC_CODE_LIST,
+                                    A.OUT_CODE_LIST,
+                                    A.ASC_OUT_CODE_LIST,
+                                    A.TIMES,
+                                    A.STATUS,
+                                    A.CHECK_TYPE,
+                                    TO_CHAR(A.START_DATE,'YYYY-MM-DD') AS START_DATE,
+                                    TO_CHAR(A.END_DATE,'YYYY-MM-DD') AS END_DATE,
+                                    TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
+                                    A.FIRST_POLICY_CODE
+                                    FROM TMP_PA_RISK_SET A".$where;
+        $result_rows = oci_parse($conn, $request_select); // 配置SQL语句，执行SQL
+        $request_result =  $method->search_long($result_rows);
+        $num = sizeof($request_result);
+        Log::write(' 数据库查询SQL：'.$request_select,'INFO');
+        for($i=0;$i<$num;$i++){
+            $result[$i]['code_list'] = $request_result[$i]['CODE_LIST'];
+            $result[$i]['asc_code_list'] = $request_result[$i]['ASC_CODE_LIST'];
+            $result[$i]['out_code_list'] = $request_result[$i]['OUT_CODE_LIST'];
+            $result[$i]['asc_out_code_list'] = $request_result[$i]['ASC_OUT_CODE_LIST'];
+            $result[$i]['times'] = $request_result[$i]['TIMES'];
+//            $result[$i]['statua'] = $request_result[$i]['STATUS'];
+            if((int)$request_result[$i]['STATUS']==1){
+                $result[$i]['statua'] = "有效";
+            }else{
+                $result[$i]['statua'] = "关闭";
+            }
+//            $result[$i]['check_type'] = $request_result[$i]['CHECK_TYPE'];
+            if((int)$request_result[$i]['CHECK_TYPE']==1){
+                $result[$i]['check_type'] = "包含不拦截";
+            }else{
+                $result[$i]['check_type'] = "除外不拦截";
+            }
+            $result[$i]['start_date'] = $request_result[$i]['START_DATE'];
+            $result[$i]['end_date'] = $request_result[$i]['END_DATE'];
+            $result[$i]['insert_date'] = $request_result[$i]['INSERT_DATE'];
+            $result[$i]['first_policy_code'] = $request_result[$i]['FIRST_POLICY_CODE'];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
     }
 
 }
