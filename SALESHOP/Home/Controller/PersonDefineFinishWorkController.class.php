@@ -1336,6 +1336,7 @@ class PersonDefineFinishWorkController extends Controller
     public function getCapDefineCs(){
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
+        $type = I('get.type');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         //获取用户权限类型-1-管理员2-机构组长3-个人
@@ -1408,7 +1409,7 @@ class PersonDefineFinishWorkController extends Controller
                                   AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
                                 LEFT JOIN TMP_BUSINESS_NODE D
                                   ON D.BUSINESS_NODE = A.BUSINESS_NODE
-                                 WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+                                 WHERE 1=1 AND A.VALUE1 = '".$type."'" . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = null;
             $bqsl_result_time = $method->search_long($result_rows);
