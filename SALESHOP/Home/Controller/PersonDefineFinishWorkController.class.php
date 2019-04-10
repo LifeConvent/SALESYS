@@ -1397,7 +1397,7 @@ class PersonDefineFinishWorkController extends Controller
                                 A.BUSI_FEE_AMOUNT,
                                 A.IS_SAME,
                                 D.BUSINESS_NAME,
-                                TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS SYS_INSERT_DATE,
+                                TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD') AS SYS_INSERT_DATE,
                                 B.HD_USER_NAME,
                                 B.DESCRIPTION,
                             B.LINK_BUSINESS_CODE TC_ID,
@@ -1431,7 +1431,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
                 $result[$i]['busi_fee_amount'] = $value['BUSI_FEE_AMOUNT'];
                 $result[$i]['is_same'] = $value['IS_SAME'];
-                $result[$i]['business_name'] = $value['SYS_INSERT_DATE'];
+                $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['result'] = $value['RESULT'];
                 if(empty( $value['RESULT'])){
                     $result[$i]['result'] = "-";
@@ -1452,6 +1452,89 @@ class PersonDefineFinishWorkController extends Controller
                 }
             }
             $num += sizeof($bqsl_result_time);
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function updateCapDefineCs(){
+        header('Content-type: text/html; charset=utf-8');
+        $user_name = $_POST['username'];
+        $result_des = $_POST['result'];
+        $business_name = $_POST['business_name'];
+        $insert_date = $_POST['insert_date'];
+        Log::write($user_name.' 业务节点：'.$business_name,'INFO');
+        $policy_code = $_POST['policy_code'];
+        $accept_code = $_POST['business_code'];
+        $description = $_POST['description'];
+        $link_business = $_POST['link_business'];
+        if(empty($description)){
+            $description = "";
+        }
+        if(empty($link_business)){
+            $link_business = "";
+        }
+        $method = new MethodController();
+        ##############################################################  公共JS处理部分  ############################################################################
+        //JS请求公共处理部分 TRUE锁定
+        if($method->publicCheckNoParam()==1){
+            $result['status'] = "failed";
+            $result['lock'] = "true";
+            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }else if($method->publicCheckNoParam()==2){
+            $result['status'] = "failed";
+            $result['lock'] = "false";
+            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
+            exit(json_encode($result));
+        }
+        ############################################################################################################################################################
+        $conn = $method->OracleOldDBCon();
+        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
+        $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
+        $node_result = $method->search_long($result_rows);
+
+        Log::write($user_name.' 业务节点：'.$business_name,'INFO');
+        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$accept_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
+        ############################################################################################################################################################
+        $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
+        $select_result = $method->search_long($result_rows1);
+        if(!empty($select_result[0]['HD_USER_NAME'])){
+            $result['status'] = "failed";
+            $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已进行该业务核对，无需进行再次核对！";
+            exit(json_encode($result));
+        }
+        Log::write($user_name.' 业务节点+关键业务号：'.$node_result[0]['BUSINESS_NODE'].$accept_code,'INFO');
+        #$sysDate = date('yyyy/mm/dd', time());
+        if(empty($policy_code)){
+            if(empty($insert_date)){
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
+            }else{
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
+            }
+        }else{
+            if(empty($insert_date)){
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
+            }else{
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
+            }
+        }
+        #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
+        Log::write($user_name.' 确认结果数据库插入SQL：'.$insert_sql,'INFO');
+        $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = "success";
+            $result['message'] = "关键业务号：".$accept_code."-业务号：".$policy_code." 确认成功！";
+        }else{
+            $result['status'] = "failed";
+            $e = oci_error();
+            $result['message'] = "确认失败".$e['message'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1643,88 +1726,6 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function updateCapDefineCs(){
-        header('Content-type: text/html; charset=utf-8');
-        $user_name = $_POST['username'];
-        $result_des = $_POST['result'];
-        $business_name = $_POST['business_name'];
-        $insert_date = $_POST['insert_date'];
-        Log::write($user_name.' 业务节点：'.$business_name,'INFO');
-        $policy_code = $_POST['policy_code'];
-        $accept_code = $_POST['business_code'];
-        $description = $_POST['description'];
-        $link_business = $_POST['link_business'];
-        if(empty($description)){
-            $description = "";
-        }
-        if(empty($link_business)){
-            $link_business = "";
-        }
-        $method = new MethodController();
-        ##############################################################  公共JS处理部分  ############################################################################
-        //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheckNoParam()==1){
-            $result['status'] = "failed";
-            $result['lock'] = "true";
-            $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
-            exit(json_encode($result));
-        }else if($method->publicCheckNoParam()==2){
-            $result['status'] = "failed";
-            $result['lock'] = "false";
-            $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
-            exit(json_encode($result));
-        }
-        ############################################################################################################################################################
-        $conn = $method->OracleOldDBCon();
-        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
-        $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
-        $node_result = $method->search_long($result_rows);
-
-        Log::write($user_name.' 业务节点：'.$business_name,'INFO');
-        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$accept_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
-        ############################################################################################################################################################
-        $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
-        $select_result = $method->search_long($result_rows1);
-        if(!empty($select_result[0]['HD_USER_NAME'])){
-            $result['status'] = "failed";
-            $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已进行该业务核对，无需进行再次核对！";
-            exit(json_encode($result));
-        }
-        Log::write($user_name.' 业务节点+关键业务号：'.$node_result[0]['BUSINESS_NODE'].$accept_code,'INFO');
-        #$sysDate = date('yyyy/mm/dd', time());
-        if(empty($policy_code)){
-            if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
-            }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
-            }
-        }else{
-            if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
-            }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
-            }
-        }
-        #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
-        Log::write($user_name.' 确认结果数据库插入SQL：'.$insert_sql,'INFO');
-        $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
-        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
-            $result['status'] = "success";
-            $result['message'] = "关键业务号：".$accept_code."-业务号：".$policy_code." 确认成功！";
-        }else{
-            $result['status'] = "failed";
-            $e = oci_error();
-            $result['message'] = "确认失败".$e['message'];
-        }
-        #######################################################################################################################################
-        oci_free_statement($result_rows);
-        oci_close($conn);
-        if ($result) {
-            exit(json_encode($result));
-        } else {
-            exit(json_encode(''));
-        }
-    }
 
     public function updateNbBdDefine(){
         header('Content-type: text/html; charset=utf-8');

@@ -282,7 +282,7 @@ var TableInit = function () {
                 width:150,
                 clickToSelect: false
             },{
-                field: 'busi_insert_date',
+                field: 'business_date',
                 sortable: true,
                 align: 'center',
                 visible:false,
@@ -319,17 +319,25 @@ window.actionEvents = {
         // ajax提交数据
         debugger;
         // var link_business = $("#business"+index).val();
-        // var description = $("#des"+index).val();
+        var description = $("#des"+index).val();
         var business_name = row.business_name;
-        var accept_code = row.accept_code;
+        var accept_code = row.business_code;
+        var unit_number = row.unit_number;
         var policy_code = row.policy_code;
-        var insert_date = row.busi_insert_date;
+        if(policy_code==""||policy_code==null){
+            policy_code = accept_code;
+        }
+        if(description!=""&&description!="-"){
+            $.scojs_message("输入错误原因后只可点击错误按钮！", $.scojs_message.TYPE_ERROR);
+            return;
+        }
+        var insert_date = row.business_date;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输
                 url: HOST + "index.php/Home/PersonDefineFinishWork/updateCapDefineCs", //目标地址.
                 dataType: "json", //数据格式:JSON
-                data: {result: "正确",username: username, business_code: accept_code, policy_code: policy_code, business_name:business_name,insert_date:insert_date},
+                data: {result: "正确",username: username, business_code: unit_number, link_business:accept_code,policy_code: policy_code, business_name:business_name,insert_date:insert_date},
                 success: function (result) {
                     if (result.status == 'success') {
                         debugger;
@@ -361,9 +369,13 @@ window.actionEvents = {
         var link_business = $("#tc"+index).val();//BUG号
         var description = $("#des"+index).val();//存在问题
         var business_name = row.business_name;//业务节点
-        var accept_code = row.accept_code;//存储关键业务号
+        var unit_number = row.unit_number;
+        var accept_code = row.business_code;//存储关键业务号
         var policy_code = row.policy_code;//存储关键业务号
-        var insert_date = row.busi_insert_date;//系统插入时间
+        if(policy_code==""||policy_code==null){
+            policy_code = accept_code;
+        }
+        var insert_date = row.business_date;//系统插入时间
         var username = $("#username").text();
         //条件校验
         if(description==""||description=="-"){
@@ -380,13 +392,13 @@ window.actionEvents = {
             type: "POST", //用POST方式传输
             url: HOST + "index.php/Home/PersonDefineFinishWork/updateCapDefineCs", //目标地址.
             dataType: "json", //数据格式:JSON
-            data: {result: "错误",username: username, business_code: accept_code, policy_code: policy_code, business_name:business_name,insert_date:insert_date,description:description,link_business:link_business},
+            data: {result: "错误",username: username, business_code: unit_number, policy_code: policy_code, business_name:business_name,insert_date:insert_date,description:description,link_business:link_business},
             success: function (result) {
                 if (result.status == 'success') {
                     debugger;
                     //单行刷新数据
                     var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
-                    var data = { "result" : "错误", "hd_user_name" : username, "sys_insert_date" :sysDate , "description" :description, "link_business" :link_business };
+                    var data = { "result" : "错误", "hd_user_name" : username, "sys_insert_date" :sysDate , "description" :description, "tc_id" :link_business };
                     $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
                     $("#tc"+index).disabled = true;//BUG号
                     $("#des"+index).disabled = true;//存在问题

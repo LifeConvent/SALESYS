@@ -709,6 +709,7 @@ class DataOutController extends Controller
                           FROM TMP_QDSX_NB_QD_YS
                           WHERE 1=1 ".$where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        Log::write($user_name.' 预收清单 数据库查询条件：'.$select_bqsl,'INFO');
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
