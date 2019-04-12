@@ -207,14 +207,14 @@ var TableInit = function () {
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '续期金额',
+                title: '收付费金额',
                 width:120
             }, {
                 field: 'busi_fee_amount',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '保全金额',
+                title: '续期金额',
                 width:100
             }, {
                 field: 'business_name',

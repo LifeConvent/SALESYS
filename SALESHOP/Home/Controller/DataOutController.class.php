@@ -945,6 +945,7 @@ class DataOutController extends Controller
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
+        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['apply_date'] = $value['APPLY_DATE'];
