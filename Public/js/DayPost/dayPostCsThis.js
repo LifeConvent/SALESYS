@@ -1,21 +1,3 @@
-
-//重新加载TC
-// function reloadTc(){
-//     $('.fade').show();
-//     $.ajax({
-//         type : "get",
-//         url :  'api/ReloadTc',
-//         dataType : 'json',
-//         async : true,
-//         success : function(data) {
-//             if(data){
-//                 BootstrapDialog.alert("TC重加载成功")
-//             }
-//             $('.fade').hide()
-//         }
-//     });
-// }
-
 $(function () {
 
     $('#day_post').attr('class','active');
@@ -215,7 +197,7 @@ var TableInit = function () {
     // });
 
 
-    //刷新数据
+//刷新数据
     // $('.loadbxdata').click(function(){
     //     BootstrapDialog.confirm('生成数据会耗时较久，且影响历史数据，确认是否继续', function(result){
     //         if(result) {

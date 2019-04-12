@@ -1,21 +1,3 @@
-
-//重新加载TC
-// function reloadTc(){
-//     $('.fade').show();
-//     $.ajax({
-//         type : "get",
-//         url :  'api/ReloadTc',
-//         dataType : 'json',
-//         async : true,
-//         success : function(data) {
-//             if(data){
-//                 BootstrapDialog.alert("TC重加载成功")
-//             }
-//             $('.fade').hide()
-//         }
-//     });
-// }
-
 $(function () {
 
     $('#day_post').attr('class','active');

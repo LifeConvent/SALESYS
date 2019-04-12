@@ -4,9 +4,9 @@
 
 $(function () {
 
-    $('#weChat').attr('class','active');
-    $('#weChat_sub').css('display','block');
-    $('#weChat_groupSend').attr('class','active');
+    $('#day_post_other').attr('class','active');
+    $('#day_post_three').css('display','block');
+    $('#day_post_tc').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
