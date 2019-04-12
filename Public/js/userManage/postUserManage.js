@@ -14,7 +14,7 @@ $(function () {
 
     $('#modify_user_account').val($('#username').val());
 
-    var type = $('#usertype').val();
+    var type = $('#user_type').val();
     if(type==1){
         $('#modify_user_account').removeAttr("disabled");
     }
@@ -244,7 +244,7 @@ window.actionEvents = {
 
 window.actionEvents1 = {
     'click .lock': function (e, value, row, index) {
-        var type = $('#usertype').val();
+        var type = $('#user_type').val();
         if(type!="1"){
             $(".user_input"+index).removeAttr("disabled");
             $("#type"+index).attr("disabled","disabled");
@@ -325,8 +325,8 @@ window.actionEvents1 = {
 };
 
 $('#new_user').click(function() {
-    var user_type = $('#usertype').val();
-    if(user_type!='1'){
+    var usertype = $('#user_type').val();
+    if(usertype!='1'){
         $.scojs_message('您不具有添加用户的权限，如需添加用户请联系管理员！', $.scojs_message.TYPE_ERROR);
         return;
     }
@@ -336,7 +336,7 @@ $('#new_user').click(function() {
     user_pass = hex_md5(user_pass);
     debugger;
     var user_name = $('#user_name').val();
-    var user_type = $('#user_type').val();
+    var user_type = $('#user_type_input').val();
     var user_organ_code = $('#user_organ_code').val();
     var user_organ_name = $('#user_organ_name').val();
     var user_sex = $('#user_sex').val();
