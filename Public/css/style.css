@@ -191,7 +191,7 @@ a, a:hover, a:focus {
     margin: 0;
     padding: 20px 15px;
     text-align: center;
-    background: #2e9dbd;
+    background: #A9D86E;
     border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     color: #fff;
@@ -236,12 +236,12 @@ a, a:hover, a:focus {
 }
 
 .form-signin .btn-login {
-    background: #3ac2e9;
+    background: #A9D86E;
     color: #fff;
     text-transform: uppercase;
     font-weight: 600;
     font-family: 'Open Sans', sans-serif;
-    box-shadow: 0 4px #2da5c8;
+    box-shadow: 0 4px #A9D86E;
     margin-bottom: 20px;
 }
 
@@ -483,8 +483,8 @@ ul.sidebar-menu li a.active i {
 }
 
 .white-bg {
-    background: #72d0eb;
-    border-bottom: 1px solid #a0d9ea;
+    background: #38eaed;
+    border-bottom: 1px solid #38eaed;
 }
 
 .wrapper {
@@ -5208,7 +5208,7 @@ tr.odd.gradeX td.sorting_1, tr.even.gradeX td.sorting_1, table.display tr.even.g
 }
 
 .login-screen {
-    background: #02bac6;
+    background: #2a3542;
     background-size: cover;
     background-repeat: repeat;
 }
