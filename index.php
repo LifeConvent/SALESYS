@@ -12,8 +12,8 @@ define('APP_DEBUG', True);
 define('APP_PATH', './SALESHOP/');
 define('APP_NAME', './SALESHOP');
 define('KEY', 'Ia0CtpywryfU5VGNAlk23s8ctM-99v7we2HZmkVuh_szDz3dinL9aQ9gqslBTZk2');
-define('TITLE', 'DAY-POST  日报系统');
-define('HOST', 'http://10.0.56.115/');
-//define('HOST', 'http://localhost/');
+define('TITLE', 'WEEK-SUM  周总结系统');
+//define('HOST', 'http://10.0.56.115/');
+define('HOST', 'http://localhost/');
 //引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';
