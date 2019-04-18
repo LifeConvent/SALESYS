@@ -13,6 +13,21 @@ use Think\Log;
 class MethodController extends Controller
 {
 
+    public function getSystype($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SYS_TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if((int)$result[0]['SYS_TYPE']!=2&&(int)$result[0]['SYS_TYPE']!=999) { //并行系统
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public function getUserID(&$ID){
         $token = $_SESSION['token'];
         $token = $this->decode($token);
