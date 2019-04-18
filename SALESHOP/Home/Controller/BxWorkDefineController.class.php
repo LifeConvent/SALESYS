@@ -2,18 +2,18 @@
 /**
  * Created by PhpStorm.
  * User: gaobiao
- * Date: 2019/1/18
- * Time: 15:12
+ * Date: 2019/4/18
+ * Time: 9:11
  */
 
 namespace Home\Controller;
 use Think\Controller;
 use Think\Log;
 
-class WorkDetailPostController extends Controller
+
+class BxWorkDefineController extends Controller
 {
-    public function workDetail()
-    {
+    public function csDefine(){
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
@@ -25,6 +25,7 @@ class WorkDetailPostController extends Controller
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
+            $this->assign('list_type',  $method->getListTypeBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }

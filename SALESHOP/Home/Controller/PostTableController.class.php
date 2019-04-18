@@ -27,6 +27,9 @@ class PostTableController extends Controller
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
             $this->assign('list_type',  $method->getListTypeBySql($username));
+            if(!$method->getSystype($username)){
+                $this->redirect('Index/errorSys');
+            }
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -46,6 +49,9 @@ class PostTableController extends Controller
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
             $this->assign('list_type',  $method->getListTypeBySql($username));
+            if(!$method->getSystype($username)){
+                $this->redirect('Index/errorSys');
+            }
             $this->display();
         } else {
             $this->redirect('Index/index');
