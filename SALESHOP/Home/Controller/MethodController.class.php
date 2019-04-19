@@ -21,7 +21,7 @@ class MethodController extends Controller
         $result = $this->search_long($result_rows);
         oci_free_statement($result_rows);
         oci_close($conn);
-        if((int)$result[0]['SYS_TYPE']!=2&&(int)$result[0]['SYS_TYPE']!=999) { //并行系统
+        if((int)$result[0]['SYS_TYPE']!=2&&(int)$result[0]['SYS_TYPE']!=999&&(int)$result[0]['SYS_TYPE']!=12&&(int)$result[0]['SYS_TYPE']!=23) { //并行系统
             return false;
         }else{
             return true;
@@ -110,6 +110,17 @@ class MethodController extends Controller
             Log::write($username.'用户日报权限：'.$result[0]['CAN_DAYPOST'],'INFO');
             return '1';
         }
+    }
+
+    public function getReviewer($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_REVIEWER FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return (int)$result[0]['IS_REVIEWER'];
     }
 
     public function checkIn(&$admin)
