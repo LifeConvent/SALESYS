@@ -6,7 +6,7 @@ $(function () {
 
     $('#home').attr('class','active');
     $('#data_ub').css('display','block');
-    $('#bx_cs_define').attr('class','active');
+    $('#bx_cs_review_define').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
@@ -22,7 +22,7 @@ $(function () {
         //     // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         // }
         $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/BxWorkDefine/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/BxWorkDefine/getCsReviewDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     $('#form_date2').datetimepicker({
@@ -40,7 +40,7 @@ $(function () {
             return;
         }
     $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/BxWorkDefine/getCsDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/BxWorkDefine/getCsReviewDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     //1.初始化Table
@@ -76,7 +76,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
-            url: HOST + "index.php/Home/BxWorkDefine/getCsDefine",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/BxWorkDefine/getCsReviewDefine",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             showExport: true,
@@ -388,14 +388,14 @@ function actionFormatter(value, row, index) {
 window.actionEvents = {
     'click .sub_des': function (e, value, row, index) {
         // ajax提交数据
+        debugger;
         // var link_business = $("#business"+index).val();
         var description = $("#des"+index).val();//原因说明
-        debugger;
         if(description==''||description==null){
             $.scojs_message('请输入差异原因后在提交说明！', $.scojs_message.TYPE_ERROR);
             return;
         }
-        var business_node = 'BQSL';
+        var business_node = 'BQFH';
         var business_code = row.old_accept_code;
         var policy_code = row.old_policy_code;
         var busi_insert_date = row.busi_insert_date;
@@ -482,7 +482,7 @@ function actionFormatter_review(value, row, index){
 window.actionEvents_review = {
     'click .no_pass': function (e, value, row, index) {
         var no_pass_reason = $("#reason"+index).val();//不通过原因说明
-        var business_node = 'BQSL';
+        var business_node = 'BQFH';
         var business_code = row.old_accept_code;
         var policy_code = row.old_policy_code;
         var busi_insert_date = row.busi_insert_date;
@@ -521,7 +521,7 @@ window.actionEvents_review = {
         });
     },
     'click .pass_error': function (e, value, row, index) {
-        var business_node = 'BQSL';
+        var business_node = 'BQFH';
         var business_code = row.old_accept_code;
         var policy_code = row.old_policy_code;
         var busi_insert_date = row.busi_insert_date;
@@ -558,7 +558,7 @@ window.actionEvents_review = {
         });
     },
     'click .pass_right': function (e, value, row, index) {
-        var business_node = 'BQSL';
+        var business_node = 'BQFH';
         var business_code = row.old_accept_code;
         var policy_code = row.old_policy_code;
         var busi_insert_date = row.busi_insert_date;
