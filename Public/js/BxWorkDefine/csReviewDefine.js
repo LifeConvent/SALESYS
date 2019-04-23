@@ -194,14 +194,14 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '老核心保单号',
-                width:140
+                width:150
             }, {
                 field: 'new_policy_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '新核心保单号',
-                width:140
+                width:150
             },  {
                 field: 'old_accept_code',
                 sortable: true,
