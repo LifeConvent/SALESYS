@@ -865,7 +865,7 @@ class BxWorkDefineController extends Controller
             }
             Log::write($user_name.' 业务节点+关键业务号：'.$business_node.$business_code,'INFO');
         }
-        if(!empty($result)){//审核通过流程
+        if(!empty($result_des)){//审核通过流程
             $select = "SELECT IS_REVIEW FROM TMP_BX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."' AND BUSINESS_NODE = '".$business_node."' AND TO_CHAR(BUSINESS_DATE,'YYYY-MM-DD') ='".$insert_date."'";
             $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
             $select_result = $method->search_long($result_rows1);
@@ -929,12 +929,12 @@ class BxWorkDefineController extends Controller
             if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)) {
                 $result['status'] = "success";
                 $result['message'] = "关键业务号：".$business_code."-业务号：".$policy_code." 更新成功！";
-                Log::write($user_name.' 更新原因SQL：'.$select,'INFO');
+                Log::write($user_name.' 更新原因SQL：'.$update_sql,'INFO');
                 exit(json_encode($result));
             } else {
                 $result['status'] = "failed";
                 $result['message'] = $user_name."您好，该原因描述更新失败，请联系管理员确认！";
-                Log::write($user_name.' 更新原因SQL：'.$select,'INFO');
+                Log::write($user_name.' 更新原因SQL：'.$update_sql,'INFO');
                 exit(json_encode($result));
             }
         }
