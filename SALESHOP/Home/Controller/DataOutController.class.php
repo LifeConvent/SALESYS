@@ -1103,12 +1103,27 @@ class DataOutController extends Controller
         }
         /*********************************************           添加机构后删除          *********************************************/
         $where_type_fix = "";
-        $select_bqsl = "SELECT * FROM  TMP_QDSX_CS_CT_DETAIL WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+        $select_bqsl = "SELECT ACCEPT_CODE,
+                                   SERVICE_NAME,
+                                   UPDATE_TIME,
+                                   POLICY_CODE,
+                                   BUSI_PROD_CODE,
+                                   PRODUCT_NAME_SYS,
+                                   STATUS_NAME,
+                                   ARAP_FLAG,
+                                   TYPE_NAME,
+                                   FEE_AMOUNT,
+                                   SYS_INSERT_DATE,
+                                   CHANNEL,
+                                   HESITATE_FLAG 
+                                   FROM  TMP_QDSX_CS_CT_DETAIL WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+        Log::write($user_name.' 保全退保全量数据查询SQL：'.$select_bqsl,'INFO');
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['accept_code'] = $value['ACCEPT_CODE'];
+            $result[$i]['hesitate_flag'] = $value['HESITATE_FLAG'];
             $result[$i]['service_name'] = $value['SERVICE_NAME'];
             $result[$i]['update_time'] = $value['UPDATE_TIME'];
             $result[$i]['policy_code'] = $value['POLICY_CODE'];
@@ -1118,7 +1133,6 @@ class DataOutController extends Controller
             $result[$i]['arap_flag'] = $value['ARAP_FLAG'];
             $result[$i]['type_name'] = $value['TYPE_NAME'];
             $result[$i]['fee_amount'] = $value['FEE_AMOUNT'];
-            $result[$i]['hesitate_flag'] = $value['HESITATE_FLAG'];
             $result[$i]['channel'] = $value['CHANNEL'];
         }
         #######################################################################################################################################
