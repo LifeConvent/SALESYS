@@ -203,6 +203,13 @@ var TableInit = function () {
                 title: '新核心保额',
                 width:120
             }, {
+                field: 'business_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务节点',
+                width:120
+            }, {
                 field: 'is_accordance',
                 sortable: true,
                 align: 'center',
