@@ -126,53 +126,67 @@ var TableInit = function () {
                     return index+1;
                 }
             }, {
-                field: 'unit_number',
+                field: 'old_unit_number',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '唯一号',
+                title: '老核心唯一号',
                 width:170
             }, {
-                field: 'business_code',
+                field: 'new_unit_number',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '业务号',
+                title: '新核心唯一号',
                 width:170
             }, {
-                field: 'policy_code',
+                field: 'old_business_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '老核心业务号',
+                width:170
+            }, {
+                field: 'new_business_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '新核心业务号',
+                width:170
+            }, {
+                field: 'old_bank_account',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '保单号',
                 width:170
             },  {
-                field: 'bank_account',
+                field: 'old_bank_account',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '银行账户',
+                title: '老核心银行账户',
                 width:250
-            }, {
-                field: 'bank_code',
+            },  {
+                field: 'new_bank_account',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '新核心银行账户',
+                width:250
+            },  {
+                field: 'old_bank_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '银行代码',
+                title: '老核心银行代码',
                 width:100
-            }, {
-                field: 'acco_name',
+            },  {
+                field: 'new_bank_code',
                 sortable: true,
-                valign: 'middle',
                 align: 'center',
-                title: '户名',
-                width:150
-            }, {
-                field: 'due_time',
-                sortable: true,
                 valign: 'middle',
-                align: 'center',
-                title: '应缴日期',
+                title: '新核心银行代码',
                 width:100
             }, {
                 field: 'biz_source_name',
@@ -182,18 +196,18 @@ var TableInit = function () {
                 title: '业务来源',
                 width:100
             }, {
-                field: 'arap_flag',
+                field: 'old_arap_flag',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '收付标志',
+                title: '老核心收付标志',
                 width:100
             }, {
-                field: 'business_date',
+                field: 'new_arap_flag',
                 sortable: true,
-                align: 'center',
                 valign: 'middle',
-                title: '制盘时间',
+                align: 'center',
+                title: '新核心收付标志',
                 width:100
             }, {
                 field: 'sales_channel_name',
@@ -203,19 +217,19 @@ var TableInit = function () {
                 title: '渠道',
                 width:100
             }, {
-                field: 'fee_amount',
+                field: 'old_fee_amount',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '收付费金额',
+                title: '老核心金额',
                 width:120
-            }, {
-                field: 'busi_fee_amount',
+            },{
+                field: 'new_fee_amount',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '理赔金额',
-                width:100
+                title: '新核心金额',
+                width:120
             }, {
                 field: 'business_name',
                 sortable: true,
@@ -224,7 +238,7 @@ var TableInit = function () {
                 title: '业务节点',
                 width:100
             },{
-                field: 'is_same',
+                field: 'is_accordance',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
@@ -321,44 +335,44 @@ window.actionEvents = {
         // var link_business = $("#business"+index).val();
         var description = $("#des"+index).val();
         var business_name = row.business_name;
-        var unit_number = row.unit_number;
-        var policy_code = row.policy_code;
-        var business_code = row.business_code;
+        var unit_number = row.old_unit_number;
+        var policy_code = row.old_business_code;
+        var business_code = row.old_business_code;
         var insert_date = row.business_date;
         var username = $("#username").text();
         if(description!=""&&description!="-"){
             $.scojs_message("输入错误原因后只可点击错误按钮！", $.scojs_message.TYPE_ERROR);
             return;
         }
-            $.ajax({
-                type: "POST", //用POST方式传输
-                url: HOST + "index.php/Home/PersonDefineFinishWork/updateCapDefineCs", //目标地址.
-                dataType: "json", //数据格式:JSON
-                data: {result: "正确",username: username, business_code: unit_number, link_business:business_code,policy_code: policy_code, business_name:business_name,insert_date:insert_date},
-                success: function (result) {
-                    if (result.status == 'success') {
-                        debugger;
-                        //单行刷新数据
-                        var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
-                        var data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate };
-                        $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
-                        $("#tc"+index).disabled = true;//BUG号
-                        $("#des"+index).disabled = true;//存在问题
-                        $.scojs_message(result.message, $.scojs_message.TYPE_OK);
-                    } else if (result.status == 'failed') {
-                        debugger;
-                        $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
-                        if(result.lock == 'true'){
-                            window.location.href = HOST + "index.php/Home/Index/index";
-                        }
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/PersonDefineFinishWork/updateCapDefineCs", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {result: "正确",username: username, business_code: unit_number, link_business:business_code,policy_code: policy_code, business_name:business_name,insert_date:insert_date},
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    //单行刷新数据
+                    var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
+                    var data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate };
+                    $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
+                    $("#tc"+index).disabled = true;//BUG号
+                    $("#des"+index).disabled = true;//存在问题
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                    if(result.lock == 'true'){
+                        window.location.href = HOST + "index.php/Home/Index/index";
                     }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert(XMLHttpRequest);
-                    alert(textStatus);
-                    alert(errorThrown);
                 }
-            });
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
     },
     'click .modify_danger': function (e, value, row, index) {
         // ajax提交数据
@@ -366,9 +380,9 @@ window.actionEvents = {
         var link_business = $("#tc"+index).val();//BUG号
         var description = $("#des"+index).val();//存在问题
         var business_name = row.business_name;//业务节点
-        var accept_code = row.business_code;//存储关键业务号
-        var unit_number = row.unit_number;
-        var policy_code = row.policy_code;//存储关键业务号
+        var unit_number = row.old_unit_number;
+        var policy_code = row.old_business_code;
+        var business_code = row.old_business_code;
         var insert_date = row.business_date;//系统插入时间
         var username = $("#username").text();
         //条件校验
@@ -441,7 +455,7 @@ window.actionEvents_tc = {
 };
 
 function actionFormatter_business(value, row, index) {
-    if(row.is_same == "是"){
+    if(row.is_accordance == "是"||row.result!='-'){
         return '<input id="business'+index+'"  class="form-control modify" style="height: 20pt;width: 130pt" disabled placeholder="'+ row.link_business +'"></input>';
     }else{
         return '<input id="business'+index+'"  class="form-control modify" style="height: 20pt;width: 130pt" placeholder="'+ row.link_business +'"></input>';

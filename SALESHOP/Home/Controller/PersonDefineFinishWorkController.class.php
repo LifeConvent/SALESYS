@@ -1337,6 +1337,15 @@ class PersonDefineFinishWorkController extends Controller
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $type = I('get.type');
+        if(strcmp($type,"004")==0){
+            $type = " AND TRIM(A.OLD_SOURCE_NAME) = '10' ";
+        }else if(strcmp($type,"005")==0){
+            $type = " AND TRIM(A.OLD_SOURCE_NAME) = '9' ";
+        }else if(strcmp($type,"001")==0){
+            $type = " AND TRIM(A.OLD_SOURCE_NAME) IN ('00','6','7') ";
+        }else if(strcmp($type,"003")==0){
+            $type = " AND TRIM(A.OLD_SOURCE_NAME) IN ('2','3','02','03','8','08','15','25') ";
+        }
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         //获取用户权限类型-1-管理员2-机构组长3-个人
@@ -1346,12 +1355,12 @@ class PersonDefineFinishWorkController extends Controller
         ##############################################################  公共条件处理部分-无用户区分  ############################################################################
         if (!empty($queryDateStart)) {
             if (!empty($queryDateEnd)) {
-                $where_time_bqsl = " AND A.SYS_INSERT_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+                $where_time_bqsl = " AND TRUNC(A.INSERT_SYSDATE) BETWEEN TRUNC(to_date('" . $queryDateStart . "','yyyy-mm-dd')) AND TRUNC(to_date('" . $queryDateEnd . "','yyyy-mm-dd')) ";
             } else {
-                $where_time_bqsl = " AND A.SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd') ";
+                $where_time_bqsl = " AND TRUNC(A.INSERT_SYSDATE) = TRUNC(to_date('" . $queryDateStart . "','yyyy-mm-dd')) ";
             }
         } else {
-            $where_time_bqsl = " AND A.SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " AND TRUNC(A.INSERT_SYSDATE) = TRUNC(SYSDATE) ";
         }
         ##############################################################  测试数据  ############################################################################
         #$where_time_bqsl = "";
@@ -1368,12 +1377,12 @@ class PersonDefineFinishWorkController extends Controller
         }else if((int)$userType==2){
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix =  " AND A.OLD_ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
         }else if((int)$userType==3){
             $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
         }
         if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '".$organCode[$user_name]."%'";
         }
         Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
         $num = 0;
@@ -1381,35 +1390,63 @@ class PersonDefineFinishWorkController extends Controller
         //保全室、理赔室、核保室不参与
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
-            $select_bqsl = "SELECT A.UNIT_NUMBER,
-                                A.GROUP_NUM,
-                                A.BUSINESS_CODE,
-                                A.POLICY_CODE,
-                                A.BANK_ACCOUNT,
-                                A.BANK_CODE,
-                                A.ACCO_NAME,
-                                TO_CHAR(A.DUE_TIME,'YYYY-MM-DD') AS DUE_TIME,
-                                A.BIZ_SOURCE_NAME,
-                                A.ARAP_FLAG,
-                                A.FEE_AMOUNT,
-                                TO_CHAR(A.BUSINESS_DATE,'YYYY-MM-DD') AS BUSINESS_DATE,
-                                A.SALES_CHANNEL_NAME,
-                                A.BUSI_FEE_AMOUNT,
-                                A.IS_SAME,
-                                D.BUSINESS_NAME,
-                                TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD') AS SYS_INSERT_DATE,
-                                B.HD_USER_NAME,
-                                B.DESCRIPTION,
-                            B.LINK_BUSINESS_CODE TC_ID,
-                            B.RESULT
-                         FROM TMP_SX_CAP_PRE_DETAIL A
-                          LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
-                                  ON A.UNIT_NUMBER = B.BUSINESS_CODE
-                                  AND B.BUSINESS_NODE = A.BUSINESS_NODE
-                                  AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
-                                LEFT JOIN TMP_BUSINESS_NODE D
-                                  ON D.BUSINESS_NODE = A.BUSINESS_NODE
-                                 WHERE 1=1 AND A.VALUE1 = '".$type."'" . $where_time_bqsl . $where_type_fix;
+            $select_bqsl = "SELECT    A.OLD_UNIT_NUMBER,
+                                       A.NEW_UNIT_NUMBER,
+                                       A.OLD_BUSINESS_CODE,
+                                       A.NEW_BUSINESS_CODE,
+                                       A.OLD_BANK_ACCOUNT,
+                                       A.NEW_BANK_ACCOUNT,
+                                       A.OLD_BANK_CODE,
+                                       A.NEW_BANK_CODE,
+                                       A.OLD_SOURCE_NAME,
+                                       A.NEW_SOURCE_NAME,
+                                      (CASE A.NEW_SOURCE_NAME 
+                                        WHEN '004' THEN '保全' 
+                                        WHEN '003' THEN '续期' 
+                                        WHEN '001' THEN '契约' 
+                                        WHEN '005' THEN '理赔' 
+                                       END)AS BIZ_SOURCE_NAME,
+                                       A.OLD_ARAP_FLAG,
+                                       A.NEW_ARAP_FLAG,
+                                       A.OLD_FEE_AMOUNT,
+                                       A.NEW_FEE_AMOUNT,
+                                       A.SALES_CHANNEL_NAME,
+                                       A.BUSINESS_TYPE_NAME,
+                                       A.IS_ACCORDANCE,
+                                       (CASE A.BUSINESS_NODE
+                                             WHEN 'SSFZFP' THEN '收付费制反盘'
+                                        END) AS BUSINESS_NAME,
+                                       A.BUSINESS_NODE,
+                                       B.RESULT AS RESULT,
+                                       B.IS_SUBMIT,
+                                       B.IS_REVIEW,
+                                       B.IS_PASS,
+                                       B.NO_REASON,
+                                       B.HD_USER_NAME,
+                                       TO_CHAR(A.INSERT_SYSDATE,'YYYY-MM-DD') AS INSERT_SYSDATE,
+                                       (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = TRIM(A.OLD_UNIT_NUMBER) AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                       (CASE
+                                          WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
+                                            ELSE C.TC_USER_NAME
+                                        END) AS HD_USER_NAME,
+                                        (CASE
+                                          WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.OLD_UNIT_NUMBER AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                          ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.OLD_UNIT_NUMBER AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                        END) AS SYS_INSERT_DATE,
+                                        (CASE
+                                          WHEN B.DESCRIPTION IS NOT NULL THEN B.DESCRIPTION
+                                            ELSE (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.OLD_UNIT_NUMBER AND W.FIND_NODE = A.BUSINESS_NODE)
+                                         END) AS DESCRIPTION,
+                                       (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.OLD_UNIT_NUMBER AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                  FROM TMP_BX_SFF_BD A
+                                  LEFT JOIN TMP_BX_DAYPOST_DESCRIPTION B
+                                        ON A.OLD_UNIT_NUMBER = B.BUSINESS_CODE
+                                        AND B.BUSINESS_NODE = A.BUSINESS_NODE
+                                        AND TRUNC(B.BUSINESS_DATE) = TRUNC(A.INSERT_SYSDATE)
+                                  LEFT JOIN TMP_QDSX_TC_BUG C  
+                                    ON C.BUSINESS_CODE = A.OLD_UNIT_NUMBER
+                                    AND C.FIND_NODE = A.BUSINESS_NODE
+                                 WHERE 1=1 ".$type . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = null;
             $bqsl_result_time = $method->search_long($result_rows);
@@ -1417,38 +1454,77 @@ class PersonDefineFinishWorkController extends Controller
             Log::write($user_name.' 数据库查询看结果：'.$bqsl_result_time,'INFO');
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
-                $result[$i]['unit_number'] = $value['UNIT_NUMBER'];
-                $result[$i]['business_code'] = $value['BUSINESS_CODE'];
-                $result[$i]['policy_code'] = $value['POLICY_CODE'];
-                $result[$i]['bank_account'] = $value['BANK_ACCOUNT'];
-                $result[$i]['bank_code'] = $value['BANK_CODE'];
-                $result[$i]['acco_name'] = $value['ACCO_NAME'];
-                $result[$i]['due_time'] = $value['DUE_TIME'];
+                $result[$i]['old_unit_number'] = $value['OLD_UNIT_NUMBER'];
+                $result[$i]['new_unit_number'] = $value['NEW_UNIT_NUMBER'];
+                $result[$i]['old_business_code'] = $value['OLD_BUSINESS_CODE'];
+                $result[$i]['new_business_code'] = $value['NEW_BUSINESS_CODE'];
+                $result[$i]['old_bank_account'] = $value['OLD_BANK_ACCOUNT'];
+                $result[$i]['new_bank_account'] = $value['NEW_BANK_ACCOUNT'];
+                $result[$i]['old_bank_code'] = $value['OLD_BANK_CODE'];
+                $result[$i]['new_bank_code'] = $value['NEW_BANK_CODE'];
+                $result[$i]['old_source_name'] = $value['OLD_SOURCE_NAME'];
+                $result[$i]['new_source_name'] = $value['NEW_SOURCE_NAME'];
                 $result[$i]['biz_source_name'] = $value['BIZ_SOURCE_NAME'];
-                $result[$i]['arap_flag'] = $value['ARAP_FLAG'];
-                $result[$i]['fee_amount'] = $value['FEE_AMOUNT'];
-                $result[$i]['business_date'] = $value['BUSINESS_DATE'];
+                $result[$i]['old_arap_flag'] = $value['OLD_ARAP_FLAG'];
+                $result[$i]['new_arap_flag'] = $value['NEW_ARAP_FLAG'];
+                $result[$i]['old_fee_amount'] = $value['OLD_FEE_AMOUNT'];
+                $result[$i]['new_fee_amount'] = $value['NEW_FEE_AMOUNT'];
                 $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
-                $result[$i]['busi_fee_amount'] = $value['BUSI_FEE_AMOUNT'];
-                $result[$i]['is_same'] = $value['IS_SAME'];
+                $result[$i]['business_type_name'] = $value['BUSINESS_TYPE_NAME'];
+                $result[$i]['business_node'] = $value['BUSINESS_NODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
-                $result[$i]['result'] = $value['RESULT'];
-                if(empty( $value['RESULT'])){
-                    $result[$i]['result'] = "-";
-                }else{
-                    $result[$i]['result'] = $value['RESULT'];
-                }
-                $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
+                $result[$i]['busi_insert_date'] = $value['INSERT_SYSDATE'];
+                $result[$i]['business_date'] = $value['INSERT_SYSDATE'];
                 $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
-                if (empty($value['DESCRIPTION'])) {
-                    $result[$i]['description'] = "-";
-                } else {
-                    $result[$i]['description'] = $value['DESCRIPTION'];
+                $result[$i]['is_submit'] = $value['IS_SUBMIT'];
+                $result[$i]['is_review'] = $value['IS_REVIEW'];
+                $result[$i]['is_pass'] = $value['IS_PASS'];
+                $result[$i]['is_accordance'] = $value['IS_ACCORDANCE'];
+                if(empty( $value['NO_REASON'])){
+                    $result[$i]['no_pass_reason'] = "-";
+                }else{
+                    $result[$i]['no_pass_reason'] = $value['NO_REASON'];
                 }
                 if(empty( $value['TC_ID'])){
                     $result[$i]['tc_id'] = "-";
                 }else{
                     $result[$i]['tc_id'] = $value['TC_ID'];
+                }
+                if(empty( $value['RESULT'])){
+                    $result[$i]['result'] = "-";
+                }else{
+                    $result[$i]['result'] = $value['RESULT'];
+                }
+//                $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+                if (empty($value['DESCRIPTION'])) {
+                    $result[$i]['description'] = "-";
+                } else {
+                    $result[$i]['description'] = $value['DESCRIPTION'];
+                }
+                if (empty($value['STATUS'])) {
+                    $result[$i]['status'] = "-";
+                } else {
+                    $result[$i]['status'] = $value['STATUS'];
+                }
+                if (empty($value['HD_USER_NAME'])) {
+                    $result[$i]['hd_user_name'] = "-";
+                } else {
+                    $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
+                }
+                if (empty($value['IS_SUBMIT'])) {
+                    $result[$i]['is_submit'] = "0";
+                } else {
+                    $result[$i]['is_submit'] = $value['IS_SUBMIT'];
+                }
+                if (empty($value['IS_REVIEW'])) {
+                    $result[$i]['is_review'] = "0";
+                } else {
+                    $result[$i]['is_review'] = $value['IS_REVIEW'];
+                }
+                if (empty($value['IS_PASS'])) {
+                    $result[$i]['is_pass'] = "0";
+                } else {
+                    $result[$i]['is_pass'] = $value['IS_PASS'];
                 }
             }
             $num += sizeof($bqsl_result_time);
@@ -1471,9 +1547,9 @@ class PersonDefineFinishWorkController extends Controller
         $insert_date = $_POST['insert_date'];
         Log::write($user_name.' 业务节点：'.$business_name,'INFO');
         $policy_code = $_POST['policy_code'];
-        $accept_code = $_POST['business_code'];
+        $business_code = $_POST['business_code'];
         $description = $_POST['description'];
-        $link_business = $_POST['link_business'];
+        $business_node = "SFFZFP";
         if(empty($description)){
             $description = "";
         }
@@ -1501,7 +1577,7 @@ class PersonDefineFinishWorkController extends Controller
         $node_result = $method->search_long($result_rows);
 
         Log::write($user_name.' 业务节点：'.$business_name,'INFO');
-        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$accept_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
+        $select = "SELECT HD_USER_NAME FROM TMP_BX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$business_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
         ############################################################################################################################################################
         $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
         $select_result = $method->search_long($result_rows1);
@@ -1510,19 +1586,19 @@ class PersonDefineFinishWorkController extends Controller
             $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已进行该业务核对，无需进行再次核对！";
             exit(json_encode($result));
         }
-        Log::write($user_name.' 业务节点+关键业务号：'.$node_result[0]['BUSINESS_NODE'].$accept_code,'INFO');
+        Log::write($user_name.' 业务节点+关键业务号：'.$node_result[0]['BUSINESS_NODE'].$business_code,'INFO');
         #$sysDate = date('yyyy/mm/dd', time());
         if(empty($policy_code)){
             if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
+                $insert_sql = "INSERT INTO TMP_BX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,IS_SUBMIT,SYS_INSERT_DATE,DESCRIPTION,RESULT) VALUES('".$business_code."','".$user_name."','".$business_node."','1',SYSDATE,'".$description."','".$result_des."')";
             }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
+                $insert_sql = "INSERT INTO TMP_BX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,IS_SUBMIT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,RESULT) VALUES('".$business_code."','".$user_name."','".$business_node."','1',SYSDATE,TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$result_des."')";
             }
         }else{
             if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
+                $insert_sql = "INSERT INTO TMP_BX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,IS_SUBMIT,SYS_INSERT_DATE,DESCRIPTION,RESULT) VALUES('".$business_code."','".$policy_code."','".$user_name."','".$business_node."','1',SYSDATE,'".$description."','".$result_des."')";
             }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
+                $insert_sql = "INSERT INTO TMP_BX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,IS_SUBMIT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,RESULT) VALUES('".$business_code."','".$policy_code."','".$user_name."','".$business_node."','1',SYSDATE,TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$result_des."')";
             }
         }
         #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
@@ -1530,7 +1606,7 @@ class PersonDefineFinishWorkController extends Controller
         $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
         if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
             $result['status'] = "success";
-            $result['message'] = "关键业务号：".$accept_code."-业务号：".$policy_code." 确认成功！";
+            $result['message'] = "关键业务号：".$business_code."-业务号：".$policy_code." 确认成功！";
         }else{
             $result['status'] = "failed";
             $e = oci_error();
