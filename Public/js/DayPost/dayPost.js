@@ -4,9 +4,9 @@
 
 $(function () {
 
-    $('#weChat').attr('class','active');
-    $('#weChat_sub').css('display','block');
-    $('#weChat_groupSend').attr('class','active');
+    $('#day_post').attr('class','active');
+    $('#day_post_this').css('display','block');
+    $('#day_post_busi_this').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
@@ -21,7 +21,7 @@ $(function () {
         if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
             return;
         }
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2"});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1"});
     });
     $('#form_date2').datetimepicker({
         language:  'zh-CN',
@@ -37,7 +37,7 @@ $(function () {
             $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
             return;
         }
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/Method/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2"});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1"});
     });
 
     //1.初始化Table
@@ -73,7 +73,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
-            url: HOST + "index.php/Home/DayPost/loadDayPostData?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/DayPost/loadDayPostData?queryDate="+$("#dtp_input2").val()+"&type=1",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             // toolbar: '#toolbar',    //工具按钮用哪个容器
             striped: true,      //是否显示行间隔色
@@ -114,20 +114,24 @@ var TableInit = function () {
 
             columns : [
                 [{
+                    title :  '当日作业量情况',
+                    colspan: 23,
+                    align : 'center'
+                }],[{
                     title :  '区域',
                     colspan: 1,
                     align : 'center'
                 },{
                     title : '契约作业/核保作业',
-                    colspan: 12,
+                    colspan: 7,
                     align : 'center'
                 },{
                     title : '保全作业',
-                    colspan: 10,
+                    colspan: 8,
                     align : 'center'
                 },{
                     title : '理赔作业',
-                    colspan: 10,
+                    colspan: 7,
                     align : 'center'
                 }
 
@@ -137,7 +141,8 @@ var TableInit = function () {
                     footerFormatter:function(){
                         return '合计';
                     },
-                    align : 'center'
+                    align : 'center',
+                    valign: 'middle'
                 },{
                     field : 'nb_old_count',
                     title : '老核<br>心作<br>业量',
@@ -149,13 +154,14 @@ var TableInit = function () {
                     footerFormatter:countFooter,
                     align : 'center'
                 },{
-                    field : 'nb_cannt_count',
-                    title : '无法<br>操作<br>件数',
+                    field : 'nb_is_same',
+                    title : '比对<br>一致<br>数量',
                     footerFormatter:countFooter,
                     // formatter:function(value, row, index){
                     //     return row.nb_old_count - row.nb_new_count;
                     // },
-                    align : 'center'
+                    align : 'center',
+                    valign: 'middle'
                 },{
                     field : 'nb_fix_count',
                     title : '补做<br>既往<br>件数',
@@ -163,25 +169,28 @@ var TableInit = function () {
                     align : 'center'
                 },{
                     field : 'nb_pro_count',
-                    title : '问题<br>单数<br>量',
+                    title : '问题单<br>数量',
                     footerFormatter:countFooter,
-                    align : 'center'
-                },{
-                    field : 'nb_profix_count',
-                    title : '问题<br>单解<br>决量',
-                    footerFormatter:countFooter,
-                    align : 'center'
-                },{
-                    field : 'nb_bfsame_count',
-                    title : '保费<br>一致<br>数量',
-                    footerFormatter:countFooter,
-                    align : 'center'
-                },{
-                    field : 'nb_besame_count',
-                    title : '保额<br>一致<br>数量',
-                    footerFormatter:countFooter,
-                    align : 'center'
-                },{
+                    align : 'center',
+                    valign: 'middle'
+                },
+                //     {
+                //     field : 'nb_profix_count',
+                //     title : '问题<br>单解<br>决量',
+                //     footerFormatter:countFooter,
+                //     align : 'center'
+                // },{
+                //     field : 'nb_bfsame_count',
+                //     title : '保费<br>一致<br>数量',
+                //     footerFormatter:countFooter,
+                //     align : 'center'
+                // },{
+                //     field : 'nb_besame_count',
+                //     title : '保额<br>一致<br>数量',
+                //     footerFormatter:countFooter,
+                //     align : 'center'
+                // },
+                    {
                     title : '任务<br>完成率',
                     formatter:function(value, row, index){
                         if(row.nb_old_count==0){
@@ -192,43 +201,62 @@ var TableInit = function () {
                         // }
                         // return ((row.nb_old_count - row.nb_new_count + row.nb_new_count)*100/row.nb_old_count).toFixed(2)+"%";
                     },
-                    align : 'center'
-                },{
-                    title : '累计<br>一致率',
                     align : 'center',
-                    formatter:function(value, row, index){
-                        if(row.nb_old_count==0){
-                            return '100.00%'
-                        }else if(row.nb_new_count+row.nb_fix_count>=row.nb_old_count){
-                            return '100.00%'
-                        }
-                        // if($("#dtp_input2").val()!=''){
-                        //     return ((row.nb_new_count)*100/row.nb_old_count).toFixed(2)+"%";
-                        // }
-                        return ((row.nb_new_count+row.nb_fix_count)*100/row.nb_old_count).toFixed(2)+"%";
-                    },
-                    align : 'center'
+                        valign: 'middle'
                 },{
-                    title : '保费<br>一致率',
-                    align : 'center',
-                    formatter:function(value, row, index){
-                        if(row.nb_old_count==0){
-                            return '100.00%'
-                        }
-                        return ((row.nb_bfsame_count)*100/row.nb_old_count).toFixed(2)+"%";
+                        title : '一<br>致<br>率',
+                        align : 'center',
+                        formatter:function(value, row, index){
+                            if(row.nb_old_count==0){
+                                return '100.00%'
+                            }else if(row.nb_new_count+row.nb_fix_count>=row.nb_old_count){
+                                return '100.00%'
+                            }
+                            // if($("#dtp_input2").val()!=''){
+                            //     return ((row.nb_new_count)*100/row.nb_old_count).toFixed(2)+"%";
+                            // }
+                            return ((row.nb_new_count+row.nb_fix_count)*100/row.nb_old_count).toFixed(2)+"%";
+                        },
+                        align : 'center'
                     },
-                    align : 'center'
-                },{
-                    title : '保额<br>一致率',
-                    align : 'center',
-                    formatter:function(value, row, index){
-                        if(row.nb_old_count==0){
-                            return '100.00%'
-                        }
-                        return ((row.nb_besame_count)*100/row.nb_old_count).toFixed(2)+"%";
-                    },
-                    align : 'center'
-                },{
+                //     {
+                //     title : '累计<br>一致率',
+                //     align : 'center',
+                //     formatter:function(value, row, index){
+                //         if(row.nb_old_count==0){
+                //             return '100.00%'
+                //         }else if(row.nb_new_count+row.nb_fix_count>=row.nb_old_count){
+                //             return '100.00%'
+                //         }
+                //         // if($("#dtp_input2").val()!=''){
+                //         //     return ((row.nb_new_count)*100/row.nb_old_count).toFixed(2)+"%";
+                //         // }
+                //         return ((row.nb_new_count+row.nb_fix_count)*100/row.nb_old_count).toFixed(2)+"%";
+                //     },
+                //     align : 'center'
+                // },
+                //     {
+                //     title : '保费<br>一致率',
+                //     align : 'center',
+                //     formatter:function(value, row, index){
+                //         if(row.nb_old_count==0){
+                //             return '100.00%'
+                //         }
+                //         return ((row.nb_bfsame_count)*100/row.nb_old_count).toFixed(2)+"%";
+                //     },
+                //     align : 'center'
+                // },{
+                //     title : '保额<br>一致率',
+                //     align : 'center',
+                //     formatter:function(value, row, index){
+                //         if(row.nb_old_count==0){
+                //             return '100.00%'
+                //         }
+                //         return ((row.nb_besame_count)*100/row.nb_old_count).toFixed(2)+"%";
+                //     },
+                //     align : 'center'
+                // },
+                    {
                     field : 'cs_old_count',
                     title : '老核<br>心作<br>业量',
                     footerFormatter:countFooter,
@@ -238,7 +266,17 @@ var TableInit = function () {
                     title : '新核<br>心作<br>业量',
                     footerFormatter:countFooter,
                     align : 'center'
-                },{
+                },
+                    {
+                        field : 'nb_is_same',
+                        title : '比对<br>一致<br>数量',
+                        footerFormatter:countFooter,
+                        // formatter:function(value, row, index){
+                        //     return row.cs_old_count - row.cs_new_count;
+                        // },
+                        align : 'center'
+                    },
+                {
                     field : 'cs_cannt_count',
                     title : '无法<br>操作<br>件数',
                     footerFormatter:countFooter,
@@ -253,20 +291,23 @@ var TableInit = function () {
                     align : 'center'
                 },{
                     field : 'cs_pro_count',
-                    title : '问题<br>单数<br>量',
+                    title : '问题单<br>数量',
                     footerFormatter:countFooter,
-                    align : 'center'
-                },{
-                    field : 'cs_profix_count',
-                    title : '问题<br>单解<br>决量',
-                    footerFormatter:countFooter,
-                    align : 'center'
-                },{
-                    field : 'cs_fysame_count',
-                    title : '金额<br>一致<br>数量',
-                    footerFormatter:countFooter,
-                    align : 'center'
-                },{
+                    align : 'center',
+                    valign: 'middle'
+                },
+                //     {
+                //     field : 'cs_profix_count',
+                //     title : '问题<br>单解<br>决量',
+                //     footerFormatter:countFooter,
+                //     align : 'center'
+                // },{
+                //     field : 'cs_fysame_count',
+                //     title : '金额<br>一致<br>数量',
+                //     footerFormatter:countFooter,
+                //     align : 'center'
+                // },
+                    {
                     title : '任务<br>完成率',
                     formatter:function(value, row, index){
                         if(row.cs_old_count==0){
@@ -277,33 +318,51 @@ var TableInit = function () {
                         // }
                         // return ((row.cs_old_count - row.cs_new_count + row.cs_new_count)*100/row.cs_old_count).toFixed(2)+"%";
                     },
-                    align : 'center'
-                },{
-                    title : '累计<br>一致率',
                     align : 'center',
-                    formatter:function(value, row, index){
-                        if(row.cs_old_count==0){
-                            return '100.00%'
-                        }else if(row.cs_new_count+row.cs_fix_count>=row.cs_old_count){
-                            return '100.00%'
-                        }
-                        // if($("#dtp_input2").val()!=''){
-                        //     return ((row.cs_new_count)*100/row.cs_old_count).toFixed(2)+"%";
-                        // }
-                        return ((row.cs_new_count+row.cs_fix_count)*100/row.cs_old_count).toFixed(2)+"%";
-                    },
-                    align : 'center'
+                        valign: 'middle'
                 },{
-                    title : '金额<br>一致率',
-                    align : 'center',
-                    formatter:function(value, row, index){
-                        if(row.cs_old_count==0){
-                            return '100.00%'
-                        }
-                        return ((row.cs_fysame_count)*100/row.cs_old_count).toFixed(2)+"%";
+                        title : '一<br>致<br>率',
+                        align : 'center',
+                        formatter:function(value, row, index){
+                            if(row.nb_old_count==0){
+                                return '100.00%'
+                            }else if(row.nb_new_count+row.nb_fix_count>=row.nb_old_count){
+                                return '100.00%'
+                            }
+                            // if($("#dtp_input2").val()!=''){
+                            //     return ((row.nb_new_count)*100/row.nb_old_count).toFixed(2)+"%";
+                            // }
+                            return ((row.nb_new_count+row.nb_fix_count)*100/row.nb_old_count).toFixed(2)+"%";
+                        },
+                        align : 'center'
                     },
-                    align : 'center'
-                },{
+                //     {
+                //     title : '累计<br>一致率',
+                //     align : 'center',
+                //     formatter:function(value, row, index){
+                //         if(row.cs_old_count==0){
+                //             return '100.00%'
+                //         }else if(row.cs_new_count+row.cs_fix_count>=row.cs_old_count){
+                //             return '100.00%'
+                //         }
+                //         // if($("#dtp_input2").val()!=''){
+                //         //     return ((row.cs_new_count)*100/row.cs_old_count).toFixed(2)+"%";
+                //         // }
+                //         return ((row.cs_new_count+row.cs_fix_count)*100/row.cs_old_count).toFixed(2)+"%";
+                //     },
+                //     align : 'center'
+                // },{
+                //     title : '金额<br>一致率',
+                //     align : 'center',
+                //     formatter:function(value, row, index){
+                //         if(row.cs_old_count==0){
+                //             return '100.00%'
+                //         }
+                //         return ((row.cs_fysame_count)*100/row.cs_old_count).toFixed(2)+"%";
+                //     },
+                //     align : 'center'
+                // },
+                    {
                     field : 'clm_old_count',
                     title : '老核<br>心作<br>业量',
                     footerFormatter:countFooter,
@@ -313,35 +372,50 @@ var TableInit = function () {
                     title : '新核<br>心作<br>业量',
                     footerFormatter:countFooter,
                     align : 'center'
-                },{
-                    field : 'clm_cannt_count',
-                    title : '无法<br>操作<br>件数',
-                    footerFormatter:countFooter,
-                    // formatter:function(value, row, index){
-                    //     return row.clm_old_count - row.clm_new_count;
-                    // },
-                    align : 'center'
-                },{
+                },
+                //     {
+                //     field : 'clm_cannt_count',
+                //     title : '无法<br>操作<br>件数',
+                //     footerFormatter:countFooter,
+                //     // formatter:function(value, row, index){
+                //     //     return row.clm_old_count - row.clm_new_count;
+                //     // },
+                //     align : 'center'
+                // },
+
+                    {
+                        field : 'nb_is_same',
+                        title : '比对<br>一致<br>数量',
+                        footerFormatter:countFooter,
+                        // formatter:function(value, row, index){
+                        //     return row.cs_old_count - row.cs_new_count;
+                        // },
+                        align : 'center'
+                    },
+                    {
                     field : 'clm_fix_count',
                     title : '补做<br>既往<br>件数',
                     footerFormatter:countFooter,
                     align : 'center'
                 },{
                     field : 'clm_pro_count',
-                    title : '问题<br>单数<br>量',
+                    title : '问题单<br>数量',
                     footerFormatter:countFooter,
-                    align : 'center'
-                },{
-                    field : 'clm_profix_count',
-                    title : '问题<br>单解<br>决量',
-                    footerFormatter:countFooter,
-                    align : 'center'
-                },{
-                    field : 'clm_fysame_count',
-                    title : '金额<br>一致<br>数量',
-                    footerFormatter:countFooter,
-                    align : 'center'
-                },{
+                    align : 'center',
+                    valign: 'middle'
+                },
+                //     {
+                //     field : 'clm_profix_count',
+                //     title : '问题<br>单解<br>决量',
+                //     footerFormatter:countFooter,
+                //     align : 'center'
+                // },{
+                //     field : 'clm_fysame_count',
+                //     title : '金额<br>一致<br>数量',
+                //     footerFormatter:countFooter,
+                //     align : 'center'
+                // },
+                    {
                     title : '任务<br>完成率',
                     formatter:function(value, row, index){
                         if(row.clm_old_count==0){
@@ -352,33 +426,51 @@ var TableInit = function () {
                         // }
                         // return ((row.clm_old_count - row.clm_new_count + row.clm_new_count)*100/row.clm_old_count).toFixed(2)+"%";
                     },
-                    align : 'center'
-                },{
-                    title : '累计<br>一致率',
                     align : 'center',
-                    formatter:function(value, row, index){
-                        if(row.clm_old_count==0){
-                            return '100.00%'
-                        }else if(row.clm_new_count+row.clm_fix_count>=row.clm_old_count){
-                            return '100.00%'
-                        }
-                        // if($("#dtp_input2").val()!=''){
-                        //     return ((row.clm_new_count)*100/row.clm_old_count).toFixed(2)+"%";
-                        // }
-                        return ((row.clm_new_count+row.clm_fix_count)*100/row.clm_old_count).toFixed(2)+"%";
-                    },
-                    align : 'center'
+                        valign: 'middle'
                 },{
-                    title : '金额<br>一致率',
-                    align : 'center',
-                    formatter:function(value, row, index){
-                        if(row.clm_old_count==0){
-                            return '100.00%'
-                        }
-                        return ((row.clm_fysame_count)*100/row.clm_old_count).toFixed(2)+"%";
-                    },
-                    align : 'center'
-                }]]
+                        title : '一<br>致<br>率',
+                        align : 'center',
+                        formatter:function(value, row, index){
+                            if(row.nb_old_count==0){
+                                return '100.00%'
+                            }else if(row.nb_new_count+row.nb_fix_count>=row.nb_old_count){
+                                return '100.00%'
+                            }
+                            // if($("#dtp_input2").val()!=''){
+                            //     return ((row.nb_new_count)*100/row.nb_old_count).toFixed(2)+"%";
+                            // }
+                            return ((row.nb_new_count+row.nb_fix_count)*100/row.nb_old_count).toFixed(2)+"%";
+                        },
+                        align : 'center'
+                    }
+                //     {
+                //     title : '累计<br>一致率',
+                //     align : 'center',
+                //     formatter:function(value, row, index){
+                //         if(row.clm_old_count==0){
+                //             return '100.00%'
+                //         }else if(row.clm_new_count+row.clm_fix_count>=row.clm_old_count){
+                //             return '100.00%'
+                //         }
+                //         // if($("#dtp_input2").val()!=''){
+                //         //     return ((row.clm_new_count)*100/row.clm_old_count).toFixed(2)+"%";
+                //         // }
+                //         return ((row.clm_new_count+row.clm_fix_count)*100/row.clm_old_count).toFixed(2)+"%";
+                //     },
+                //     align : 'center'
+                // },{
+                //     title : '金额<br>一致率',
+                //     align : 'center',
+                //     formatter:function(value, row, index){
+                //         if(row.clm_old_count==0){
+                //             return '100.00%'
+                //         }
+                //         return ((row.clm_fysame_count)*100/row.clm_old_count).toFixed(2)+"%";
+                //     },
+                //     align : 'center'
+                // }
+                ]]
         });
     };
 

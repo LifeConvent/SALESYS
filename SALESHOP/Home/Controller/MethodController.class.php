@@ -2409,24 +2409,48 @@ class MethodController extends Controller
     }
 
     //获取机构名称
+//    public function getOrgName()
+//    {
+//        $org_name = array(
+//            "8647" => "本部",
+//            "864700" => "本部",
+//            "86470000" => "市南",
+//            "86470003" => "李沧",//李沧
+//            "86470004" => "平度",
+//            "86470005" => "胶南",
+//            "86470006" => "即墨",
+//            "86470007" => "胶州",
+//            "86470008" => "城阳",
+//            "86470009" => "莱西",
+//            "86470010" => "开发区",
+//            "86470013" => "市南");
+//        return $org_name;
+//    }
     public function getOrgName()
     {
-        $org_name = array(
-            "8647" => "本部",
-            "864700" => "本部",
-            "86470000" => "市南",
-            "86470003" => "李沧",//李沧
-            "86470004" => "平度",
-            "86470005" => "胶南",
-            "86470006" => "即墨",
-            "86470007" => "胶州",
-            "86470008" => "城阳",
-            "86470009" => "莱西",
-            "86470010" => "开发区",
-            "86470013" => "市南");
+        $conn = $this->OracleOldDBCon();
+        $select_organ = "SELECT * FROM TMP_ORGAN_CODE";
+        $result_rows = oci_parse($conn, $select_organ); // 配置SQL语句，执行SQL
+        $organ_result =  $this->search_long($result_rows);
+        foreach($organ_result AS $organ){
+            $org_name[$organ['ORGAN_CODE']] = $organ['ORGAN_NAME'];
+        }
+//        dump($org_name);
         return $org_name;
     }
 
+    public function getOrgNameByCode($organCode)
+    {
+        $conn = $this->OracleOldDBCon();
+        $select_organ = "SELECT * FROM TMP_ORGAN_CODE WHERE ORGAN_CODE LIKE '$organCode%'";
+        $result_rows = oci_parse($conn, $select_organ); // 配置SQL语句，执行SQL
+        $organ_result =  $this->search_long($result_rows);
+        foreach($organ_result AS $organ){
+            $org_name[$organ['ORGAN_CODE']] = $organ['ORGAN_NAME'];
+        }
+//        dump($org_name);
+        return $org_name;
+    }
     //老核心用户作业机构
     public function getUserDictArray(){
         $user_dict = array("yangyxit"=>"分公司核保室",
@@ -2531,7 +2555,6 @@ class MethodController extends Controller
     }
 
     public function getObjectIndex(){
-
         $index = array(
             "本部" => 0,
             "李沧" => 1,
