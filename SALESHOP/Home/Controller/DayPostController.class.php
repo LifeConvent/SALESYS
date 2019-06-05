@@ -266,12 +266,11 @@ class DayPostController extends Controller
         $type = I('get.type');
         if(empty($queryDate)){
             $queryDateStart = I('get.queryDateStart');
-            $queryDateEnd = I('get.queryDateEnd');
-            if(empty($queryDateStart)){
-                $sql_fix = " AND INSERT_DATE = TRUNC(SYSDATE) ";
+            if(!empty($queryDateStart)){
+                $sql_fix = " AND INSERT_DATE = TRUNC(TO_DATE('$queryDateStart','YYYY-MM-DD')) ";
             }else{
                 //查询累计数据表
-                $sql_fix = " AND INSERT_DATE BETWEEN TRUNC(TO_DATE('$queryDateStart','YYYY-MM-DD')) AND TRUNC(TO_DATE('$queryDateEnd','YYYY-MM-DD')) ";
+                $sql_fix = " AND INSERT_DATE = TRUNC(SYSDATE) ";
             }
         }else{
             $sql_fix = " AND INSERT_DATE = TRUNC(TO_DATE('$queryDate','YYYY-MM-DD')) ";
@@ -312,6 +311,56 @@ class DayPostController extends Controller
             $select_clm = "SELECT B.ORGAN_NAME,B.ORDER_LIST,A.* 
                                FROM TMP_ORGAN_CODE_SHOW B
                                LEFT JOIN TMP_DAYPOST_BX_CLM A ON A.OLD_ORGAN_CODE = B.TYPE_CODE ".$sql_fix."
+                        WHERE B.TYPE_CODE LIKE '%$BxOrganCode%'";
+            $result_rows = oci_parse($conn, $select_clm); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            Log::write($username.' 数据库查询SQL：'.$select_cs,'INFO');
+            Log::write($username.' 数据库查询SQL：'.$select_nbuw,'INFO');
+            Log::write($username.' 数据库查询SQL：'.$select_clm,'INFO');
+            foreach($result_all AS $cs){
+                $result[$cs['ORDER_LIST']]['CLM_OLD_NUM'] = $cs['OLD_NUM'];
+                $result[$cs['ORDER_LIST']]['CLM_NEW_NUM'] = $cs['NEW_NUM'];
+                $result[$cs['ORDER_LIST']]['CLM_SAME_NUM'] = $cs['SAME_NUM'];
+                $result[$cs['ORDER_LIST']]['CLM_NO_NUM'] = $cs['NO_NUM'];
+                $result[$cs['ORDER_LIST']]['CLM_PRO_NUM'] = $cs['PRO_NUM'];
+                $result[$cs['ORDER_LIST']]['CLM_FINISH_RADIO'] = $cs['FINISH_RADIO'];
+                $result[$cs['ORDER_LIST']]['CLM_SAME_RADIO'] = $cs['SAME_RADIO'];
+            }
+        }else if((int)$type==2){
+            $select_cs = "SELECT B.ORGAN_NAME,B.ORDER_LIST,A.* 
+                               FROM TMP_ORGAN_CODE_SHOW B
+                               LEFT JOIN TMP_DAYPOST_BX_LJBQ A ON A.OLD_ORGAN_CODE = B.TYPE_CODE ".$sql_fix."
+                        WHERE B.TYPE_CODE LIKE '%$BxOrganCode%'";
+            $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            foreach($result_all AS $cs){
+                $result[$cs['ORDER_LIST']]['ORGAN_NAME'] = $cs['ORGAN_NAME'];
+                $result[$cs['ORDER_LIST']]['CS_OLD_NUM'] = $cs['OLD_NUM'];
+                $result[$cs['ORDER_LIST']]['CS_NEW_NUM'] = $cs['NEW_NUM'];
+                $result[$cs['ORDER_LIST']]['CS_SAME_NUM'] = $cs['SAME_NUM'];
+                $result[$cs['ORDER_LIST']]['CS_NO_NUM'] = $cs['NO_NUM'];
+                $result[$cs['ORDER_LIST']]['CS_PRO_NUM'] = $cs['PRO_NUM'];
+                $result[$cs['ORDER_LIST']]['CS_FINISH_RADIO'] = $cs['FINISH_RADIO'];
+                $result[$cs['ORDER_LIST']]['CS_SAME_RADIO'] = $cs['SAME_RADIO'];
+            }
+            $select_nbuw = "SELECT B.ORGAN_NAME,B.ORDER_LIST,A.* 
+                               FROM TMP_ORGAN_CODE_SHOW B
+                               LEFT JOIN TMP_DAYPOST_BX_LJNBUW A ON A.OLD_ORGAN_CODE = B.TYPE_CODE ".$sql_fix."
+                        WHERE B.TYPE_CODE LIKE '%$BxOrganCode%'";
+            $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            foreach($result_all AS $cs){
+                $result[$cs['ORDER_LIST']]['NBUW_OLD_NUM'] = $cs['OLD_NUM'];
+                $result[$cs['ORDER_LIST']]['NBUW_NEW_NUM'] = $cs['NEW_NUM'];
+                $result[$cs['ORDER_LIST']]['NBUW_SAME_NUM'] = $cs['SAME_NUM'];
+                $result[$cs['ORDER_LIST']]['NBUW_NO_NUM'] = $cs['NO_NUM'];
+                $result[$cs['ORDER_LIST']]['NBUW_PRO_NUM'] = $cs['PRO_NUM'];
+                $result[$cs['ORDER_LIST']]['NBUW_FINISH_RADIO'] = $cs['FINISH_RADIO'];
+                $result[$cs['ORDER_LIST']]['NBUW_SAME_RADIO'] = $cs['SAME_RADIO'];
+            }
+            $select_clm = "SELECT B.ORGAN_NAME,B.ORDER_LIST,A.* 
+                               FROM TMP_ORGAN_CODE_SHOW B
+                               LEFT JOIN TMP_DAYPOST_BX_LJCLM A ON A.OLD_ORGAN_CODE = B.TYPE_CODE ".$sql_fix."
                         WHERE B.TYPE_CODE LIKE '%$BxOrganCode%'";
             $result_rows = oci_parse($conn, $select_clm); // 配置SQL语句，执行SQL
             $result_all = $method->search_long($result_rows);
