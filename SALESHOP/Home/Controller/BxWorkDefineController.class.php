@@ -141,7 +141,6 @@ class BxWorkDefineController extends Controller
         //获取用户权限类型-1-管理员2-机构组长3-个人
         $userType = $method->getUserType();
         $otherUser = $method->getOtherUser();
-
         ##############################################################  公共条件处理部分-无用户区分  ############################################################################
         if (!empty($queryDateStart)) {
             if (!empty($queryDateEnd)) {

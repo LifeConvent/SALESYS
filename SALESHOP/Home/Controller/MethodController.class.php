@@ -83,6 +83,18 @@ class MethodController extends Controller
         }
     }
 
+    public function getDayPostOrganBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.BX_DAYPOST_ORGAN FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户并行日报查询默认机构：'.$result[0]['LIST_TYPE'],'INFO');
+        return $result[0]['BX_DAYPOST_ORGAN'];
+    }
+
     public function getListTypeBySql($username){
         $conn = $this->OracleOldDBCon();
         $select_des = "SELECT A.LIST_TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
@@ -293,17 +305,6 @@ class MethodController extends Controller
     }
     public function getQianYiTimeWith(){
         return '2018-07-26';
-    }
-
-    public function getDictArry(){
-        $org = array("本部","李沧","平度","胶南","即墨","胶州","城阳","莱西","开发区","市南","小计","分公司","作业中心","合计");
-        return $org;
-    }
-
-    public function getDictIndex(){
-        $org = array("本部" => 0,"李沧" => 1,"平度" => 2,"胶南" => 3,"即墨" => 4,"胶州" => 5,"城阳" => 6,
-            "莱西" => 7,"开发区" => 8,"市南" => 9,"小计" => 10,"分公司" => 11,"作业中心" => 12,"合计" => 13);
-        return $org;
     }
 
     public function getBugSys(){
@@ -2405,6 +2406,30 @@ class MethodController extends Controller
         oci_free_statement($result_rows);
         oci_close($conn);
 //        dump($result_rows);
+        return $org;
+    }
+
+//    public function getDictArry(){
+//        $org = array("本部","李沧","平度","胶南","即墨","胶州","城阳","莱西","开发区","市南","小计","分公司","作业中心","合计");
+//        return $org;
+//    }
+
+    public function getDictArry()
+    {
+        $conn = $this->OracleOldDBCon();
+        $select_organ = "SELECT * FROM TMP_ORGAN_CODE";
+        $result_rows = oci_parse($conn, $select_organ); // 配置SQL语句，执行SQL
+        $organ_result =  $this->search_long($result_rows);
+        foreach($organ_result AS $organ){
+            $org[] = $organ['ORGAN_NAME'];
+        }
+//        dump($org);
+        return $org;
+    }
+
+    public function getDictIndex(){
+        $org = array("本部" => 0,"李沧" => 1,"平度" => 2,"胶南" => 3,"即墨" => 4,"胶州" => 5,"城阳" => 6,
+            "莱西" => 7,"开发区" => 8,"市南" => 9,"小计" => 10,"分公司" => 11,"作业中心" => 12,"合计" => 13);
         return $org;
     }
 
