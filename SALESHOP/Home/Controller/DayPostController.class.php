@@ -264,13 +264,54 @@ class DayPostController extends Controller
 
     public function getDayPostKeyThis(){
         //分子系统查询数据结果且按照标准直接插入
-        for($i=0;$i<16;$i++){
-            $result[$i]['type'] = '1';
-            $result[$i]['old_count'] = '1';
-            $result[$i]['new_count'] = '1';
+        $username = '';
+        $method = new MethodController();
+        $method->checkIn($username);
+        $BxOrganCode = $method->getDayPostOrganBySql($username);
+        $conn = $method->OracleOldDBCon();
+        $queryDate = I('get.queryDate');
+        $type = I('get.type');
+        if(empty($queryDate)){
+            if((int)$type==2){
+
+            }else{
+                $sql_fix = " AND INSERT_DATE = TRUNC(SYSDATE) ";
+            }
+        }else{
+            $sql_fix = " AND INSERT_DATE = TRUNC(TO_DATE('$queryDate','YYYY-MM-DD')) ";
         }
-        if ($result) {
-            exit(json_encode($result));
+        $select_nbuw = "SELECT B.ORDER_LIST,A.* 
+                              FROM TMP_DAYPOST_BX_EXE A 
+                              LEFT JOIN TMP_CODE_MAP B 
+                                   ON A.EXE_TYPE_CODE = B.CODE_TYPE 
+                            WHERE A.EXE_TYPE_CODE LIKE '%$BxOrganCode%' ".$sql_fix."
+                            ORDER BY B.ORDER_LIST";
+        $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+        $result_all = $method->search_long($result_rows);
+        Log::write($username.' 数据库查询SQL：'.$select_nbuw,'INFO');
+        foreach($result_all AS $exe){
+            $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
+            $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
+            $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['NUM_OLD_SUM'];
+            $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NUM_NEW_SUM'];
+            $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
+            $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAME_RADIO'];
+            $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['FEE_OLD_SUM'];
+            $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['FEE_NEW_SUM'];
+            $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['FEE_DIFF'];
+            $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['FEE_SAME_RADIO'];
+        }
+//        for($i=0;$i<sizeof($result);$i++){
+//            $res[] = $result[$i];
+//        }
+        foreach($result AS $item){
+            $res[] = $item;
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($res);
+        if ($res) {
+            exit(json_encode($res));
         } else {
             exit(json_encode(''));
         }

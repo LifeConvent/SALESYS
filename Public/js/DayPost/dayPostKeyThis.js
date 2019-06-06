@@ -14,7 +14,7 @@ $(function () {
         minView: 2,
         forceParse: 0
     }).on('changeDate', function(ev){
-        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getUwDayPostThis?queryDateStart="+$("#dtp_input2").val()+"&type=1"});
+        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getUwDayPostThis?queryDate="+$("#dtp_input2").val()+"&type=1"});
     });
 
     //1.初始化Table
@@ -92,7 +92,7 @@ var TableInit = function () {
             onLoadSuccess : function(data) {
                 var data = $('#daily_report').bootstrapTable('getData', true);
                 //合并单元格
-                mergeCells(data, "type", 0, $('#daily_report'));
+                mergeCells(data, "ZB_NAME", 0, $('#daily_report'));
             },
             columns : [
                 [{
@@ -117,230 +117,61 @@ var TableInit = function () {
                 }
                 ],
                 [{
-                    field : 'type',
+                    field : 'ZB_NAME',
                     title : '归属系统',
                     colspan: 1,
-                    align : 'center'
+                    align : 'center',
+                    valign: 'middle'
                 },{
-                    field : 'name',
-                    title : '批处理名称',
+                    field : 'ZB_TYPE',
+                    title : '指标名称',
                     colspan: 1,
-                    align : 'center'
+                    align : 'center',
+                    valign: 'middle'
                 },{
-                    field : 'old_count',
+                    field : 'NUM_OLD_SUM',
                     title : '老核心',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'new_count',
+                    field : 'NUM_NEW_SUM',
                     title : '新核心',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'old_new_count',
+                    field : 'NUM_DIFF',
                     title : '差异',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'is_same_count',
+                    field : 'NUM_SAME_RADIO',
                     title : '一致率',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'old_fee',
+                    field : 'FEE_OLD_SUM',
                     title : '老核心',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'new_fee',
+                    field : 'FEE_NEW_SUM',
                     title : '新核心',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'old_new_fee',
+                    field : 'FEE_DIFF',
                     title : '差异',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'is_same_fee',
+                    field : 'FEE_SAME_RADIO',
                     title : '一致率',
                     colspan: 1,
                     align : 'center'
                 }]
-                // ,
-                // [{
-                //     title :  '新契约',
-                //     colspan: 1,
-                //     rowspan: 4,
-                //     align : 'center',
-                //     valign: 'middle'
-                // },{
-                //     title : 'E保通投保',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:0
-                // },{
-                //     field : 'old_count',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:0
-                // },{
-                //     field : 'new_count',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:0
-                // },{
-                //     field : 'old_new_count',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:0
-                // },{
-                //     field : 'is_same_count',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:0
-                // },{
-                //     field : 'old_fee',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:0
-                // },{
-                //     field : 'new_fee',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:0
-                // },{
-                //     field : 'old_new_fee',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:0
-                // },{
-                //     field : 'is_same_fee',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:0
-                // }],
-                // [{
-                //     title : 'E保通签单',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:1
-                // }],
-                // [{
-                //     title : '银保通投保',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:2
-                // }],
-                // [{
-                //     title : '银保通签单',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:3
-                // }],
-                // [{
-                //     title :  '核保',
-                //     colspan: 1,
-                //     rowspan: 2,
-                //     align : 'center',
-                //     valign: 'middle'
-                // },{
-                //     title : '新契约自核通过',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:4
-                // }],
-                // [{
-                //     title : '新契约自核不通过',
-                //     colspan: 1,
-                //     align : 'center',
-                //     index:5
-                // }],
-                // [{
-                //     title :  '理赔',
-                //     colspan: 1,
-                //     rowspan: 3,
-                //     align : 'center',
-                //     valign: 'middle'
-                // },{
-                //     title : '立案',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title : '简易案件自核通过',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title : '其他案件审批通过',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title :  '重要批处理',
-                //     colspan: 1,
-                //     rowspan: 10,
-                //     align : 'center',
-                //     valign: 'middle'
-                // },{
-                //     title : '满期终止',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title : '普通失效',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title : '生存金抽档',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title : '生存金发放',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title : '满期金抽档',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title : '满期金发放',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title : '续期、短期险续保',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title : '续保处理',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title : '年度保额分红',
-                //     colspan: 1,
-                //     align : 'center'
-                // }],
-                // [{
-                //     title : '现金分红',
-                //     colspan: 1,
-                //     align : 'center'
-                // }]
             ]
         });
     };
-
-    // $('#daily_report').bootstrapTable('mergeCells', { index: 0, field: 'type', colspan: 1, rowspan: 4});
-    // $('#daily_report').bootstrapTable('mergeCells', { index: 4, field: 'type', colspan: 1, rowspan: 2});
-    // $('#daily_report').bootstrapTable('mergeCells', { index: 6, field: 'type', colspan: 1, rowspan: 3});
-    // $('#daily_report').bootstrapTable('mergeCells', { index: 9, field: 'type', colspan: 1, rowspan: 10});
 
     //得到查询的参数
     oTableInit.queryParams = function (params) {
