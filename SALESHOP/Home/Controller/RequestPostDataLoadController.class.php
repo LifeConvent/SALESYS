@@ -25,6 +25,7 @@ class RequestPostDataLoadController extends Controller
             $this->assign('usertype', $type);
             $this->assign('user_type', $type);
             $this->assign('username', $username);
+            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
             $this->assign('user_name', $username);
             $this->assign('exec_type', $exec_type);
             $this->assign('user_day_post', $can);

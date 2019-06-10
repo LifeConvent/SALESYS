@@ -23,6 +23,7 @@ class DayPostController extends Controller
         if ($result) {
             $this->assign('username', $username);
             $this->assign('user_name', $username);
+            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
@@ -46,6 +47,7 @@ class DayPostController extends Controller
         if ($result) {
             $this->assign('username', $username);
             $this->assign('user_name', $username);
+            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
@@ -69,6 +71,7 @@ class DayPostController extends Controller
         if ($result) {
             $this->assign('username', $username);
             $this->assign('user_name', $username);
+            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
@@ -92,6 +95,7 @@ class DayPostController extends Controller
         if ($result) {
             $this->assign('username', $username);
             $this->assign('user_name', $username);
+            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
@@ -115,6 +119,7 @@ class DayPostController extends Controller
         if ($result) {
             $this->assign('username', $username);
             $this->assign('user_name', $username);
+            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
@@ -138,6 +143,7 @@ class DayPostController extends Controller
         if ($result) {
             $this->assign('username', $username);
             $this->assign('user_name', $username);
+            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
@@ -161,6 +167,7 @@ class DayPostController extends Controller
         if ($result) {
             $this->assign('username', $username);
             $this->assign('user_name', $username);
+            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
