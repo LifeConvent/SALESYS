@@ -23,6 +23,7 @@ class UserManageController extends Controller
         if ($result) {
             $this->assign('user_type', $type);
             $this->assign('username', $username);
+            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
             $this->assign('list_type',  $method->getListTypeBySql($username));

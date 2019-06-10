@@ -121,6 +121,17 @@ class MethodController extends Controller
         return $result[0]['LIST_TYPE'];
     }
 
+    public function getUserCNNameBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.USER_NAME FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询姓名SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['USER_NAME'];
+    }
+
     public function getCanDayPostBySql($username){
         $conn = $this->OracleOldDBCon();
         $select_des = "SELECT A.CAN_DAYPOST FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";

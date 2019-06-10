@@ -23,6 +23,7 @@ class BxWorkDefineController extends Controller
         if ($result) {
             $this->assign('username', $username);
             $this->assign('user_name', $username);
+            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('is_reviewer', $is_reviewer);
@@ -42,6 +43,7 @@ class BxWorkDefineController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         $type =  $method->getUserTypeBySql($username);
+        $this->assign('username_chinese', $method->getUserCNNameBySql($username));
         $can =  $method->getCanDayPostBySql($username);
         $is_reviewer =  $method->getReviewer($username);
         if ($result) {
@@ -66,6 +68,7 @@ class BxWorkDefineController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         $type =  $method->getUserTypeBySql($username);
+        $this->assign('username_chinese', $method->getUserCNNameBySql($username));
         $can =  $method->getCanDayPostBySql($username);
         $is_reviewer =  $method->getReviewer($username);
         if ($result) {
@@ -90,6 +93,7 @@ class BxWorkDefineController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         $type =  $method->getUserTypeBySql($username);
+        $this->assign('username_chinese', $method->getUserCNNameBySql($username));
         $can =  $method->getCanDayPostBySql($username);
         $is_reviewer =  $method->getReviewer($username);
         if ($result) {
@@ -114,6 +118,7 @@ class BxWorkDefineController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         $type =  $method->getUserTypeBySql($username);
+        $this->assign('username_chinese', $method->getUserCNNameBySql($username));
         $can =  $method->getCanDayPostBySql($username);
         $is_reviewer =  $method->getReviewer($username);
         if ($result) {
