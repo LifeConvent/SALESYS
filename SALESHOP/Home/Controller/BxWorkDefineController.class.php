@@ -1032,6 +1032,8 @@ class BxWorkDefineController extends Controller
     public function updateReason(){
         header('Content-type: text/html; charset=utf-8');
         $user_name = $_POST['username'];
+        $method = new MethodController();
+        $user_name = $method->getUserCNNameBySql($user_name);
         $business_node = $_POST['business_node'];
         $insert_date = $_POST['insert_date'];
         Log::write($user_name.' 业务节点：'.$business_node,'INFO');

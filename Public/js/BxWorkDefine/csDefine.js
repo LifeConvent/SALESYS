@@ -440,6 +440,7 @@ function actionFormatter_result(value, row, index) {
 
 //审核原因
 function actionFormatter_reason(value, row, index) {
+    var is_reviewer = $('#is_reviewer').text();
     if(row.tc_id != "-"||row.is_accordance=='是'){
         return '-';
     }
@@ -447,8 +448,10 @@ function actionFormatter_reason(value, row, index) {
         return '审核已通过';
     }else if(row.is_submit == '0'&&row.no_pass_reason!='-'){
         return '<span style="color:red;font-size: larger"><strong>'+row.no_pass_reason+'</strong></span>';
-    }else if(row.is_submit == '0'&&row.no_pass_reason=='-'){
-        return row.no_pass_reason;
+    }else if(is_reviewer==0&&row.is_submit == '1'){
+        return '<span style="color:rgba(44,173,164,0.72);"><strong>请等待后台管理员审核结论</strong></span>';
+    }else if(is_reviewer==0&&row.is_submit == '0'){
+        return '-';
     }else if(row.no_pass_reason == '-'||row.no_pass_reason == null){
         return '<textarea id="reason'+index+'" class="form-control" style="height: 40pt;width: 160pt;" placeholder="请输入审核不通过原因"></textarea>';
     }else{
@@ -610,8 +613,12 @@ function actionFormatter_conclusion(value, row, index){
     }
     if(row.is_pass == '1'){//存储在核对结果表result字段中
         return '审核通过';
+    }else if(row.is_submit == '1'&&row.is_review=='0'){
+        return '<span style="color:rgba(44,173,164,0.72);"><strong>已提交申请</strong></span>';
     }else if(row.is_pass == '0'&&row.no_pass_reason!=null&&row.no_pass_reason!='-'){
         return '<span style="color:red;font-size: larger"><strong>审核不通过</strong></span>';
+    }else if(row.is_submit == '0'){
+        return '<span style="color:rgba(247,215,64,0.97);"><strong>未提交申请</strong></span>';
     }else{
         return '未审核';
     }
