@@ -22,6 +22,7 @@ class IndexController extends Controller
         }else{
             $result = $this->searchUser($user,$pass);
         }
+        Log::write('管理员灌数'+json_encode($result),'INFO');
         exit(json_encode($result));
     }
 
