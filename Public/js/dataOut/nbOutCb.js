@@ -22,10 +22,27 @@ $(function () {
         //     // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         // }
         $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbCb?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbCb?queryDateStart="+$('#dtp_input1').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     $('#form_date2').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    }).on('changeDate', function(ev){
+        // if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
+        //     // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
+        // }
+        // $('#daily_report2').bootstrapTable('removeAll');
+        // $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/expNbOutCbByTime?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+    });
+
+    $('#form_date3').datetimepicker({
         language:  'zh-CN',
         weekStart: 1,
         todayBtn:  1,
@@ -39,7 +56,7 @@ $(function () {
             $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
             return;
         }
-    $('#daily_report2').bootstrapTable('removeAll');
+        $('#daily_report2').bootstrapTable('removeAll');
         $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbCb?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
@@ -64,6 +81,10 @@ $(function () {
 
 function exportExcel() {
     window.location.href = HOST + "index.php/Home/DataOut/expNbOutCb";
+}
+
+function exportExcelByTime() {
+    window.location.href = HOST + "index.php/Home/DataOut/expNbOutCbByTime?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val();
 }
 
 var TableInit = function () {

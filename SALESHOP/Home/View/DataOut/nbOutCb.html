@@ -54,21 +54,29 @@
                 <section class="panel">
                     <header class="panel-heading">
                         <!--<div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>-->
-                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  onclick="exportExcel();">导出明细</button></div>
-                        <!--<div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>-->
+                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  onclick="exportExcel();">全量导出按钮</button></div>
                         <div class="tools" style="float:left;margin-left: 10pt">
-                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">
                                 <input class="form-control" size="16" type="text" value="" readonly>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
-                            <!--<div style="width:50px;float:left;padding-left: 15px;margin-top: 5px"><strong>至</strong></div>-->
-                            <!--<div style="width:250px;float:left" class="input-group date form_date" id="form_date2" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">-->
-                                <!--<input class="form-control" size="16" type="text" value="" readonly>-->
-                                <!--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>-->
-                                <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
-                            <!--</div>-->
+                        </div><br><br>
+                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  onclick="exportExcelByTime();">区间导出明细</button></div>
+                        <div class="tools" style="float:left;margin-left: 10pt">
+                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date2" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                <input class="form-control" size="16" type="text" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            <div style="width:50px;float:left;padding-left: 15px;margin-top: 5px"><strong>至</strong></div>
+                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date3" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
+                                <input class="form-control" size="16" type="text" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
                         </div>
+                        <input style="visibility:hidden" id="dtp_input1" value=""/>
                         <input style="visibility:hidden" id="dtp_input2" value=""/>
                         <input style="visibility:hidden" id="dtp_input3" value=""/>
                     </header>
