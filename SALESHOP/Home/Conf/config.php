@@ -4,7 +4,7 @@ return array(
     //'本地数据库
     'DB_TYPE'=>'mysql',
     'DB_HOST'=>'10.1.73.11',
-    'DB_NAME'=>'testcenter_104',
+    'DB_NAME'=>'testcenter_107',
     'DB_USER'=>'gittest',
     'DB_PWD'=>'gittest',
     // 'DB_PORT'=>,

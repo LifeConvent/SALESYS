@@ -3,8 +3,12 @@
  */
 
 $(function () {
-    var user_type = $('#usertype').val();
+    $('#execCs').hide();
+    $('#execClm').hide();
+    $('#execUw').hide();
+    $('#execNb').hide();
 
+    var user_type = $('#usertype').val();
     if(user_type!='1'){
         $('#tc_data_load_exec').hide();
     }else{
@@ -19,100 +23,100 @@ $(function () {
     var oTable1 = new TableInit1();
     oTable1.Init();
 
-    var exec_type = $('#exec_type').text();
-    if(user_type=='1'){
-        exec_type='99';
-    }
-    switch (exec_type) {
-                        case '99'://管理员
-                            $('#execCs').show();
-                            $('#execClm').show();
-                            $('#execUw').show();
-                            $('#execNb').show();
-                            break;
-                        case '1'://保全
-                            $('#execCs').show();
-                            $('#execClm').hide();
-                            $('#execUw').hide();
-                            $('#execNb').hide();
-                            break;
-                        case '1-1'://受理
-                            $('#execCs').show();
-                            $('#execCsReview').hide();
-                            $('#execClm').hide();
-                            $('#execUw').hide();
-                            $('#execNb').hide();
-                            break;
-                        case '1-2'://复核
-                            $('#execCs').show();
-                            $('#execCsAccept').hide();
-                            $('#execClm').hide();
-                            $('#execUw').hide();
-                            $('#execNb').hide();
-                            break;
-                        case '1-2-3'://复核
-                            $('#execCs').show();
-                            $('#execCsAccept').hide();
-                            $('#execClm').hide();
-                            $('#execUw').hide();
-                            $('#execNb').hide();
-                            break;
-                        case '1-3'://短信
-                            $('#execCs').show();
-                            $('#execClm').hide();
-                            $('#execUw').hide();
-                            $('#execNb').hide();
-                            break;
-                        case '2':
-                            $('#execClm').show();
-                            $('#execCs').hide();
-                            $('#execUw').hide();
-                            $('#execNb').hide();
-                            break;
-                        case '3'://契约权限
-                            $('#execClm').hide();
-                            $('#execCs').hide();
-                            $('#execUw').hide();
-                            $('#execNb').show();
-                            //承保短信、通知书子菜单
-                            $('#execNbChat').show();
-                            $('#execNbNotice').hide();
-                            $('#execNbContract').hide();
-                            break;
-                        case '3-1'://契约权限短信-合同
-                            $('#execClm').hide();
-                            $('#execCs').hide();
-                            $('#execUw').hide();
-                            $('#execNb').show();
-                            //承保短信、通知书子菜单
-                            $('#execNbChat').show();
-                            $('#execNbNotice').hide();
-                            $('#execNbContract').show();
-                            break;
-                        case '4'://理赔
-                            $('#execClm').show();
-                            $('#execCs').hide();
-                            $('#execUw').hide();
-                            $('#execNb').hide();
-                            break;
-                        case '5'://核保
-                            $('#execUw').show();
-                            $('#execClm').hide();
-                            $('#execCs').hide();
-                            $('#execNb').hide();
-                            //承保短信、通知书子菜单
-                            $('#execUwChat').show();
-                            $('#execUwCs').hide();
-                            $('#execUwClm').show();
-                            $('#execUwNb').hide();
-                            break;
-                        default://全部隐藏
-                            $('#execCs').hide();
-                            $('#execClm').hide();
-                            $('#execUw').hide();
-                            $('#execNb').hide();
-                            break;
-                    }
+    // var exec_type = $('#exec_type').text();
+    // if(user_type=='1'){
+    //     exec_type='99';
+    // }
+    // switch (exec_type) {
+    //                     case '99'://管理员
+    //                         $('#execCs').show();
+    //                         $('#execClm').show();
+    //                         $('#execUw').show();
+    //                         $('#execNb').show();
+    //                         break;
+    //                     case '1'://保全
+    //                         $('#execCs').show();
+    //                         $('#execClm').hide();
+    //                         $('#execUw').hide();
+    //                         $('#execNb').hide();
+    //                         break;
+    //                     case '1-1'://受理
+    //                         $('#execCs').show();
+    //                         $('#execCsReview').hide();
+    //                         $('#execClm').hide();
+    //                         $('#execUw').hide();
+    //                         $('#execNb').hide();
+    //                         break;
+    //                     case '1-2'://复核
+    //                         $('#execCs').show();
+    //                         $('#execCsAccept').hide();
+    //                         $('#execClm').hide();
+    //                         $('#execUw').hide();
+    //                         $('#execNb').hide();
+    //                         break;
+    //                     case '1-2-3'://复核
+    //                         $('#execCs').show();
+    //                         $('#execCsAccept').hide();
+    //                         $('#execClm').hide();
+    //                         $('#execUw').hide();
+    //                         $('#execNb').hide();
+    //                         break;
+    //                     case '1-3'://短信
+    //                         $('#execCs').show();
+    //                         $('#execClm').hide();
+    //                         $('#execUw').hide();
+    //                         $('#execNb').hide();
+    //                         break;
+    //                     case '2':
+    //                         $('#execClm').show();
+    //                         $('#execCs').hide();
+    //                         $('#execUw').hide();
+    //                         $('#execNb').hide();
+    //                         break;
+    //                     case '3'://契约权限
+    //                         $('#execClm').hide();
+    //                         $('#execCs').hide();
+    //                         $('#execUw').hide();
+    //                         $('#execNb').show();
+    //                         //承保短信、通知书子菜单
+    //                         $('#execNbChat').show();
+    //                         $('#execNbNotice').hide();
+    //                         $('#execNbContract').hide();
+    //                         break;
+    //                     case '3-1'://契约权限短信-合同
+    //                         $('#execClm').hide();
+    //                         $('#execCs').hide();
+    //                         $('#execUw').hide();
+    //                         $('#execNb').show();
+    //                         //承保短信、通知书子菜单
+    //                         $('#execNbChat').show();
+    //                         $('#execNbNotice').hide();
+    //                         $('#execNbContract').show();
+    //                         break;
+    //                     case '4'://理赔
+    //                         $('#execClm').show();
+    //                         $('#execCs').hide();
+    //                         $('#execUw').hide();
+    //                         $('#execNb').hide();
+    //                         break;
+    //                     case '5'://核保
+    //                         $('#execUw').show();
+    //                         $('#execClm').hide();
+    //                         $('#execCs').hide();
+    //                         $('#execNb').hide();
+    //                         //承保短信、通知书子菜单
+    //                         $('#execUwChat').show();
+    //                         $('#execUwCs').hide();
+    //                         $('#execUwClm').show();
+    //                         $('#execUwNb').hide();
+    //                         break;
+    //                     default://全部隐藏
+    //                         $('#execCs').hide();
+    //                         $('#execClm').hide();
+    //                         $('#execUw').hide();
+    //                         $('#execNb').hide();
+    //                         break;
+    //                 }
 });
 
 var TableInit = function () {

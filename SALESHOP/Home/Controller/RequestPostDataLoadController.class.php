@@ -93,6 +93,7 @@ class RequestPostDataLoadController extends Controller
         $conn = $method->OracleOldDBCon();
         $userType = $method->getUserType();
         $userName = $method->getUserName();
+        Log::write('getRequestList:95用户session：'.$_SESSION['token'],'INFO');
         $where = "";
         if((int)$userType!=1){
             $where = " WHERE REQUEST_ACCOUNT = '".$userName."' ";
@@ -136,6 +137,7 @@ class RequestPostDataLoadController extends Controller
 //        dump($result);
         oci_free_statement($result_rows);
         oci_close($conn);
+        Log::write('getRequestList:139用户session：'.$_SESSION['token'],'INFO');
         if ($result) {
             exit(json_encode($result));
         } else {
@@ -367,6 +369,7 @@ class RequestPostDataLoadController extends Controller
     }
 
     public function getPaRiskSet(){
+        Log::write('getPaRiskSet:370用户session：'.$_SESSION['token'],'INFO');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
 //        $userType = $method->getUserType();
@@ -392,6 +395,7 @@ class RequestPostDataLoadController extends Controller
         $request_result =  $method->search_long($result_rows);
         $num = sizeof($request_result);
         Log::write(' 数据库查询SQL：'.$request_select,'INFO');
+        Log::write('getPaRiskSet:396用户session：'.$_SESSION['token'],'INFO');
         for($i=0;$i<$num;$i++){
             $result[$i]['code_list'] = $request_result[$i]['CODE_LIST'];
             $result[$i]['asc_code_list'] = $request_result[$i]['ASC_CODE_LIST'];

@@ -21,10 +21,11 @@ class PostTableController extends Controller
         $type =  $method->getUserTypeBySql($username);
         $can =  $method->getCanDayPostBySql($username);
         if ($result) {
+            $this->assign('usertype', $type);
+            $this->assign('user_type', $type);
             $this->assign('username', $username);
             $this->assign('user_name', $username);
             $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
             $this->assign('list_type',  $method->getListTypeBySql($username));

@@ -163,6 +163,7 @@ class MethodController extends Controller
     public function checkIn(&$admin)
     {
         $token = $_SESSION['token'];
+        Log::write('Method:checkIn:95用户session：'.$token,'ERROR');
         $token = $this->decode($token);
         $info = explode('-', $token);
         if (strcmp($info[2],"success") == 0) {
