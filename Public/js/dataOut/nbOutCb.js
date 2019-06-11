@@ -22,7 +22,7 @@ $(function () {
         //     // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         // }
         $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbCb?queryDateStart="+$('#dtp_input1').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbCb?queryDateStart="+$('#dtp_input1').val()});
     });
 
     $('#form_date2').datetimepicker({
