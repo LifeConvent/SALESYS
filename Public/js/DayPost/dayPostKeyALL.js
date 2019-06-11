@@ -1,10 +1,10 @@
 $(function () {
 
-    $('#day_post').attr('class','active');
-    $('#day_post_this').css('display','block');
-    $('#day_post_key_this').attr('class','active');
+    $('#day_post_two').attr('class','active');
+    $('#day_post_all').css('display','block');
+    $('#day_post_key_all').attr('class','active');
 
-    $('.form_date').datetimepicker({
+    $('#form_date1').datetimepicker({
         language:  'zh-CN',
         weekStart: 1,
         todayBtn:  1,
@@ -14,44 +14,44 @@ $(function () {
         minView: 2,
         forceParse: 0
     }).on('changeDate', function(ev){
-        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getDayPostKeyThis?queryDate="+$("#dtp_input2").val()+"&type=1"});
+        if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
+            $.scojs_message('请输入区间查询截止日期！', $.scojs_message.TYPE_ERROR);
+            return;
+        }
+        $('#daily_report').bootstrapTable('removeAll');
+        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getDayPostKeyThis?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2"});
+    });
+
+    $('#form_date2').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    }).on('changeDate', function(ev){
+        if($('#dtp_input2').val()==null||$('#dtp_input2').val()==''||$('#dtp_input2').val()=='undefined'){
+            $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
+            return;
+        }
+        $('#daily_report').bootstrapTable('removeAll');
+        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getDayPostKeyThis?queryDateStart="+$("#dtp_input2").val()+"&queryDateEnd="+$("#dtp_input3").val()+"&type=2"});
     });
 
     //1.初始化Table
     var oTable = new TableInit();
     oTable.Init();
-//        $[sessionStorage] = oTable.queryParams;
-
-    //2.初始化Button的点击事件
-    var oButtonInit = new ButtonInit();
-    oButtonInit.Init();
-
-
-    $('input').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
-        increaseArea: '2%' // optional
-    });
-
 
 });
 
 var TableInit = function () {
-    // countFooter =  function(v){
-    //     var count = 0;
-    //     for (var i in v) {
-    //         if(v[i]['org']=='小计'){
-    //             continue;
-    //         }
-    //         count += v[i][this.field];
-    //     }
-    //     return count+'';
-    // };
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report').bootstrapTable({
-            url: HOST + "index.php/Home/DayPost/getDayPostKeyThis",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/DayPost/getDayPostKeyThis?type=2",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             showExport: true,
             exportDataType: 'all',
@@ -219,67 +219,3 @@ function mergeCells(data,fieldName,colspan,target){
         index += count;
     }
 }
-
-// function sumColCount(value){
-//     var count = 0;
-//     for (var i in value) {
-//         count += value[i][this.field];
-//     }
-//     $('th[data-field='+this.field+'] div:first-child').html(this.title+"<span style='color:red'>&nbsp;"+count+"&nbsp;</span>");
-//     return count+'';
-// }
-// function Log(info){
-// 	setTimeout(function(){
-// 		$('.progress-bar').html(info);
-// 	},100);
-// }
-// (function(){
-//     // $('.fade').show();
-//     // initTable();
-//     // // loadData(1);初始加载数据
-
-//     //请求刷新TC
-//     // $('.reloadtc').click(function(){
-//     //     BootstrapDialog.confirm('刷新TC比较耗时，且会有多次数据库的读取，确认是否继续？', function(result){
-//     //         if(result) {
-//     //             reloadTc()
-//     //         }
-    //     });
-    // });
-
-
-    //刷新数据
-    // $('.loadbxdata').click(function(){
-    //     BootstrapDialog.confirm('生成数据会耗时较久，且影响历史数据，确认是否继续', function(result){
-    //         if(result) {
-    //             $('.fade').show();
-    //             $.ajax({
-    //                 type : "get",
-    //                 url :  'api/ReloadTc',
-    //                 dataType : 'json',
-    //                 async : true,
-    //                 success : function(data) {
-    //                     if(data){
-    //                         $('.fade').hide();
-    //                         BootstrapDialog.alert("已经提交请求，稍等片刻后再此查询数据。")
-    //                     }
-    //                 }
-    //             });
-    //         }
-    //     });
-//     // });
-//     $('.exportreport').click(function(){
-//         alert($("#dtp_input2").val());
-//          window.open(""+$("#dtp_input2").val());
-//     });
-//     $('.exportdetail').click(function(){
-//         alert($("#dtp_input2").val());
-//          window.open(""+$("#dtp_input2").val());
-//     });
-//     setTimeout(function(){$('.fade').hide()},4000)
-// })();
-
-
-$('.exportreport').click(function () {
-    alert($("#dtp_input2").val());
-});

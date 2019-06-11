@@ -124,6 +124,27 @@ class DayPostController extends Controller
         }
     }
 
+    public function dayPostKeyAll()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
+        if ($result) {
+            $this->assign('username', $username);
+            $this->assign('user_name', $username);
+            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
+            $this->assign('user_type', $type);
+            $this->assign('user_day_post', $can);
+            $this->assign('TITLE', TITLE);
+            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function dayPostKeyElse()
     {
         $username = '';
@@ -305,54 +326,131 @@ class DayPostController extends Controller
         $type = I('get.type');
         if(empty($queryDate)){
             if((int)$type==2){
-
+                $queryDateStart = I('get.queryDateStart');
+                $queryDateEnd = I('get.queryDateEnd');
+                if(empty($queryDateEnd)){
+                    $sql_fix = " AND INSERT_DATE <= TRUNC(SYSDATE) ";
+                }else{
+                    $sql_fix = " AND INSERT_DATE BETWEEN TRUNC(TO_DATE('$queryDateStart','YYYY-MM-DD')) AND TRUNC(TO_DATE('$queryDateEnd','YYYY-MM-DD')) ";
+                }
             }else{
                 $sql_fix = " AND INSERT_DATE = TRUNC(SYSDATE) ";
             }
         }else{
             $sql_fix = " AND INSERT_DATE = TRUNC(TO_DATE('$queryDate','YYYY-MM-DD')) ";
         }
-        $select_nbuw = "SELECT B.ORDER_LIST,A.* 
-                              FROM TMP_DAYPOST_BX_EXE A 
-                              LEFT JOIN TMP_CODE_MAP B 
-                                   ON A.EXE_TYPE_CODE = B.CODE_TYPE 
-                            WHERE A.EXE_TYPE_CODE LIKE '%$BxOrganCode%' ".$sql_fix."
-                            ORDER BY B.ORDER_LIST";
-        $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
-        $result_all = $method->search_long($result_rows);
-        Log::write($username.' 数据库查询SQL：'.$select_nbuw,'INFO');
-        foreach($result_all AS $exe){
-            $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
-            $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
-            $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['NUM_OLD_SUM'];
-            $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NUM_NEW_SUM'];
-            $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
-            $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAME_RADIO'];
-            $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['FEE_OLD_SUM'];
-            $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['FEE_NEW_SUM'];
-            $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['FEE_DIFF'];
-            $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['FEE_SAME_RADIO'];
-        }
-        $select_nbuw = "SELECT B.ORDER_LIST,A.* 
-                              FROM HXBX_KPI A 
-                              LEFT JOIN TMP_CODE_MAP B 
-                                   ON A.BUSI_TYPE = B.CODE_TYPE 
-                            WHERE A.BUSI_TYPE LIKE '%$BxOrganCode%' ".$sql_fix."
-                            ORDER BY B.ORDER_LIST";
-        $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
-        $result_all = $method->search_long($result_rows);
-        Log::write($username.' 数据库查询SQL：'.$select_nbuw,'INFO');
-        foreach($result_all AS $exe){
-            $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
-            $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
-            $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['OLD_NUM'];
-            $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NEW_NUM'];
-            $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
-            $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAMERATE'];
-            $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['OLD_AMOUNT'];
-            $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['NEW_AMOUNT'];
-            $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['AMOUNT_DIFF'];
-            $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['AMOUNT_SAMERATE'];
+        if((int)$type==1){
+            $select_nbuw = "SELECT B.ORDER_LIST,A.* 
+                                  FROM TMP_DAYPOST_BX_EXE A 
+                                  LEFT JOIN TMP_CODE_MAP B 
+                                       ON A.EXE_TYPE_CODE = B.CODE_TYPE 
+                                WHERE A.EXE_TYPE_CODE LIKE '%$BxOrganCode%' ".$sql_fix."
+                                ORDER BY B.ORDER_LIST";
+            $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            Log::write($username.' 批处理数据库查询SQL：'.$select_nbuw,'INFO');
+            foreach($result_all AS $exe){
+                $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
+                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
+                $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['NUM_OLD_SUM'];
+                $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NUM_NEW_SUM'];
+                $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
+                $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAME_RADIO'];
+                $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['FEE_OLD_SUM'];
+                $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['FEE_NEW_SUM'];
+                $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['FEE_DIFF'];
+                $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['FEE_SAME_RADIO'];
+            }
+            $select_nbuw = "SELECT B.ORDER_LIST,A.* 
+                                  FROM HXBX_KPI A 
+                                  LEFT JOIN TMP_CODE_MAP B 
+                                       ON A.BUSI_TYPE = B.CODE_TYPE 
+                                WHERE A.BUSI_TYPE LIKE '%$BxOrganCode%' ".$sql_fix."
+                                ORDER BY B.ORDER_LIST";
+            $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            Log::write($username.' 关键指标数据库查询SQL：'.$select_nbuw,'INFO');
+            foreach($result_all AS $exe){
+                $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
+                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
+                $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['OLD_NUM'];
+                $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NEW_NUM'];
+                $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
+                $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAMERATE'];
+                $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['OLD_AMOUNT'];
+                $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['NEW_AMOUNT'];
+                $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['AMOUNT_DIFF'];
+                $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['AMOUNT_SAMERATE'];
+            }
+        }else{
+            $select_nbuw = "SELECT MAX(B.ORDER_LIST) AS ORDER_LIST,
+                                    MAX(A.EXE_NAME) AS EXE_NAME,
+                                    A.EXE_TYPE AS EXE_TYPE,
+                                    SUM(NUM_OLD_SUM) AS NUM_OLD_SUM,
+                                    SUM(NUM_NEW_SUM) AS NUM_NEW_SUM,
+                                    SUM(NUM_NEW_SUM)-SUM(NUM_OLD_SUM) AS NUM_DIFF,
+                                    TO_CHAR(ROUND(1-ABS(NVL(SUM(NUM_OLD_SUM),0)-NVL(SUM(NUM_NEW_SUM),0))/DECODE(SUM(NUM_OLD_SUM),0,1,SUM(NUM_OLD_SUM)),4)*100,'fm9999990.9999')||'%' AS NUM_SAME_RADIO,
+                                    SUM(FEE_OLD_SUM) AS FEE_OLD_SUM,
+                                    SUM(FEE_NEW_SUM) AS FEE_NEW_SUM,
+                                    SUM(FEE_NEW_SUM)-SUM(FEE_OLD_SUM) AS FEE_DIFF,
+                                    TO_CHAR(ROUND(1-ABS(NVL(SUM(FEE_OLD_SUM),0)-NVL(SUM(FEE_NEW_SUM),0))/DECODE(SUM(FEE_OLD_SUM),0,1,SUM(FEE_OLD_SUM)),4)*100,'fm9999990.9999')||'%' AS FEE_SAME_RADIO
+                                  FROM TMP_DAYPOST_BX_EXE A 
+                                  LEFT JOIN TMP_CODE_MAP B 
+                                       ON A.EXE_TYPE_CODE = B.CODE_TYPE 
+                                WHERE A.EXE_TYPE_CODE LIKE '%$BxOrganCode%' ".$sql_fix."
+                                GROUP BY EXE_TYPE ORDER BY MAX(B.ORDER_LIST)";
+            $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            Log::write($username.' 批处理数据库查询SQL：'.$select_nbuw,'INFO');
+            foreach($result_all AS $exe){
+                $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
+                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
+                $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['NUM_OLD_SUM'];
+                $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NUM_NEW_SUM'];
+                $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
+                $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAME_RADIO'];
+                $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['FEE_OLD_SUM'];
+                $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['FEE_NEW_SUM'];
+                $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['FEE_DIFF'];
+                $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['FEE_SAME_RADIO'];
+            }
+            $select_nbuw = "SELECT B.ORDER_LIST,A.* 
+                                  FROM HXBX_KPI A 
+                                  LEFT JOIN TMP_CODE_MAP B 
+                                       ON A.BUSI_TYPE = B.CODE_TYPE 
+                                WHERE A.BUSI_TYPE LIKE '%$BxOrganCode%' ".$sql_fix."
+                                ORDER BY B.ORDER_LIST";
+//            $select_nbuw = "SELECT MAX(B.ORDER_LIST) AS ORDER_LIST,
+//                                    MAX(A.EXE_NAME) AS EXE_NAME,
+//                                    A.EXE_TYPE AS EXE_TYPE,
+//                                    SUM(OLD_NUM) AS OLD_NUM,
+//                                    SUM(NEW_NUM) AS NEW_NUM,
+//                                    SUM(NEW_NUM)-SUM(OLD_NUM) AS NUM_DIFF,
+//                                    TO_CHAR(ROUND(1-ABS(NVL(SUM(OLD_NUM),0)-NVL(SUM(NEW_NUM),0))/DECODE(SUM(OLD_NUM),0,1,SUM(OLD_NUM)),4)*100,'fm9999990.9999')||'%' AS NUM_SAME_RADIO,
+//                                    SUM(OLD_AMOUNT) AS OLD_AMOUNT,
+//                                    SUM(NEW_AMOUNT) AS NEW_AMOUNT,
+//                                    SUM(NEW_AMOUNT)-SUM(OLD_AMOUNT) AS AMOUNT_DIFF,
+//                                    TO_CHAR(ROUND(1-ABS(NVL(SUM(OLD_AMOUNT),0)-NVL(SUM(NEW_AMOUNT),0))/DECODE(SUM(OLD_AMOUNT),0,1,SUM(OLD_AMOUNT)),4)*100,'fm9999990.9999')||'%' AS FEE_SAME_RADIO
+//                                  FROM HXBX_KPI A
+//                                  LEFT JOIN TMP_CODE_MAP B
+//                                       ON A.BUSI_TYPE = B.CODE_TYPE
+//                                WHERE A.BUSI_TYPE LIKE '%$BxOrganCode%' ".$sql_fix."
+//                                GROUP BY A.EXE_TYPE ORDER BY B.ORDER_LIST";
+            $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            Log::write($username.' 关键指标数据库查询SQL：'.$select_nbuw,'INFO');
+            foreach($result_all AS $exe){
+                $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
+                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
+                $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['OLD_NUM'];
+                $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NEW_NUM'];
+                $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
+                $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAMERATE'];
+                $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['OLD_AMOUNT'];
+                $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['NEW_AMOUNT'];
+                $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['AMOUNT_DIFF'];
+                $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['AMOUNT_SAMERATE'];
+            }
         }
 //        for($i=0;$i<sizeof($result);$i++){
 //            $res[] = $result[$i];
