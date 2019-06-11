@@ -160,7 +160,7 @@ class HomeController extends Controller
         # 保全作业量-is_match
         #####################################################################  保全数据查询  #####################################################################
         #039
-        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_QDSX_CS_SLFH_GM WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE)";
+        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_NCS_BX_BQSL_BD WHERE INSERT_SYSDATE IS NOT NULL GROUP BY INSERT_SYSDATE)";
         $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
         $cs_result = $method->search_long($result_rows);
         $result['cs_sum'] =$cs_result[0]['NUM'];
@@ -169,7 +169,7 @@ class HomeController extends Controller
                                  WHEN B.NUM IS NULL THEN A.NUM ELSE B.NUM
                               END) AS NUM
                         FROM TMP_QDSX_TIME A LEFT JOIN
-                        (SELECT * FROM (SELECT TO_CHAR(SYS_INSERT_DATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_QDSX_CS_SLFH_GM WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE ORDER BY SYS_INSERT_DATE DESC) WHERE ROWNUM<8) B
+                        (SELECT * FROM (SELECT TO_CHAR(INSERT_SYSDATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_NCS_BX_BQSL_BD WHERE INSERT_SYSDATE IS NOT NULL GROUP BY INSERT_SYSDATE ORDER BY INSERT_SYSDATE DESC) WHERE ROWNUM<8) B
                         ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME  ORDER BY TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') ";
         $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
         $cs_result_new_time = $method->search_long($result_rows);
@@ -179,7 +179,7 @@ class HomeController extends Controller
         }
         #####################################################################  契约数据查询  #####################################################################
         #039
-        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_QDSX_NB_BXHT WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY TO_CHAR(SYS_INSERT_DATE,'YYYY-MM-DD'))";
+        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_NCS_BX_NB_BD WHERE INSERT_SYSDATE IS NOT NULL GROUP BY TO_CHAR(INSERT_SYSDATE,'YYYY-MM-DD'))";
         $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
         $cs_result = $method->search_long($result_rows);
         $result['nb_sum'] =$cs_result[0]['NUM'];
@@ -188,8 +188,8 @@ class HomeController extends Controller
                                  WHEN B.NUM IS NULL THEN A.NUM ELSE B.NUM
                               END) AS NUM
                         FROM TMP_QDSX_TIME A LEFT JOIN
-                        (SELECT * FROM (SELECT TO_CHAR(SYS_INSERT_DATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_QDSX_NB_BXHT WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE ORDER BY SYS_INSERT_DATE DESC) WHERE ROWNUM<8) B
-                        ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME  ORDER BY TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') ";
+                        (SELECT * FROM (SELECT TO_CHAR(INSERT_SYSDATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_NCS_BX_NB_BD WHERE INSERT_SYSDATE IS NOT NULL GROUP BY INSERT_SYSDATE ORDER BY INSERT_SYSDATE DESC) WHERE ROWNUM<8) B
+                        ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME  ORDER BY TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD')";
         $result_rows = oci_parse($conn, $select_nb); // 配置SQL语句，执行SQL
         $nb_result_new_time = $method->search_long($result_rows);
         for($i=0;$i<7;$i++){
@@ -198,7 +198,7 @@ class HomeController extends Controller
         }
         #####################################################################  理赔数据查询  #####################################################################
         #039
-        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_QDSX_CLM WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE)";
+        $select_cs = "SELECT SUM(NUM) AS NUM FROM (SELECT COUNT(*) AS NUM FROM TMP_NCS_BX_LP_BD WHERE INSERT_SYSDATE IS NOT NULL GROUP BY INSERT_SYSDATE)";
         $result_rows = oci_parse($conn, $select_cs); // 配置SQL语句，执行SQL
         $cs_result = $method->search_long($result_rows);
         $result['clm_sum'] =$cs_result[0]['NUM'];
@@ -207,7 +207,7 @@ class HomeController extends Controller
                                  WHEN B.NUM IS NULL THEN A.NUM ELSE B.NUM
                               END) AS NUM
                         FROM TMP_QDSX_TIME A LEFT JOIN
-                        (SELECT * FROM (SELECT TO_CHAR(SYS_INSERT_DATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_QDSX_CLM WHERE SYS_INSERT_DATE IS NOT NULL GROUP BY SYS_INSERT_DATE ORDER BY SYS_INSERT_DATE DESC) WHERE ROWNUM<8) B
+                        (SELECT * FROM (SELECT TO_CHAR(INSERT_SYSDATE,'YYYY-MM-DD') AS NEW_INSERT_TIME,COUNT(*) AS NUM FROM TMP_NCS_BX_LP_BD WHERE INSERT_SYSDATE IS NOT NULL GROUP BY INSERT_SYSDATE ORDER BY INSERT_SYSDATE DESC) WHERE ROWNUM<8) B
                         ON TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') = B.NEW_INSERT_TIME  ORDER BY TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') ";
         $result_rows = oci_parse($conn, $select_clm); // 配置SQL语句，执行SQL
         $clm_result_new_time = $method->search_long($result_rows);

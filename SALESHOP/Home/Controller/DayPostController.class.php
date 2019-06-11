@@ -333,6 +333,27 @@ class DayPostController extends Controller
             $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['FEE_DIFF'];
             $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['FEE_SAME_RADIO'];
         }
+        $select_nbuw = "SELECT B.ORDER_LIST,A.* 
+                              FROM HXBX_KPI A 
+                              LEFT JOIN TMP_CODE_MAP B 
+                                   ON A.BUSI_TYPE = B.CODE_TYPE 
+                            WHERE A.BUSI_TYPE LIKE '%$BxOrganCode%' ".$sql_fix."
+                            ORDER BY B.ORDER_LIST";
+        $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+        $result_all = $method->search_long($result_rows);
+        Log::write($username.' 数据库查询SQL：'.$select_nbuw,'INFO');
+        foreach($result_all AS $exe){
+            $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
+            $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
+            $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['OLD_NUM'];
+            $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NEW_NUM'];
+            $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
+            $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAMERATE'];
+            $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['OLD_AMOUNT'];
+            $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['NEW_AMOUNT'];
+            $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['AMOUNT_DIFF'];
+            $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['AMOUNT_SAMERATE'];
+        }
 //        for($i=0;$i<sizeof($result);$i++){
 //            $res[] = $result[$i];
 //        }
