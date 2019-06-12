@@ -1,28 +1,24 @@
 $(function() {
+    //日报权限
     var user_day_post = $('#user_day_post').text();
     if(user_day_post!='1'){
         $('#day_post').hide();
         $('#day_post_this').hide();
-        $('#day_post_nb_this').hide();
-        $('#day_post_uw_this').hide();
-        $('#day_post_cs_this').hide();
-        $('#day_post_clm_this').hide();
-        $('#day_post_two').hide();
         $('#day_post_all').hide();
-        $('#day_post_sum').hide();
+        $('#day_post_two').hide();
+        $('#day_post_qx').hide();
     }else{
-        // $('#day_post').show();
-        // $('#day_post_this').show();
-        // $('#day_post_nb_this').show();
-        // $('#day_post_uw_this').show();
-        // $('#day_post_cs_this').show();
-        // $('#day_post_clm_this').show();
-        // $('#day_post_two').show();
-        // $('#day_post_all').show();
-        // $('#day_post_sum').show();
+    }
+    var user_type = $('#user_type').text();
+    //数据管理权限
+    if(user_type!='1'){
+        $('#data_control').hide();
+    }
+    //用户管理权限
+    if(user_type!='1'){
+        $('#user_control').hide();
     }
     var user_name = $('#user_name').text();
-    var user_type = $('#user_type').text();
     if(user_name=='zhuxj_qd'||user_name=='quanli'||user_name=='cuizhan'||user_name=='zhouyang_qd'||user_name=='yuyi'||user_type=='1'){
     }else{
         $('#data_export').hide();
@@ -58,7 +54,7 @@ $(function() {
         $('#post_day_this').hide();
         $('#post_day_all').hide();
     }
-    //清单类型权限控制
+    //上线环境清单类型权限控制
     var list_type = $('#list_type').text();
     switch (list_type) {
         case '99'://管理员

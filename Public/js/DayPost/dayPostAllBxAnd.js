@@ -166,10 +166,15 @@ var TableInit = function () {
                     align : 'center',
                     valign: 'middle'
                 },{
-                    field : 'NBUW_SAME_RADIO',
+                    // field : 'NBUW_SAME_RADIO',
                     title : '一<br>致<br>率',
                     align : 'center',
-                    align : 'center'
+                    formatter:function(value, row, index){
+                        if(row.NBUW_NEW_NUM==null||row.NBUW_NEW_NUM==0){
+                            return "-";
+                        }
+                        return (row.NBUW_SAME_NUM*100/row.NBUW_NEW_NUM).toFixed(2)+"%";
+                    }
                 },{
                     field : 'CS_OLD_NUM',
                     title : '老核<br>心作<br>业量',
@@ -201,8 +206,14 @@ var TableInit = function () {
                 },{
                     title : '一<br>致<br>率',
                     align : 'center',
-                    field : 'CS_SAME_RADIO',
-                    align : 'center'
+                    // field : 'CS_SAME_RADIO',
+                    align : 'center',
+                    formatter:function(value, row, index){
+                        if(row.CS_NEW_NUM==null||row.CS_NEW_NUM==0){
+                            return "-";
+                        }
+                        return (row.CS_SAME_NUM*100/row.CS_NEW_NUM).toFixed(2)+"%";
+                    }
                 },{
                     field : 'CLM_OLD_NUM',
                     title : '老核<br>心作<br>业量',
@@ -229,9 +240,15 @@ var TableInit = function () {
                     align : 'center',
                     valign: 'middle'
                 },{
-                    field : 'CLM_SAME_RADIO',
+                    // field : 'CLM_SAME_RADIO',
                     title : '一<br>致<br>率',
-                    align : 'center'
+                    align : 'center',
+                    formatter:function(value, row, index){
+                        if(row.CLM_NEW_NUM==null||row.CLM_NEW_NUM==0){
+                            return "-";
+                        }
+                        return (row.CLM_SAME_NUM*100/row.CLM_NEW_NUM).toFixed(2)+"%";
+                    }
                 }
                 ]]
         });
