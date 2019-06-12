@@ -675,10 +675,12 @@ class DayPostController extends Controller
         $queryTc = "select  cfvt.value3 as sys,
                                 COUNT(bt.bug_new_id) as bug_sum,
                                 count(case  when bt.`status` in ('8','11','42') then 1 else null end) as bug_close_sum,
+									 COUNT(case WHEN cfvt.value20 IN('2-需求差异','3-操作差异') THEN 1 ELSE null END) AS demand_operation_diff_all,
                                 count(case  when bt.`status` not in ('8','11','42') then 1 else null end) as bug_no_close_sum,
                                 count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." then 1 else null end) as bug_this_sum,
-                                count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and bt.`status` in ('8','11','42') then 1 else null end) as bug_this_close_sum
-                from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
+                                count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and bt.`status` in ('8','11','42') then 1 else null end) as bug_this_close_sum,
+									 COUNT(case WHEN date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and cfvt.value20 IN('2-需求差异','3-操作差异') THEN 1 ELSE null END) AS demand_operation_diff_this
+                from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp  
                 where ut.id = bt.reporter_id 
                     and bt.id = cfvt.bug_id 
                     and tp.plname = 'bug_table_status' 
@@ -690,7 +692,7 @@ class DayPostController extends Controller
         $bugSys = $method->getBugSys();
         $bugSysName = $method->getBugSysName();
         for($i=0;$i<sizeof($bugSys);$i++){
-            $result[] = array("sys" => $bugSysName[$i],"bug_sum" => 0,"bug_close_sum" => 0,"bug_no_close_sum" => 0,"bug_this_sum" => 0,"bug_this_close_sum" => 0,);
+            $result[] = array("sys" => $bugSysName[$i],"bug_sum" => 0,"bug_close_sum" => 0,"demand_operation_diff_all"=>0,"bug_no_close_sum" => 0,"bug_this_sum" => 0,"demand_operation_diff_this"=>0,"bug_this_close_sum" => 0,);
         }
         $tc_cursor = M();
         $res = $tc_cursor->query($queryTc);
@@ -699,24 +701,32 @@ class DayPostController extends Controller
         $bug_no_close_sum = 0;
         $bug_this_sum = 0;
         $bug_this_close_sum = 0;
+        $demand_operation_diff_all = 0;
+        $demand_operation_diff_this = 0;
         for($i=0;$i<sizeof($res);$i++){
             $result[$bugSys[$res[$i]['sys']]]['sys'] = $res[$i]['sys'];
             $result[$bugSys[$res[$i]['sys']]]['bug_sum'] = $res[$i]['bug_sum'];
             $bug_sum += $res[$i]['bug_sum'];
             $result[$bugSys[$res[$i]['sys']]]['bug_close_sum'] = $res[$i]['bug_close_sum'];
             $bug_close_sum += $res[$i]['bug_close_sum'];
+            $result[$bugSys[$res[$i]['sys']]]['demand_operation_diff_all'] = $res[$i]['demand_operation_diff_all'];
+            $demand_operation_diff_all += $res[$i]['demand_operation_diff_all'];
             $result[$bugSys[$res[$i]['sys']]]['bug_no_close_sum'] = $res[$i]['bug_no_close_sum'];
             $bug_no_close_sum += $res[$i]['bug_no_close_sum'];
             $result[$bugSys[$res[$i]['sys']]]['bug_this_sum'] = $res[$i]['bug_this_sum'];
             $bug_this_sum += $res[$i]['bug_this_sum'];
             $result[$bugSys[$res[$i]['sys']]]['bug_this_close_sum'] = $res[$i]['bug_this_close_sum'];
             $bug_this_close_sum += $res[$i]['bug_this_close_sum'];
+            $result[$bugSys[$res[$i]['sys']]]['demand_operation_diff_this'] = $res[$i]['demand_operation_diff_this'];
+            $demand_operation_diff_this += $res[$i]['demand_operation_diff_this'];
         }
         $result[$bugSys["合计"]]['bug_sum'] = $bug_sum;
         $result[$bugSys["合计"]]['bug_close_sum'] = $bug_close_sum;
         $result[$bugSys["合计"]]['bug_no_close_sum'] = $bug_no_close_sum;
         $result[$bugSys["合计"]]['bug_this_sum'] = $bug_this_sum;
         $result[$bugSys["合计"]]['bug_this_close_sum'] = $bug_this_close_sum;
+        $result[$bugSys["合计"]]['demand_operation_diff_all'] = $demand_operation_diff_all;
+        $result[$bugSys["合计"]]['demand_operation_diff_this'] = $demand_operation_diff_this;
         Log::write("TC数据更新结束 ：".date("h:i:sa")."<br> ");
         if(!empty($queryDateStart)){
             $sum = sizeof($result);

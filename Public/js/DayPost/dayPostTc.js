@@ -115,7 +115,7 @@ var TableInit = function () {
             columns : [
                 [{
                     title :  '问题解决情况汇总',
-                    colspan: 6,
+                    colspan: 8,
                     align : 'center'
                 }],
                 [{
@@ -124,11 +124,11 @@ var TableInit = function () {
                     align : 'center'
                 },{
                     title : '问题整体情况',
-                    colspan: 3,
+                    colspan: 4,
                     align : 'center'
                 },{
                     title : '当日处理情况',
-                    colspan: 2,
+                    colspan: 3,
                     align : 'center'
                 }
                 ],[{
@@ -144,12 +144,20 @@ var TableInit = function () {
                     title : '累计关闭/取消问题总数',
                     align : 'center'
                 },{
+                    field : 'demand_operation_diff_all',
+                    title : '累计需求/操作差异总数',
+                    align : 'center'
+                },{
                     field : 'bug_no_close_sum',
                     title : '累计未关闭问题总数',
                     align : 'center'
                 },{
                     field : 'bug_this_sum',
                     title : '当日新增问题总数',
+                    align : 'center'
+                },{
+                    field : 'demand_operation_diff_this',
+                    title : '当日需求/操作差异总数',
                     align : 'center'
                 },{
                     field : 'bug_this_close_sum',
