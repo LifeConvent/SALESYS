@@ -467,6 +467,59 @@ class DayPostController extends Controller
         }
     }
 
+    public function getDayPostKeyElse(){
+        //分子系统查询数据结果且按照标准直接插入
+        $username = '';
+        $method = new MethodController();
+        $method->checkIn($username);
+        $BxOrganCode = $method->getDayPostOrganBySql($username);
+        $conn = $method->OracleOldDBCon();
+        $queryDate = I('get.queryDate');
+        $type = I('get.type');
+        if(empty($queryDate)){
+            if((int)$type==2){
+                $queryDateStart = I('get.queryDateStart');
+                $queryDateEnd = I('get.queryDateEnd');
+                if(empty($queryDateEnd)){
+                    $sql_fix = " AND INSERT_DATE <= TRUNC(SYSDATE) ";
+                }else{
+                    $sql_fix = " AND INSERT_DATE BETWEEN TRUNC(TO_DATE('$queryDateStart','YYYY-MM-DD')) AND TRUNC(TO_DATE('$queryDateEnd','YYYY-MM-DD')) ";
+                }
+            }else{
+                $sql_fix = " AND INSERT_DATE = TRUNC(SYSDATE) ";
+            }
+        }else{
+            $sql_fix = " AND INSERT_DATE = TRUNC(TO_DATE('$queryDate','YYYY-MM-DD')) ";
+        }
+            $select_nbuw = "SELECT TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD') AS CHECK_DATE,
+                                    A.CHECK_SUM,
+                                    A.PRO_SUM,
+                                    A.FINISH_RADIO
+                                  FROM TMP_DAYPOST_BX_POLICY A
+                                WHERE 1=1 
+                                  ORDER BY A.CHECK_DATE";
+            $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            Log::write($username.' 关键指标数据库查询SQL：'.$select_nbuw,'INFO');
+            for($i=0;$i<sizeof($result_all);$i++){
+                $result[$i]['check_date'] = $result_all[$i]['CHECK_DATE'];
+                $result[$i]['policy_check_sum'] = $result_all[$i]['CHECK_SUM'];
+                $result[$i]['policy_pro_sum'] = $result_all[$i]['PRO_SUM'];
+                $result[$i]['policy_is_same'] = $result_all[$i]['FINISH_RADIO'];
+            }
+        foreach($result AS $item){
+            $res[] = $item;
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($res);
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
     //加载日报数据
     public function loadDayPostData(){
         $username = '';
