@@ -405,7 +405,7 @@ function actionFormatter_check(value, row, index) {
     var sysTime = new Date().getHours();
     if(row.is_check_policy == "1"){
         return '<span style="color:rgba(44,173,164,0.72);"><strong>已确认抽检</strong></span>';
-    }else if(sysTime>=15) {
+    }else if(sysTime>=23) {
         return '<span style="color:red;"><strong>已停止抽检确认</strong></span>';
     }else{
         return '<button type="button" class="btn btn-warning check" style="height: 20pt;width: 55pt"><span style="margin-left:-5pt;">抽检保单</span></button>';
