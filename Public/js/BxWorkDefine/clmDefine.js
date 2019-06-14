@@ -182,6 +182,20 @@ var TableInit = function () {
                 title: '新核心赔案号',
                 width:150
             }, {
+                field: 'old_get_money',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '老核心金额',
+                width:150
+            }, {
+                field: 'new_get_money',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '新核心金额',
+                width:150
+            },  {
                 field: 'business_name',
                 sortable: true,
                 align: 'center',

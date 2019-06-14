@@ -15,9 +15,9 @@ $(function() {
         $('#data_control').hide();
     }
     //用户管理权限
-    if(user_type!='1'){
-        $('#user_control').hide();
-    }
+    // if(user_type!='1'){
+    //     $('#user_control').hide();
+    // }
     var user_name = $('#user_name').text();
     if(user_name=='zhuxj_qd'||user_name=='quanli'||user_name=='cuizhan'||user_name=='zhouyang_qd'||user_name=='yuyi'||user_type=='1'){
     }else{
@@ -50,7 +50,7 @@ $(function() {
         // $('#data_export').hide();
     }
     if(user_type!='1'){
-        $('#user_control').hide();
+        // $('#user_control').hide();
         $('#post_day_this').hide();
         $('#post_day_all').hide();
     }
