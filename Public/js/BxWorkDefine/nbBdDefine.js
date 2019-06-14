@@ -47,7 +47,7 @@ $(function () {
     oTable.Init();
 //        $[sessionStorage] = oTable.queryParams;
 
-    // //2.初始化Button的点击事件
+    //2.初始化Button的点击事件
     // var oButtonInit = new ButtonInit();
     // oButtonInit.Init();
     //
@@ -65,16 +65,6 @@ function exportExcel() {
 }
 
 var TableInit = function () {
-    countFooter =  function(v){
-        var count = 0;
-        for (var i in v) {
-            if(v[i]['org']=='小计'){
-                continue;
-            }
-            count += v[i][this.field];
-        }
-        return count+'';
-    };
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
@@ -234,9 +224,9 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '确认抽检时间',
-                width:100
+                width:130
             },{
-                field: 'operation',
+                field: 'check_operation',
                     title: '抽检操作',
                     align: 'center',
                     valign: 'middle',
@@ -254,12 +244,12 @@ var TableInit = function () {
                     events: "actionEvents_select",
                     width:150
              },{
-                field: 'operation',
+                field: 'sure_operation',
                 title: '操作',
                 align: 'center',
                 valign: 'middle',
                 formatter: "actionFormatter",
-                events: "actionEvents",
+                events: "actionEvents_sure",
                 width:100,
                 clickToSelect: false
             }, {
@@ -319,21 +309,21 @@ var TableInit = function () {
                 align: 'center',
                 visible:false,
                 title: '-',
-                width:120,
+                width:120
             },{
                 field: 'is_check_policy',
                 sortable: true,
                 align: 'center',
                 visible:false,
                 title: '-',
-                width:120,
+                width:120
              },{
                 field: 'is_select_policy',
                 sortable: true,
                 align: 'center',
                 visible:false,
                 title: '-',
-                width:120,
+                width:120
               }]
         });
     };
@@ -354,14 +344,21 @@ var TableInit = function () {
 
 function actionFormatter(value, row, index) {
     if(row.tc_id != "-"||row.result != "-"){
+        if(row.is_select_policy == "1"){
+            return '<span style="color:rgba(44,173,164,0.72);"><strong>已完成核对</strong></span>';
+        }
         return '-';
+    }else if(row.is_check_policy != "1"){
+        return '<strong>未选择该保单</strong>';
+    }else if(row.is_select_policy != "1"){
+        return '<span style="color:rgba(247,215,64,0.97);"><strong>待保单抽取后进行核对</strong></span>';
     }else{
-        return '<button type="button" class="btn btn-primary modify" style="height: 20pt;width: 30pt"><span style="margin-left:-5pt;">确认</span></button>';
+        return '<button type="button" class="btn btn-primary sure" style="height: 20pt;width: 30pt"><span style="margin-left:-5pt;">确认</span></button>';
     }
 }
 
-window.actionEvents = {
-    'click .modify': function (e, value, row, index) {
+window.actionEvents_sure = {
+    'click .sure': function (e, value, row, index) {
         // ajax提交数据
         debugger;
         // var link_business = $("#business"+index).val();
@@ -383,9 +380,9 @@ window.actionEvents = {
                         debugger;
                         $.scojs_message(result.message, $.scojs_message.TYPE_OK);
                         //单行刷新数据
-                        var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
-                        var sysTime = new Date().getHours()+':'+(new Date().getMinutes()) +':'+new Date().getSeconds();
-                        var _data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate ,"business_time":sysTime}
+                        // var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
+                        // var sysTime = new Date().getHours()+':'+(new Date().getMinutes()) +':'+new Date().getSeconds();
+                        var _data = { "result" : "正确", "hd_user_name" : username, "sys_insert_date" :sysDate,"is_select_policy":'1'};
                         $('#daily_report2').bootstrapTable('updateRow', {index: index, row: _data});
                     } else if (result.status == 'failed') {
                         debugger;

@@ -385,7 +385,7 @@ class BxWorkDefineController extends Controller
                                --C.STATUS,
                                (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                             FROM TMP_QDSX_NB_BXHT A 
-                            LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                            LEFT JOIN TMP_BX_DAYPOST_DESCRIPTION B 
                               ON A.POLICY_CODE = B.BUSINESS_CODE
                               --AND A.MEDIA_TYPE = B.MEDIA_TYPE
                               AND B.BUSINESS_NODE = A.BUSINESS_NODE
@@ -504,7 +504,7 @@ class BxWorkDefineController extends Controller
 //                $insert_sql = "INSERT INTO TMP_BX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,MEDIA_TYPE,BUSINESS_TIME) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'), '".$media_type."',TO_CHAR(SYSDATE,'HH24:mi:ss'))";
 //            }
 //        }
-        $update_cs_define = "UPDATE TMP_BX_DAYPOST_DESCRIPTION SET IS_SELECT_POLICY = '1', RESULT = '正确', HD_USER_NAME = '".$user_name."',BUSINESS_TIME='TO_CHAR(SYSDATE,'HH24:mi:ss')' WHERE BUSINESS_CODE = '".$accept_code."', POLICY_CODE = '".$policy_code."'";
+        $update_cs_define = "UPDATE TMP_BX_DAYPOST_DESCRIPTION SET IS_SELECT_POLICY = '1', RESULT = '正确', HD_USER_NAME = '".$user_name."',BUSINESS_TIME=TO_CHAR(SYSDATE,'HH24:mi:ss') WHERE BUSINESS_CODE = '".$accept_code."' AND POLICY_CODE = '".$policy_code."'";
         Log::write($user_name.' 数据库查询SQL：'.$update_cs_define,'INFO');
         $result_rows = oci_parse($conn, $update_cs_define); // 配置SQL语句，执行SQL
         if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
