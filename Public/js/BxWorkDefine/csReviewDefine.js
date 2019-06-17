@@ -174,21 +174,23 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '新核心保全项',
                 width:120
-            }, {
-                field: 'old_service_type',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '老核心申请方式',
-                width:130
-            }, {
-                field: 'new_service_type',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '新核心申请方式',
-                width:130
-            }, {
+            },
+            //     {
+            //     field: 'old_service_type',
+            //     sortable: true,
+            //     align: 'center',
+            //     valign: 'middle',
+            //     title: '老核心申请方式',
+            //     width:130
+            // }, {
+            //     field: 'new_service_type',
+            //     sortable: true,
+            //     align: 'center',
+            //     valign: 'middle',
+            //     title: '新核心申请方式',
+            //     width:130
+            // },
+                {
                 field: 'old_policy_code',
                 sortable: true,
                 align: 'center',
@@ -217,19 +219,26 @@ var TableInit = function () {
                 title: '新核心受理号',
                 width:140
             }, {
-                field: 'old_get_money',
+                field: 'old_accept_status',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '老核心金额',
-                width:120
+                title: '老核心受理状态',
+                width:150
             }, {
-                field: 'new_get_money',
+                field: 'new_accept_status',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '新核心金额',
-                width:120
+                title: '新核心受理状态',
+                width:150
+            }, {
+                field: 'old_review_result',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '老核心复核结论',
+                width:150
             }, {
                 field: 'is_accordance',
                 sortable: true,

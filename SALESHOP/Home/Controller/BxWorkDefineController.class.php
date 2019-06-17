@@ -839,6 +839,9 @@ class BxWorkDefineController extends Controller
                                        A.NEW_POLICY_CODE,
                                        A.OLD_ACCEPT_CODE,
                                        A.NEW_ACCEPT_CODE,
+                                       A.OLD_ACCEPT_STATUS,
+                                       A.NEW_ACCEPT_STATUS,
+                                       A.OLD_REVIEW_RESULT,
                                        TO_CHAR(A.OLD_INSERT_TIME,'YYYY-MM-DD') AS OLD_INSERT_TIME,
                                        TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME,
                                        A.IS_ACCORDANCE,
@@ -891,6 +894,9 @@ class BxWorkDefineController extends Controller
                 $result[$i]['new_policy_code'] = $value['NEW_POLICY_CODE'];
                 $result[$i]['old_accept_code'] = $value['OLD_ACCEPT_CODE'];
                 $result[$i]['new_accept_code'] = $value['NEW_ACCEPT_CODE'];
+                $result[$i]['old_accept_status'] = $value['OLD_ACCEPT_STATUS'];
+                $result[$i]['new_accept_status'] = $value['NEW_ACCEPT_STATUS'];
+                $result[$i]['old_review_result'] = $value['OLD_REVIEW_RESULT'];
                 $result[$i]['busi_insert_date'] = $value['INSERT_SYSDATE'];
                 $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
                 $result[$i]['is_submit'] = $value['IS_SUBMIT'];
