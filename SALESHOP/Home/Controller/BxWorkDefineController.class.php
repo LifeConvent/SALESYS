@@ -1149,12 +1149,12 @@ class BxWorkDefineController extends Controller
         ##############################################################  公共条件处理部分-无用户区分  ############################################################################
         if (!empty($queryDateStart)) {
             if (!empty($queryDateEnd)) {
-                $where_time_bqsl = " AND TRUNC(A.OLD_INSERT_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy/mm/dd') AND to_date('" . $queryDateEnd . "','yyyy/mm/dd') ";
+                $where_time_bqsl = " AND TRUNC(A.INSERT_SYSDATE) BETWEEN to_date('" . $queryDateStart . "','yyyy/mm/dd') AND to_date('" . $queryDateEnd . "','yyyy/mm/dd') ";
             } else {
-                $where_time_bqsl = " AND TRUNC(A.OLD_INSERT_TIME) = to_date('" . $queryDateStart . "','yyyy/mm/dd') ";
+                $where_time_bqsl = " AND TRUNC(A.INSERT_SYSDATE) = to_date('" . $queryDateStart . "','yyyy/mm/dd') ";
             }
         } else {
-            $where_time_bqsl = " AND TRUNC(A.OLD_INSERT_TIME) = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " AND TRUNC(A.INSERT_SYSDATE) = TRUNC(SYSDATE) ";
         }
         ##############################################################  测试数据  ############################################################################
         #$where_time_bqsl = "";

@@ -2066,7 +2066,7 @@ class MethodController extends Controller
 //        }
         //重加载TC数据
 //        $tc_fix = $this->getTcFix();
-        $queryTc = "select bt.bug_new_id as tc_id,ut.username as tc_user_name,cfvt.value18 AS business_code,bt.date_submitted as create_date,cfvt.value21 as description,bt.status as status,tp.tx_desc as status_desc,cfvt.value17 as find_node,cfvt.value16 as local,bt.severity,cfvt.value3 as sys,
+        $queryTc = "select bt.bug_new_id as tc_id,ut.username as tc_user_name,TRIM(cfvt.value18) AS business_code,bt.date_submitted as create_date,cfvt.value21 as description,bt.status as status,tp.tx_desc as status_desc,cfvt.value17 as find_node,cfvt.value16 as local,bt.severity,cfvt.value3 as sys,
 									(CASE WHEN cfvt.value20 IN ('2-需求差异','3-操作差异') THEN '1' ELSE '0' END) AS pro_nature
                     from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
                     where ut.id = bt.reporter_id and bt.id = cfvt.bug_id 
