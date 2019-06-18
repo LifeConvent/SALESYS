@@ -1557,6 +1557,7 @@ class BxWorkDefineController extends Controller
             }else {
                 $update_sql = "UPDATE TMP_BX_DAYPOST_DESCRIPTION SET RESULT = '".$result_des."',IS_SUBMIT = '1', IS_PASS = '1',IS_REVIEW = '1',IS_NO_DEAL = '1' WHERE BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."'AND BUSINESS_NODE = '".$business_node."' AND TO_CHAR(BUSINESS_DATE,'YYYY-MM-DD') ='".$insert_date."'";
             }
+            Log::write($user_name.' 是否更新无需操作结果SQL：'.$update_sql,'INFO');
             $result_rows = oci_parse($conn, $update_sql); // 配置SQL语句，执行SQL
             if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)) {
                 $result['status'] = "success";

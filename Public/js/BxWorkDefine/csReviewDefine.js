@@ -153,14 +153,16 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '新核心操作员',
                 width:130
-            }, {
-                field: 'old_organ_name',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '老核心机构名称',
-                width:130
-            }, {
+            },
+            //     {
+            //     field: 'old_organ_name',
+            //     sortable: true,
+            //     valign: 'middle',
+            //     align: 'center',
+            //     title: '老核心机构名称',
+            //     width:130
+            // },
+                {
                 field: 'old_service_code',
                 sortable: true,
                 valign: 'middle',
@@ -614,7 +616,7 @@ window.actionEvents_review = {
         });
     },
     'click .pass_no': function (e, value, row, index) {
-        var business_node = 'BQSL';
+        var business_node = 'BQFH';
         var business_code = row.old_accept_code;
         var policy_code = row.old_policy_code;
         var busi_insert_date = row.busi_insert_date;
