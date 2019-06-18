@@ -1510,6 +1510,7 @@ class BxWorkDefineController extends Controller
         $business_code = $_POST['business_code'];
         $description = $_POST['description'];
         $result_des = $_POST['result'];
+        $is_no_deal = $_POST['is_no_deal'];
         $no_pass_reason = $_POST['no_pass_reason'];//不通过时才会传值
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -1551,7 +1552,11 @@ class BxWorkDefineController extends Controller
                 $result['message'] = $user_name."您好，审核通过结果已存在，无法修改。请联系管理员确认！";
                 exit(json_encode($result));
             }
-            $update_sql = "UPDATE TMP_BX_DAYPOST_DESCRIPTION SET RESULT = '".$result_des."',IS_SUBMIT = '1', IS_PASS = '1',IS_REVIEW = '1' WHERE BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."'AND BUSINESS_NODE = '".$business_node."' AND TO_CHAR(BUSINESS_DATE,'YYYY-MM-DD') ='".$insert_date."'";
+            if(empty($is_no_deal)){
+                $update_sql = "UPDATE TMP_BX_DAYPOST_DESCRIPTION SET RESULT = '".$result_des."',IS_SUBMIT = '1', IS_PASS = '1',IS_REVIEW = '1' WHERE BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."'AND BUSINESS_NODE = '".$business_node."' AND TO_CHAR(BUSINESS_DATE,'YYYY-MM-DD') ='".$insert_date."'";
+            }else {
+                $update_sql = "UPDATE TMP_BX_DAYPOST_DESCRIPTION SET RESULT = '".$result_des."',IS_SUBMIT = '1', IS_PASS = '1',IS_REVIEW = '1',IS_NO_DEAL = '1' WHERE BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."'AND BUSINESS_NODE = '".$business_node."' AND TO_CHAR(BUSINESS_DATE,'YYYY-MM-DD') ='".$insert_date."'";
+            }
             $result_rows = oci_parse($conn, $update_sql); // 配置SQL语句，执行SQL
             if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)) {
                 $result['status'] = "success";

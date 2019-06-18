@@ -475,7 +475,8 @@ function actionFormatter_review(value, row, index){
     }else if(is_reviewer == 1){
         return '<button type="button" class="btn btn-primary pass_right" style="height: 20pt;width: 80pt"><span style="margin-left:-5pt;">通过-系统正确</span></button>' +
             '<button type="button" class="btn btn-warning pass_error" style="height: 20pt;width: 80pt;margin-left: 5pt"><span style="margin-left:-5pt;">通过-系统错误</span></button>' +
-            '<button type="button" class="btn btn-danger no_pass" style="height: 20pt;width: 80pt;margin-top: 5pt"><span style="margin-left:-5pt;">不通过</span></button>';
+            '<button type="button" class="btn btn-danger no_pass" style="height: 20pt;width: 80pt;margin-top: 5pt"><span style="margin-left:-5pt;">不通过</span></button>'+
+            '<button type="button" class="btn btn-info pass_no" style="height: 20pt;width: 80pt;margin-top: 5pt;margin-left: 5pt"><span style="margin-left:-2pt;">通过-无需操作</span></button>' ;
     }
     //不通过后还可继续点击，不通过原因存储在表TMP_BX_DAYPOST_DESCRIPTION-pass_reason
     //
@@ -602,7 +603,52 @@ window.actionEvents_review = {
                 alert(errorThrown);
             }
         });
-    }
+    },
+    'click .pass_no': function (e, value, row, index) {
+    var business_node = 'BQSL';
+    var business_code = row.old_accept_code;
+    var policy_code = row.old_policy_code;
+    var busi_insert_date = row.busi_insert_date;
+    var username = $("#username").text();
+    var is_no_deal = '1';
+    var result = '正确';
+    $.ajax({
+        type: "POST", //用POST方式传输
+        url: HOST + "index.php/Home/BxWorkDefine/updateReason", //目标地址.
+        dataType: "json", //数据格式:JSON
+        data: {
+            username: username,
+            business_code: business_code,
+            policy_code: policy_code,
+            business_node:business_node,
+            insert_date:busi_insert_date,
+            is_no_deal:is_no_deal,
+            result:result
+        },
+        success: function (result) {
+            if (result.status == 'success') {
+                debugger;
+                var yi = '1';
+                //单行刷新数据
+                var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
+                var data = { "is_pass":yi,"is_submit":yi,"is_review":yi};
+                $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
+                $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+            } else if (result.status == 'failed') {
+                debugger;
+                $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                if(result.lock == 'true'){
+                    window.location.href = HOST + "index.php/Home/Index/index";
+                }
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest);
+            alert(textStatus);
+            alert(errorThrown);
+        }
+    });
+}
 
 };
 
