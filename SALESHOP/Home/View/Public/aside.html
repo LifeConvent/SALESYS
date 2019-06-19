@@ -441,6 +441,11 @@
                             </span>
                 </a>
                 <ul class="sub" id="cap_define_list">
+                    <!--<li id="cap_define_all">-->
+                        <!--<a href="{:U('Home/BxWorkDefine/capDefine')}" style="font-size: 12px;">-->
+                            <!--制盘数据核对-->
+                        <!--</a>-->
+                    <!--</li>-->
                     <li id="cap_define_cs">
                         <a href="{:U('Home/PersonDefineFinishWork/capDefineCs')}" style="font-size: 12px;">
                             保全制返盘数据核对
@@ -459,6 +464,37 @@
                     <li id="cap_define_pa">
                         <a href="{:U('Home/PersonDefineFinishWork/capDefinePa')}" style="font-size: 12px;">
                             续期制返盘数据核对
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!--短信核对清单-->
+            <li class="sub-menu" id="chat_menu">
+                <a href="javascript;" id="chat_define">
+                    <i class="fa fa-laptop">
+                    </i>
+                    <span style="font-size: 14px;">
+                              短信核对清单
+                            </span>
+                    <span class="label btn-warning span-sidebar">
+                              3
+                            </span>
+                </a>
+                <ul class="sub" id="chat_define_list">
+                    <li id="chat_define_clm_uw">
+                        <a href="{:U('Home/BxWorkDefine/chatDefineClmUw')}" style="font-size: 12px;">
+                            理赔/核保实时短信
+                        </a>
+                    </li>
+                    <li id="chat_define_cs">
+                        <a href="{:U('Home/BxWorkDefine/chatDefineCs')}" style="font-size: 12px;">
+                            契约批量短信
+                        </a>
+                    </li>
+                    <li id="chat_define_nb">
+                        <a href="{:U('Home/BxWorkDefine/chatDefineNb')}" style="font-size: 12px;">
+                            保全批量短信
                         </a>
                     </li>
                 </ul>

@@ -491,13 +491,13 @@ class DayPostController extends Controller
         }else{
             $sql_fix = " AND INSERT_DATE = TRUNC(TO_DATE('$queryDate','YYYY-MM-DD')) ";
         }
-            $select_nbuw = "SELECT TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD') AS CHECK_DATE,
+            $select_nbuw = "SELECT DISTINCT TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD') AS CHECK_DATE,
                                     A.CHECK_SUM,
                                     A.PRO_SUM,
                                     A.FINISH_RADIO
                                   FROM TMP_DAYPOST_BX_POLICY A
                                 WHERE 1=1 
-                                  ORDER BY A.CHECK_DATE";
+                                  ORDER BY TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD')";
             $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
             $result_all = $method->search_long($result_rows);
             Log::write($username.' 关键指标数据库查询SQL：'.$select_nbuw,'INFO');
