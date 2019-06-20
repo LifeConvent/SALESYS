@@ -22,7 +22,7 @@ $(function () {
             // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         }
         $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/BxWorkDefine/getClmChatDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/BxWorkDefine/getNbChatDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
     $('#form_date2').datetimepicker({
         language:  'zh-CN',
@@ -39,7 +39,7 @@ $(function () {
             return;
         }
         $('#daily_report2').bootstrapTable('removeAll');
-        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/BxWorkDefine/getClmChatDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/BxWorkDefine/getNbChatDefine?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     //1.初始化Table
@@ -65,7 +65,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
-            url: HOST + "index.php/Home/BxWorkDefine/getClmChatDefine",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/BxWorkDefine/getNbChatDefine",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             showExport: true,
             exportDataType: 'all',
@@ -114,89 +114,156 @@ var TableInit = function () {
                 formatter: function (value, row, index) {
                     return index+1;
                 }
-            },{
-                field: 'BUSINESS_CODE',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '关键业务号',
-                width:120
             }, {
-                field: 'CONTEND_ID',
+                field: 'send_id',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '短信ID',
                 width:100
-            }, {
-                field: 'MAIL_TITLE',
+            },{
+                field: 'receive_obj',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '短信类型',
-                width:120
-            }, {
-                field: 'CONTEND_INFO',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '短信内容',
-                width:300
-            },
-            //     {
-            //     field: 'USER_NAME',
-            //     sortable: true,
-            //     valign: 'middle',
-            //     align: 'center',
-            //     title: '操作员',
-            //     width:120
-            // },
-                {
-                field: 'ORGAN_CODE',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '作业机构',
+                title: '发送对象',
                 width:100
             }, {
-                field: 'BUSINESS_NAME',
+                field: 'channel_type',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '销售渠道',
+                width:100
+            }, {
+                field: 'apply_code',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '投保单号',
+                width:180
+            }, {
+                field: 'policy_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保单号',
+                width:130
+            }, {
+                field: 'holder_mobile',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '投保人手机号',
+                width:130
+            }, {
+                field: 'holder_name',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '投保人姓名',
+                width:130
+            }, {
+                field: 'holder_gender',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '投保人性别',
+                width:130
+            }, {
+                field: 'insured_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '被保人姓名',
+                width:130
+            }, {
+                field: 'insured_gender',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '被保人性别',
+                width:130
+            }, {
+                field: 'busi_prod_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '投保险种（主险）',
+                width:180
+            }, {
+                field: 'issue_date',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '签单日期',
+                width:100
+            }, {
+                field: 'validate_date',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '生效日期',
+                width:100
+            },{
+                field: 'agent_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务员姓名',
+                width:130
+            },{
+                field: 'agent_mobile',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务员手机号',
+                width:130
+            },{
+                field: 'send_mobile',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '短信发送手机号',
+                width:150
+            },{
+                field: 'send_content',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '短信话术',
+                width:400
+            },{
+                field: 'user_name',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '操作员',
+                width:100
+            },{
+                field: 'organ_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '作业机构',
+                width:100
+            },{
+                field: 'business_name',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '业务节点',
                 width:100
             },
-            //     {
-            //     field: 'print_dz',
-            //     sortable: true,
-            //     align: 'center',
-            //     valign: 'middle',
-            //     title: '电子保单下发状态',
-            //     width:160
-            // }, {
-            //     field: 'print_zz',
-            //     sortable: true,
-            //     align: 'center',
-            //     valign: 'middle',
-            //     title: '纸质保单下发状态',
-            //     width:160
-            // },{
-            //     field: 'bpo_print_date',
-            //     sortable: true,
-            //     align: 'center',
-            //     valign: 'middle',
-            //     title: '外包打印日期',
-            //     width:160
-            // },
                 {
-                field: 'business_time',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '确认抽检时间',
-                width:130
-            },{
-                field: 'check_operation',
+                    field: 'business_time',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '确认抽检时间',
+                    width:130
+                },{
+                    field: 'check_operation',
                     title: '抽检操作',
                     align: 'center',
                     valign: 'middle',
@@ -204,7 +271,7 @@ var TableInit = function () {
                     events: "actionEvents_check",
                     width:130,
                     clickToSelect: false
-             },{
+                },{
                     field: 'business_time',
                     sortable: true,
                     align: 'center',
@@ -213,88 +280,88 @@ var TableInit = function () {
                     formatter: "actionFormatter_select",
                     events: "actionEvents_select",
                     width:150
-             },{
-                field: 'sure_operation',
-                title: '操作',
-                align: 'center',
-                valign: 'middle',
-                formatter: "actionFormatter",
-                events: "actionEvents_sure",
-                width:100,
-                clickToSelect: false
-            }, {
-                field: 'TC_ID',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '缺陷号',
-                width:150
-            }, {
-                field: 'RESULT',
-                align: 'center',
-                valign: 'middle',
-                sortable: true,
-                title: '核对结果',
-                width:100
-                // formatter: "actionFormatter_result",
-                // events: "actionEvents_result",
-            },{
-                field: 'HD_USER_NAME',
-                align: 'center',
-                valign: 'middle',
-                title: '核对人',
-                sortable: true,
-                width:130
-                // formatter: "actionFormatter_hd_user",
-                // events: "actionEvents_hd_user",
-            },{
-                field: 'SYS_INSERT_DATE',
-                align: 'center',
-                valign: 'middle',
-                title: '核对日期',
-                sortable: true,
-                width:100
-                // formatter: "actionFormatter_in_date",
-                // events: "actionEvents_in_date",
-            },{
-                field: 'DESCRIPTION',
-                align: 'center',
-                valign: 'middle',
-                title: '存在问题',
-                width:200
-                // formatter: "actionFormatter_des",
-                // events: "actionEvents_des",
-            },{
-                field: 'STATUS',
-                align: 'center',
-                valign: 'middle',
-                title: '解决进度',
-                sortable: true,
-                width:200
-                // formatter: "actionFormatter_status",
-                // events: "actionEvents_status",
-            },{
-                field: 'BUSI_INSERT_DATE',
-                sortable: true,
-                align: 'center',
-                visible:false,
-                title: '-',
-                width:120
-            },{
-                field: 'IS_CHECK_POLICY',
-                sortable: true,
-                align: 'center',
-                visible:false,
-                title: '-',
-                width:120
-             },{
-                field: 'IS_SELECT_POLICY',
-                sortable: true,
-                align: 'center',
-                visible:false,
-                title: '-',
-                width:120
-              }]
+                },{
+                    field: 'sure_operation',
+                    title: '操作',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: "actionFormatter",
+                    events: "actionEvents_sure",
+                    width:100,
+                    clickToSelect: false
+                }, {
+                    field: 'TC_ID',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '缺陷号',
+                    width:150
+                }, {
+                    field: 'RESULT',
+                    align: 'center',
+                    valign: 'middle',
+                    sortable: true,
+                    title: '核对结果',
+                    width:100
+                    // formatter: "actionFormatter_result",
+                    // events: "actionEvents_result",
+                },{
+                    field: 'HD_USER_NAME',
+                    align: 'center',
+                    valign: 'middle',
+                    title: '核对人',
+                    sortable: true,
+                    width:130
+                    // formatter: "actionFormatter_hd_user",
+                    // events: "actionEvents_hd_user",
+                },{
+                    field: 'SYS_INSERT_DATE',
+                    align: 'center',
+                    valign: 'middle',
+                    title: '核对日期',
+                    sortable: true,
+                    width:100
+                    // formatter: "actionFormatter_in_date",
+                    // events: "actionEvents_in_date",
+                },{
+                    field: 'DESCRIPTION',
+                    align: 'center',
+                    valign: 'middle',
+                    title: '存在问题',
+                    width:200
+                    // formatter: "actionFormatter_des",
+                    // events: "actionEvents_des",
+                },{
+                    field: 'STATUS',
+                    align: 'center',
+                    valign: 'middle',
+                    title: '解决进度',
+                    sortable: true,
+                    width:200
+                    // formatter: "actionFormatter_status",
+                    // events: "actionEvents_status",
+                },{
+                    field: 'busi_insert_date',
+                    sortable: true,
+                    align: 'center',
+                    visible:false,
+                    title: '-',
+                    width:120
+                },{
+                    field: 'IS_CHECK_POLICY',
+                    sortable: true,
+                    align: 'center',
+                    visible:false,
+                    title: '-',
+                    width:120
+                },{
+                    field: 'IS_SELECT_POLICY',
+                    sortable: true,
+                    align: 'center',
+                    visible:false,
+                    title: '-',
+                    width:120
+                }]
         });
     };
 
@@ -331,11 +398,11 @@ window.actionEvents_sure = {
         debugger;
         // var link_business = $("#business"+index).val();
         // var description = $("#des"+index).val();
-        var business_name = row.BUSINESS_NAME;
-        var policy_code = row.BUSINESS_CODE;
-        var business_code = row.CONTEND_ID;
+        var business_name = row.business_name;
+        var policy_code = row.policy_code;
+        var business_code = row.send_id;
         // var media_type = row.media_type;
-        var insert_date = row.BUSI_INSERT_DATE;
+        var insert_date = row.busi_insert_date;
         // var business_time = row.business_time;
         var username = $("#username").text();
         var is_select_policy = '1';
@@ -387,11 +454,11 @@ window.actionEvents_check = {
         debugger;
         // var link_business = $("#business"+index).val();
         // var description = $("#des"+index).val();
-        var business_name = row.BUSINESS_NAME;
-        var policy_code = row.BUSINESS_CODE;
-        var business_code = row.CONTEND_ID;
+        var business_name = row.business_name;
+        var policy_code = row.policy_code;
+        var business_code = row.send_id;
         // var media_type = row.media_type;
-        var insert_date = row.BUSI_INSERT_DATE;
+        var insert_date = row.busi_insert_date;
         // var business_time = row.business_time;
         var username = $("#username").text();
         var is_check_policy = '1';

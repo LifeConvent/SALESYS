@@ -599,6 +599,8 @@ class BxWorkDefineController extends Controller
                                   TO_CHAR(A.SEND_CONTENT) AS SEND_CONTENT,
                                   A.USER_NAME,
                                   A.ORGAN_CODE,
+                                  B.IS_SELECT_POLICY,
+                                  B.IS_CHECK_POLICY,
                                   D.BUSINESS_NAME,
                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                    --C.TC_ID,
@@ -619,7 +621,7 @@ class BxWorkDefineController extends Controller
                                    --C.STATUS,
                                    (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                   FROM TMP_QDSX_NB_CBDX A
-                                  LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                                  LEFT JOIN TMP_BX_DAYPOST_DESCRIPTION B 
                                      ON A.SEND_ID = B.BUSINESS_CODE
                                      AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                      AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
@@ -655,24 +657,26 @@ class BxWorkDefineController extends Controller
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
+                $result[$i]['IS_SELECT_POLICY'] = $value['IS_SELECT_POLICY'];
+                $result[$i]['IS_CHECK_POLICY'] = $value['IS_CHECK_POLICY'];
                 if(empty( $value['TC_ID'])){
-                    $result[$i]['tc_id'] = "-";
+                    $result[$i]['TC_ID'] = "-";
                 }else{
-                    $result[$i]['tc_id'] = $value['TC_ID'];
+                    $result[$i]['TC_ID'] = $value['TC_ID'];
                 }
                 if(empty( $value['RESULT'])){
-                    $result[$i]['result'] = "-";
+                    $result[$i]['RESULT'] = "-";
                 }else{
-                    $result[$i]['result'] = $value['RESULT'];
+                    $result[$i]['RESULT'] = $value['RESULT'];
                 }
-                $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
-                $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+                $result[$i]['HD_USER_NAME'] = $value['HD_USER_NAME'];
+                $result[$i]['SYS_INSERT_DATE'] = $value['SYS_INSERT_DATE'];
                 if (empty($value['DESCRIPTION'])) {
-                    $result[$i]['description'] = "-";
+                    $result[$i]['DESCRIPTION'] = "-";
                 } else {
-                    $result[$i]['description'] = $value['DESCRIPTION'];
+                    $result[$i]['DESCRIPTION'] = $value['DESCRIPTION'];
                 }
-                $result[$i]['status'] = $value['STATUS'];
+                $result[$i]['STATUS'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
         }
@@ -869,7 +873,7 @@ class BxWorkDefineController extends Controller
         //保全室、理赔室、核保室不参与
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
-            $select_bqsl = "SELECT A.CONTENT_ID,
+            $select_bqsl = "SELECT DISTINCT A.CONTENT_ID,
                                    A.CHAT_NAME,
                                    A.ACCEPT_CODE,
                                    A.POLICY_CODE,
@@ -884,6 +888,8 @@ class BxWorkDefineController extends Controller
                                    A.RECEIPTOR_NAME,
                                    A.PHONE,
                                    A.CHAT_CONTENT,
+                                  B.IS_SELECT_POLICY,
+                                  B.IS_CHECK_POLICY,
                                    D.BUSINESS_NAME,
                                    TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
                                    (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
@@ -905,10 +911,10 @@ class BxWorkDefineController extends Controller
                                    --C.STATUS,
                                    (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                 FROM TMP_QDSX_CS_BQDX A 
-                                LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
+                                LEFT JOIN TMP_BX_DAYPOST_DESCRIPTION B 
                                   ON A.CONTENT_ID = B.BUSINESS_CODE
                                   AND B.BUSINESS_NODE = A.BUSINESS_NODE
-                                  AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
+                                  AND B.BUSINESS_DATE = TRUNC(A.SYS_INSERT_DATE)
                                 LEFT JOIN TMP_QDSX_TC_BUG C  
                                   ON C.BUSINESS_CODE = A.CONTENT_ID
                                   --AND C.POLICY_CODE = A.POLICY_CODE
@@ -938,24 +944,26 @@ class BxWorkDefineController extends Controller
                 $result[$i]['chat_content'] = $value['CHAT_CONTENT'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
+                $result[$i]['IS_SELECT_POLICY'] = $value['IS_SELECT_POLICY'];
+                $result[$i]['IS_CHECK_POLICY'] = $value['IS_CHECK_POLICY'];
                 if(empty( $value['TC_ID'])){
-                    $result[$i]['tc_id'] = "-";
+                    $result[$i]['TC_ID'] = "-";
                 }else{
-                    $result[$i]['tc_id'] = $value['TC_ID'];
+                    $result[$i]['TC_ID'] = $value['TC_ID'];
                 }
                 if(empty( $value['RESULT'])){
-                    $result[$i]['result'] = "-";
+                    $result[$i]['RESULT'] = "-";
                 }else{
-                    $result[$i]['result'] = $value['RESULT'];
+                    $result[$i]['RESULT'] = $value['RESULT'];
                 }
-                $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
-                $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+                $result[$i]['HD_USER_NAME'] = $value['HD_USER_NAME'];
+                $result[$i]['SYS_INSERT_DATE'] = $value['SYS_INSERT_DATE'];
                 if (empty($value['DESCRIPTION'])) {
-                    $result[$i]['description'] = "-";
+                    $result[$i]['DESCRIPTION'] = "-";
                 } else {
-                    $result[$i]['description'] = $value['DESCRIPTION'];
+                    $result[$i]['DESCRIPTION'] = $value['DESCRIPTION'];
                 }
-                $result[$i]['status'] = $value['STATUS'];
+                $result[$i]['STATUS'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
         }
