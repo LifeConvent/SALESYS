@@ -1402,13 +1402,13 @@ class PersonDefineFinishWorkController extends Controller
         $queryDateEnd = I('get.queryDateEnd');
         $type = I('get.type');
         if(strcmp($type,"004")==0){
-            $type = " AND TRIM(A.OLD_SOURCE_NAME) = '10' ";
+            $type = " AND TRIM(A.OLD_DERIV_TYPE) = '004' ";
         }else if(strcmp($type,"005")==0){
-            $type = " AND TRIM(A.OLD_SOURCE_NAME) = '9' ";
+            $type = " AND TRIM(A.OLD_DERIV_TYPE) = '005' ";
         }else if(strcmp($type,"001")==0){
-            $type = " AND TRIM(A.OLD_SOURCE_NAME) IN ('00','6','7') ";
+            $type = " AND TRIM(A.OLD_DERIV_TYPE) = '001' ";
         }else if(strcmp($type,"003")==0){
-            $type = " AND TRIM(A.OLD_SOURCE_NAME) IN ('2','3','02','03','8','08','15','25') ";
+            $type = " AND TRIM(A.OLD_DERIV_TYPE) = '003' ";
         }
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -1436,18 +1436,19 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
-            $where_type_fix = "";
-        }else if((int)$userType==2){
-            $organCode = $method->getUserOrganCode();
-//            dump($organCode);
-            $where_type_fix =  " AND A.OLD_ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
-        }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '".$organCode[$user_name]."%'";
-        }
+        $where_type_fix = "";
+//        if((int)$userType==1){
+//            $where_type_fix = "";
+//        }else if((int)$userType==2){
+//            $organCode = $method->getUserOrganCode();
+////            dump($organCode);
+//            $where_type_fix =  " AND A.OLD_ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+//        }else if((int)$userType==3){
+//            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+//        }
+//        if(in_array($user_name,$otherUser)){
+//            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '".$organCode[$user_name]."%'";
+//        }
         Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
         $num = 0;
         ################################################################   保全受理   #######################################################################
@@ -1458,27 +1459,35 @@ class PersonDefineFinishWorkController extends Controller
                                        A.NEW_UNIT_NUMBER,
                                        A.OLD_BUSINESS_CODE,
                                        A.NEW_BUSINESS_CODE,
-                                       A.OLD_BANK_ACCOUNT,
-                                       A.NEW_BANK_ACCOUNT,
                                        A.OLD_BANK_CODE,
                                        A.NEW_BANK_CODE,
-                                       A.OLD_SOURCE_NAME,
-                                       A.NEW_SOURCE_NAME,
-                                      (CASE A.NEW_SOURCE_NAME 
-                                        WHEN '004' THEN '保全' 
-                                        WHEN '003' THEN '续期' 
-                                        WHEN '001' THEN '契约' 
-                                        WHEN '005' THEN '理赔' 
-                                       END)AS BIZ_SOURCE_NAME,
-                                       A.OLD_ARAP_FLAG,
-                                       A.NEW_ARAP_FLAG,
+                                       (CASE A.OLD_DERIV_TYPE 
+                                           WHEN '004' THEN '保全' 
+                                           WHEN '003' THEN '续期' 
+                                           WHEN '001' THEN '契约' 
+                                           WHEN '005' THEN '理赔' 
+                                       END)AS OLD_DERIV_TYPE,
+                                       (CASE A.NEW_DERIV_TYPE 
+                                           WHEN '004' THEN '保全' 
+                                           WHEN '003' THEN '续期' 
+                                           WHEN '001' THEN '契约' 
+                                           WHEN '005' THEN '理赔' 
+                                       END)AS NEW_DERIV_TYPE,
+                                       (CASE A.OLD_ARAP_FLAG
+                                           WHEN '1' THEN　'收费' 
+                                           WHEN '2' THEN　'付费' 
+                                        END) AS OLD_ARAP_FLAG,
+                                       (CASE A.NEW_ARAP_FLAG
+                                           WHEN '1' THEN　'收费' 
+                                           WHEN '2' THEN　'付费' 
+                                        END) AS NEW_ARAP_FLAG,
                                        A.OLD_FEE_AMOUNT,
                                        A.NEW_FEE_AMOUNT,
-                                       A.SALES_CHANNEL_NAME,
-                                       A.BUSINESS_TYPE_NAME,
+                                       A.OLD_DUE_DATE,
+                                       A.NEW_DUE_DATE,
                                        A.IS_ACCORDANCE,
                                        (CASE A.BUSINESS_NODE
-                                             WHEN 'SSFZFP' THEN '收付费制反盘'
+                                             WHEN 'SFFZFP' THEN '收付费制反盘'
                                         END) AS BUSINESS_NAME,
                                        A.BUSINESS_NODE,
                                        B.RESULT AS RESULT,
@@ -1502,7 +1511,7 @@ class PersonDefineFinishWorkController extends Controller
                                             ELSE (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.OLD_UNIT_NUMBER AND W.FIND_NODE = A.BUSINESS_NODE)
                                          END) AS DESCRIPTION,
                                        (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.OLD_UNIT_NUMBER AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
-                                  FROM TMP_BX_SFF_BD A
+                                  FROM TMP_NCS_BX_CAP_BD A
                                   LEFT JOIN TMP_BX_DAYPOST_DESCRIPTION B
                                         ON A.OLD_UNIT_NUMBER = B.BUSINESS_CODE
                                         AND B.BUSINESS_NODE = A.BUSINESS_NODE
@@ -1522,19 +1531,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['new_unit_number'] = $value['NEW_UNIT_NUMBER'];
                 $result[$i]['old_business_code'] = $value['OLD_BUSINESS_CODE'];
                 $result[$i]['new_business_code'] = $value['NEW_BUSINESS_CODE'];
-                $result[$i]['old_bank_account'] = $value['OLD_BANK_ACCOUNT'];
-                $result[$i]['new_bank_account'] = $value['NEW_BANK_ACCOUNT'];
                 $result[$i]['old_bank_code'] = $value['OLD_BANK_CODE'];
                 $result[$i]['new_bank_code'] = $value['NEW_BANK_CODE'];
-                $result[$i]['old_source_name'] = $value['OLD_SOURCE_NAME'];
-                $result[$i]['new_source_name'] = $value['NEW_SOURCE_NAME'];
-                $result[$i]['biz_source_name'] = $value['BIZ_SOURCE_NAME'];
+                $result[$i]['old_source_name'] = $value['OLD_DERIV_TYPE'];
+                $result[$i]['new_source_name'] = $value['NEW_DERIV_TYPE'];
                 $result[$i]['old_arap_flag'] = $value['OLD_ARAP_FLAG'];
                 $result[$i]['new_arap_flag'] = $value['NEW_ARAP_FLAG'];
                 $result[$i]['old_fee_amount'] = $value['OLD_FEE_AMOUNT'];
                 $result[$i]['new_fee_amount'] = $value['NEW_FEE_AMOUNT'];
-                $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
-                $result[$i]['business_type_name'] = $value['BUSINESS_TYPE_NAME'];
                 $result[$i]['business_node'] = $value['BUSINESS_NODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['INSERT_SYSDATE'];
@@ -1865,7 +1869,6 @@ class PersonDefineFinishWorkController extends Controller
             exit(json_encode(''));
         }
     }
-
 
     public function updateNbBdDefine(){
         header('Content-type: text/html; charset=utf-8');

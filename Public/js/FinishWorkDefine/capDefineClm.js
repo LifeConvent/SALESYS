@@ -154,68 +154,47 @@ var TableInit = function () {
                 title: '新核心业务号',
                 width:170
             }, {
-                field: 'old_bank_account',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '保单号',
-                width:170
-            },  {
-                field: 'old_bank_account',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '老核心银行账户',
-                width:250
-            },  {
-                field: 'new_bank_account',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '新核心银行账户',
-                width:250
-            },  {
                 field: 'old_bank_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '老核心银行代码',
-                width:100
+                width:140
             },  {
                 field: 'new_bank_code',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '新核心银行代码',
-                width:100
+                width:140
             }, {
-                field: 'biz_source_name',
+                field: 'old_source_name',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '业务来源',
-                width:100
+                title: '老核心业务来源',
+                width:140
+            }, {
+                field: 'new_source_name',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '新核心业务来源',
+                width:140
             }, {
                 field: 'old_arap_flag',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
                 title: '老核心收付标志',
-                width:100
+                width:140
             }, {
                 field: 'new_arap_flag',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
                 title: '新核心收付标志',
-                width:100
-            }, {
-                field: 'sales_channel_name',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '渠道',
-                width:100
+                width:140
             }, {
                 field: 'old_fee_amount',
                 sortable: true,
