@@ -108,15 +108,15 @@ var TableInit = function () {
                     align : 'center',
                     valign: 'middle'
                 },{
-                    title : '保单打印',
+                    title : '理赔/核保实时短信',
                     colspan: 3,
                     align : 'center'
                 },{
-                    title : '单证打印',
+                    title : '保全/契约批量短信',
                     colspan: 3,
                     align : 'center'
                 },{
-                    title : 'VMS',
+                    title : '大宗平台短信',
                     colspan: 3,
                     align : 'center'
                 }

@@ -112,7 +112,7 @@ var TableInit = function () {
                     colspan: 3,
                     align : 'center'
                 },{
-                    title : '单证打印',
+                    title : '业财对账',
                     colspan: 3,
                     align : 'center'
                 },{
