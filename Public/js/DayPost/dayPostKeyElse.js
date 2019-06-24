@@ -96,7 +96,7 @@ var TableInit = function () {
             // },
             columns : [
                 [{
-                    title :  '保单|单证|VMS',
+                    title :  '保单|业财|VMS|收付费',
                     colspan: 13,
                     align : 'center'
                 }],
