@@ -14,7 +14,7 @@ $(function () {
         minView: 2,
         forceParse: 0
     }).on('changeDate', function(ev){
-        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getUwDayPostThis?queryDateStart="+$("#dtp_input2").val()+"&type=1"});
+        $('#daily_report').bootstrapTable('refresh', {url: HOST + "index.php/Home/DayPost/getDayPostKeyChat?queryDateStart="+$("#dtp_input2").val()+"&type=1"});
     });
 
     //1.初始化Table
@@ -51,7 +51,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report').bootstrapTable({
-            url: HOST + "index.php/Home/DayPost/getDayPostKeyThis",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/DayPost/getDayPostKeyChat",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             showExport: true,
             exportDataType: 'all',
@@ -122,32 +122,32 @@ var TableInit = function () {
                 }
                 ],
                 [{
-                    field : 'policy_check_sum',
+                    field : 'clm_check_sum',
                     title : '核对量',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'policy_pro_sum',
+                    field : 'clm_pro_sum',
                     title : '问题单数量',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'policy_is_same',
+                    field : 'clm_is_same',
                     title : '一致率',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'dan_check_sum',
+                    field : 'cs_check_sum',
                     title : '核对量',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'dan_pro_sum',
+                    field : 'cs_pro_sum',
                     title : '问题单数量',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'dan_is_same',
+                    field : 'cs_is_same',
                     title : '一致率',
                     colspan: 1,
                     align : 'center'

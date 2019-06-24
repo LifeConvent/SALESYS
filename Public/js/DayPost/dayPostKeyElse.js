@@ -97,7 +97,7 @@ var TableInit = function () {
             columns : [
                 [{
                     title :  '保单|单证|VMS',
-                    colspan: 10,
+                    colspan: 13,
                     align : 'center'
                 }],
                 [{
@@ -117,6 +117,10 @@ var TableInit = function () {
                     align : 'center'
                 },{
                     title : 'VMS',
+                    colspan: 3,
+                    align : 'center'
+                },{
+                    title : '收付费',
                     colspan: 3,
                     align : 'center'
                 }
@@ -163,6 +167,21 @@ var TableInit = function () {
                     align : 'center'
                 },{
                     field : 'vms_is_same',
+                    title : '一致率',
+                    colspan: 1,
+                    align : 'center'
+                },{
+                    field : 'cap_check_sum',
+                    title : '核对量',
+                    colspan: 1,
+                    align : 'center'
+                },{
+                    field : 'cap_pro_sum',
+                    title : '问题单数量',
+                    colspan: 1,
+                    align : 'center'
+                },{
+                    field : 'cap_is_same',
                     title : '一致率',
                     colspan: 1,
                     align : 'center'

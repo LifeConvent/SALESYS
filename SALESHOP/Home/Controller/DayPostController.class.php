@@ -494,8 +494,13 @@ class DayPostController extends Controller
             $select_nbuw = "SELECT DISTINCT TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD') AS CHECK_DATE,
                                     A.CHECK_SUM,
                                     A.PRO_SUM,
-                                    A.FINISH_RADIO
+                                    A.FINISH_RADIO,
+                                    B.CHECK_SUM AS CAP_CHECK_SUM,
+                                    B.PRO_SUM AS CAP_PRO_SUM,
+                                    B.FINISH_RADIO AS CAP_FINISH_RADIO
                                   FROM TMP_DAYPOST_BX_POLICY A
+                                  LEFT JOIN TMP_DAYPOST_CAP_BD B 
+                                  ON A.CHECK_DATE = B.CHECK_DATE
                                 WHERE 1=1 
                                   ORDER BY TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD')";
             $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
@@ -506,7 +511,69 @@ class DayPostController extends Controller
                 $result[$i]['policy_check_sum'] = $result_all[$i]['CHECK_SUM'];
                 $result[$i]['policy_pro_sum'] = $result_all[$i]['PRO_SUM'];
                 $result[$i]['policy_is_same'] = $result_all[$i]['FINISH_RADIO'];
+                $result[$i]['cap_check_sum'] = $result_all[$i]['CAP_CHECK_SUM'];
+                $result[$i]['cap_pro_sum'] = $result_all[$i]['CAP_PRO_SUM'];
+                $result[$i]['cap_is_same'] = $result_all[$i]['CAP_FINISH_RADIO'];
             }
+        foreach($result AS $item){
+            $res[] = $item;
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($res);
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getDayPostKeyChat(){
+        //分子系统查询数据结果且按照标准直接插入
+        $username = '';
+        $method = new MethodController();
+        $method->checkIn($username);
+        $BxOrganCode = $method->getDayPostOrganBySql($username);
+        $conn = $method->OracleOldDBCon();
+        $queryDate = I('get.queryDate');
+        $type = I('get.type');
+//        if(empty($queryDate)){
+//            if((int)$type==2){
+//                $queryDateStart = I('get.queryDateStart');
+//                $queryDateEnd = I('get.queryDateEnd');
+//                if(empty($queryDateEnd)){
+//                    $sql_fix = " AND INSERT_DATE <= TRUNC(SYSDATE) ";
+//                }else{
+//                    $sql_fix = " AND INSERT_DATE BETWEEN TRUNC(TO_DATE('$queryDateStart','YYYY-MM-DD')) AND TRUNC(TO_DATE('$queryDateEnd','YYYY-MM-DD')) ";
+//                }
+//            }else{
+//                $sql_fix = " AND INSERT_DATE = TRUNC(SYSDATE) ";
+//            }
+//        }else{
+//            $sql_fix = " AND INSERT_DATE = TRUNC(TO_DATE('$queryDate','YYYY-MM-DD')) ";
+//        }
+        $select_nbuw = "SELECT DISTINCT TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD') AS CHECK_DATE,
+                                  A.CLM_CHECK_SUM AS CLM_CHECK_SUM,
+                                  A.CLM_PRO_SUM AS CLM_PRO_SUM,
+                                  A.CLM_IS_SAME AS CLM_IS_SAME,
+                                  A.CS_CHECK_SUM AS CS_CHECK_SUM,
+                                  A.CS_PRO_SUM AS CS_PRO_SUM,
+                                  A.CS_IS_SAME AS CS_IS_SAME
+                    FROM TMP_DAYPOST_BX_CHAT_CLM A
+                                WHERE 1=1 
+                                  ORDER BY TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD')";
+        $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+        $result_all = $method->search_long($result_rows);
+        Log::write($username.' 关键指标数据库查询SQL：'.$select_nbuw,'INFO');
+        for($i=0;$i<sizeof($result_all);$i++){
+            $result[$i]['check_date'] = $result_all[$i]['CHECK_DATE'];
+            $result[$i]['clm_check_sum'] = $result_all[$i]['CLM_CHECK_SUM'];
+            $result[$i]['clm_pro_sum'] = $result_all[$i]['CLM_PRO_SUM'];
+            $result[$i]['clm_is_same'] = $result_all[$i]['CLM_IS_SAME'];
+            $result[$i]['cs_check_sum'] = $result_all[$i]['CS_CHECK_SUM'];
+            $result[$i]['cs_pro_sum'] = $result_all[$i]['CS_PRO_SUM'];
+            $result[$i]['cs_is_same'] = $result_all[$i]['CS_IS_SAME'];
+        }
         foreach($result AS $item){
             $res[] = $item;
         }
