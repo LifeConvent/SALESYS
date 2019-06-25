@@ -848,11 +848,12 @@ class DayPostController extends Controller
         $result[$bugSys["合计"]]['demand_operation_diff_all'] = $demand_operation_diff_all;
         $result[$bugSys["合计"]]['demand_operation_diff_this'] = $demand_operation_diff_this;
         Log::write("TC数据更新结束 ：".date("h:i:sa")."<br> ");
-        if(!empty($queryDateStart)){
+//        if(!empty($queryDateStart)){
+//            $sum = sizeof($result);
+//        }else if(!empty($result)){
+//            $sum = sizeof($result)-1;
+//        }
             $sum = sizeof($result);
-        }else if(!empty($result)){
-            $sum = sizeof($result)-1;
-        }
         for ($i = 0; $i < $sum; $i++) {
             $res_out[] = $result[$i];
         }
