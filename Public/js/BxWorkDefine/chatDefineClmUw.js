@@ -141,7 +141,7 @@ var TableInit = function () {
                 valign: 'middle',
                 align: 'center',
                 title: '短信内容',
-                width:300
+                width:600
             },
             //     {
             //     field: 'USER_NAME',

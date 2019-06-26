@@ -768,7 +768,7 @@ class BxWorkDefineController extends Controller
                                        (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                        --C.STATUS,
                                        (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
-                                    FROM TMP_BX_CLM_NB_DX A 
+                                    FROM TMP_BX_CLM_DX A 
                                     LEFT JOIN TMP_BX_DAYPOST_DESCRIPTION B 
                                       ON  A.CONTEND_ID = B.BUSINESS_CODE   
                                       AND B.BUSINESS_NODE = A.BUSINESS_NODE
