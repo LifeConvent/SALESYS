@@ -1,4 +1,11 @@
 $(function() {
+
+    var is_delete_reviewer = $('#is_delete_reviewer').text();
+    var is_delete_apply = $('#is_delete_apply').text();
+    // if(is_delete_apply!='1'&&is_delete_apply!='1'){
+    //     $('#data_apply').hide();
+    // }
+
     //日报权限
     var user_day_post = $('#user_day_post').text();
     if(user_day_post!='1'){

@@ -185,6 +185,27 @@
                 </ul>
             </li>
 
+            <!--数据调整申请-->
+            <li class="sub-menu" id="data_apply">
+                <a href="javascript:;" id="data_edit">
+                    <i class="fa fa-cogs">
+                    </i>
+                    <span style="font-size: 14px;">
+                              数据调整申请
+                    </span>
+                    <span class="label label-primary span-sidebar">
+                              1
+                    </span>
+                </a>
+                <ul class="sub" id="data_edit_apply">
+                    <li id="data_edit_apply_delete">
+                        <a href="{:U('Home/DataApply/dataApply')}" style="font-size: 12px;">
+                            TC加载/确认结果修改
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
             <!--清单数据导出-->
             <!--<li class="sub-menu" id="list_out">-->
                 <!--<a href="javascript;" id="data_export">-->
@@ -478,7 +499,7 @@
                               短信核对清单
                             </span>
                     <span class="label btn-warning span-sidebar">
-                              3
+                              4
                             </span>
                 </a>
                 <ul class="sub" id="chat_define_list">
@@ -495,6 +516,11 @@
                     <li id="chat_define_nb">
                         <a href="{:U('Home/BxWorkDefine/chatDefineNb')}" style="font-size: 12px;">
                             契约批量短信
+                        </a>
+                    </li>
+                    <li id="chat_define_dz">
+                        <a href="{:U('Home/BxWorkDefine/chatDefineDz')}" style="font-size: 12px;">
+                            大宗短信结果
                         </a>
                     </li>
                 </ul>

@@ -52,6 +52,25 @@
 
             <div class="container-fluid" >
                 <section class="panel">
+
+
+                    <div class="panel" id="pa_risk_set">
+                        <header class="panel-heading">
+                            <span><strong>保单核对拦截配置</strong></span>
+                        </header>
+                        <div class="panel-body">
+                            <div style="padding-top:10pt;">
+                                <div>
+                                    <div class="col-sm-6"><span class="red">*</span><span><strong>保单号/投保单号: </strong></span><span class="red" style="font-size:3pt"><strong>不带空格保单号/投保单号</strong> </span><input type="text" class="form-control add_user" id="policy_code" placeholder="请输入正确的保单号/投保单号"></div>
+                                    <div class="col-sm-6"><span><strong>关键业务号: <span class="red">*</span>示例：保全受理号<span class="red" style="font-size:3pt"><strong> 赔案号等</strong> </span><input type="text" class="form-control add_user" id="business_code" placeholder="请输入关键业务号"></strong></span></div>
+                                </div>
+                                <div class="col-sm-12" style="margin-top:20pt;margin-left:25%">
+                                    <button type="button" id="delete_apply_submit" class="btn btn-primary col-sm-6">提交数据删除申请</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
                     <header class="panel-heading">
                         <!--<div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>-->
                         <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  readonly>选择日期</button></div>
@@ -74,10 +93,10 @@
                     </header>
                     <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
                         <div>
-                            <!--<input class="form-control" value="保全受理" style="width:70pt;float:left;">-->
-                            <!--<input class="form-control" value="保全复核" style="width:70pt;float:left;margin-left: 5pt">-->
-                            <input class="form-control" value="正确" style="width:40pt;float:left;margin-left: 5pt">
-                            <input class="form-control" value="错误" style="width:40pt;float:left;margin-left: 5pt">
+                            <input class="form-control" value="保单回执" style="width:70pt;float:left;">
+                            <input class="form-control" value="出单前撤保" style="width:70pt;float:left;margin-left: 5pt">
+                            <input class="form-control" value="完成" style="width:40pt;float:left;margin-left: 5pt">
+                            <input class="form-control" value="未完成" style="width:40pt;float:left;margin-left: 5pt">
                             <!--<input class="form-control" value="保全核保" style="width:70pt;float:left;margin-left: 5pt">-->
                             <!--<input class="form-control" value="理赔核保" style="width:70pt;float:left;margin-left: 5pt">-->
                             <!--<input class="form-control" value="出单前撤保" style="width:80pt;float:left;margin-left: 5pt">-->
@@ -85,56 +104,9 @@
                         </div>
                         <table id="daily_report2" style="table-layout: fixed;"></table>
                     </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信匹配数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-num" class="graph">
-                        </div>
                     </div>
                 </section>
             </div>
-
-            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        课程评价数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="ce-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信关注量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-sub-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!--<div class="col-lg-12" style="color:#a560f8">-->
-                <!--<section class="panel">-->
-                    <!--<header class="panel-heading">-->
-                        <!--新增用户数量变化趋势-->
-                    <!--</header>-->
-                    <!--<div class="panel-body">-->
-                        <!--<div id="weixin-new-num" class="graph">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</section>-->
-            <!--</div>-->
 
         </section>
         <!-- 主容器  -->
@@ -166,7 +138,19 @@
     <!--</div>-->
 
     <include file="Public/footer-20"/>
-    <include file="Public/check"/>
+    <p id="user_name" style="display:none">{$username}</p>
+    <p id="user_type" style="display:none">{$user_type}</p>
+    <p id="user_day_post" style="display:none">{$user_day_post}</p>
+    <p id="list_type" style="display:none">{$list_type}</p>
+    <p id="is_reviewer" style="display:none">{$is_reviewer}</p>
+
+    <p id="username" style="display:none">{$username}</p>
+
+    <p id="weChatSub" style="display:none">{$weChatSub}</p>
+
+    <p id="weChatNum" style="display:none">{$weChatNum}</p>
+
+    <p id="weCESNum" style="display:none">{$weCESNum}</p>
 </section>
 <!-- SECTION -->
 
@@ -195,7 +179,7 @@
 <!--<script src="__PUBLIC__/js/Home/count.js"></script>-->
 <!--<script src="__PUBLIC__/js/Home/get-time.js"></script>-->
 <!--<script src="__PUBLIC__/js/Home/charts-home.js"></script>-->
-<script src="__PUBLIC__/js/BxWorkDefine/capDefine.js"></script>
+<script src="__PUBLIC__/js/BxWorkDefine/nbDefine.js"></script>
 <script src="__PUBLIC__/js/public/userCheck.js"></script>
 
 <script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/bootstrap-table.js"></script>
