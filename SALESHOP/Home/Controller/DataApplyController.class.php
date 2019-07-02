@@ -106,7 +106,9 @@ class DataApplyController extends Controller
         $policy_code = $_POST['policy_code'];
         $accept_code = $_POST['business_code'];
         $no_pass_reason = $_POST['no_pass_reason'];
+        $pass_reason = $_POST['pass_reason'];
         $is_reviewer = $_POST['is_reviewer'];
+        $type = $_POST['type'];
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
@@ -127,32 +129,45 @@ class DataApplyController extends Controller
         ############################################################################################################################################################
         $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
         $select_result = $method->search_long($result_rows1);
-        if(!empty($select_result[0]['USER_NAME'])){
-            $result['status'] = "failed";
-            $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已进行该业务核对，无需进行再次核对！";
-            exit(json_encode($result));
+        if($type=='no_pass'){
+            if(!empty($select_result[0]['NO_PASS_REASON'])){
+                $result['status'] = "failed";
+                $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已处理为不通过，无需进行再次确认！";
+                exit(json_encode($result));
+            }
+        }else if($type=='pass'){
+            if(!empty($select_result[0]['PASS_REASON'])){
+                $result['status'] = "failed";
+                $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已处理为通过，无需进行再次确认！";
+                exit(json_encode($result));
+            }
         }
         if(!empty($no_pass_reason)){
-            $update_cs_define = "UPDATE TMP_DELETE_RECORD SET IS_REVIEWER = '".$is_reviewer."', NO_PASS_REASON = '".$no_pass_reason."' WHERE BUSINESS_CODE = '".$accept_code."' AND POLICY_CODE = '".$policy_code."'";
+            $update_cs_define = "UPDATE TMP_DELETE_RECORD SET IS_REVIEW_PASS = '1', NO_PASS_REASON = '".$no_pass_reason."' WHERE BUSINESS_CODE = '".$accept_code."' AND POLICY_CODE = '".$policy_code."' AND TRUNC(SYS_INSERT_DATE) = TRUNC(SYSDATE)";
         }else if(!empty($pass_reason)){
-            $update_cs_define = "UPDATE TMP_DELETE_RECORD SET IS_REVIEWER = '".$is_reviewer."', PASS_REASON = '".$no_pass_reason."' WHERE BUSINESS_CODE = '".$accept_code."' AND POLICY_CODE = '".$policy_code."'";
+            $update_cs_define = "UPDATE TMP_DELETE_RECORD SET IS_REVIEW_PASS = '1', PASS_REASON = '".$pass_reason."' WHERE BUSINESS_CODE = '".$accept_code."' AND POLICY_CODE = '".$policy_code."' AND TRUNC(SYS_INSERT_DATE) = TRUNC(SYSDATE)";
+        }
+        if($type == 'delete_work'){
+            $update_cs_define = "UPDATE TMP_DELETE_RECORD SET IS_DELETE_WORK = '1' WHERE BUSINESS_CODE = '".$accept_code."' AND POLICY_CODE = '".$policy_code."' AND TRUNC(SYS_INSERT_DATE) = TRUNC(SYSDATE)";
+        }else if($type == 'delete_sys'){
+            $update_cs_define = "UPDATE TMP_DELETE_RECORD SET IS_DELETE_SYS = '1' WHERE BUSINESS_CODE = '".$accept_code."' AND POLICY_CODE = '".$policy_code."' AND TRUNC(SYS_INSERT_DATE) = TRUNC(SYSDATE)";
         }
         Log::write(' 数据库查询SQL：'.$update_cs_define,'INFO');
-            $result_rows = oci_parse($conn, $update_cs_define); // 配置SQL语句，执行SQL
-            if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
-                $result['status'] = "success";
-                $result['message'] = "关键业务号：".$accept_code."-业务号：".$policy_code." 确认成功！";
-            }else{
-                $result['status'] = "failed";
-                $e = oci_error();
-                $result['message'] = "确认失败".$e['message'];
-            }
-            oci_free_statement($result_rows);
-            oci_close($conn);
-            if ($result) {
-                exit(json_encode($result));
-            } else {
-                exit(json_encode(''));
-            }
+        $result_rows = oci_parse($conn, $update_cs_define); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = "success";
+            $result['message'] = "关键业务号：".$accept_code."-业务号：".$policy_code." 确认成功！";
+        }else{
+            $result['status'] = "failed";
+            $e = oci_error();
+            $result['message'] = "确认失败".$e['message'];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
     }
 }

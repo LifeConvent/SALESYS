@@ -114,11 +114,13 @@ var TableInit = function () {
                 align: 'center',
                 title: '用户姓名',
                 width:130
-            }, {
+            },{
                 field: 'DELETE_REASON',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
+                formatter: "actionFormatter_apply_reason",
+                events: "actionEvents_apply_reason",
                 title: '删除原因',
                 width:130
             }, {
@@ -208,7 +210,7 @@ window.actionEvents = {
         // var link_business = $("#business"+index).val();
         var description = $("#des"+index).val();//原因说明
         debugger;
-        if(description==''||description==null){
+        if(description==''||description==null||description=='null'){
             $.scojs_message('请输入差异原因后在提交说明！', $.scojs_message.TYPE_ERROR);
             return;
         }
@@ -259,7 +261,11 @@ function actionFormatter_result(value, row, index) {
 function actionFormatter_reason(value, row, index) {
     var is_reviewer = $('#is_delete_reviewer').text();
     if(row.IS_REVIEW_PASS == "1"){
-        return '审核已通过';
+        if(row.NO_PASS_REASON != '' && row.NO_PASS_REASON != null){
+            return row.NO_PASS_REASON;
+        }else{
+            return '-';
+        }
     }else{
         return '<textarea id="no_pass_reason'+index+'" class="form-control" style="height: 40pt;width: 160pt;">'+ row.NO_PASS_REASON +'</textarea>';
     }
@@ -269,7 +275,11 @@ function actionFormatter_reason(value, row, index) {
 function actionFormatter_pass_reason(value, row, index) {
     var is_reviewer = $('#is_delete_reviewer').text();
     if(row.IS_REVIEW_PASS == "1"){
-        return '审核已通过';
+        if(row.PASS_REASON != '' && row.PASS_REASON != null){
+            return row.PASS_REASON;
+        }else{
+            return '-';
+        }
     }else{
         return '<textarea id="pass_reason'+index+'" class="form-control" style="height: 40pt;width: 160pt;">'+ row.PASS_REASON +'</textarea>';
     }
@@ -290,13 +300,20 @@ function actionFormatter_review(value, row, index){
 }
 
 
+//申请原因处理
+function actionFormatter_apply_reason(value, row, index){
+    return row.DELETE_REASON;
+    // if(row.IS_REVIEW_PASS == '0'){
+    //     return '<textarea id="apply_reason'+index+'" class="form-control" style="height: 40pt;width: 160pt;">'+ row.DELETE_REASON +'</textarea>';
+    // }
+}
+
 //删除操作
 function actionFormatter_delete(value, row, index){
     var is_sys_delete = $('#is_sys_delete').text();
     var is_work_delete = $('#is_work_delete').text();
     var out = '';
-    if(is_sys_delete == '0'&&is_sys_delete=='0'){
-
+    if(is_sys_delete == '0'&&is_work_delete=='0'){
         return '无权限确认删除';
     }else if(is_work_delete == '1'&&row.IS_DELETE_WORK == '0'){
         out += '<button type="button" class="btn btn-primary delete_work" style="height: 20pt;width: 110pt"><span style="margin-left:-;">确认工作流删除</span></button>';
@@ -304,15 +321,18 @@ function actionFormatter_delete(value, row, index){
     if(is_sys_delete == '1'&&row.IS_DELETE_SYS == '0'){
         out += '<button type="button" class="btn btn-danger delete_sys" style="height: 20pt;width: 110pt;margin-top: 5pt"><span style="margin-left:3pt;">确认子系统删除</span></button>';
     }
+    if(row.IS_DELETE_WORK == '1'&&row.IS_DELETE_SYS == '1'){
+        out = '已成功删除';
+    }
     return out;
 }
 
 window.actionEvents_review = {
     'click .no_pass': function (e, value, row, index) {
-        var no_pass_reason = $("#no_reason"+index).val();//不通过原因说明
+        var no_pass_reason = $("#no_pass_reason"+index).val();//不通过原因说明
         var business_code = row.BUSINESS_CODE;
         var policy_code = row.POLICY_CODE;
-        if(no_pass_reason==''||no_pass_reason==null){
+        if(no_pass_reason==''||no_pass_reason==null||no_pass_reason=='null'){
             $.scojs_message('审核结果为不通过时，需输入审核不通过原因！！', $.scojs_message.TYPE_ERROR);
             return;
         }
@@ -321,6 +341,7 @@ window.actionEvents_review = {
             url: HOST + "index.php/Home/DataApply/updateDeleteApply", //目标地址.
             dataType: "json", //数据格式:JSON
             data: {
+                    type:'no_pass',
                     business_code: business_code,
                     policy_code: policy_code,
                     no_pass_reason:no_pass_reason},
@@ -328,7 +349,7 @@ window.actionEvents_review = {
                 if (result.status == 'success') {
                     debugger;
                     //单行刷新数据
-                    var data = { "NO_PASS_REASON":no_pass_reason,"IS_REVIEW_PASS":'1'};
+                    var data = { "NO_PASS_REASON":no_pass_reason,"IS_REVIEW_PASS":'0'};
                     $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
                     $.scojs_message(result.message, $.scojs_message.TYPE_OK);
                 } else if (result.status == 'failed') {
@@ -347,31 +368,99 @@ window.actionEvents_review = {
         });
     },
     'click .pass_right': function (e, value, row, index) {
-        var business_node = row.business_node;
-        var business_code = row.old_policy_code;
-        var policy_code = row.old_policy_code;
-        var busi_insert_date = row.busi_insert_date;
-        var username = $("#username").text();
-        var result = '正确';
+        var pass_reason = $("#pass_reason"+index).val();//不通过原因说明
+        var business_code = row.BUSINESS_CODE;
+        var policy_code = row.POLICY_CODE;
+        if(pass_reason==''||pass_reason==null||pass_reason=='null'){
+            $.scojs_message('审核结果为通过时，需输入审核通过原因！！', $.scojs_message.TYPE_ERROR);
+            return;
+        }
         $.ajax({
             type: "POST", //用POST方式传输
-            url: HOST + "index.php/Home/BxWorkDefine/updateReason", //目标地址.
+            url: HOST + "index.php/Home/DataApply/updateDeleteApply", //目标地址.
             dataType: "json", //数据格式:JSON
             data: {
-                    username: username,
+                    type:'pass',
                     business_code: business_code,
                     policy_code: policy_code,
-                    business_node:business_node,
-                    insert_date:busi_insert_date,
-                    result:result
+                    pass_reason:pass_reason
             },
             success: function (result) {
                 if (result.status == 'success') {
                     debugger;
-                    var yi = '1';
                     //单行刷新数据
-                    var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
-                    var data = { "is_pass":yi,"is_submit":yi,"is_review":yi};
+                    var data = { "PASS_REASON":pass_reason,"IS_REVIEW_PASS":'1'};
+                    $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                    if(result.lock == 'true'){
+                        window.location.href = HOST + "index.php/Home/Index/index";
+                    }
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+
+};
+
+window.actionEvents_delete = {
+    'click .delete_work': function (e, value, row, index) {
+        var business_code = row.BUSINESS_CODE;
+        var policy_code = row.POLICY_CODE;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/DataApply/updateDeleteApply", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                type:'delete_work',
+                business_code: business_code,
+                policy_code: policy_code},
+                success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    //单行刷新数据
+                    var data = { "IS_DELETE_WORK":'1'};
+                    $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                    if(result.lock == 'true'){
+                        window.location.href = HOST + "index.php/Home/Index/index";
+                    }
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    },
+    'click .delete_sys': function (e, value, row, index) {
+        var business_code = row.BUSINESS_CODE;
+        var policy_code = row.POLICY_CODE;
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/DataApply/updateDeleteApply", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                type:'delete_sys',
+                business_code: business_code,
+                policy_code: policy_code
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    //单行刷新数据
+                    var data = {"IS_DELETE_SYS":'1'};
                     $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
                     $.scojs_message(result.message, $.scojs_message.TYPE_OK);
                 } else if (result.status == 'failed') {
