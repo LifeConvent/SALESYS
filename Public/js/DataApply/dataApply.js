@@ -315,10 +315,10 @@ function actionFormatter_delete(value, row, index){
     var out = '';
     if(is_sys_delete == '0'&&is_work_delete=='0'){
         return '无权限确认删除';
-    }else if(is_work_delete == '1'&&row.IS_DELETE_WORK == '0'){
+    }else if(is_work_delete == '1'&&row.IS_DELETE_WORK == '0'&&row.IS_REVIEW_PASS == '1'){
         out += '<button type="button" class="btn btn-primary delete_work" style="height: 20pt;width: 110pt"><span style="margin-left:-;">确认工作流删除</span></button>';
     }
-    if(is_sys_delete == '1'&&row.IS_DELETE_SYS == '0'){
+    if(is_sys_delete == '1'&&row.IS_DELETE_SYS == '0'&&row.IS_REVIEW_PASS == '1'){
         out += '<button type="button" class="btn btn-danger delete_sys" style="height: 20pt;width: 110pt;margin-top: 5pt"><span style="margin-left:3pt;">确认子系统删除</span></button>';
     }
     if(row.IS_DELETE_WORK == '1'&&row.IS_DELETE_SYS == '1'){
