@@ -62,7 +62,7 @@ $(function () {
 });
 
 function exportExcel() {
-    window.location.href = HOST + "index.php/Home/PostTable/expNbPostStream";
+    window.location.href = HOST + "index.php/Home/PostTable/expNbPostStream?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val();
 }
 
 function exportExcelScan() {

@@ -62,6 +62,8 @@ class PostTableController extends Controller
 
     public function expNbPostStream()
     {
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
         //导出Excel
         $xlsName = "新契约流程清单";
         $xlsTitle = "新契约流程清单";
@@ -196,8 +198,9 @@ class PostTableController extends Controller
                                TO_CHAR(SL_CHECK_DATE,'YYYY-MM-DD HH24:MI:SS') AS SL_CHECK_DATE,--双录发送外包商质检时间
                                SL_CHECK_STATUS--双录外包商质检状态
                           FROM TMP_QDSX_NB_QD_LC
-                          WHERE 1=1 ".$where_type_fix;
+                          WHERE 1=1 AND TO_CHAR(ISSUE_DATE,'YYYY-MM-DD') BETWEEN '".$queryDateStart."' AND '".$queryDateEnd."'".$where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        Log::write($user_name.' 数据库查询SQL：'.$select_bqsl,'INFO');
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
