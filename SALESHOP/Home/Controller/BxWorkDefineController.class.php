@@ -32,7 +32,6 @@ class BxWorkDefineController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $controller = new MethodController();
 //        $type =  $method->getUserTypeBySql($username);
 //        $can =  $method->getCanDayPostBySql($username);
 //        $is_reviewer =  $method->getReviewer($username);
@@ -45,7 +44,7 @@ class BxWorkDefineController extends Controller
 //            $this->assign('is_reviewer', $is_reviewer);
 //            $this->assign('TITLE', TITLE);
 //            $this->assign('list_type',  $method->getListTypeBySql($username));
-            $controller->assignPublic($username,$controller);
+            $method->assignPublic($username,$this);
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -936,7 +935,7 @@ class BxWorkDefineController extends Controller
                                   A.OLD_CUSTOMER_PHONENUM,
                                   A.NEW_AGENT_SAPID,
                                   A.OLD_AGENT_SAPID,
-                                  DBMS_LOB.SUBSTR(A.CONTEND_INFO,4000,1) AS CONTEND_INFO,
+                                  --DBMS_LOB.SUBSTR(A.CONTEND_INFO,4000,1) AS CONTEND_INFO,
                                   B.IS_SELECT_POLICY,
                                   B.IS_CHECK_POLICY,
                                   D.BUSINESS_NAME,

@@ -300,7 +300,7 @@ var TableInit = function () {
 
 
 function actionFormatter(value, row, index) {
-    if(row.tc_id != "-"||row.result != "-"){
+    if(row.tc_id != "-"||row.result != "-"||row.is_accordance=='是'){
         return '-';
     }else{
         return '<button type="button" class="btn btn-primary modify" style="height: 20pt;width: 30pt"><span style="margin-left:-5pt;">正确</span></button><button type="button" class="btn btn-danger modify_danger" style="height: 20pt;width: 30pt;margin-left: 5pt"><span style="margin-left:-5pt;">错误</span></button>';
@@ -408,7 +408,7 @@ window.actionEvents = {
 };
 
 function actionFormatter_result(value, row, index) {
-    if(row.result != "-"){
+    if(row.result != "-"||row.is_accordance=='是'){
         return row.description;//'<textarea id="des'+index+'" class="form-control modify" style="height: 40pt;width: 160pt" disabled placeholder="'+ row.description +'"></textarea>';
     }else{
         return '<textarea id="des'+index+'" class="form-control modify" style="height: 40pt;width: 160pt" placeholder="'+ row.description +'"></textarea>';
@@ -421,7 +421,7 @@ window.actionEvents_result = {
 };
 
 function actionFormatter_tc(value, row, index) {
-    if(row.result != "-"){
+    if(row.result != "-"||row.is_accordance=='是'){
         return row.tc_id;//'<input id="tc'+index+'" class="form-control modify" style="height: 20pt;width: 130pt" disabled placeholder="'+ row.tc_id +'"></input>';
     }else{
         return '<input id="tc'+index+'" class="form-control modify" style="height: 20pt;width: 130pt" placeholder="'+ row.tc_id +'"></input>';
