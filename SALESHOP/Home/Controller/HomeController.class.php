@@ -21,13 +21,14 @@ class HomeController extends Controller
         $type =  $method->getUserTypeBySql($username);
         $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
+//            $this->assign('username', $username);
+//            $this->assign('user_name', $username);
+//            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
+//            $this->assign('user_type', $type);
+//            $this->assign('user_day_post', $can);
+//            $this->assign('TITLE', TITLE);
+//            $this->assign('list_type',  $method->getListTypeBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -91,13 +92,14 @@ class HomeController extends Controller
 //            dump($new_time);
 //            dump($all_user_time);
 //            dump($survey_time);
-            $this->assign('TITLE', TITLE);
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
+            $method->assignPublic($username,$this);
+//            $this->assign('TITLE', TITLE);
+//            $this->assign('username', $username);
+//            $this->assign('user_name', $username);
+//            $this->assign('user_type', $type);
+//            $this->assign('user_day_post', $can);
+//            $this->assign('list_type',  $method->getListTypeBySql($username));
+//            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -111,7 +113,7 @@ class HomeController extends Controller
     {
         if ($user == null || $pass == null) {
             return false;
-        } else {
+        } else
             $index = new IndexController();
             $res = $index->searchUser($user, $pass);
             if ($res) {
@@ -119,7 +121,6 @@ class HomeController extends Controller
             } else {
                 return false;
             }
-        }
     }
 
     public function dealHomeCount()

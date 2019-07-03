@@ -6,7 +6,7 @@ $(function () {
 
     $('#chat_define').attr('class','active');
     $('#chat_define_list').css('display','block');
-    $('#chat_define_clm_uw').attr('class','active');
+    $('#chat_define_dz').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
@@ -122,73 +122,125 @@ var TableInit = function () {
                 title: '关键业务号',
                 width:120
             }, {
-                field: 'CONTEND_ID',
+                field: 'NEW_CHAT_NAME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '短信ID',
-                width:100
+                title: '新核心短信名称',
+                width:140
             }, {
-                field: 'MAIL_TITLE',
+                field: 'OLD_CHAT_NAME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '短信类型',
+                title: '老核心短信名称',
+                width:140
+            }, {
+                field: 'NEW_POLICY_CODE',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '新核心保单号',
+                width:140
+            },{
+                field: 'OLD_POLICY_CODE',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '老核心保单号',
+                width:140
+            },{
+                field: 'OLD_INSURANCE_CODE',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '老核心主险代码',
                 width:120
             }, {
-                field: 'CONTEND_INFO',
+                field: 'NEW_INSURANCE_CODE',
                 sortable: true,
-                valign: 'middle',
                 align: 'center',
-                title: '短信内容',
-                width:600
-            },
-            //     {
-            //     field: 'USER_NAME',
-            //     sortable: true,
-            //     valign: 'middle',
-            //     align: 'center',
-            //     title: '操作员',
-            //     width:120
-            // },
-                {
-                field: 'ORGAN_CODE',
+                valign: 'middle',
+                title: '新核心主险代码',
+                width:120
+            },{
+                field: 'OLD_INSURANCE_NAME',
                 sortable: true,
-                valign: 'middle',
                 align: 'center',
-                title: '作业机构',
-                width:100
+                valign: 'middle',
+                title: '老核心主险名称',
+                width:160
             }, {
+                field: 'NEW_INSURANCE_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '新核心主险名称',
+                width:160
+            },{
+                field: 'OLD_CUSTOMER_ID',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '老核心客户号',
+                width:120
+            },{
+                field: 'NEW_CUSTOMER_ID',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '新核心客户号',
+                width:120
+            },{
+                field: 'OLD_CUSTOMER_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '老核心客户名',
+                width:120
+            },{
+                field: 'NEW_CUSTOMER_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '新核心客户名',
+                width:120
+            },{
+                field: 'OLD_CUSTOMER_PHONENUM',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '老核心客户手机号',
+                width:120
+            },{
+                field: 'NEW_CUSTOMER_PHONENUM',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '新核心客户手机号',
+                width:120
+            },{
+                field: 'OLD_AGENT_SAPID',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '老核心代理人号',
+                width:120
+            },{
+                field: 'NEW_AGENT_SAPID',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '新核心代理人号',
+                width:120
+            },{
                 field: 'BUSINESS_NAME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '业务节点',
                 width:100
-            },
-            //     {
-            //     field: 'print_dz',
-            //     sortable: true,
-            //     align: 'center',
-            //     valign: 'middle',
-            //     title: '电子保单下发状态',
-            //     width:160
-            // }, {
-            //     field: 'print_zz',
-            //     sortable: true,
-            //     align: 'center',
-            //     valign: 'middle',
-            //     title: '纸质保单下发状态',
-            //     width:160
-            // },{
-            //     field: 'bpo_print_date',
-            //     sortable: true,
-            //     align: 'center',
-            //     valign: 'middle',
-            //     title: '外包打印日期',
-            //     width:160
-            // },
-                {
+            },{
                 field: 'business_time',
                 sortable: true,
                 align: 'center',
@@ -333,7 +385,7 @@ window.actionEvents_sure = {
         // var description = $("#des"+index).val();
         var business_name = row.BUSINESS_NAME;
         var policy_code = row.BUSINESS_CODE;
-        var business_code = row.CONTEND_ID;
+        var business_code = row.BUSINESS_CODE;
         // var media_type = row.media_type;
         var insert_date = row.BUSI_INSERT_DATE;
         // var business_time = row.business_time;
@@ -389,7 +441,7 @@ window.actionEvents_check = {
         // var description = $("#des"+index).val();
         var business_name = row.BUSINESS_NAME;
         var policy_code = row.BUSINESS_CODE;
-        var business_code = row.CONTEND_ID;
+        var business_code = row.BUSINESS_CODE;
         // var media_type = row.media_type;
         var insert_date = row.BUSI_INSERT_DATE;
         // var business_time = row.business_time;

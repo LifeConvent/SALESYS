@@ -6,6 +6,11 @@ $(function() {
     //     $('#data_apply').hide();
     // }
 
+    var is_dz_chat = $('#is_dz_chat').text();
+    if(is_dz_chat!='1'){
+        $('#chat_define_dz').hide();
+    }
+
     //日报权限
     var user_day_post = $('#user_day_post').text();
     if(user_day_post!='1'){

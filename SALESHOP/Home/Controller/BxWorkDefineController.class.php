@@ -64,13 +64,14 @@ class BxWorkDefineController extends Controller
         $can =  $method->getCanDayPostBySql($username);
         $is_reviewer =  $method->getReviewer($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('is_reviewer', $is_reviewer);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
+//            $this->assign('username', $username);
+//            $this->assign('user_name', $username);
+//            $this->assign('user_type', $type);
+//            $this->assign('user_day_post', $can);
+//            $this->assign('is_reviewer', $is_reviewer);
+//            $this->assign('TITLE', TITLE);
+//            $this->assign('list_type',  $method->getListTypeBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -89,13 +90,14 @@ class BxWorkDefineController extends Controller
         $can =  $method->getCanDayPostBySql($username);
         $is_reviewer =  $method->getReviewer($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('is_reviewer', $is_reviewer);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
+//            $this->assign('username', $username);
+//            $this->assign('user_name', $username);
+//            $this->assign('user_type', $type);
+//            $this->assign('user_day_post', $can);
+//            $this->assign('is_reviewer', $is_reviewer);
+//            $this->assign('TITLE', TITLE);
+//            $this->assign('list_type',  $method->getListTypeBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -114,13 +116,14 @@ class BxWorkDefineController extends Controller
         $can =  $method->getCanDayPostBySql($username);
         $is_reviewer =  $method->getReviewer($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('is_reviewer', $is_reviewer);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
+//            $this->assign('username', $username);
+//            $this->assign('user_name', $username);
+//            $this->assign('user_type', $type);
+//            $this->assign('user_day_post', $can);
+//            $this->assign('is_reviewer', $is_reviewer);
+//            $this->assign('TITLE', TITLE);
+//            $this->assign('list_type',  $method->getListTypeBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -139,13 +142,14 @@ class BxWorkDefineController extends Controller
         $can =  $method->getCanDayPostBySql($username);
         $is_reviewer =  $method->getReviewer($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('is_reviewer', $is_reviewer);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
+//            $this->assign('username', $username);
+//            $this->assign('user_name', $username);
+//            $this->assign('user_type', $type);
+//            $this->assign('user_day_post', $can);
+//            $this->assign('is_reviewer', $is_reviewer);
+//            $this->assign('TITLE', TITLE);
+//            $this->assign('list_type',  $method->getListTypeBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -162,13 +166,14 @@ class BxWorkDefineController extends Controller
         $type =  $method->getUserTypeBySql($username);
         $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
+//            $this->assign('username', $username);
+//            $this->assign('user_name', $username);
+//            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
+//            $this->assign('user_type', $type);
+//            $this->assign('user_day_post', $can);
+//            $this->assign('TITLE', TITLE);
+//            $this->assign('list_type',  $method->getListTypeBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -185,13 +190,14 @@ class BxWorkDefineController extends Controller
         $type =  $method->getUserTypeBySql($username);
         $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
+//            $this->assign('username', $username);
+//            $this->assign('user_name', $username);
+//            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
+//            $this->assign('user_type', $type);
+//            $this->assign('user_day_post', $can);
+//            $this->assign('TITLE', TITLE);
+//            $this->assign('list_type',  $method->getListTypeBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -208,13 +214,14 @@ class BxWorkDefineController extends Controller
         $type =  $method->getUserTypeBySql($username);
         $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
+//            $this->assign('username', $username);
+//            $this->assign('user_name', $username);
+//            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
+//            $this->assign('user_type', $type);
+//            $this->assign('user_day_post', $can);
+//            $this->assign('TITLE', TITLE);
+//            $this->assign('list_type',  $method->getListTypeBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -231,13 +238,7 @@ class BxWorkDefineController extends Controller
         $type =  $method->getUserTypeBySql($username);
         $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -254,13 +255,14 @@ class BxWorkDefineController extends Controller
         $type =  $method->getUserTypeBySql($username);
         $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
+//            $this->assign('username', $username);
+//            $this->assign('user_name', $username);
+//            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
+//            $this->assign('user_type', $type);
+//            $this->assign('user_day_post', $can);
+//            $this->assign('TITLE', TITLE);
+//            $this->assign('list_type',  $method->getListTypeBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -277,13 +279,14 @@ class BxWorkDefineController extends Controller
         $type =  $method->getUserTypeBySql($username);
         $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
+//            $this->assign('username', $username);
+//            $this->assign('user_name', $username);
+//            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
+//            $this->assign('user_type', $type);
+//            $this->assign('user_day_post', $can);
+//            $this->assign('TITLE', TITLE);
+//            $this->assign('list_type',  $method->getListTypeBySql($username));
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -895,18 +898,18 @@ class BxWorkDefineController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+//        if((int)$userType==1){
             $where_type_fix = "";
-        }else if((int)$userType==2){
-            $organCode = $method->getUserOrganCode();
-//            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
-        }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
-        }
+//        }else if((int)$userType==2){
+//            $organCode = $method->getUserOrganCode();
+////            dump($organCode);
+//            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+//        }else if((int)$userType==3){
+//            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+//        }
+//        if(in_array($user_name,$otherUser)){
+//            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+//        }
         Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
 
         $num = 0;
@@ -915,18 +918,29 @@ class BxWorkDefineController extends Controller
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT  DISTINCT 
-                                  TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
-                                  TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
-                                  A.BUSINESS_CODE     ,
-                                  A.CONTEND_ID,
-                                  A.USER_NAME       ,
-                                  A.MAIL_TITLE,
-                                  DBMS_LOB.SUBSTR(A.contend_info,4000,1) AS CONTEND_INFO,
-                                  A.ORGAN_CODE      , 
+                                  TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS SYS_INSERT_DATE,
+                                  A.BUSINESS_CODE,
+                                  A.NEW_CHAT_NAME,
+                                  A.OLD_CHAT_NAME,
+                                  A.NEW_POLICY_NUM AS NEW_POLICY_CODE,
+                                  A.OLD_POLICY_NUM AS OLD_POLICY_CODE,
+                                  A.NEW_INSURANCE_CODE,
+                                  A.OLD_INSURANCE_CODE,
+                                  A.NEW_INSURANCE_NAME,
+                                  A.OLD_INSURANCE_NAME,
+                                  A.NEW_CUSTOMER_ID,
+                                  A.OLD_CUSTOMER_ID,
+                                  A.NEW_CUSTOMER_NAME,
+                                  A.OLD_CUSTOMER_NAME,
+                                  A.NEW_CUSTOMER_PHONENUM,
+                                  A.OLD_CUSTOMER_PHONENUM,
+                                  A.NEW_AGENT_SAPID,
+                                  A.OLD_AGENT_SAPID,
+                                  DBMS_LOB.SUBSTR(A.CONTEND_INFO,4000,1) AS CONTEND_INFO,
                                   B.IS_SELECT_POLICY,
                                   B.IS_CHECK_POLICY,
                                   D.BUSINESS_NAME,
-                                       (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                       (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN GROUP(ORDER BY N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                        --C.TC_ID,
                                        (CASE
                                           WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -937,40 +951,49 @@ class BxWorkDefineController extends Controller
                                             ELSE C.TC_USER_NAME
                                         END) AS HD_USER_NAME,
                                       (CASE
-                                         WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                         ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                         WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 ORDER BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                         ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 ORDER BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                       END) AS SYS_INSERT_DATE,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                       (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                       (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN GROUP(ORDER BY N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                        --C.STATUS,
-                                       (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
-                                    FROM TMP_BX_CLM_DX A 
+                                       (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN GROUP(ORDER BY N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                    FROM TMP_BX_DZDX A 
                                     LEFT JOIN TMP_BX_DAYPOST_DESCRIPTION B 
-                                      ON  A.CONTEND_ID = B.BUSINESS_CODE   
+                                      ON  A.BUSINESS_CODE = B.BUSINESS_CODE   
                                       AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                       AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
                                     LEFT JOIN TMP_QDSX_TC_BUG C  
-                                      ON C.BUSINESS_CODE = A.CONTEND_ID
-                                      --AND C.POLICY_CODE = A.POLICY_CODE
+                                      ON C.BUSINESS_CODE = A.BUSINESS_CODE
                                       AND C.FIND_NODE = A.BUSINESS_NODE
                                     LEFT JOIN TMP_BUSINESS_NODE D
                                       ON D.BUSINESS_NODE = A.BUSINESS_NODE
-                                 WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+                                 WHERE 1=1" . $where_time_bqsl . $where_type_fix;
             Log::write($user_name.' 数据库查询条件：'.$select_bqsl,'INFO');
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
                 $result[$i]['BUSINESS_CODE'] = $value['BUSINESS_CODE'];
-                $result[$i]['CONTEND_ID'] = $value['CONTEND_ID'];
-                $result[$i]['USER_NAME'] = $value['USER_NAME'];
-                $result[$i]['MAIL_TITLE'] = $value['MAIL_TITLE'];
-                $result[$i]['CONTEND_INFO'] = $value['CONTEND_INFO'];
-                $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
-                $result[$i]['BUSINESS_NAME'] = $value['BUSINESS_NAME'];
-                $result[$i]['BUSI_INSERT_DATE'] = $value['BUSI_INSERT_DATE'];
+                $result[$i]['NEW_CHAT_NAME'] = $value['NEW_CHAT_NAME'];
+                $result[$i]['OLD_CHAT_NAME'] = $value['OLD_CHAT_NAME'];
+                $result[$i]['NEW_POLICY_CODE'] = $value['NEW_POLICY_CODE'];
+                $result[$i]['OLD_POLICY_CODE'] = $value['OLD_POLICY_CODE'];
+                $result[$i]['NEW_INSURANCE_CODE'] = $value['NEW_INSURANCE_CODE'];
+                $result[$i]['OLD_INSURANCE_CODE'] = $value['OLD_INSURANCE_CODE'];
+                $result[$i]['NEW_INSURANCE_NAME'] = $value['NEW_INSURANCE_NAME'];
+                $result[$i]['OLD_INSURANCE_NAME'] = $value['OLD_INSURANCE_NAME'];
+                $result[$i]['NEW_CUSTOMER_ID'] = $value['NEW_CUSTOMER_ID'];
+                $result[$i]['OLD_CUSTOMER_ID'] = $value['OLD_CUSTOMER_ID'];
+                $result[$i]['NEW_CUSTOMER_NAME'] = $value['NEW_CUSTOMER_NAME'];
+                $result[$i]['OLD_CUSTOMER_NAME'] = $value['OLD_CUSTOMER_NAME'];
+                $result[$i]['NEW_CUSTOMER_PHONENUM'] = $value['NEW_CUSTOMER_PHONENUM'];
+                $result[$i]['OLD_CUSTOMER_PHONENUM'] = $value['OLD_CUSTOMER_PHONENUM'];
+                $result[$i]['NEW_AGENT_SAPID'] = $value['NEW_AGENT_SAPID'];
+                $result[$i]['OLD_AGENT_SAPID'] = $value['OLD_AGENT_SAPID'];
                 $result[$i]['IS_SELECT_POLICY'] = $value['IS_SELECT_POLICY'];
                 $result[$i]['IS_CHECK_POLICY'] = $value['IS_CHECK_POLICY'];
+                $result[$i]['BUSINESS_NAME'] = $value['BUSINESS_NAME'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['TC_ID'] = "-";
                 }else{
@@ -983,6 +1006,7 @@ class BxWorkDefineController extends Controller
                 }
                 $result[$i]['HD_USER_NAME'] = $value['HD_USER_NAME'];
                 $result[$i]['SYS_INSERT_DATE'] = $value['SYS_INSERT_DATE'];
+                $result[$i]['BUSI_INSERT_DATE'] = $value['SYS_INSERT_DATE'];
                 if (empty($value['DESCRIPTION'])) {
                     $result[$i]['DESCRIPTION'] = "-";
                 } else {
