@@ -1392,6 +1392,7 @@ class BxWorkDefineController extends Controller
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
+            Log::write($user_name.' 保单合同查询SQL：'.$select_bqsl,'INFO');
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
                 $result[$i]['policy_code'] = $value['POLICY_CODE'];
