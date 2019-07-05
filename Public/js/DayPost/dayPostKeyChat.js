@@ -152,17 +152,17 @@ var TableInit = function () {
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'vms_check_sum',
+                    field : 'dz_check_sum',
                     title : '核对量',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'vms_pro_sum',
+                    field : 'dz_pro_sum',
                     title : '问题单数量',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'vms_is_same',
+                    field : 'dz_is_same',
                     title : '一致率',
                     colspan: 1,
                     align : 'center'

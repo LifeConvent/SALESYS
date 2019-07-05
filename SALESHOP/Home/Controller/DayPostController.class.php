@@ -571,7 +571,10 @@ class DayPostController extends Controller
                                   A.CLM_IS_SAME AS CLM_IS_SAME,
                                   A.CS_CHECK_SUM AS CS_CHECK_SUM,
                                   A.CS_PRO_SUM AS CS_PRO_SUM,
-                                  A.CS_IS_SAME AS CS_IS_SAME
+                                  A.CS_IS_SAME AS CS_IS_SAME,
+                                  A.DZ_CHECK_SUM AS DZ_CHECK_SUM,
+                                  A.DZ_PRO_SUM AS DZ_PRO_SUM,
+                                  A.DZ_IS_SAME AS DZ_IS_SAME
                     FROM TMP_DAYPOST_BX_CHAT_CLM A
                                 WHERE 1=1 
                                   ORDER BY TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD')";
@@ -586,6 +589,9 @@ class DayPostController extends Controller
             $result[$i]['cs_check_sum'] = $result_all[$i]['CS_CHECK_SUM'];
             $result[$i]['cs_pro_sum'] = $result_all[$i]['CS_PRO_SUM'];
             $result[$i]['cs_is_same'] = $result_all[$i]['CS_IS_SAME'];
+            $result[$i]['dz_check_sum'] = $result_all[$i]['DZ_CHECK_SUM'];
+            $result[$i]['dz_pro_sum'] = $result_all[$i]['DZ_PRO_SUM'];
+            $result[$i]['dz_is_same'] = $result_all[$i]['DZ_IS_SAME'];
         }
         foreach($result AS $item){
             $res[] = $item;
