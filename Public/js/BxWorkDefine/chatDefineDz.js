@@ -127,14 +127,14 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '新核心短信名称',
-                width:140
+                width:160
             }, {
                 field: 'OLD_CHAT_NAME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '老核心短信名称',
-                width:140
+                width:160
             }, {
                 field: 'NEW_POLICY_CODE',
                 sortable: true,
