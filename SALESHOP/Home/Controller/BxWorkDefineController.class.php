@@ -935,11 +935,12 @@ class BxWorkDefineController extends Controller
                                   A.OLD_CUSTOMER_PHONENUM,
                                   A.NEW_AGENT_SAPID,
                                   A.OLD_AGENT_SAPID,
+                                  A.IS_ACCORDANCE,
                                   --DBMS_LOB.SUBSTR(A.CONTEND_INFO,4000,1) AS CONTEND_INFO,
                                   B.IS_SELECT_POLICY,
                                   B.IS_CHECK_POLICY,
                                   D.BUSINESS_NAME,
-                                       (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN GROUP(ORDER BY N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                       (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN GROUP(ORDER BY N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                        --C.TC_ID,
                                        (CASE
                                           WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -950,13 +951,13 @@ class BxWorkDefineController extends Controller
                                             ELSE C.TC_USER_NAME
                                         END) AS HD_USER_NAME,
                                       (CASE
-                                         WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 ORDER BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                         ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 ORDER BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                         WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 ORDER BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                         ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 ORDER BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                       END) AS SYS_INSERT_DATE,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                       (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN GROUP(ORDER BY N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                       (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN GROUP(ORDER BY N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                        --C.STATUS,
-                                       (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN GROUP(ORDER BY N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                       (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN GROUP(ORDER BY N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                     FROM TMP_BX_DZDX A 
                                     LEFT JOIN TMP_BX_DAYPOST_DESCRIPTION B 
                                       ON  A.BUSINESS_CODE = B.BUSINESS_CODE   
@@ -967,7 +968,7 @@ class BxWorkDefineController extends Controller
                                       AND C.FIND_NODE = A.BUSINESS_NODE
                                     LEFT JOIN TMP_BUSINESS_NODE D
                                       ON D.BUSINESS_NODE = A.BUSINESS_NODE
-                                 WHERE 1=1" . $where_time_bqsl . $where_type_fix;
+                                 WHERE 1=1 AND A.IS_ACCORDANCE = '否' " . $where_time_bqsl . $where_type_fix;
             Log::write($user_name.' 数据库查询条件：'.$select_bqsl,'INFO');
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
@@ -993,6 +994,7 @@ class BxWorkDefineController extends Controller
                 $result[$i]['IS_SELECT_POLICY'] = $value['IS_SELECT_POLICY'];
                 $result[$i]['IS_CHECK_POLICY'] = $value['IS_CHECK_POLICY'];
                 $result[$i]['BUSINESS_NAME'] = $value['BUSINESS_NAME'];
+                $result[$i]['IS_ACCORDANCE'] = $value['IS_ACCORDANCE'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['TC_ID'] = "-";
                 }else{

@@ -120,7 +120,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '关键业务号',
-                width:120
+                width:140
             }, {
                 field: 'NEW_CHAT_NAME',
                 sortable: true,
@@ -141,28 +141,28 @@ var TableInit = function () {
                 valign: 'middle',
                 align: 'center',
                 title: '新核心保单号',
-                width:140
+                width:160
             },{
                 field: 'OLD_POLICY_CODE',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
                 title: '老核心保单号',
-                width:140
+                width:160
             },{
                 field: 'OLD_INSURANCE_CODE',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
                 title: '老核心主险代码',
-                width:120
+                width:160
             }, {
                 field: 'NEW_INSURANCE_CODE',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '新核心主险代码',
-                width:120
+                width:160
             },{
                 field: 'OLD_INSURANCE_NAME',
                 sortable: true,
@@ -183,56 +183,63 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '老核心客户号',
-                width:120
+                width:140
             },{
                 field: 'NEW_CUSTOMER_ID',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '新核心客户号',
-                width:120
+                width:140
             },{
                 field: 'OLD_CUSTOMER_NAME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '老核心客户名',
-                width:120
+                width:140
             },{
                 field: 'NEW_CUSTOMER_NAME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '新核心客户名',
-                width:120
+                width:140
             },{
                 field: 'OLD_CUSTOMER_PHONENUM',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '老核心客户手机号',
-                width:120
+                width:160
             },{
                 field: 'NEW_CUSTOMER_PHONENUM',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '新核心客户手机号',
-                width:120
+                width:160
             },{
                 field: 'OLD_AGENT_SAPID',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '老核心代理人号',
-                width:120
+                width:160
             },{
                 field: 'NEW_AGENT_SAPID',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '新核心代理人号',
-                width:120
+                width:160
+            },{
+                field: 'IS_ACCORDANCE',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '是否一致',
+                width:100
             },{
                 field: 'BUSINESS_NAME',
                 sortable: true,
