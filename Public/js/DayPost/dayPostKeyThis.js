@@ -51,7 +51,7 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report').bootstrapTable({
-            url: HOST + "index.php/Home/DayPost/getDayPostKeyThis",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/DayPost/getDayPostKeyThis?type=1",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             showExport: true,
             exportDataType: 'all',

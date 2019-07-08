@@ -353,6 +353,9 @@ class DayPostController extends Controller
             $sql_fix = " AND INSERT_DATE = TRUNC(TO_DATE('$queryDate','YYYY-MM-DD')) ";
         }
         if((int)$type==1){
+            $result = null;
+            $result_all = null;
+            $result_rows = null;
             $select_nbuw = "SELECT B.ORDER_LIST,C.EXE_NAME,C.BUSI_TYPE_NAME AS EXE_TYPE,A.* 
                                   FROM HXBX_KPI A 
                                   LEFT JOIN TMP_CODE_MAP B 
@@ -470,6 +473,7 @@ class DayPostController extends Controller
         foreach($result AS $item){
             $res[] = $item;
         }
+        $item = null;
         oci_free_statement($result_rows);
         oci_close($conn);
 //        dump($res);
