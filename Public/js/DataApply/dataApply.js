@@ -128,7 +128,6 @@ var TableInit = function () {
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                valign: 'middle',
                 formatter: "actionFormatter_pass_reason",
                 events: "actionEvents_pass_reason",
                 title: '通过原因',
@@ -153,6 +152,7 @@ var TableInit = function () {
             },{
                 title: '删除操作',
                 align: 'center',
+                sortable: true,
                 valign: 'middle',
                 formatter: "actionFormatter_delete",
                 events: "actionEvents_delete",
@@ -313,6 +313,9 @@ function actionFormatter_delete(value, row, index){
     var is_sys_delete = $('#is_sys_delete').text();
     var is_work_delete = $('#is_work_delete').text();
     var out = '';
+    if(row.NO_PASS_REASON!='null'&&row.NO_PASS_REASON!=''&&row.NO_PASS_REASON!=null){
+        return '审核不通过';
+    }
     if(is_sys_delete == '0'&&is_work_delete=='0'){
         return '无权限确认删除';
     }else if(is_work_delete == '1'&&row.IS_DELETE_WORK == '0'&&row.IS_REVIEW_PASS == '1'){

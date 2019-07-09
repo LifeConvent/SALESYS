@@ -602,17 +602,17 @@ class BxWorkDefineController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
+        $organCode = $method->getUserOrganCode();
         if((int)$userType==1){
             $where_type_fix = "";
         }else if((int)$userType==2){
-            $organCode = $method->getUserOrganCode();
 //            dump($organCode);
             $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
         }else if((int)$userType==3){
             $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
         }
         if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '".$organCode[$user_name]."%'";
         }
 
         $num = 0;
@@ -1751,17 +1751,17 @@ class BxWorkDefineController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
+        $organCode = $method->getUserOrganCode();
         if((int)$userType==1){
             $where_type_fix = "";
         }else if((int)$userType==2){
-            $organCode = $method->getUserOrganCode();
 //            dump($organCode);
             $where_type_fix =  " AND A.OLD_ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
         }else if((int)$userType==3){
             $where_type_fix = " AND A.NEW_USER_NAME = '".$user_name."'";
         }
         if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.OLD_ORGAN_CODE NOT LIKE '8647%'";
+            $where_type_fix =  " AND A.OLD_ORGAN_CODE NOT LIKE '".$organCode[$user_name]."%'";
         }
         Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
         $num = 0;
@@ -1835,10 +1835,10 @@ class BxWorkDefineController extends Controller
                 $result[$i]['new_service_code'] = $value['NEW_SERVICE_CODE'];
                 $result[$i]['old_service_type'] = $value['OLD_SERVICE_TYPE'];
                 $result[$i]['new_service_type'] = $value['NEW_SERVICE_TYPE'];
-                $result[$i]['old_policy_code'] = "'".$value['OLD_POLICY_CODE'];
-                $result[$i]['new_policy_code'] = "'".$value['NEW_POLICY_CODE'];
-                $result[$i]['old_accept_code'] = "'".$value['OLD_ACCEPT_CODE'];
-                $result[$i]['new_accept_code'] = "'".$value['NEW_ACCEPT_CODE'];
+                $result[$i]['old_policy_code'] = $value['OLD_POLICY_CODE'];
+                $result[$i]['new_policy_code'] = $value['NEW_POLICY_CODE'];
+                $result[$i]['old_accept_code'] = $value['OLD_ACCEPT_CODE'];
+                $result[$i]['new_accept_code'] = $value['NEW_ACCEPT_CODE'];
                 $result[$i]['old_get_money'] = $value['OLD_GET_MONEY'];
                 $result[$i]['new_get_money'] = $value['NEW_GET_MONEY'];
                 $result[$i]['busi_insert_date'] = $value['INSERT_SYSDATE'];
@@ -1947,7 +1947,7 @@ class BxWorkDefineController extends Controller
             $where_type_fix = " AND A.NEW_USER_NAME = '".$user_name."'";
         }
         if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.OLD_ORGAN_CODE NOT LIKE '8647%'";
+            $where_type_fix =  " AND A.OLD_ORGAN_CODE NOT LIKE '8633%'";
         }
         Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
         $num = 0;
@@ -2016,10 +2016,10 @@ class BxWorkDefineController extends Controller
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
                 $result[$i]['old_service_code'] = $value['OLD_SERVICE_CODE'];
                 $result[$i]['new_service_code'] = $value['NEW_SERVICE_CODE'];
-                $result[$i]['old_policy_code'] = "'".$value['OLD_POLICY_CODE'];
-                $result[$i]['new_policy_code'] = "'".$value['NEW_POLICY_CODE'];
-                $result[$i]['old_accept_code'] = "'".$value['OLD_ACCEPT_CODE'];
-                $result[$i]['new_accept_code'] = "'".$value['NEW_ACCEPT_CODE'];
+                $result[$i]['old_policy_code'] = $value['OLD_POLICY_CODE'];
+                $result[$i]['new_policy_code'] = $value['NEW_POLICY_CODE'];
+                $result[$i]['old_accept_code'] = $value['OLD_ACCEPT_CODE'];
+                $result[$i]['new_accept_code'] = $value['NEW_ACCEPT_CODE'];
                 $result[$i]['old_accept_status'] = $value['OLD_ACCEPT_STATUS'];
                 $result[$i]['new_accept_status'] = $value['NEW_ACCEPT_STATUS'];
                 $result[$i]['old_review_result'] = $value['OLD_REVIEW_RESULT'];
@@ -2129,7 +2129,7 @@ class BxWorkDefineController extends Controller
             $where_type_fix = " AND A.NEW_USER_NAME = '".$user_name."'";
         }
         if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.OLD_ORGAN_CODE NOT LIKE '8647%'";
+            $where_type_fix =  " AND A.OLD_ORGAN_CODE NOT LIKE '8633%'";
         }
         Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
         $num = 0;
@@ -2302,7 +2302,7 @@ class BxWorkDefineController extends Controller
             $where_type_fix = " AND A.NEW_USER_NAME = '".$user_name."'";
         }
         if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.OLD_ORGAN_CODE NOT LIKE '8647%'";
+            $where_type_fix =  " AND A.OLD_ORGAN_CODE NOT LIKE '8633%'";
         }
         Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
         $num = 0;
@@ -2483,7 +2483,7 @@ class BxWorkDefineController extends Controller
             $where_type_fix = " AND A.NEW_USER_NAME = '".$user_name."'";
         }
         if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.OLD_ORGAN_CODE NOT LIKE '8647%'";
+            $where_type_fix =  " AND A.OLD_ORGAN_CODE NOT LIKE '8633%'";
         }
         Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
         $num = 0;

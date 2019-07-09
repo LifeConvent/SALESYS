@@ -528,8 +528,8 @@ window.actionEvents_review = {
         });
     },
     'click .pass_right': function (e, value, row, index) {
-        var business_node = 'BQFH';
-        var business_code = row.old_accept_code;
+        var business_node = row.business_node;
+        var business_code = row.old_apply_code;
         var policy_code = row.old_policy_code;
         var busi_insert_date = row.busi_insert_date;
         var username = $("#username").text();
@@ -550,8 +550,6 @@ window.actionEvents_review = {
                 if (result.status == 'success') {
                     debugger;
                     var yi = '1';
-                    //单行刷新数据
-                    var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
                     var data = { "is_pass":yi,"is_submit":yi,"is_review":yi};
                     $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
                     $.scojs_message(result.message, $.scojs_message.TYPE_OK);
