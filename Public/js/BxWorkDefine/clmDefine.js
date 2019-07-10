@@ -240,7 +240,7 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '核对人',
                 sortable: true,
-                width:130
+                width:140
                 // formatter: "actionFormatter_hd_user",
                 // events: "actionEvents_hd_user",
             },{

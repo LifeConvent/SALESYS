@@ -132,7 +132,14 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '老核心管理机构',
                 width:130
-            }, {
+            },{
+                field: 'old_policy_organ_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保单管理机构',
+                width:130
+            },{
                 field: 'new_organ_code',
                 sortable: true,
                 align: 'center',

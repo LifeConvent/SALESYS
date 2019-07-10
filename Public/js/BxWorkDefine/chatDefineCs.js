@@ -212,21 +212,23 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '领取人姓名',
                 width:100
-            }, {
-                field: 'phone',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '手机号',
-                width:100
-            }, {
-                field: 'chat_content',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '短信话术',
-                width:300
-            },{
+            },
+            //     {
+            //     field: 'phone',
+            //     sortable: true,
+            //     align: 'center',
+            //     valign: 'middle',
+            //     title: '手机号',
+            //     width:100
+            // }, {
+            //     field: 'chat_content',
+            //     sortable: true,
+            //     align: 'center',
+            //     valign: 'middle',
+            //     title: '短信话术',
+            //     width:300
+            // },
+                {
                 field: 'business_name',
                 sortable: true,
                 align: 'center',

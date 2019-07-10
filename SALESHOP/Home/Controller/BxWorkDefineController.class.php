@@ -1087,8 +1087,8 @@ class BxWorkDefineController extends Controller
                                    A.SERVICE_CODE,
                                    A.GET_MONEY,
                                    A.RECEIPTOR_NAME,
-                                   A.PHONE,
-                                   A.CHAT_CONTENT,
+                                   --A.PHONE,
+                                   --A.CHAT_CONTENT,
                                   B.IS_SELECT_POLICY,
                                   B.IS_CHECK_POLICY,
                                    D.BUSINESS_NAME,
@@ -1111,7 +1111,7 @@ class BxWorkDefineController extends Controller
                                    (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
                                    (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
-                                FROM TMP_QDSX_CS_BQDX A 
+                                FROM TMP_QDSX_CS A 
                                 LEFT JOIN TMP_BX_DAYPOST_DESCRIPTION B 
                                   ON A.CONTENT_ID = B.BUSINESS_CODE
                                   AND B.BUSINESS_NODE = A.BUSINESS_NODE
@@ -1124,6 +1124,7 @@ class BxWorkDefineController extends Controller
                                   ON D.BUSINESS_NODE = A.BUSINESS_NODE
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+            Log::write($user_name.' 保全短信查询：'.$select_bqsl,'INFO');
             $bqsl_result_time = $method->search_long($result_rows);
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
@@ -1141,8 +1142,8 @@ class BxWorkDefineController extends Controller
                 $result[$i]['service_code'] = $value['SERVICE_CODE'];
                 $result[$i]['get_money'] = $value['GET_MONEY'];
                 $result[$i]['receiptor_name'] = $value['RECEIPTOR_NAME'];
-                $result[$i]['phone'] = $value['PHONE'];
-                $result[$i]['chat_content'] = $value['CHAT_CONTENT'];
+//                $result[$i]['phone'] = $value['PHONE'];
+//                $result[$i]['chat_content'] = $value['CHAT_CONTENT'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
                 $result[$i]['IS_SELECT_POLICY'] = $value['IS_SELECT_POLICY'];
@@ -1769,7 +1770,7 @@ class BxWorkDefineController extends Controller
         //保全室、理赔室、核保室不参与
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
-            $select_bqsl = "SELECT DISTINCT A.OLD_ORGAN_CODE,
+            $select_bqsl = "SELECT DISTINCT A.OLD_ORGAN_CODE,A.OLD_POLICY_ORGAN_CODE,
                                        A.NEW_ORGAN_CODE,
                                        A.OLD_USER_NAME,
                                        A.NEW_USER_NAME,
@@ -1827,6 +1828,7 @@ class BxWorkDefineController extends Controller
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
                 $result[$i]['old_organ_code'] = $value['OLD_ORGAN_CODE'];
+                $result[$i]['old_policy_organ_code'] = $value['OLD_POLICY_ORGAN_CODE'];
                 $result[$i]['new_organ_code'] = $value['NEW_ORGAN_CODE'];
                 $result[$i]['old_user_name'] = $value['OLD_USER_NAME'];
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
@@ -2491,7 +2493,7 @@ class BxWorkDefineController extends Controller
         //保全室、理赔室、核保室不参与
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
-            $select_bqsl = "SELECT A.OLD_ORGAN_CODE,
+            $select_bqsl = "SELECT DISTINCT A.OLD_ORGAN_CODE,
                                          A.NEW_ORGAN_CODE,
                                          A.OLD_USER_NAME,
                                          A.NEW_USER_NAME,
@@ -2518,8 +2520,8 @@ class BxWorkDefineController extends Controller
                                        TO_CHAR(A.INSERT_SYSDATE,'YYYY-MM-DD') AS INSERT_SYSDATE,
                                        (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = TRIM(A.OLD_CASE_NO) AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                        (CASE
-                                          WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
-                                            ELSE C.TC_USER_NAME
+                                          WHEN (SELECT W.TC_USER_NAME FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_USER_NAME,',') WITHIN group(order by N.TC_ID) AS TC_USER_NAME FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = TRIM(A.OLD_CASE_NO) AND W.FIND_NODE = A.BUSINESS_NODE) IS NULL THEN B.HD_USER_NAME
+                                            ELSE (SELECT W.TC_USER_NAME FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_USER_NAME,',') WITHIN group(order by N.TC_ID) AS TC_USER_NAME FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = TRIM(A.OLD_CASE_NO) AND W.FIND_NODE = A.BUSINESS_NODE)
                                         END) AS HD_USER_NAME,
                                         (CASE
                                           WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.OLD_CASE_NO AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
