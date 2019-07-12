@@ -621,8 +621,8 @@ class BxWorkDefineController extends Controller
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT 
-                                  A.SEND_ID,
-                                  A.RECEIVE_OBJ,
+                                  --A.SEND_ID,
+                                  --A.RECEIVE_OBJ,
                                   A.CHANNEL_TYPE,
                                   A.APPLY_CODE,
                                   A.POLICY_CODE,
@@ -637,14 +637,14 @@ class BxWorkDefineController extends Controller
                                   TO_CHAR(A.VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,
                                   A.AGENT_NAME,
                                   A.AGENT_MOBILE,
-                                  A.SEND_MOBILE,
-                                  TO_CHAR(A.SEND_CONTENT) AS SEND_CONTENT,
+                                  --A.SEND_MOBILE,
+                                  --TO_CHAR(A.SEND_CONTENT) AS SEND_CONTENT,
                                   A.USER_NAME,
                                   A.ORGAN_CODE,
                                   B.IS_SELECT_POLICY,
                                   B.IS_CHECK_POLICY,
                                   D.BUSINESS_NAME,
-                                  (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                  (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                    --C.TC_ID,
                                    (CASE
                                       WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -655,31 +655,32 @@ class BxWorkDefineController extends Controller
                                         ELSE C.TC_USER_NAME
                                     END) AS HD_USER_NAME,
                                     (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
-                                  FROM TMP_QDSX_NB_CBDX A
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                  FROM TMP_QDSX_NB A
                                   LEFT JOIN TMP_BX_DAYPOST_DESCRIPTION B 
-                                     ON A.SEND_ID = B.BUSINESS_CODE
+                                     ON A.APPLY_CODE = B.BUSINESS_CODE
                                      AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                      AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
                                      LEFT JOIN TMP_QDSX_TC_BUG C  
-                                     ON C.BUSINESS_CODE = A.SEND_ID
+                                     ON C.BUSINESS_CODE = A.APPLY_CODE
                                      AND C.FIND_NODE = A.BUSINESS_NODE
                                      LEFT JOIN TMP_BUSINESS_NODE D
                                      ON D.BUSINESS_NODE = A.BUSINESS_NODE
-                                 WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+                                 WHERE 1=1" . $where_time_bqsl . $where_type_fix;
             Log::write('承保短信查询条件：'.$where_time_bqsl . $where_type_fix,'INFO');
+            Log::write('承保短信查询条件：'.$select_bqsl,'INFO');
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
-                $result[$i]['send_id'] = $value['SEND_ID'];
-                $result[$i]['receive_obj'] = $value['RECEIVE_OBJ'];
+//                $result[$i]['send_id'] = $value['SEND_ID'];
+//                $result[$i]['receive_obj'] = $value['RECEIVE_OBJ'];
                 $result[$i]['channel_type'] = $value['CHANNEL_TYPE'];
                 $result[$i]['apply_code'] = $value['APPLY_CODE'];
                 $result[$i]['policy_code'] = $value['POLICY_CODE'];
@@ -693,8 +694,8 @@ class BxWorkDefineController extends Controller
                 $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
                 $result[$i]['agent_name'] = $value['AGENT_NAME'];
                 $result[$i]['agent_mobile'] = $value['AGENT_MOBILE'];
-                $result[$i]['send_mobile'] = $value['SEND_MOBILE'];
-                $result[$i]['send_content'] = $value['SEND_CONTENT'];
+//                $result[$i]['send_mobile'] = $value['SEND_MOBILE'];
+//                $result[$i]['send_content'] = $value['SEND_CONTENT'];
                 $result[$i]['user_name'] = $value['USER_NAME'];
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
@@ -974,6 +975,7 @@ class BxWorkDefineController extends Controller
             $bqsl_result_time = $method->search_long($result_rows);
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
+                $result[$i]['BUSI_INSERT_DATE'] = $value['SYS_INSERT_DATE'];
                 $result[$i]['BUSINESS_CODE'] = $value['BUSINESS_CODE'];
                 $result[$i]['NEW_CHAT_NAME'] = $value['NEW_CHAT_NAME'];
                 $result[$i]['OLD_CHAT_NAME'] = $value['OLD_CHAT_NAME'];
@@ -995,6 +997,7 @@ class BxWorkDefineController extends Controller
                 $result[$i]['IS_CHECK_POLICY'] = $value['IS_CHECK_POLICY'];
                 $result[$i]['BUSINESS_NAME'] = $value['BUSINESS_NAME'];
                 $result[$i]['IS_ACCORDANCE'] = $value['IS_ACCORDANCE'];
+                $result[$i]['SYS_INSERT_DATE'] = $value['SYS_INSERT_DATE'];
                 if(empty( $value['TC_ID'])){
                     $result[$i]['TC_ID'] = "-";
                 }else{
@@ -1006,8 +1009,6 @@ class BxWorkDefineController extends Controller
                     $result[$i]['RESULT'] = $value['RESULT'];
                 }
                 $result[$i]['HD_USER_NAME'] = $value['HD_USER_NAME'];
-                $result[$i]['SYS_INSERT_DATE'] = $value['SYS_INSERT_DATE'];
-                $result[$i]['BUSI_INSERT_DATE'] = $value['SYS_INSERT_DATE'];
                 if (empty($value['DESCRIPTION'])) {
                     $result[$i]['DESCRIPTION'] = "-";
                 } else {

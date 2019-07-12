@@ -336,7 +336,7 @@ var TableInit = function () {
                 field: 'BUSI_INSERT_DATE',
                 sortable: true,
                 align: 'center',
-                visible:false,
+                // visible:false,
                 title: '-',
                 width:120
             },{
@@ -454,11 +454,12 @@ window.actionEvents_check = {
         // var business_time = row.business_time;
         var username = $("#username").text();
         var is_check_policy = '1';
+        var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
         $.ajax({
             type: "POST", //用POST方式传输
             url: HOST + "index.php/Home/BxWorkDefine/updatePublicDefine", //目标地址.
             dataType: "json", //数据格式:JSON
-            data: {username: username, business_code: business_code, policy_code: policy_code, business_name:business_name,insert_date:insert_date,is_check_policy:is_check_policy},
+            data: {username: username, business_code: business_code, policy_code: policy_code, business_name:business_name,insert_date:sysDate,is_check_policy:is_check_policy},
             success: function (result) {
                 if (result.status == 'success') {
                     debugger;

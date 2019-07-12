@@ -114,21 +114,23 @@ var TableInit = function () {
                 formatter: function (value, row, index) {
                     return index+1;
                 }
-            }, {
-                field: 'send_id',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '短信ID',
-                width:100
-            },{
-                field: 'receive_obj',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '发送对象',
-                width:100
-            }, {
+            },
+            //     {
+            //     field: 'send_id',
+            //     sortable: true,
+            //     align: 'center',
+            //     valign: 'middle',
+            //     title: '短信ID',
+            //     width:100
+            // },{
+            //     field: 'receive_obj',
+            //     sortable: true,
+            //     align: 'center',
+            //     valign: 'middle',
+            //     title: '发送对象',
+            //     width:100
+            // },
+                {
                 field: 'channel_type',
                 sortable: true,
                 align: 'center',
@@ -219,21 +221,23 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '业务员手机号',
                 width:130
-            },{
-                field: 'send_mobile',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '短信发送手机号',
-                width:150
-            },{
-                field: 'send_content',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '短信话术',
-                width:400
-            },{
+            },
+            //     {
+            //     field: 'send_mobile',
+            //     sortable: true,
+            //     align: 'center',
+            //     valign: 'middle',
+            //     title: '短信发送手机号',
+            //     width:150
+            // },{
+            //     field: 'send_content',
+            //     sortable: true,
+            //     align: 'center',
+            //     valign: 'middle',
+            //     title: '短信话术',
+            //     width:400
+            // },
+                {
                 field: 'user_name',
                 sortable: true,
                 align: 'center',
@@ -462,6 +466,7 @@ window.actionEvents_check = {
         // var business_time = row.business_time;
         var username = $("#username").text();
         var is_check_policy = '1';
+        var sysTime = new Date().getHours()+':'+(new Date().getMinutes()) +':'+new Date().getSeconds();
         $.ajax({
             type: "POST", //用POST方式传输
             url: HOST + "index.php/Home/BxWorkDefine/updatePublicDefine", //目标地址.
