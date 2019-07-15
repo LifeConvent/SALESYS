@@ -234,6 +234,20 @@ var TableInit = function () {
                 title: '新核心代理人号',
                 width:160
             },{
+                field: 'OLD_PERSONALITY',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '老核心个性化',
+                width:650
+            },{
+                field: 'NEW_PERSONALITY',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '新核心个性化',
+                width:650
+            },{
                 field: 'IS_ACCORDANCE',
                 sortable: true,
                 align: 'center',

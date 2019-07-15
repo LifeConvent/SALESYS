@@ -928,6 +928,8 @@ class BxWorkDefineController extends Controller
                                   A.OLD_INSURANCE_CODE,
                                   A.NEW_INSURANCE_NAME,
                                   A.OLD_INSURANCE_NAME,
+                                  A.OLD_PERSONALITY,
+                                  A.NEW_PERSONALITY,
                                   A.NEW_CUSTOMER_ID,
                                   A.OLD_CUSTOMER_ID,
                                   A.NEW_CUSTOMER_NAME,
@@ -991,6 +993,8 @@ class BxWorkDefineController extends Controller
                 $result[$i]['OLD_CUSTOMER_NAME'] = $value['OLD_CUSTOMER_NAME'];
                 $result[$i]['NEW_CUSTOMER_PHONENUM'] = $value['NEW_CUSTOMER_PHONENUM'];
                 $result[$i]['OLD_CUSTOMER_PHONENUM'] = $value['OLD_CUSTOMER_PHONENUM'];
+                $result[$i]['OLD_PERSONALITY'] = $value['OLD_PERSONALITY'];
+                $result[$i]['NEW_PERSONALITY'] = $value['NEW_PERSONALITY'];
                 $result[$i]['NEW_AGENT_SAPID'] = $value['NEW_AGENT_SAPID'];
                 $result[$i]['OLD_AGENT_SAPID'] = $value['OLD_AGENT_SAPID'];
                 $result[$i]['IS_SELECT_POLICY'] = $value['IS_SELECT_POLICY'];
