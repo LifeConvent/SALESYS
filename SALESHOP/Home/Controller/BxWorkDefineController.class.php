@@ -1075,7 +1075,8 @@ class BxWorkDefineController extends Controller
         //保全室、理赔室、核保室不参与
         if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
             #033 个人待确认保全受理查询
-            $select_bqsl = "SELECT DISTINCT A.CONTENT_ID,
+            $select_bqsl = "SELECT DISTINCT 
+                                   A.CONTENT_ID,
                                    A.CHAT_NAME,
                                    A.ACCEPT_CODE,
                                    A.POLICY_CODE,

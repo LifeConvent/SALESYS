@@ -120,7 +120,7 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '短信ID',
-                width:100
+                width:300
             },{
                 field: 'chat_name',
                 sortable: true,
@@ -380,6 +380,9 @@ window.actionEvents_sure = {
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
         var policy_code = row.policy_code;
+        if(policy_code == '-'||policy_code == null){
+            policy_code = row.accept_code;
+        }
         var business_code = row.send_id;
         // var media_type = row.media_type;
         var insert_date = row.busi_insert_date;
@@ -436,6 +439,9 @@ window.actionEvents_check = {
         // var description = $("#des"+index).val();
         var business_name = row.business_name;
         var policy_code = row.policy_code;
+        if(policy_code == '-'||policy_code == null){
+            policy_code = row.accept_code;
+        }
         var business_code = row.send_id;
         // var media_type = row.media_type;
         var insert_date = row.busi_insert_date;
