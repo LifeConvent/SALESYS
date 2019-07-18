@@ -426,7 +426,7 @@ window.actionEvents = {
                 type: "POST", //用POST方式传输
                 url: HOST + "index.php/Home/BxWorkDefine/updateReason", //目标地址.
                 dataType: "json", //数据格式:JSON
-                data: {username: username, business_code: business_code, policy_code: policy_code, business_node:business_node,insert_date:busi_insert_date,description:description},
+                data: {username: username,  is_pass:'-1',business_code: business_code, policy_code: policy_code, business_node:business_node,insert_date:busi_insert_date,description:description},
                 success: function (result) {
                     if (result.status == 'success') {
                         debugger;
@@ -520,7 +520,7 @@ window.actionEvents_review = {
             type: "POST", //用POST方式传输
             url: HOST + "index.php/Home/BxWorkDefine/updateReason", //目标地址.
             dataType: "json", //数据格式:JSON
-            data: {username: username, business_code: business_code, policy_code: policy_code, business_node:business_node,insert_date:busi_insert_date,no_pass_reason:no_pass_reason},
+            data: {username: username,is_pass:'0', business_code: business_code, policy_code: policy_code, business_node:business_node,insert_date:busi_insert_date,no_pass_reason:no_pass_reason},
             success: function (result) {
                 if (result.status == 'success') {
                     debugger;
@@ -552,12 +552,18 @@ window.actionEvents_review = {
         var busi_insert_date = row.busi_insert_date;
         var username = $("#username").text();
         var result = '错误';
+        var no_pass_reason = $("#reason"+index).val();//原因说明
+        if(no_pass_reason==''||no_pass_reason==null){
+            $.scojs_message('需输入审核原因！！', $.scojs_message.TYPE_ERROR);
+            return;
+        }
         $.ajax({
             type: "POST", //用POST方式传输
             url: HOST + "index.php/Home/BxWorkDefine/updateReason", //目标地址.
             dataType: "json", //数据格式:JSON
             //针对于未提交缺陷的系统错误
-            data: {username: username, business_code: business_code, policy_code: policy_code, business_node:business_node,insert_date:busi_insert_date,result:result},
+            data: {username: username,is_pass:'1', business_code: business_code, policy_code: policy_code, business_node:business_node,insert_date:busi_insert_date,result:result,
+                no_pass_reason:no_pass_reason},
             success: function (result) {
                 if (result.status == 'success') {
                     debugger;
@@ -589,17 +595,23 @@ window.actionEvents_review = {
         var busi_insert_date = row.busi_insert_date;
         var username = $("#username").text();
         var result = '正确';
+        var no_pass_reason = $("#reason"+index).val();//原因说明
+        if(no_pass_reason==''||no_pass_reason==null){
+            $.scojs_message('需输入审核原因！！', $.scojs_message.TYPE_ERROR);
+            return;
+        }
         $.ajax({
             type: "POST", //用POST方式传输
             url: HOST + "index.php/Home/BxWorkDefine/updateReason", //目标地址.
             dataType: "json", //数据格式:JSON
-            data: {
+            data: {is_pass:'1',
                     username: username,
                     business_code: business_code,
                     policy_code: policy_code,
                     business_node:business_node,
                     insert_date:busi_insert_date,
-                    result:result
+                    result:result,
+                    no_pass_reason:no_pass_reason
             },
             success: function (result) {
                 if (result.status == 'success') {
