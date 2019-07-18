@@ -309,6 +309,15 @@ var TableInit = function () {
                 width:100,
                 clickToSelect: false
             },{
+                    field: 'operation_back',
+                    title: '回退操作',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: "actionFormatter_back",
+                    events: "actionEvents_back",
+                    width:100,
+                    clickToSelect: false
+            },{
                 field: 'review_conclusion',
                 title: '审核结论',
                 align: 'center',
@@ -339,8 +348,15 @@ var TableInit = function () {
                 field: 'sys_result',
                 sortable: true,
                 align: 'center',
-                visible:false,
-                title: '-',
+                valign: 'middle',
+                title: '审核结论',
+                width:120,
+            },{
+                field: 'no_deal',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '需求差异',
                 width:120,
             },{
                 field: 'busi_insert_date',
@@ -449,6 +465,53 @@ function actionFormatter_result(value, row, index) {
     }
 }
 
+
+function actionFormatter_back(value, row, index) {
+    var is_back_user = $('#is_back_user').text();
+    if(is_back_user != "1" || row.is_submit!= '1'|| row.is_review != '1' || row.is_pass !='1'){
+        return '-';
+    }else{
+        return '<button type="button" class="btn btn-danger back" style="height: 20pt;width: 55pt"><span style="margin-left:-5pt">退回重审</span></button>';
+    }
+}
+
+window.actionEvents_back = {
+    'click .back': function (e, value, row, index) {
+        var business_node = 'BQFH';
+        var business_code = row.old_accept_code;
+        var policy_code = row.old_policy_code;
+        var busi_insert_date = row.busi_insert_date;
+        var username = $("#username").text();
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/BxWorkDefine/updateBackReview", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {username: username, business_code: business_code, policy_code: policy_code, business_node:business_node,insert_date:busi_insert_date},
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    //单行刷新数据
+                    var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
+                    var data = { "is_pass":"0","is_review":"0"};
+                    $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
+                    $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                    if(result.lock == 'true'){
+                        window.location.href = HOST + "index.php/Home/Index/index";
+                    }
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+};
+
 //审核原因
 function actionFormatter_reason(value, row, index) {
     var is_reviewer = $('#is_reviewer').text();
@@ -456,7 +519,7 @@ function actionFormatter_reason(value, row, index) {
         return '-';
     }
     if(row.is_pass == "1"){
-        return '审核已通过';
+        return row.no_pass_reason;
     }else if(row.is_submit == '0'&&row.no_pass_reason!='-'){
         return '<span style="color:red;font-size: larger"><strong>'+row.no_pass_reason+'</strong></span>';
     }else if(is_reviewer==0&&row.is_submit == '1'){

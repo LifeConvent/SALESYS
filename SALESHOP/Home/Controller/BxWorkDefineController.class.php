@@ -1800,6 +1800,7 @@ class BxWorkDefineController extends Controller
                                        B.RESULT AS SYS_RESULT,
                                        B.IS_SUBMIT,
                                        B.IS_REVIEW,
+                                       (CASE B.IS_NO_DEAL WHEN '1' THEN '无需操作' ELSE '-' END) AS NO_DEAL,
                                        B.IS_PASS,
                                        B.NO_REASON,
                                        B.HD_USER_NAME,
@@ -1853,6 +1854,8 @@ class BxWorkDefineController extends Controller
                 $result[$i]['new_get_money'] = $value['NEW_GET_MONEY'];
                 $result[$i]['busi_insert_date'] = $value['INSERT_SYSDATE'];
                 $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+                $result[$i]['sys_result'] = $value['SYS_RESULT'];
+                $result[$i]['no_deal'] = $value['NO_DEAL'];
                 $result[$i]['new_accept_status'] = $value['NEW_ACCEPT_STATUS'];
                 $result[$i]['is_submit'] = $value['IS_SUBMIT'];
                 $result[$i]['is_review'] = $value['IS_REVIEW'];
@@ -1986,6 +1989,7 @@ class BxWorkDefineController extends Controller
                                        B.RESULT AS SYS_RESULT,
                                        B.IS_SUBMIT,
                                        B.IS_REVIEW,
+                                       (CASE B.IS_NO_DEAL WHEN '1' THEN '无需操作' ELSE '-' END) AS NO_DEAL,
                                        B.IS_PASS,
                                        B.NO_REASON,
                                        B.HD_USER_NAME,
@@ -2038,6 +2042,8 @@ class BxWorkDefineController extends Controller
                 $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
                 $result[$i]['is_submit'] = $value['IS_SUBMIT'];
                 $result[$i]['is_review'] = $value['IS_REVIEW'];
+                $result[$i]['no_deal'] = $value['NO_DEAL'];
+                $result[$i]['sys_result'] = $value['SYS_RESULT'];
                 $result[$i]['is_pass'] = $value['IS_PASS'];
 //                $result[$i]['insert_date'] = $value['INSERT_SYSDATE'];
 //                $result[$i]['new_insert_time'] = $value['NEW_INSERT_TIME'];
@@ -2791,5 +2797,31 @@ class BxWorkDefineController extends Controller
         } else {
             exit(json_encode(''));
         }
+    }
+
+    public function updateBackReview(){
+        header('Content-type: text/html; charset=utf-8');
+        $user_name = $_POST['username'];
+        $method = new MethodController();
+        $user_name = $method->getUserCNNameBySql($user_name);
+        $business_node = $_POST['business_node'];
+        $insert_date = $_POST['insert_date'];
+        Log::write($user_name.' 业务节点：'.$business_node,'INFO');
+        $policy_code = $_POST['policy_code'];
+        $business_code = $_POST['business_code'];
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $update_sql = "UPDATE TMP_BX_DAYPOST_DESCRIPTION SET RESULT = null, IS_PASS = '0',IS_REVIEW = '0' WHERE BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."'AND BUSINESS_NODE = '".$business_node."' AND TO_CHAR(BUSINESS_DATE,'YYYY-MM-DD') ='".$insert_date."'";
+        Log::write($user_name.' 打回重审SQL：'.$update_sql,'INFO');
+        $result_rows = oci_parse($conn, $update_sql); // 配置SQL语句，执行SQL
+            if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)) {
+                $result['status'] = "success";
+                $result['message'] = "关键业务号：".$business_code."-业务号：".$policy_code." 打回重审成功！";
+                exit(json_encode($result));
+            } else {
+                $result['status'] = "failed";
+                $result['message'] = $user_name."您好，审核打回失败，请联系管理员确认！";
+                exit(json_encode($result));
+            }
     }
 }

@@ -45,6 +45,7 @@ class MethodController extends Controller
         $controller->assign('TITLE', TITLE);
         $controller->assign('list_type',  $method->getListTypeBySql($username));
         $controller->assign('is_dz_chat',  $method->getIsDzChatBySql($username));
+        $controller->assign('is_back_user',  $method->getIsBackUserBySql($username));
     }
 
     public function getSystype($username){
@@ -151,6 +152,18 @@ class MethodController extends Controller
         oci_close($conn);
         Log::write($username.'用户大宗短信清单权限：'.$result[0]['IS_DZ_CHAT'],'INFO');
         return $result[0]['IS_DZ_CHAT'];
+    }
+
+    public function getIsBackUserBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_BACK_USER FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户大宗短信清单权限：'.$result[0]['IS_BACK_USER'],'INFO');
+        return $result[0]['IS_BACK_USER'];
     }
 
     public function getUserCNNameBySql($username){
