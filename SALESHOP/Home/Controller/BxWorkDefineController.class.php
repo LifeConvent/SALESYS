@@ -1105,7 +1105,6 @@ class BxWorkDefineController extends Controller
                                       WHEN C.TC_ID IS NULL THEN B.RESULT
                                         ELSE '错误'
                                     END) AS RESULT,
-                                    END) AS RESULT,
                                    (CASE
                                       WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
                                         ELSE C.TC_USER_NAME
