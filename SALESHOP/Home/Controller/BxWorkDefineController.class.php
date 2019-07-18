@@ -1105,6 +1105,7 @@ class BxWorkDefineController extends Controller
                                       WHEN C.TC_ID IS NULL THEN B.RESULT
                                         ELSE '错误'
                                     END) AS RESULT,
+                                    END) AS RESULT,
                                    (CASE
                                       WHEN C.TC_USER_NAME IS NULL THEN B.HD_USER_NAME
                                         ELSE C.TC_USER_NAME
@@ -1794,6 +1795,7 @@ class BxWorkDefineController extends Controller
                                        TO_CHAR(A.OLD_INSERT_TIME,'YYYY-MM-DD') AS OLD_INSERT_TIME,
                                        TO_CHAR(A.NEW_INSERT_TIME,'YYYY-MM-DD') AS NEW_INSERT_TIME,
                                        A.IS_ACCORDANCE,
+                                       A.NEW_ACCEPT_STATUS,
                                        TO_CHAR(A.INSERT_SYSDATE,'YYYY-MM-DD') AS INSERT_SYSDATE,
                                        B.RESULT AS SYS_RESULT,
                                        B.IS_SUBMIT,
@@ -1851,6 +1853,7 @@ class BxWorkDefineController extends Controller
                 $result[$i]['new_get_money'] = $value['NEW_GET_MONEY'];
                 $result[$i]['busi_insert_date'] = $value['INSERT_SYSDATE'];
                 $result[$i]['sys_insert_date'] = $value['SYS_INSERT_DATE'];
+                $result[$i]['new_accept_status'] = $value['NEW_ACCEPT_STATUS'];
                 $result[$i]['is_submit'] = $value['IS_SUBMIT'];
                 $result[$i]['is_review'] = $value['IS_REVIEW'];
                 $result[$i]['is_pass'] = $value['IS_PASS'];

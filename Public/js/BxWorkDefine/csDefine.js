@@ -237,7 +237,14 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '新核心金额',
                 width:120
-            }, {
+            },{
+                field: 'new_accept_status',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '新核心受理状态',
+                width:140
+            },{
                 field: 'is_accordance',
                 sortable: true,
                 align: 'center',
