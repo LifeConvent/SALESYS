@@ -1763,7 +1763,7 @@ class BxWorkDefineController extends Controller
             $where_type_fix = "";
         }else if((int)$userType==2){
 //            dump($organCode);
-            $where_type_fix =  " AND A.OLD_ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix =  " AND (A.OLD_ORGAN_CODE LIKE '".$organCode[$user_name]."%' OR A.OLD_POLICY_ORGAN_CODE  LIKE '".$organCode[$user_name]."%' ) ";
         }else if((int)$userType==3){
             $where_type_fix = " AND A.NEW_USER_NAME = '".$user_name."'";
         }
