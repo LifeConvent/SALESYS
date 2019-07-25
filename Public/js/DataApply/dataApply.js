@@ -292,7 +292,7 @@ function actionFormatter_review(value, row, index){
     if(is_reviewer == 0){
         return '无权限审核';
     }else if(row.IS_REVIEW_PASS == '1'){
-        return '已审核通过';
+        return '已审核完成';
     }else if(row.IS_REVIEW_PASS == '0'){
         return '<button type="button" class="btn btn-primary pass_right" style="height: 20pt;width: 80pt"><span style="margin-left:-5pt;">通过</span></button>' +
             '<button type="button" class="btn btn-danger no_pass" style="height: 20pt;width: 80pt;margin-left: 5pt"><span style="margin-left:5pt;">不通过</span></button>';
