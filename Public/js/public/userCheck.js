@@ -1,26 +1,5 @@
 $(function() {
     var user_day_post = $('#user_day_post').text();
-    if(user_day_post!='1'){
-        $('#day_post').hide();
-        $('#day_post_this').hide();
-        $('#day_post_nb_this').hide();
-        $('#day_post_uw_this').hide();
-        $('#day_post_cs_this').hide();
-        $('#day_post_clm_this').hide();
-        $('#day_post_two').hide();
-        $('#day_post_all').hide();
-        $('#day_post_sum').hide();
-    }else{
-        // $('#day_post').show();
-        // $('#day_post_this').show();
-        // $('#day_post_nb_this').show();
-        // $('#day_post_uw_this').show();
-        // $('#day_post_cs_this').show();
-        // $('#day_post_clm_this').show();
-        // $('#day_post_two').show();
-        // $('#day_post_all').show();
-        // $('#day_post_sum').show();
-    }
     var user_name = $('#user_name').text();
     var user_type = $('#user_type').text();
     if(user_name=='zhuxj_qd'||user_name=='quanli'||user_name=='cuizhan'||user_name=='zhouyang_qd'||user_name=='yuyi'||user_type=='1'){
@@ -55,10 +34,35 @@ $(function() {
     }
     if(user_type!='1'){
         $('#user_control').hide();
+        $('#data_control').hide();
         $('#post_day_this').hide();
         $('#post_day_all').hide();
     }
-    //清单类型权限控制
+
+    //日报权限控制
+    if(user_day_post!='1'){
+        $('#day_post').hide();
+        $('#day_post_this').hide();
+        $('#day_post_nb_this').hide();
+        $('#day_post_uw_this').hide();
+        $('#day_post_cs_this').hide();
+        $('#day_post_clm_this').hide();
+        $('#day_post_two').hide();
+        $('#day_post_all').hide();
+        $('#day_post_sum').hide();
+    }else{
+        // $('#day_post').show();
+        // $('#day_post_this').show();
+        // $('#day_post_nb_this').show();
+        // $('#day_post_uw_this').show();
+        // $('#day_post_cs_this').show();
+        // $('#day_post_clm_this').show();
+        // $('#day_post_two').show();
+        // $('#day_post_all').show();
+        // $('#day_post_sum').show();
+    }
+
+    //清单类型权限控制-清单数据导出、银代报表、新契约报表
     var list_type = $('#list_type').text();
     switch (list_type) {
         case '99'://管理员
@@ -176,6 +180,21 @@ $(function() {
             $('#list_nb').hide();
             $('#list_yd').hide();
             $('#cap_menu').hide();
+            break;
+    }
+
+    //待确认队列权限控制
+    var is_bx_define_user = $('#is_bx_define_user').text();
+    switch (is_bx_define_user) {
+        case '0'://无权限
+            //清单导出
+            $('#bx_define').hide();
+            break;
+        case '1'://有权限
+            $('#bx_define').show();
+            break;
+        default://全部隐藏
+            $('#bx_define').hide();
             break;
     }
 });

@@ -18,19 +18,8 @@ class RequestPostDataLoadController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $type =  $method->getUserTypeBySql($username);
-        $can =  $method->getCanDayPostBySql($username);
-        $exec_type = $this->getExecTypeStr($username);
         if ($result) {
-            $this->assign('usertype', $type);
-            $this->assign('user_type', $type);
-            $this->assign('username', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_name', $username);
-            $this->assign('exec_type', $exec_type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }

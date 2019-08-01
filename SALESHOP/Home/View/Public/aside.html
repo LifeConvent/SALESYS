@@ -120,7 +120,7 @@
             </li>
 
             <!--数据管理-->
-            <li class="sub-menu">
+            <li class="sub-menu" id="data_control">
                 <a href="javascript:;" id="course">
                     <i class="fa fa-cogs">
                     </i>
@@ -232,7 +232,7 @@
                     <i class="fa fa-cogs">
                     </i>
                     <span style="font-size: 14px;">
-                              新契约
+                              新契约报表
                             </span>
                     <span class="label btn-warning span-sidebar">
                               1
@@ -309,14 +309,14 @@
             </li>
 
             <!--待确认队列-->
-            <li class="sub-menu">
+            <li class="sub-menu" id="bx_define">
                 <a href="javascript:;" id="home">
                     <i class="fa fa-dashboard"></i>
                         <span style="font-size: 14px;">
                           待确认队列
                         </span>
                         <span class="label btn-danger span-sidebar">
-                            10
+                            9
                         </span>
                 </a>
                 <ul class="sub" id="data_ub">
@@ -325,11 +325,11 @@
                             保全柜面清单
                         </a>
                     </li>
-                    <li id="cs_out_define">
-                        <a href="{:U('Home/PersonDefineFinishWork/csOutDefine')}" style="font-size: 12px;">
-                            保全外围清单
-                        </a>
-                    </li>
+                    <!--<li id="cs_out_define">-->
+                        <!--<a href="{:U('Home/PersonDefineFinishWork/csOutDefine')}" style="font-size: 12px;">-->
+                            <!--保全外围清单-->
+                        <!--</a>-->
+                    <!--</li>-->
                     <li id="nb_tb_define">
                         <a href="{:U('Home/PersonDefineFinishWork/nbTbDefine')}" style="font-size: 12px;">
                             投保信息清单

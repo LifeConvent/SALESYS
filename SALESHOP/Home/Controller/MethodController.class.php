@@ -12,6 +12,28 @@ use Think\Log;
 
 class MethodController extends Controller
 {
+    public function assignPublic($username,$controller){
+        $method = new MethodController();
+        $type =  $method->getUserTypeBySql($username);
+        $can =  $method->getCanDayPostBySql($username);
+        $is_reviewer =  $method->getReviewer($username);
+        $controller->assign('username', $username);
+        $controller->assign('user_name', $username);
+        $controller->assign('username_chinese', $method->getUserCNNameBySql($username));
+        $controller->assign('is_delete_reviewer', $method->getIsDeleteReviewer($username));
+        $controller->assign('is_delete_apply', $method->getIsDeleteApply($username));
+        $controller->assign('is_sys_delete', $method->getIsSysDelete($username));
+        $controller->assign('is_work_delete', $method->getIsWorkDelete($username));
+        $controller->assign('user_type', $type);
+        $controller->assign('user_day_post', $can);
+        $controller->assign('is_reviewer', $is_reviewer);
+        $controller->assign('TITLE', TITLE);
+        $controller->assign('list_type',  $method->getListTypeBySql($username));
+        $controller->assign('is_dz_chat',  $method->getIsDzChatBySql($username));
+        $controller->assign('is_back_user',  $method->getIsBackUserBySql($username));
+        $controller->assign('is_bx_define_user',  $method->getIsBxDefineUserBySql($username));
+    }
+
     public function getSystype($username){
         $conn = $this->OracleOldDBCon();
         $select_des = "SELECT A.SYS_TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
@@ -120,6 +142,97 @@ class MethodController extends Controller
         oci_free_statement($result_rows);
         oci_close($conn);
         return $result[0]['USER_NAME'].'（'.$result[0]['USER_ORGAN_NAME'].'）';
+    }
+
+    public function getIsDeleteReviewer($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_DELETE_REVIEWER FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询姓名SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['IS_DELETE_REVIEWER'];
+    }
+
+    public function getIsDeleteApply($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_DELETE_APPLY FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询姓名SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['IS_DELETE_APPLY'];
+    }
+
+    public function getIsSysDelete($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_SYS_DELETE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询姓名SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['IS_SYS_DELETE'];
+    }
+
+    public function getIsWorkDelete($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_WORK_DELETE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询姓名SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['IS_WORK_DELETE'];
+    }
+
+    public function getReviewer($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_REVIEWER FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return (int)$result[0]['IS_REVIEWER'];
+    }
+
+    public function getIsDzChatBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_DZ_CHAT FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户大宗短信清单权限：'.$result[0]['IS_DZ_CHAT'],'INFO');
+        return $result[0]['IS_DZ_CHAT'];
+    }
+
+    public function getIsBackUserBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_BACK_USER FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户大宗短信清单权限：'.$result[0]['IS_BACK_USER'],'INFO');
+        return $result[0]['IS_BACK_USER'];
+    }
+
+    public function getIsBxDefineUserBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_BX_DEFINE_USER FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户并行核对清单权限：'.$result[0]['IS_BX_DEFINE_USER'],'INFO');
+        return $result[0]['IS_BX_DEFINE_USER'];
     }
 
     public function checkIn(&$admin)

@@ -18,16 +18,8 @@ class DayPostController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $type =  $method->getUserTypeBySql($username);
-        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -42,16 +34,8 @@ class DayPostController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $type =  $method->getUserTypeBySql($username);
-        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -66,16 +50,8 @@ class DayPostController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $type =  $method->getUserTypeBySql($username);
-        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -90,16 +66,8 @@ class DayPostController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $type =  $method->getUserTypeBySql($username);
-        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -114,16 +82,8 @@ class DayPostController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $type =  $method->getUserTypeBySql($username);
-        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -138,16 +98,8 @@ class DayPostController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $type =  $method->getUserTypeBySql($username);
-        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
@@ -162,16 +114,8 @@ class DayPostController extends Controller
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $type =  $method->getUserTypeBySql($username);
-        $can =  $method->getCanDayPostBySql($username);
         if ($result) {
-            $this->assign('username', $username);
-            $this->assign('user_name', $username);
-            $this->assign('username_chinese', $method->getUserCNNameBySql($username));
-            $this->assign('user_type', $type);
-            $this->assign('user_day_post', $can);
-            $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
+            $method->assignPublic($username,$this);
             if(!$method->getSystype($username)){
                 $this->redirect('Index/errorSys');
             }
