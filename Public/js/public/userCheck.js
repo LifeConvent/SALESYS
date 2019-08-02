@@ -188,13 +188,58 @@ $(function() {
     switch (is_bx_define_user) {
         case '0'://无权限
             //清单导出
-            $('#bx_define').hide();
+            if(user_type!='1'){
+                $('#bx_define').hide();
+            }else{
+                $('#bx_define').show();
+            }
             break;
         case '1'://有权限
             $('#bx_define').show();
             break;
         default://全部隐藏
             $('#bx_define').hide();
+            break;
+    }
+
+    //无显示列表权限控制
+    var no_show_list = $('#no_show_list').text();
+    switch (no_show_list) {
+        case '0'://无权限
+            //清单导出
+            if(user_type!='1'){
+                $('#data_export_no_show').hide();
+            }else{
+                $('#list_nb').show();
+                $('#data_export_no_show').show();
+            }
+            break;
+        case '1'://有权限
+            $('#list_nb').show();
+            $('#nb_post_table_stream').hide();
+            $('#data_export_no_show').show();
+            break;
+        default://全部隐藏
+            $('#data_export_no_show').hide();
+            break;
+    }
+
+    //缺陷权限控制
+    var bug_show = $('#bug_show').text();
+    switch (bug_show) {
+        case '0'://无权限
+            //清单导出
+            if(user_type!='1'){
+                $('#bug_list').hide();
+            }else{
+                $('#bug_list').show();
+            }
+            break;
+        case '1'://有权限
+            $('#bug_list').show();
+            break;
+        default://全部隐藏
+            $('#bug_list').hide();
             break;
     }
 });

@@ -32,6 +32,8 @@ class MethodController extends Controller
         $controller->assign('is_dz_chat',  $method->getIsDzChatBySql($username));
         $controller->assign('is_back_user',  $method->getIsBackUserBySql($username));
         $controller->assign('is_bx_define_user',  $method->getIsBxDefineUserBySql($username));
+        $controller->assign('no_show_list',  $method->getNoShowListBySql($username));
+        $controller->assign('bug_show',  $method->getBugShowBySql($username));
     }
 
     public function getSystype($username){
@@ -244,6 +246,30 @@ class MethodController extends Controller
         oci_close($conn);
         Log::write($username.'用户并行核对清单权限：'.$result[0]['IS_BX_DEFINE_USER'],'INFO');
         return $result[0]['IS_BX_DEFINE_USER'];
+    }
+
+    public function getNoShowListBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.NO_SHOW_LIST FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户无显示列表清单权限：'.$result[0]['NO_SHOW_LIST'],'INFO');
+        return $result[0]['NO_SHOW_LIST'];
+    }
+
+    public function getBugShowBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.BUG_SHOW FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户缺陷列表清单权限：'.$result[0]['BUG_SHOW'],'INFO');
+        return $result[0]['BUG_SHOW'];
     }
 
     public function checkIn(&$admin)
