@@ -719,27 +719,31 @@ class DataOutController extends Controller
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         //导出Excel
+        if (!empty($queryDateStart)&&!empty($queryDateEnd)) {
+            $where_time_bqsl = " AND BUSI_APPLY_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd')";
+        } else {
+            $where_time_bqsl = "";
+        }
         $xlsName = "新契约预收清单";
         $xlsTitle = "新契约预收清单";
         $xlsCell = array( //设置字段名和列名的映射
-            array('policy_code', '保单号'),
-            array('product_code', '险种代码'),
-            array('apply_code', '投保单号'),
-            array('status_desc', '投保单状态'),
-            array('winning_start_flag', '是否预承保'),
-            array('agent_code', '业务员号码'),
-            array('agent_name', '业务员姓名'),
-            array('total_prem_af', '规模保费'),
-            array('fyc', 'FYC'),
-            array('status_name', '收付状态'),
-            array('charge_year', '缴费年期'),
-            array('validate_date', '险种生效日'),
-            array('amount', '保额'),
-            array('master_busi_item_id', '主附险标记'),
-            array('busi_apply_date', '预收日期'),
-            array('due_time', '实际预收日期'),
-            array('apply_date', '保单投保日'),
-            array('issue_date', '承保日期')
+            array('APPLY_CODE', '投保单号'),
+            array('POLICY_CODE', '保单号'),
+            array('BUSI_APPLY_DATE', '预收日期'),
+            array('ORGAN_CODE_ZZ', '中支代码'),
+            array('ORGAN_CODE', '营销服务部机构代码'),
+            array('BRANCH_ATTR', '营业组代码'),
+            array('AGENT_CODE', '业务员代码'),
+            array('AGENT_NAME', '姓名'),
+            array('AGENT_GRADE', '级别'),
+            array('EMPLOYMENT_DATE', '入司时间'),
+            array('SALES_CHANNEL_NAME', '销售渠道'),
+            array('PRODUCT_CODE_SYS', '险种代码'),
+            array('PRODUCT_NAME_SYS', '险种名称'),
+            array('POLICY_JS', '保单件数'),
+            array('CHARGE_YEAR', '缴费年期'),
+            array('TOTAL_PREM_AF', '规模保费'),
+            array('FYC', 'FYC')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -754,55 +758,53 @@ class DataOutController extends Controller
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
-        $select_bqsl = "SELECT POLICY_CODE,
-                               PRODUCT_CODE,
-                               APPLY_CODE,
-                               STATUS_DESC,
-                               WINNING_START_FLAG,--是否预承保
-                               AGENT_CODE,
-                               AGENT_NAME,
-                               TOTAL_PREM_AF,
-                               FYC,
-                               STATUS_NAME,
-                               --CHANNEL_TYPE, 
-                               --PREM_FREQ,
-                               CHARGE_YEAR,
-                               TO_CHAR(VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,       
-                               AMOUNT,
-                               MASTER_BUSI_ITEM_ID,
-                               TO_CHAR(BUSI_APPLY_DATE,'YYYY-MM-DD') AS BUSI_APPLY_DATE,
-                               TO_CHAR(DUE_TIME,'YYYY-MM-DD') AS DUE_TIME,
-                               TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
-                               TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE
-                          FROM TMP_QDSX_NB_QD_YS
-                          WHERE 1=1 ".$where_type_fix;
+        $select_bqsl = "SELECT APPLY_CODE,--投保单号,
+                                   POLICY_CODE,--保单号,
+                                   TO_CHAR(BUSI_APPLY_DATE,'YYYY-MM-DD') AS BUSI_APPLY_DATE,--预收日期,
+                                   ORGAN_CODE_ZZ,--中支代码,
+                                   ORGAN_CODE,--营销服务部机构代码,
+                                   BRANCH_ATTR,--营业组代码,
+                                   AGENT_CODE,--业务员代码,
+                                   AGENT_NAME,--姓名,
+                                   AGENT_GRADE,--级别,
+                                   TO_CHAR(EMPLOYMENT_DATE,'YYYY-MM-DD') AS EMPLOYMENT_DATE,--入司时间,
+                                   SALES_CHANNEL_NAME,--销售渠道,
+                                   PRODUCT_CODE_SYS,--险种代码,
+                                   PRODUCT_NAME_SYS,--险种名称,
+                                   POLICY_JS,--保单件数,
+                                   CHARGE_YEAR,--缴费年期,
+                                   TOTAL_PREM_AF,--规模保费,
+                                   FYC
+                          FROM TMP_SX_YS_JX
+                          WHERE 1=1 ".$where_type_fix.$where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         Log::write($user_name.' 预收清单 数据库查询条件：'.$select_bqsl,'INFO');
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
-            $result[$i]['policy_code'] = $value['POLICY_CODE'];
-            $result[$i]['product_code'] = $value['PRODUCT_CODE'];
-            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
-            $result[$i]['status_desc'] = $value['STATUS_DESC'];
-            $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
-            $result[$i]['agent_code'] = $value['AGENT_CODE'];
-            $result[$i]['agent_name'] = $value['AGENT_NAME'];
-            $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
-            $result[$i]['fyc'] = $value['FYC'];
-            $result[$i]['status_name'] = $value['STATUS_NAME'];
-            $result[$i]['charge_year'] = $value['CHARGE_YEAR'];
-            $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
-            $result[$i]['amount'] = $value['AMOUNT'];
-            $result[$i]['master_busi_item_id'] = $value['MASTER_BUSI_ITEM_ID'];
-            $result[$i]['busi_apply_date'] = $value['BUSI_APPLY_DATE'];
-            $result[$i]['due_time'] = $value['DUE_TIME'];
-            $result[$i]['apply_date'] = $value['APPLY_DATE'];
-            $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+            $res[] = $value;
+            $res[$i]['APPLY_CODE'] = "'".$value['APPLY_CODE'];
+            $res[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
+//            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+//            $result[$i]['status_desc'] = $value['STATUS_DESC'];
+//            $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
+//            $result[$i]['agent_code'] = $value['AGENT_CODE'];
+//            $result[$i]['agent_name'] = $value['AGENT_NAME'];
+//            $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
+//            $result[$i]['fyc'] = $value['FYC'];
+//            $result[$i]['status_name'] = $value['STATUS_NAME'];
+//            $result[$i]['charge_year'] = $value['CHARGE_YEAR'];
+//            $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
+//            $result[$i]['amount'] = $value['AMOUNT'];
+//            $result[$i]['master_busi_item_id'] = $value['MASTER_BUSI_ITEM_ID'];
+//            $result[$i]['busi_apply_date'] = $value['BUSI_APPLY_DATE'];
+//            $result[$i]['due_time'] = $value['DUE_TIME'];
+//            $result[$i]['apply_date'] = $value['APPLY_DATE'];
+//            $result[$i]['issue_date'] = $value['ISSUE_DATE'];
         }
-        for ($i = 0; $i < sizeof($result); $i++) {
-            $res[] = $result[$i];
-        }
+//        for ($i = 0; $i < sizeof($result); $i++) {
+//            $res[] = $result[$i];
+//        }
         $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
