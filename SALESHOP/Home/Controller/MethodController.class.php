@@ -133,6 +133,17 @@ class MethodController extends Controller
         }
     }
 
+    public function getSxDaypostOrgan($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SX_DAYPOST_ORGAN FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询姓名SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['SX_DAYPOST_ORGAN'];
+    }
+
     public function getUserCNNameBySql($username){
         $conn = $this->OracleOldDBCon();
         $select_des = "SELECT A.USER_NAME,A.USER_ORGAN_NAME FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
@@ -407,12 +418,40 @@ class MethodController extends Controller
         return '2018-07-26';
     }
 
-    public function getDictArry(){
+    public function getDictArryQd(){
         $org = array("本部","李沧","平度","胶南","即墨","胶州","城阳","莱西","开发区","市南","小计","分公司","作业中心","合计");
         return $org;
     }
 
-    public function getDictIndex(){
+    public function getDictArry($OrganCode){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.ORGAN_NAME FROM ORGAN_CODE_NAME A WHERE DAY_POST_CODE LIKE '".$OrganCode."%' ORDER BY SHOW_LIST";
+        Log::write('日报机构查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i]['ORGAN_NAME'];
+        }
+        return $res;
+    }
+
+    public function getDictIndex($OrganCode){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.ORGAN_NAME,A.SHOW_LIST FROM ORGAN_CODE_NAME A WHERE DAY_POST_CODE LIKE '".$OrganCode."%' ORDER BY SHOW_LIST";
+        Log::write('日报机构查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[$result[$i]['ORGAN_NAME']] = $result[$i]['SHOW_LIST'];
+        }
+        return $res;
+    }
+
+    public function getDictIndexQd(){
         $org = array("本部" => 0,"李沧" => 1,"平度" => 2,"胶南" => 3,"即墨" => 4,"胶州" => 5,"城阳" => 6,
             "莱西" => 7,"开发区" => 8,"市南" => 9,"小计" => 10,"分公司" => 11,"作业中心" => 12,"合计" => 13);
         return $org;

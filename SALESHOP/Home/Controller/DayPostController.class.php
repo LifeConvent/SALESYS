@@ -216,13 +216,19 @@ class DayPostController extends Controller
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $organCode = $method->getUserOrganCode();
+        $day_post_organ = $method->getSxDaypostOrgan($user_name);
         if (!empty($queryDateStart)) {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%') AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
         } else {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%')  AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
-        $dictIndex = $method->getDictIndex();
-        $DictArry = $method->getDictArry();
+        $dictIndex = $method->getDictIndex($day_post_organ);
+        $DictArry = $method->getDictArry($day_post_organ);
+//        dump($dictIndex);
+//        dump($DictArry);
         for ($i = 0; $i < sizeof($DictArry); $i++) {
             $result[] = array("org" => $DictArry[$i],"bxht_sum" => 0,"bxht_bug_sum" => 0,"bxht_rate" => 0,
                 "cbdx_sum" => 0,"cbdx_bug_sum" => 0,"cbdx_rate" => 0,
@@ -277,6 +283,7 @@ class DayPostController extends Controller
                              WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','8600') ".$where_time_bqsl."
                             GROUP BY SYS_INSERT_DATE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        Log::write($user_name.' 契约日报数据库查询条件：'.$select_bqsl,'INFO');
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
@@ -302,6 +309,7 @@ class DayPostController extends Controller
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
+//        dump($res);
         if ($res) {
             exit(json_encode($res));
         } else {
@@ -313,13 +321,17 @@ class DayPostController extends Controller
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $organCode = $method->getUserOrganCode();
+        $day_post_organ = $method->getSxDaypostOrgan($user_name);
         if (!empty($queryDateStart)) {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%') AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
         } else {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%')  AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
-        $dictIndex = $method->getDictIndex();
-        $DictArry = $method->getDictArry();
+        $dictIndex = $method->getDictIndex($day_post_organ);
+        $DictArry = $method->getDictArry($day_post_organ);
         for ($i = 0; $i < sizeof($DictArry); $i++) {
             $result[] = array("org" => $DictArry[$i],"lpsh_sum" => 0,"lpsh_bug_sum" => 0,"lpsh_rate" => 0,
                 "lpzh_sum" => 0,"lpzh_bug_sum" => 0,"lpzh_rate" => 0,
@@ -392,13 +404,17 @@ class DayPostController extends Controller
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $organCode = $method->getUserOrganCode();
+        $day_post_organ = $method->getSxDaypostOrgan($user_name);
         if (!empty($queryDateStart)) {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%') AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
         } else {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%')  AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
-        $dictIndex = $method->getDictIndex();
-        $DictArry = $method->getDictArry();
+        $dictIndex = $method->getDictIndex($day_post_organ);
+        $DictArry = $method->getDictArry($day_post_organ);
         for ($i = 0; $i < sizeof($DictArry); $i++) {
             $result[] = array("org" => $DictArry[$i],"slfh_gm_sum" => 0,"slfh_gm_bug_sum" => 0,"slfh_gm_rate" => 0,
                 "slfh_ww_sum" => 0,"slfh_ww_bug_sum" => 0,"slfh_ww_rate" => 0,
@@ -473,13 +489,17 @@ class DayPostController extends Controller
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $organCode = $method->getUserOrganCode();
+        $day_post_organ = $method->getSxDaypostOrgan($user_name);
         if (!empty($queryDateStart)) {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%') AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
         } else {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%')  AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
-        $dictIndex = $method->getDictIndex();
-        $DictArry = $method->getDictArry();
+        $dictIndex = $method->getDictIndex($day_post_organ);
+        $DictArry = $method->getDictArry($day_post_organ);
         for ($i = 0; $i < sizeof($DictArry); $i++) {
             $result[] = array("org" => $DictArry[$i],"qyhb_sum" => 0,"qyhb_bug_sum" => 0,"qyhb_rate" => 0,
                 "bqhb_sum" => 0,"bqhb_bug_sum" => 0,"bqhb_rate" => 0,
@@ -571,13 +591,17 @@ class DayPostController extends Controller
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $organCode = $method->getUserOrganCode();
+        $day_post_organ = $method->getSxDaypostOrgan($user_name);
         if (!empty($queryDateStart)) {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%') AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
         } else {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%')  AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
-        $dictIndex = $method->getDictIndex();
-        $DictArry = $method->getDictArry();
+        $dictIndex = $method->getDictIndex($day_post_organ);
+        $DictArry = $method->getDictArry($day_post_organ);
         for ($i = 0; $i < sizeof($DictArry); $i++) {
             $result[] = array("org" => $DictArry[$i],"nb_sum" => 0,"nb_bug_sum" => 0,"nb_solved_sum" => 0,"nb_rate" => 0,
                 "uw_sum" => 0,"uw_bug_sum" => 0,"uw_solved_sum" => 0,"uw_rate" => 0,
