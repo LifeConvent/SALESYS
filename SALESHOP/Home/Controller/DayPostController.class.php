@@ -149,18 +149,32 @@ class DayPostController extends Controller
         }
         Log::write("BUG查询条件 ：".$where."<br> ");
         Log::write("TC数据更新开始 ：".date("h:i:sa")."<br> ");
+//        $queryTc = "select  cfvt.value3 as sys,
+//                                COUNT(bt.bug_new_id) as bug_sum,
+//                                count(case  when bt.`status` in ('8','11','42') then 1 else null end) as bug_close_sum,
+//                                count(case  when bt.`status` not in ('8','11','42') then 1 else null end) as bug_no_close_sum,
+//                                count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." then 1 else null end) as bug_this_sum,
+//                                count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and bt.`status` in ('8','11','42') then 1 else null end) as bug_this_close_sum
+//                from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp
+//                where ut.id = bt.reporter_id
+//                    and bt.id = cfvt.bug_id
+//                    and tp.plname = 'bug_table_status'
+//                    and tp.tx_value = bt.status ".$where."
+//                GROUP BY cfvt.value3";
         $queryTc = "select  cfvt.value3 as sys,
-                                COUNT(bt.bug_new_id) as bug_sum,
-                                count(case  when bt.`status` in ('8','11','42') then 1 else null end) as bug_close_sum,
-                                count(case  when bt.`status` not in ('8','11','42') then 1 else null end) as bug_no_close_sum,
-                                count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." then 1 else null end) as bug_this_sum,
-                                count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and bt.`status` in ('8','11','42') then 1 else null end) as bug_this_close_sum
-                from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
-                where ut.id = bt.reporter_id 
-                    and bt.id = cfvt.bug_id 
-                    and tp.plname = 'bug_table_status' 
-                    and tp.tx_value = bt.status ".$where."
-                GROUP BY cfvt.value3";
+                                    SUM(case when cfvt.value2 = '江西上线生产问题' then 1 else 0 end) AS BUG_SUM,
+                                    count(case  when bt.`status` in ('8','11','42') and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_close_sum,
+                                    count(case  when bt.`status` not in ('8','11','42') and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_no_close_sum,
+                                    count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_this_sum,
+                                    count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and bt.`status` in ('8','11','42') and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_this_close_sum
+                    from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
+                    where ut.id = bt.reporter_id 
+                        and bt.id = cfvt.bug_id 
+                        and tp.plname = 'bug_table_status' 
+                        #and cfvt.value2 = '江西上线生产问题'
+                        #and cfvt.value2 = '青岛上线生产问题'
+                        and tp.tx_value = bt.status ".$where."
+                    GROUP BY cfvt.value3";
         Log::write("BUG查询SQL ：".$queryTc."<br> ");
         //查询TC数据
         $method = new MethodController();

@@ -2216,10 +2216,25 @@ class MethodController extends Controller
 //        }
         //重加载TC数据
 //        $tc_fix = $this->getTcFix();
-        $queryTc = "select bt.bug_new_id as tc_id,ut.username as tc_user_name,cfvt.value18 AS business_code,bt.date_submitted as create_date,cfvt.value21 as description,bt.status as status,tp.tx_desc as status_desc,cfvt.value17 as find_node,cfvt.value16 as local,bt.severity,cfvt.value3 as sys
-                    from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
-                    where ut.id = bt.reporter_id and bt.id = cfvt.bug_id 
-										and tp.plname = 'bug_table_status' and tp.tx_value = bt.status";
+        $queryTc = "select bt.bug_new_id as tc_id,
+                                    ut.username as tc_user_name,
+                                    cfvt.value18 AS business_code,
+                                    bt.date_submitted as create_date,
+                                    cfvt.value21 as description,
+                                    bt.status as status,
+                                    tp.tx_desc as status_desc,
+                                    cfvt.value17 as find_node,
+                                    cfvt.value16 as local,
+                                    bt.severity,cfvt.value3 as sys
+                     from bug_table bt,
+                                custom_field_value_table cfvt,
+                                `user_table` ut,tx_pklistmemo tp   
+                            where ut.id = bt.reporter_id 
+                                    and bt.id = cfvt.bug_id 
+                                    and tp.plname = 'bug_table_status' 
+                                    and tp.tx_value = bt.status
+                                    and cfvt.value2 = '江西上线生产问题'
+                                    #and cfvt.value2 = '青岛上线生产问题'";
         //查询TC数据
         $tc_cursor = M();
         $res = $tc_cursor->query($queryTc);
@@ -2260,7 +2275,7 @@ class MethodController extends Controller
             $PONDERANCE = $value['PONDERANCE'];
             $STATUS_DESC = $value['STATUS_DESC'];
             $SYS = $value['SYS'];
-            $query_insert = "INSERT INTO TMP_QDSX_TC_BUG(TC_ID,CREATE_DATE,TC_USER_NAME,BUSINESS_CODE,DESCRIPTION,STATUS,FIND_NODE,LOCAL,PONDERANCE,STATUS_DESC,SYS) VALUES('".$TC_ID."',to_date('".$CREATE_DATE."','YYYY/MM/DD hh24:mi:ss'),'".$TC_USER_NAME."','".$BUSINESS_CODE."','".$DESCRIPTION."','".$STATUS."','".$FIND_NODE."','".$LOCAL."','".$PONDERANCE."','".$STATUS_DESC."','".$SYS."')";
+            $query_insert = "INSERT INTO TMP_SX_TC_BUG(TC_ID,CREATE_DATE,TC_USER_NAME,BUSINESS_CODE,DESCRIPTION,STATUS,FIND_NODE,LOCAL,PONDERANCE,STATUS_DESC,SYS) VALUES('".$TC_ID."',to_date('".$CREATE_DATE."','YYYY/MM/DD hh24:mi:ss'),'".$TC_USER_NAME."','".$BUSINESS_CODE."','".$DESCRIPTION."','".$STATUS."','".$FIND_NODE."','".$LOCAL."','".$PONDERANCE."','".$STATUS_DESC."','".$SYS."')";
 //          echo $query_insert;
             $statement = oci_parse($conn,$query_insert);
             echo $TC_ID."单条插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." - ";

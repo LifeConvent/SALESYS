@@ -7,6 +7,7 @@
  */
 
 namespace Home\Controller;
+
 use Think\Controller;
 use Think\Log;
 
@@ -14,12 +15,13 @@ use Think\Log;
 class PersonDefineFinishWorkController extends Controller
 {
 
-    public function capDefineCs(){
+    public function capDefineCs()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $type =  $method->getUserTypeBySql($username);
-        $can =  $method->getCanDayPostBySql($username);
+        $type = $method->getUserTypeBySql($username);
+        $can = $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
             $this->assign('user_name', $username);
@@ -27,8 +29,8 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
-            if(!$method->getSystype($username)){
+            $this->assign('list_type', $method->getListTypeBySql($username));
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -37,12 +39,13 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function capDefineNb(){
+    public function capDefineNb()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $type =  $method->getUserTypeBySql($username);
-        $can =  $method->getCanDayPostBySql($username);
+        $type = $method->getUserTypeBySql($username);
+        $can = $method->getCanDayPostBySql($username);
         if ($result) {
             $this->assign('username', $username);
             $this->assign('user_name', $username);
@@ -50,8 +53,8 @@ class PersonDefineFinishWorkController extends Controller
             $this->assign('user_type', $type);
             $this->assign('user_day_post', $can);
             $this->assign('TITLE', TITLE);
-            $this->assign('list_type',  $method->getListTypeBySql($username));
-            if(!$method->getSystype($username)){
+            $this->assign('list_type', $method->getListTypeBySql($username));
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -61,13 +64,14 @@ class PersonDefineFinishWorkController extends Controller
     }
 
 
-    public function capDefineClm(){
+    public function capDefineClm()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -76,13 +80,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function capDefinePa(){
+    public function capDefinePa()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -91,13 +96,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function perDefine(){
+    public function perDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -106,13 +112,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function csDefine(){
+    public function csDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -121,13 +128,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function csOutDefine(){
+    public function csOutDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -136,13 +144,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function nbTbDefine(){
+    public function nbTbDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -151,13 +160,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function nbBdDefine(){
+    public function nbBdDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -166,13 +176,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function nbNoticeDefine(){
+    public function nbNoticeDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -181,13 +192,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function nbCbywDefine(){
+    public function nbCbywDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -196,13 +208,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function clmDefine(){
+    public function clmDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -211,13 +224,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function clmChatDefine(){
+    public function clmChatDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -226,13 +240,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function nbChatDefine(){
+    public function nbChatDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -241,13 +256,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function csChatDefine(){
+    public function csChatDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -256,13 +272,14 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function uwDefine(){
+    public function uwDefine()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -271,7 +288,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function updateDefPerson(){
+    public function updateDefPerson()
+    {
         header('Content-type: text/html; charset=utf-8');
         $new_user_name = $_POST['new_user_name'];
         $business_code = $_POST['business_code'];
@@ -279,7 +297,7 @@ class PersonDefineFinishWorkController extends Controller
         $description = $_POST['description'];
         $link_business = $_POST['link_business'];
         $business_type = $_POST['business_type'];
-        if(empty($policy_code)||strcmp($policy_code,"-")==0){
+        if (empty($policy_code) || strcmp($policy_code, "-") == 0) {
             $policy_code = $business_code;
         }
 //        $new_user_name = I('post.new_user_name');
@@ -290,12 +308,12 @@ class PersonDefineFinishWorkController extends Controller
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheckNoParam()==1){
+        if ($method->publicCheckNoParam() == 1) {
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
-        }else if($method->publicCheckNoParam()==2){
+        } else if ($method->publicCheckNoParam() == 2) {
             $result['status'] = "failed";
             $result['lock'] = "false";
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
@@ -303,39 +321,39 @@ class PersonDefineFinishWorkController extends Controller
         }
         ############################################################################################################################################################
         $conn = $method->OracleOldDBCon();
-        $select_des = "SELECT DESCRIPTION,LINK_BUSINESS_CODE FROM TMP_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."' AND NODE = '".$business_type."'";
+        $select_des = "SELECT DESCRIPTION,LINK_BUSINESS_CODE FROM TMP_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '" . $business_code . "' AND POLICY_CODE = '" . $policy_code . "' AND NODE = '" . $business_type . "'";
 //        $select_des = "SELECT DESCRIPTION,LINK_BUSINESS_CODE FROM TMP_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '6120180830053347' AND POLICY_CODE = '886570816406' AND NODE = '保全受理'";
         $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
         $des_result = $method->search_long($result_rows);
 //        dump($des_result);
-        if(!empty($des_result[0]['DESCRIPTION'])){
-            if(strcmp($des_result[0]['DESCRIPTION'],$description)==0&&(strcmp($des_result[0]['LINK_BUSINESS_CODE'],$link_business)==0||empty($des_result[0]['LINK_BUSINESS_CODE']))){
+        if (!empty($des_result[0]['DESCRIPTION'])) {
+            if (strcmp($des_result[0]['DESCRIPTION'], $description) == 0 && (strcmp($des_result[0]['LINK_BUSINESS_CODE'], $link_business) == 0 || empty($des_result[0]['LINK_BUSINESS_CODE']))) {
                 $result['status'] = "failed";
-                $result['message'] = "关键业务号：".$business_code." 下内容未发生修改时请勿提交！";
-            }else{
+                $result['message'] = "关键业务号：" . $business_code . " 下内容未发生修改时请勿提交！";
+            } else {
                 //更新
-                $update_sql = "UPDATE TMP_DAYPOST_DESCRIPTION SET DESCRIPTION = '".$description."',LINK_BUSINESS_CODE ='".$link_business."' WHERE USER_NAME = '".$new_user_name."' AND BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."' AND NODE = '".$business_type."'";
+                $update_sql = "UPDATE TMP_DAYPOST_DESCRIPTION SET DESCRIPTION = '" . $description . "',LINK_BUSINESS_CODE ='" . $link_business . "' WHERE USER_NAME = '" . $new_user_name . "' AND BUSINESS_CODE = '" . $business_code . "' AND POLICY_CODE = '" . $policy_code . "' AND NODE = '" . $business_type . "'";
                 $result_rows = oci_parse($conn, $update_sql); // 配置SQL语句，执行SQL
-                if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+                if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
                     $result['status'] = "success";
-                    $result['message'] = "关键业务号：".$business_code." 更新成功！";
-                }else{
+                    $result['message'] = "关键业务号：" . $business_code . " 更新成功！";
+                } else {
                     $result['status'] = "failed";
                     $e = oci_error();
-                    $result['message'] = "更新失败".$e['message'];
+                    $result['message'] = "更新失败" . $e['message'];
                 }
             }
-        }else{
+        } else {
             //插入数据
-            $insert_sql = "INSERT INTO TMP_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,USER_NAME,DESCRIPTION,LINK_BUSINESS_CODE,NODE) VALUES('".$business_code."','".$policy_code."','".$new_user_name."','".$description."','".$link_business."','".$business_type."')";
+            $insert_sql = "INSERT INTO TMP_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,USER_NAME,DESCRIPTION,LINK_BUSINESS_CODE,NODE) VALUES('" . $business_code . "','" . $policy_code . "','" . $new_user_name . "','" . $description . "','" . $link_business . "','" . $business_type . "')";
             $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
-            if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
                 $result['status'] = "success";
-                $result['message'] = "关键业务号：".$business_code." 添加成功！";
-            }else{
+                $result['message'] = "关键业务号：" . $business_code . " 添加成功！";
+            } else {
                 $result['status'] = "failed";
                 $e = oci_error();
-                $result['message'] = $insert_sql."插入失败".$e['message'];
+                $result['message'] = $insert_sql . "插入失败" . $e['message'];
             }
         }
         oci_free_statement($result_rows);
@@ -388,22 +406,22 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-       }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND OLD_ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-       }else if((int)$userType==3){
-            $where_type_fix = " AND NEW_USER_NAME = '".$user_name."'";
-       }
-       if(in_array($user_name,$otherUser)){
-           $where_type_fix =  " AND OLD_ORGAN_CODE NOT LIKE '8647%'";
-       }
+            $where_type_fix = " AND OLD_ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND NEW_USER_NAME = '" . $user_name . "'";
+        }
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND OLD_ORGAN_CODE NOT LIKE '8647%'";
+        }
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT B.DESCRIPTION,B.LINK_BUSINESS_CODE,TC_ID,TRIM(OLD_ORGAN_CODE) AS OLD_ORGAN_CODE,NEW_USER_NAME,TRIM(OLD_ACCEPT_CODE) AS OLD_ACCEPT_CODE,NEW_ACCEPT_CODE,TRIM(OLD_POLICY_CODE) AS OLD_POLICY_CODE,OLD_SERVICE_CODE,NEW_SERVICE_CODE,IS_ACCORDANCE,OLD_GET_MONEY,NEW_GET_MONEY 
                         FROM TMP_NCS_QD_BX_BQSL_BD A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_ACCEPT_CODE = B.BUSINESS_CODE AND TRIM(A.OLD_POLICY_CODE) = B.POLICY_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) AND B.NODE = '保全受理'  WHERE " . $where_old_time_bqsl . $where_type_fix;
@@ -412,9 +430,9 @@ class PersonDefineFinishWorkController extends Controller
             for ($i = $num; $i < sizeof($bqsl_result_old_time); $i++) {
                 $value = $bqsl_result_old_time[$i];
                 $result[$i]['business_type'] = "保全受理";
-                if(in_array($user_name,$otherUser)){
+                if (in_array($user_name, $otherUser)) {
                     $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
-                }else{
+                } else {
                     $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
                 }
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
@@ -450,25 +468,25 @@ class PersonDefineFinishWorkController extends Controller
         #######################################################################################################################################
 
         ################################################################   保全复核   #######################################################################
-        if(in_array($user_name,$fuhe_user)||(int)$userType==1){
+        if (in_array($user_name, $fuhe_user) || (int)$userType == 1) {
             $where_type_fix = "";
             #034 个人待确认保全复核查询
             $select_bqfh = "SELECT B.DESCRIPTION,B.LINK_BUSINESS_CODE,TC_ID,TRIM(OLD_ORGAN_CODE) AS OLD_ORGAN_CODE,NEW_USER_NAME,TRIM(OLD_ACCEPT_CODE) AS OLD_ACCEPT_CODE,NEW_ACCEPT_CODE,TRIM(OLD_POLICY_CODE) AS OLD_POLICY_CODE,OLD_SERVICE_CODE,NEW_SERVICE_CODE,IS_ACCORDANCE,OLD_ACCEPT_STATUS,NEW_ACCEPT_STATUS 
-                            FROM TMP_NCS_QD_BX_BQFH_BD A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_ACCEPT_CODE = B.BUSINESS_CODE AND TRIM(A.OLD_POLICY_CODE) = B.POLICY_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) AND B.NODE = '保全复核' WHERE ".$where_old_time_bqsl.$where_type_fix;
+                            FROM TMP_NCS_QD_BX_BQFH_BD A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_ACCEPT_CODE = B.BUSINESS_CODE AND TRIM(A.OLD_POLICY_CODE) = B.POLICY_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) AND B.NODE = '保全复核' WHERE " . $where_old_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqfh); // 配置SQL语句，执行SQL
             $bqfh_result_old_time = $method->search_long($result_rows);
-            $sum_all = sizeof($bqfh_result_old_time)+ $num;
-            for($i=$num,$j=0;$i<$sum_all;$i++){
+            $sum_all = sizeof($bqfh_result_old_time) + $num;
+            for ($i = $num, $j = 0; $i < $sum_all; $i++) {
                 $value = $bqfh_result_old_time[$j++];
                 $result[$i]['business_type'] = "保全复核";
-                if(in_array($value['NEW_USER_NAME'],$fuhe_user)){
+                if (in_array($value['NEW_USER_NAME'], $fuhe_user)) {
                     $result[$i]['organ_code'] = "分公司保全室";
-                }else if(!empty($value['NEW_USER_NAME'])){
+                } else if (!empty($value['NEW_USER_NAME'])) {
                     $result[$i]['organ_code'] = "总公司作业中心";
-                }else{
+                } else {
                     $result[$i]['organ_code'] = "分公司保全室";
                 }
-                if(in_array($user_name,$otherUser)){
+                if (in_array($user_name, $otherUser)) {
                     $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
                 }
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
@@ -482,14 +500,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['other2'] = $value['NEW_SERVICE_CODE'];
                 $result[$i]['other3'] = $value['NEW_ACCEPT_CODE'];
                 $result[$i]['other4'] = "-";
-                if(empty($value[DESCRIPTION])){
+                if (empty($value[DESCRIPTION])) {
                     $result[$i]['description'] = "无";
-                }else{
+                } else {
                     $result[$i]['description'] = $value['DESCRIPTION'];
                 }
-                if(empty($value[LINK_BUSINESS_CODE])){
+                if (empty($value[LINK_BUSINESS_CODE])) {
                     $result[$i]['link_business'] = "无";
-                }else{
+                } else {
                     $result[$i]['link_business'] = $value['LINK_BUSINESS_CODE'];
                 }
             }
@@ -499,66 +517,66 @@ class PersonDefineFinishWorkController extends Controller
 
         ################################################################   契约   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
-                #035 个人待确认契约查询
-                $select_qycd = "SELECT B.DESCRIPTION,B.LINK_BUSINESS_CODE,TC_ID,TRIM(OLD_ORGAN_CODE) AS OLD_ORGAN_CODE,NEW_USER_NAME,TRIM(OLD_APPLE_CODE) AS OLD_APPLE_CODE,NEW_APPLE_CODE,IS_ACCORDANCE,A.NODE,OLD_PREM,OLD_AMNT,NEW_PREM,NEW_AMNT
-                                FROM TMP_BX_OLD_CDQCB A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_APPLE_CODE = B.BUSINESS_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) AND A.NODE = B.NODE WHERE ".$where_old_time_bqsl.$where_type_fix;
-                $result_rows = oci_parse($conn, $select_qycd); // 配置SQL语句，执行SQL
-                $qycd_result_old_time = $method->search_long($result_rows);
-                $sum_all = sizeof($qycd_result_old_time)+ $num;
-                for($i=$num,$j=0;$i<$sum_all;$i++){
-                    $value = $qycd_result_old_time[$j++];
-                    $result[$i]['business_type'] = $value['NODE'];
-                    if(in_array($user_name,$otherUser)){
-                        $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
-                    }else{
-                        $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
-                    }
-                    $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
-                    $result[$i]['business_code'] = $value['OLD_APPLE_CODE'];
-                    $result[$i]['policy_code'] = $value['NEW_APPLE_CODE'];
-                    $result[$i]['old_money'] = $value['OLD_PREM'];
-                    $result[$i]['new_money'] = $value['NEW_PREM'];
-                    $result[$i]['tc_id'] = $value['TC_ID'];
-                    $result[$i]['other1'] = $value['OLD_AMNT'];
-                    $result[$i]['other2'] = $value['NEW_AMNT'];
-                    $result[$i]['other3'] = $value['NEW_ACCEPT_CODE'];
-                    $result[$i]['other4'] = "-";
-                    if(abs((int)$value['OLD_PREM']-(int)$value['NEW_PREM'])<=0.01&&strcmp($value['IS_ACCORDANCE'],"是")){
-                        $result[$i]['is_same'] = "是";
-                    }else{
-                        $result[$i]['is_same'] = "否";
-                    }
-                    if(empty($value[DESCRIPTION])){
-                        $result[$i]['description'] = "无";
-                    }else{
-                        $result[$i]['description'] = $value['DESCRIPTION'];
-                    }
-                    if(empty($value[LINK_BUSINESS_CODE])){
-                        $result[$i]['link_business'] = "无";
-                    }else{
-                        $result[$i]['link_business'] = $value['LINK_BUSINESS_CODE'];
-                    }
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+            #035 个人待确认契约查询
+            $select_qycd = "SELECT B.DESCRIPTION,B.LINK_BUSINESS_CODE,TC_ID,TRIM(OLD_ORGAN_CODE) AS OLD_ORGAN_CODE,NEW_USER_NAME,TRIM(OLD_APPLE_CODE) AS OLD_APPLE_CODE,NEW_APPLE_CODE,IS_ACCORDANCE,A.NODE,OLD_PREM,OLD_AMNT,NEW_PREM,NEW_AMNT
+                                FROM TMP_BX_OLD_CDQCB A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_APPLE_CODE = B.BUSINESS_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) AND A.NODE = B.NODE WHERE " . $where_old_time_bqsl . $where_type_fix;
+            $result_rows = oci_parse($conn, $select_qycd); // 配置SQL语句，执行SQL
+            $qycd_result_old_time = $method->search_long($result_rows);
+            $sum_all = sizeof($qycd_result_old_time) + $num;
+            for ($i = $num, $j = 0; $i < $sum_all; $i++) {
+                $value = $qycd_result_old_time[$j++];
+                $result[$i]['business_type'] = $value['NODE'];
+                if (in_array($user_name, $otherUser)) {
+                    $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
+                } else {
+                    $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
                 }
-                $num += sizeof($bqfh_result_old_time);
+                $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
+                $result[$i]['business_code'] = $value['OLD_APPLE_CODE'];
+                $result[$i]['policy_code'] = $value['NEW_APPLE_CODE'];
+                $result[$i]['old_money'] = $value['OLD_PREM'];
+                $result[$i]['new_money'] = $value['NEW_PREM'];
+                $result[$i]['tc_id'] = $value['TC_ID'];
+                $result[$i]['other1'] = $value['OLD_AMNT'];
+                $result[$i]['other2'] = $value['NEW_AMNT'];
+                $result[$i]['other3'] = $value['NEW_ACCEPT_CODE'];
+                $result[$i]['other4'] = "-";
+                if (abs((int)$value['OLD_PREM'] - (int)$value['NEW_PREM']) <= 0.01 && strcmp($value['IS_ACCORDANCE'], "是")) {
+                    $result[$i]['is_same'] = "是";
+                } else {
+                    $result[$i]['is_same'] = "否";
+                }
+                if (empty($value[DESCRIPTION])) {
+                    $result[$i]['description'] = "无";
+                } else {
+                    $result[$i]['description'] = $value['DESCRIPTION'];
+                }
+                if (empty($value[LINK_BUSINESS_CODE])) {
+                    $result[$i]['link_business'] = "无";
+                } else {
+                    $result[$i]['link_business'] = $value['LINK_BUSINESS_CODE'];
+                }
+            }
+            $num += sizeof($bqfh_result_old_time);
         }
         #######################################################################################################################################
 
         ################################################################   核保  #######################################################################
 //        APPLE_CODE  关键业务号
-        if(in_array($user_name,$uw_user)||(int)$userType==1) {
+        if (in_array($user_name, $uw_user) || (int)$userType == 1) {
             #036 个人待确认核保查询
             $select_hb = "SELECT B.DESCRIPTION,B.LINK_BUSINESS_CODE,TC_ID,TRIM(OLD_ORGAN_CODE) AS OLD_ORGAN_CODE,A.NEW_USER_NAME,TRIM(OLD_APPLE_CODE) AS OLD_APPLE_CODE,NEW_APPLE_CODE,OLD_POLICY_CODE,NEW_POLICY_CODE,IS_ACCORDANCE,A.SOURCE_TAB||'核保' AS NODE
-                              FROM TMP_UW_LIST A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_APPLE_CODE = B.BUSINESS_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) AND B.NODE = A.SOURCE_TAB||'核保' WHERE ".$where_old_time_bqsl.$where_type_fix;
+                              FROM TMP_UW_LIST A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_APPLE_CODE = B.BUSINESS_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) AND B.NODE = A.SOURCE_TAB||'核保' WHERE " . $where_old_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_hb); // 配置SQL语句，执行SQL
             $hb_result_old_time = $method->search_long($result_rows);
-            $sum_all = sizeof($hb_result_old_time)+ $num;
-            for($i=$num,$j=0;$i<$sum_all;$i++){
+            $sum_all = sizeof($hb_result_old_time) + $num;
+            for ($i = $num, $j = 0; $i < $sum_all; $i++) {
                 $value = $hb_result_old_time[$j++];
                 $result[$i]['business_type'] = $value['NODE'];
-                if(in_array($user_name,$otherUser)){
+                if (in_array($user_name, $otherUser)) {
                     $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
-                }else{
+                } else {
                     $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
                 }
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
@@ -572,14 +590,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['other2'] = "-";
                 $result[$i]['other3'] = "-";
                 $result[$i]['other3'] = "-";
-                if(empty($value[DESCRIPTION])){
+                if (empty($value[DESCRIPTION])) {
                     $result[$i]['description'] = "无";
-                }else{
+                } else {
                     $result[$i]['description'] = $value['DESCRIPTION'];
                 }
-                if(empty($value[LINK_BUSINESS_CODE])){
+                if (empty($value[LINK_BUSINESS_CODE])) {
                     $result[$i]['link_business'] = "无";
-                }else{
+                } else {
                     $result[$i]['link_business'] = $value['LINK_BUSINESS_CODE'];
                 }
             }
@@ -590,20 +608,20 @@ class PersonDefineFinishWorkController extends Controller
         ################################################################   理赔受理  #######################################################################
 //        APPLE_CODE  关键业务号
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
 //            $where_type_fix = "";
             #037 个人待确认理赔查询
             $select_hb = "SELECT B.DESCRIPTION,B.LINK_BUSINESS_CODE,TC_ID,TRIM(OLD_ORGAN_CODE) AS OLD_ORGAN_CODE,A.NEW_USER_NAME,OLD_CASE_CODE,NEW_CASE_CODE,IS_ACCORDANCE,'理赔受理' AS NODE,OLD_GET_MONEY,NEW_GET_MONEY
-                            FROM TMP_NCS_QD_BX_LPBA_BD A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_CASE_CODE = B.BUSINESS_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) WHERE ".$where_old_time_bqsl.$where_type_fix;
+                            FROM TMP_NCS_QD_BX_LPBA_BD A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_CASE_CODE = B.BUSINESS_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) WHERE " . $where_old_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_hb); // 配置SQL语句，执行SQL
             $hb_result_old_time = $method->search_long($result_rows);
-            $sum_all = sizeof($hb_result_old_time)+ $num;
-            for($i=$num,$j=0;$i<$sum_all;$i++){
+            $sum_all = sizeof($hb_result_old_time) + $num;
+            for ($i = $num, $j = 0; $i < $sum_all; $i++) {
                 $value = $hb_result_old_time[$j++];
                 $result[$i]['business_type'] = $value['NODE'];
-                if(in_array($user_name,$otherUser)){
+                if (in_array($user_name, $otherUser)) {
                     $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
-                }else{
+                } else {
                     $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
                 }
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
@@ -612,23 +630,23 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['old_money'] = $value['OLD_GET_MONEY'];
                 $result[$i]['new_money'] = $value['NEW_GET_MONEY'];
                 $result[$i]['tc_id'] = $value['TC_ID'];
-                if(abs((int)$value['OLD_GET_MONEY']-(int)$value['NEW_GET_MONEY'])<=0.01&&strcmp($value['IS_ACCORDANCE'],"是")){
+                if (abs((int)$value['OLD_GET_MONEY'] - (int)$value['NEW_GET_MONEY']) <= 0.01 && strcmp($value['IS_ACCORDANCE'], "是")) {
                     $result[$i]['is_same'] = "是";
-                }else{
+                } else {
                     $result[$i]['is_same'] = "否";
                 }
                 $result[$i]['other1'] = "-";
                 $result[$i]['other2'] = "-";
                 $result[$i]['other3'] = "-";
                 $result[$i]['other3'] = "-";
-                if(empty($value[DESCRIPTION])){
+                if (empty($value[DESCRIPTION])) {
                     $result[$i]['description'] = "无";
-                }else{
+                } else {
                     $result[$i]['description'] = $value['DESCRIPTION'];
                 }
-                if(empty($value[LINK_BUSINESS_CODE])){
+                if (empty($value[LINK_BUSINESS_CODE])) {
                     $result[$i]['link_business'] = "无";
-                }else{
+                } else {
                     $result[$i]['link_business'] = $value['LINK_BUSINESS_CODE'];
                 }
             }
@@ -639,20 +657,20 @@ class PersonDefineFinishWorkController extends Controller
         ################################################################   理赔审批审核  #######################################################################
 //        APPLE_CODE  关键业务号
         //保全室、理赔室、核保室不参与
-        if(in_array($user_name,$clm_user)||(int)$userType==1) {
+        if (in_array($user_name, $clm_user) || (int)$userType == 1) {
 //            $where_type_fix = "";
             #038 个人待确认理赔审批审核查询
             $select_hb = "SELECT B.DESCRIPTION,B.LINK_BUSINESS_CODE,TC_ID,TRIM(OLD_ORGAN_CODE) AS OLD_ORGAN_CODE,A.NEW_USER_NAME,OLD_CASE_CODE,NEW_CASE_CODE,TRIM(IS_ACCORDANCE) AS IS_ACCORDANCE,A.BUSINESS_TYPE AS NODE
-                          FROM TMP_NCS_QD_BX_LPSHSP_BD A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_CASE_CODE = B.BUSINESS_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) WHERE ".$where_old_time_bqsl.$where_type_fix;
+                          FROM TMP_NCS_QD_BX_LPSHSP_BD A LEFT JOIN TMP_DAYPOST_DESCRIPTION B ON A.OLD_CASE_CODE = B.BUSINESS_CODE AND (A.NEW_USER_NAME = B.USER_NAME OR A.NEW_USER_NAME IS NULL) WHERE " . $where_old_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_hb); // 配置SQL语句，执行SQL
             $hb_result_old_time = $method->search_long($result_rows);
-            $sum_all = sizeof($hb_result_old_time)+ $num;
-            for($i=$num,$j=0;$i<$sum_all;$i++){
+            $sum_all = sizeof($hb_result_old_time) + $num;
+            for ($i = $num, $j = 0; $i < $sum_all; $i++) {
                 $value = $hb_result_old_time[$j++];
                 $result[$i]['business_type'] = $value['NODE'];;
-                if(in_array($user_name,$otherUser)){
+                if (in_array($user_name, $otherUser)) {
                     $result[$i]['organ_code'] = $value['OLD_ORGAN_CODE'];
-                }else{
+                } else {
                     $result[$i]['organ_code'] = $orgName[$value['OLD_ORGAN_CODE']];
                 }
                 $result[$i]['new_user_name'] = $value['NEW_USER_NAME'];
@@ -666,14 +684,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['other2'] = "-";
                 $result[$i]['other3'] = "-";
                 $result[$i]['other3'] = "-";
-                if(empty($value[DESCRIPTION])){
+                if (empty($value[DESCRIPTION])) {
                     $result[$i]['description'] = "无";
-                }else{
+                } else {
                     $result[$i]['description'] = $value['DESCRIPTION'];
                 }
-                if(empty($value[LINK_BUSINESS_CODE])){
+                if (empty($value[LINK_BUSINESS_CODE])) {
                     $result[$i]['link_business'] = "无";
-                }else{
+                } else {
                     $result[$i]['link_business'] = $value['LINK_BUSINESS_CODE'];
                 }
             }
@@ -693,7 +711,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function getCsDefine(){
+    public function getCsDefine()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $method = new MethodController();
@@ -722,23 +741,23 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND A.ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
         }
-        Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
+        Log::write($user_name . ' 数据库查询条件：' . $where_time_bqsl . $where_type_fix, 'INFO');
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT  A.ACCEPT_CODE,
                                    A.POLICY_CODE,
@@ -753,7 +772,7 @@ class PersonDefineFinishWorkController extends Controller
                                    A.ACCEPT_STATUS,
                                    A.ORGAN_CODE,
                                    D.BUSINESS_NAME,
-                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                    --C.TC_ID,
                                    (CASE
                                       WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -764,13 +783,13 @@ class PersonDefineFinishWorkController extends Controller
                                         ELSE C.TC_USER_NAME
                                     END) AS HD_USER_NAME,
                                    (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS,
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS,
                                    A.BUSINESS_NODE,
                                    C.FIND_NODE
                                 FROM TMP_QDSX_CS_SLFH_GM A 
@@ -779,7 +798,7 @@ class PersonDefineFinishWorkController extends Controller
                                   AND A.POLICY_CODE = B.POLICY_CODE
                                   AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                   AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
-                                LEFT JOIN TMP_QDSX_TC_BUG C  
+                                LEFT JOIN TMP_SX_TC_BUG C  
                                   ON C.BUSINESS_CODE = A.ACCEPT_CODE
                                   --AND C.POLICY_CODE = A.POLICY_CODE
                                   AND C.FIND_NODE = A.BUSINESS_NODE
@@ -789,8 +808,8 @@ class PersonDefineFinishWorkController extends Controller
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = null;
             $bqsl_result_time = $method->search_long($result_rows);
-            Log::write($user_name.' 数据库查询SQL：'.$select_bqsl,'INFO');
-            Log::write($user_name.' 数据库查询看结果：'.$bqsl_result_time,'INFO');
+            Log::write($user_name . ' 数据库查询SQL：' . $select_bqsl, 'INFO');
+            Log::write($user_name . ' 数据库查询看结果：' . $bqsl_result_time, 'INFO');
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
                 $result[$i]['accept_code'] = $value['ACCEPT_CODE'];
@@ -806,14 +825,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -837,7 +856,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function getCsChatDefine(){
+    public function getCsChatDefine()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $method = new MethodController();
@@ -866,23 +886,23 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND 1=1 ";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND 1=1 ";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND 1=1 ";
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND 1=1 ";
         }
 
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT A.CONTENT_ID,
                                    A.CHAT_NAME,
@@ -901,7 +921,7 @@ class PersonDefineFinishWorkController extends Controller
                                    A.CHAT_CONTENT,
                                    D.BUSINESS_NAME,
                                    TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
-                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                    --C.TC_ID,
                                    (CASE
                                       WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -912,19 +932,19 @@ class PersonDefineFinishWorkController extends Controller
                                         ELSE C.TC_USER_NAME
                                     END) AS HD_USER_NAME,
                                   (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                                --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTENT_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                 FROM TMP_QDSX_CS_BQDX A 
                                 LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                   ON A.CONTENT_ID = B.BUSINESS_CODE
                                   AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                   AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
-                                LEFT JOIN TMP_QDSX_TC_BUG C  
+                                LEFT JOIN TMP_SX_TC_BUG C  
                                   ON C.BUSINESS_CODE = A.CONTENT_ID
                                   --AND C.POLICY_CODE = A.POLICY_CODE
                                   AND C.FIND_NODE = A.BUSINESS_NODE
@@ -953,14 +973,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['chat_content'] = $value['CHAT_CONTENT'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -984,7 +1004,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function getCsOutDefine(){
+    public function getCsOutDefine()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $method = new MethodController();
@@ -1013,24 +1034,24 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND A.ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
         }
 
-        Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
+        Log::write($user_name . ' 数据库查询条件：' . $where_time_bqsl . $where_type_fix, 'INFO');
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT  A.ACCEPT_CODE,
                                    A.POLICY_CODE,
@@ -1049,7 +1070,7 @@ class PersonDefineFinishWorkController extends Controller
                                    A.PRODUCT_NAME,
                                    A.AMOUNT,
                                    A.TOTAL_PREM_AF,
-                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                    --C.TC_ID,
                                    (CASE
                                       WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -1060,20 +1081,20 @@ class PersonDefineFinishWorkController extends Controller
                                         ELSE C.TC_USER_NAME
                                     END) AS HD_USER_NAME,
                                     (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.ACCEPT_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                 FROM TMP_QDSX_CS_SLFH_WW A 
                                 LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                   ON A.ACCEPT_CODE = B.BUSINESS_CODE
                                   AND A.POLICY_CODE = B.POLICY_CODE
                                   AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                   AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
-                                LEFT JOIN TMP_QDSX_TC_BUG C  
+                                LEFT JOIN TMP_SX_TC_BUG C  
                                   ON C.BUSINESS_CODE = A.ACCEPT_CODE
                                   --AND C.POLICY_CODE = A.POLICY_CODE
                                   AND C.FIND_NODE = A.BUSINESS_NODE
@@ -1101,14 +1122,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['product_name'] = $value['PRODUCT_NAME'];
                 $result[$i]['amount'] = $value['AMOUNT'];
                 $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -1132,7 +1153,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function getNbTbDefine(){
+    public function getNbTbDefine()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $method = new MethodController();
@@ -1161,23 +1183,23 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND A.ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
         }
 
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT A.ORGAN_CODE2,
                                                A.ORGAN_CODE3,
@@ -1199,7 +1221,7 @@ class PersonDefineFinishWorkController extends Controller
                                                A.USER_NAME,
                                                A.ORGAN_CODE,
                                                D.BUSINESS_NAME,
-                                                  (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                                  (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                                --C.TC_ID,
                                                (CASE
                                                   WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -1210,20 +1232,20 @@ class PersonDefineFinishWorkController extends Controller
                                                     ELSE C.TC_USER_NAME
                                                 END) AS HD_USER_NAME,
                                               (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                                --C.STATUS,
-                                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                             FROM TMP_QDSX_NB_TBXX A 
                                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                             ON A.APPLY_CODE = B.BUSINESS_CODE
                                             --AND A.POLICY_CODE = B.POLICY_CODE
                                             AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                             AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
-                                            LEFT JOIN TMP_QDSX_TC_BUG C  
+                                            LEFT JOIN TMP_SX_TC_BUG C  
                                               ON C.BUSINESS_CODE = A.APPLY_CODE
                                               AND C.FIND_NODE = A.BUSINESS_NODE
                                               LEFT JOIN TMP_BUSINESS_NODE D
@@ -1253,14 +1275,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -1284,7 +1306,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function getCapDefineCs(){
+    public function getCapDefineCs()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $type = I('get.type');
@@ -1314,23 +1337,23 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND A.ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
         }
-        Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
+        Log::write($user_name . ' 数据库查询条件：' . $where_time_bqsl . $where_type_fix, 'INFO');
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT A.UNIT_NUMBER,
                                 A.GROUP_NUM,
@@ -1360,12 +1383,12 @@ class PersonDefineFinishWorkController extends Controller
                                   AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
                                 LEFT JOIN TMP_BUSINESS_NODE D
                                   ON D.BUSINESS_NODE = A.BUSINESS_NODE
-                                 WHERE 1=1 AND A.VALUE1 = '".$type."'" . $where_time_bqsl . $where_type_fix;
+                                 WHERE 1=1 AND A.VALUE1 = '" . $type . "'" . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = null;
             $bqsl_result_time = $method->search_long($result_rows);
-            Log::write($user_name.' 数据库查询SQL：'.$select_bqsl,'INFO');
-            Log::write($user_name.' 数据库查询看结果：'.$bqsl_result_time,'INFO');
+            Log::write($user_name . ' 数据库查询SQL：' . $select_bqsl, 'INFO');
+            Log::write($user_name . ' 数据库查询看结果：' . $bqsl_result_time, 'INFO');
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
                 $result[$i]['unit_number'] = $value['UNIT_NUMBER'];
@@ -1384,9 +1407,9 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['is_same'] = $value['IS_SAME'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['result'] = $value['RESULT'];
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -1396,9 +1419,9 @@ class PersonDefineFinishWorkController extends Controller
                 } else {
                     $result[$i]['description'] = $value['DESCRIPTION'];
                 }
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
             }
@@ -1414,32 +1437,33 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function updateCapDefineCs(){
+    public function updateCapDefineCs()
+    {
         header('Content-type: text/html; charset=utf-8');
         $user_name = $_POST['username'];
         $result_des = $_POST['result'];
         $business_name = $_POST['business_name'];
         $insert_date = $_POST['insert_date'];
-        Log::write($user_name.' 业务节点：'.$business_name,'INFO');
+        Log::write($user_name . ' 业务节点：' . $business_name, 'INFO');
         $policy_code = $_POST['policy_code'];
         $accept_code = $_POST['business_code'];
         $description = $_POST['description'];
         $link_business = $_POST['link_business'];
-        if(empty($description)){
+        if (empty($description)) {
             $description = "";
         }
-        if(empty($link_business)){
+        if (empty($link_business)) {
             $link_business = "";
         }
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheckNoParam()==1){
+        if ($method->publicCheckNoParam() == 1) {
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
-        }else if($method->publicCheckNoParam()==2){
+        } else if ($method->publicCheckNoParam() == 2) {
             $result['status'] = "failed";
             $result['lock'] = "false";
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
@@ -1447,45 +1471,45 @@ class PersonDefineFinishWorkController extends Controller
         }
         ############################################################################################################################################################
         $conn = $method->OracleOldDBCon();
-        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
+        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '" . $business_name . "'";
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
 
-        Log::write($user_name.' 业务节点：'.$business_name,'INFO');
-        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$accept_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
+        Log::write($user_name . ' 业务节点：' . $business_name, 'INFO');
+        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '" . $accept_code . "' AND BUSINESS_NODE = '" . $node_result[0]['BUSINESS_NODE'] . "' AND BUSINESS_DATE = TO_DATE('" . $insert_date . "','YYYY-MM-DD') ";
         ############################################################################################################################################################
         $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
         $select_result = $method->search_long($result_rows1);
-        if(!empty($select_result[0]['HD_USER_NAME'])){
+        if (!empty($select_result[0]['HD_USER_NAME'])) {
             $result['status'] = "failed";
-            $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已进行该业务核对，无需进行再次核对！";
+            $result['message'] = "用户：" . $select_result[0]['HD_USER_NAME'] . "已进行该业务核对，无需进行再次核对！";
             exit(json_encode($result));
         }
-        Log::write($user_name.' 业务节点+关键业务号：'.$node_result[0]['BUSINESS_NODE'].$accept_code,'INFO');
+        Log::write($user_name . ' 业务节点+关键业务号：' . $node_result[0]['BUSINESS_NODE'] . $accept_code, 'INFO');
         #$sysDate = date('yyyy/mm/dd', time());
-        if(empty($policy_code)){
-            if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
-            }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
+        if (empty($policy_code)) {
+            if (empty($insert_date)) {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('" . $accept_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','" . $result_des . "',TRUNC(SYSDATE),'" . $description . "','" . $link_business . "')";
+            } else {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('" . $accept_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','" . $result_des . "',TRUNC(SYSDATE),TO_DATE('" . $insert_date . "','YYYY-MM-DD'),'" . $description . "','" . $link_business . "')";
             }
-        }else{
-            if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),'".$description."','".$link_business."')";
-            }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','".$result_des."',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'),'".$description."','".$link_business."')";
+        } else {
+            if (empty($insert_date)) {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('" . $accept_code . "','" . $policy_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','" . $result_des . "',TRUNC(SYSDATE),'" . $description . "','" . $link_business . "')";
+            } else {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,DESCRIPTION,LINK_BUSINESS_CODE) VALUES('" . $accept_code . "','" . $policy_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','" . $result_des . "',TRUNC(SYSDATE),TO_DATE('" . $insert_date . "','YYYY-MM-DD'),'" . $description . "','" . $link_business . "')";
             }
         }
         #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
-        Log::write($user_name.' 确认结果数据库插入SQL：'.$insert_sql,'INFO');
+        Log::write($user_name . ' 确认结果数据库插入SQL：' . $insert_sql, 'INFO');
         $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
-        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
             $result['status'] = "success";
-            $result['message'] = "关键业务号：".$accept_code."-业务号：".$policy_code." 确认成功！";
-        }else{
+            $result['message'] = "关键业务号：" . $accept_code . "-业务号：" . $policy_code . " 确认成功！";
+        } else {
             $result['status'] = "failed";
             $e = oci_error();
-            $result['message'] = "确认失败".$e['message'];
+            $result['message'] = "确认失败" . $e['message'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1497,7 +1521,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function updateCsOutDefine(){
+    public function updateCsOutDefine()
+    {
         header('Content-type: text/html; charset=utf-8');
         $user_name = $_POST['username'];
         $business_name = $_POST['business_name'];
@@ -1506,12 +1531,12 @@ class PersonDefineFinishWorkController extends Controller
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheckNoParam()==1){
+        if ($method->publicCheckNoParam() == 1) {
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
-        }else if($method->publicCheckNoParam()==2){
+        } else if ($method->publicCheckNoParam() == 2) {
             $result['status'] = "failed";
             $result['lock'] = "false";
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
@@ -1519,21 +1544,21 @@ class PersonDefineFinishWorkController extends Controller
         }
         ############################################################################################################################################################
         $conn = $method->OracleOldDBCon();
-        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
+        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '" . $business_name . "'";
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
         #$sysDate = date('yyyy/mm/dd', time());
-        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
+        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('" . $accept_code . "','" . $policy_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE))";
         #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
-        Log::write($user_name.' 数据库查询SQL：'.$insert_sql,'INFO');
+        Log::write($user_name . ' 数据库查询SQL：' . $insert_sql, 'INFO');
         $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
-        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
             $result['status'] = "success";
-            $result['message'] = "受理号：".$accept_code."-保单号：".$policy_code." 确认成功！";
-        }else{
+            $result['message'] = "受理号：" . $accept_code . "-保单号：" . $policy_code . " 确认成功！";
+        } else {
             $result['status'] = "failed";
             $e = oci_error();
-            $result['message'] = "确认失败".$e['message'];
+            $result['message'] = "确认失败" . $e['message'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1545,7 +1570,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function updateCsDefine(){
+    public function updateCsDefine()
+    {
         header('Content-type: text/html; charset=utf-8');
         $user_name = $_POST['username'];
         $result_des = $_POST['result'];
@@ -1556,42 +1582,42 @@ class PersonDefineFinishWorkController extends Controller
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheckNoParam()==1){
+        if ($method->publicCheckNoParam() == 1) {
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
-        }else if($method->publicCheckNoParam()==2){
+        } else if ($method->publicCheckNoParam() == 2) {
             $result['status'] = "failed";
             $result['lock'] = "false";
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
         }
         $conn = $method->OracleOldDBCon();
-        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
+        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '" . $business_name . "'";
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
-        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$accept_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND POLICY_CODE = '".$policy_code."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
+        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '" . $accept_code . "' AND BUSINESS_NODE = '" . $node_result[0]['BUSINESS_NODE'] . "' AND POLICY_CODE = '" . $policy_code . "' AND BUSINESS_DATE = TO_DATE('" . $insert_date . "','YYYY-MM-DD') ";
         ############################################################################################################################################################
         $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
         $select_result = $method->search_long($result_rows1);
-        if(!empty($select_result[0]['HD_USER_NAME'])){
+        if (!empty($select_result[0]['HD_USER_NAME'])) {
             $result['status'] = "failed";
-            $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已进行该业务核对，无需进行再次核对！";
+            $result['message'] = "用户：" . $select_result[0]['HD_USER_NAME'] . "已进行该业务核对，无需进行再次核对！";
             exit(json_encode($result));
         }
         #$sysDate = date('yyyy/mm/dd', time());
-        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'))";
+        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('" . $accept_code . "','" . $policy_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE),TO_DATE('" . $insert_date . "','YYYY-MM-DD'))";
         #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
-        Log::write($user_name.' 数据库查询SQL：'.$insert_sql,'INFO');
+        Log::write($user_name . ' 数据库查询SQL：' . $insert_sql, 'INFO');
         $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
-        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
             $result['status'] = "success";
-            $result['message'] = "受理号：".$accept_code."-保单号：".$policy_code." 确认成功！";
-        }else{
+            $result['message'] = "受理号：" . $accept_code . "-保单号：" . $policy_code . " 确认成功！";
+        } else {
             $result['status'] = "failed";
             $e = oci_error();
-            $result['message'] = "确认失败".$e['message'];
+            $result['message'] = "确认失败" . $e['message'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1603,23 +1629,24 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function updatePublicDefine(){
+    public function updatePublicDefine()
+    {
         header('Content-type: text/html; charset=utf-8');
         $user_name = $_POST['username'];
         $business_name = $_POST['business_name'];
-        Log::write($user_name.' 业务节点：'.$business_name,'INFO');
+        Log::write($user_name . ' 业务节点：' . $business_name, 'INFO');
         $policy_code = $_POST['policy_code'];
         $accept_code = $_POST['business_code'];
         $insert_date = $_POST['insert_date'];
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheckNoParam()==1){
+        if ($method->publicCheckNoParam() == 1) {
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
-        }else if($method->publicCheckNoParam()==2){
+        } else if ($method->publicCheckNoParam() == 2) {
             $result['status'] = "failed";
             $result['lock'] = "false";
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
@@ -1627,45 +1654,45 @@ class PersonDefineFinishWorkController extends Controller
         }
         ############################################################################################################################################################
         $conn = $method->OracleOldDBCon();
-        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
+        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '" . $business_name . "'";
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
 
-        Log::write($user_name.' 业务节点：'.$business_name,'INFO');
-        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$accept_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
+        Log::write($user_name . ' 业务节点：' . $business_name, 'INFO');
+        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '" . $accept_code . "' AND BUSINESS_NODE = '" . $node_result[0]['BUSINESS_NODE'] . "' AND BUSINESS_DATE = TO_DATE('" . $insert_date . "','YYYY-MM-DD') ";
         ############################################################################################################################################################
         $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
         $select_result = $method->search_long($result_rows1);
-        if(!empty($select_result[0]['HD_USER_NAME'])){
+        if (!empty($select_result[0]['HD_USER_NAME'])) {
             $result['status'] = "failed";
-            $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已进行该业务核对，无需进行再次核对！";
+            $result['message'] = "用户：" . $select_result[0]['HD_USER_NAME'] . "已进行该业务核对，无需进行再次核对！";
             exit(json_encode($result));
         }
-        Log::write($user_name.' 业务节点+关键业务号：'.$node_result[0]['BUSINESS_NODE'].$accept_code,'INFO');
+        Log::write($user_name . ' 业务节点+关键业务号：' . $node_result[0]['BUSINESS_NODE'] . $accept_code, 'INFO');
         #$sysDate = date('yyyy/mm/dd', time());
-        if(empty($policy_code)){
-            if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
-            }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'))";
+        if (empty($policy_code)) {
+            if (empty($insert_date)) {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('" . $accept_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE))";
+            } else {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('" . $accept_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE),TO_DATE('" . $insert_date . "','YYYY-MM-DD'))";
             }
-        }else{
-            if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE))";
-            }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'))";
+        } else {
+            if (empty($insert_date)) {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('" . $accept_code . "','" . $policy_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE))";
+            } else {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('" . $accept_code . "','" . $policy_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE),TO_DATE('" . $insert_date . "','YYYY-MM-DD'))";
             }
         }
         #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
-        Log::write($user_name.' 确认结果数据库插入SQL：'.$insert_sql,'INFO');
+        Log::write($user_name . ' 确认结果数据库插入SQL：' . $insert_sql, 'INFO');
         $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
-        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
             $result['status'] = "success";
-            $result['message'] = "关键业务号：".$accept_code."-业务号：".$policy_code." 确认成功！";
-        }else{
+            $result['message'] = "关键业务号：" . $accept_code . "-业务号：" . $policy_code . " 确认成功！";
+        } else {
             $result['status'] = "failed";
             $e = oci_error();
-            $result['message'] = "确认失败".$e['message'];
+            $result['message'] = "确认失败" . $e['message'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1678,7 +1705,8 @@ class PersonDefineFinishWorkController extends Controller
     }
 
 
-    public function updateNbBdDefine(){
+    public function updateNbBdDefine()
+    {
         header('Content-type: text/html; charset=utf-8');
         $user_name = $_POST['username'];
         $business_name = $_POST['business_name'];
@@ -1691,12 +1719,12 @@ class PersonDefineFinishWorkController extends Controller
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
-        if($method->publicCheckNoParam()==1){
+        if ($method->publicCheckNoParam() == 1) {
             $result['status'] = "failed";
             $result['lock'] = "true";
             $result['message'] = "您的用户已被锁定，已无法使用本系统，如有疑问请联系管理员确认！";
             exit(json_encode($result));
-        }else if($method->publicCheckNoParam()==2){
+        } else if ($method->publicCheckNoParam() == 2) {
             $result['status'] = "failed";
             $result['lock'] = "false";
             $result['message'] = "管理员正在后台进行灌数，暂时无法刷新系统，如有疑问请联系管理员确认！";
@@ -1704,31 +1732,31 @@ class PersonDefineFinishWorkController extends Controller
         }
         ############################################################################################################################################################
         $conn = $method->OracleOldDBCon();
-        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '".$business_name."'";
+        $select_node = "SELECT BUSINESS_NODE FROM TMP_BUSINESS_NODE WHERE BUSINESS_NAME = '" . $business_name . "'";
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
         #$sysDate = date('yyyy/mm/dd', tim0e());
-        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$accept_code."' AND BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."' AND BUSINESS_DATE = TO_DATE('".$insert_date."','YYYY-MM-DD') ";
+        $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '" . $accept_code . "' AND BUSINESS_NODE = '" . $node_result[0]['BUSINESS_NODE'] . "' AND BUSINESS_DATE = TO_DATE('" . $insert_date . "','YYYY-MM-DD') ";
         ############################################################################################################################################################
         $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
         $select_result = $method->search_long($result_rows1);
-        if(!empty($select_result[0]['HD_USER_NAME'])){
+        if (!empty($select_result[0]['HD_USER_NAME'])) {
             $result['status'] = "failed";
-            $result['message'] = "用户：".$select_result[0]['HD_USER_NAME']."已进行该业务核对，无需进行再次核对！";
+            $result['message'] = "用户：" . $select_result[0]['HD_USER_NAME'] . "已进行该业务核对，无需进行再次核对！";
             exit(json_encode($result));
         }
 
-        if(empty($policy_code)){
-            if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,MEDIA_TYPE,BUSINESS_TIME) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE), '".$media_type."',TO_CHAR(SYSDATE,'HH24:mi:ss'))";
-            }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,MEDIA_TYPE,BUSINESS_TIME) VALUES('".$accept_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'), '".$media_type."',TO_CHAR(SYSDATE,'HH24:mi:ss'))";
+        if (empty($policy_code)) {
+            if (empty($insert_date)) {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,MEDIA_TYPE,BUSINESS_TIME) VALUES('" . $accept_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE), '" . $media_type . "',TO_CHAR(SYSDATE,'HH24:mi:ss'))";
+            } else {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,MEDIA_TYPE,BUSINESS_TIME) VALUES('" . $accept_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE),TO_DATE('" . $insert_date . "','YYYY-MM-DD'), '" . $media_type . "',TO_CHAR(SYSDATE,'HH24:mi:ss'))";
             }
-        }else{
-            if(empty($insert_date)){
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,MEDIA_TYPE,BUSINESS_TIME) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE), '".$media_type."',TO_CHAR(SYSDATE,'HH24:mi:ss'))";
-            }else{
-                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,MEDIA_TYPE,BUSINESS_TIME) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE),TO_DATE('".$insert_date."','YYYY-MM-DD'), '".$media_type."',TO_CHAR(SYSDATE,'HH24:mi:ss'))";
+        } else {
+            if (empty($insert_date)) {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,MEDIA_TYPE,BUSINESS_TIME) VALUES('" . $accept_code . "','" . $policy_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE), '" . $media_type . "',TO_CHAR(SYSDATE,'HH24:mi:ss'))";
+            } else {
+                $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE,MEDIA_TYPE,BUSINESS_TIME) VALUES('" . $accept_code . "','" . $policy_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE),TO_DATE('" . $insert_date . "','YYYY-MM-DD'), '" . $media_type . "',TO_CHAR(SYSDATE,'HH24:mi:ss'))";
             }
         }
 //        if(empty($policy_code)){
@@ -1737,15 +1765,15 @@ class PersonDefineFinishWorkController extends Controller
 //            $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,MEDIA_TYPE) VALUES('".$accept_code."','".$policy_code."','".$user_name."','".$node_result[0]['BUSINESS_NODE']."','正确',TRUNC(SYSDATE), '".$media_type."')";
 //        }
         #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
-        Log::write($user_name.' 数据库查询SQL：'.$insert_sql,'INFO');
+        Log::write($user_name . ' 数据库查询SQL：' . $insert_sql, 'INFO');
         $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL
-        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
             $result['status'] = "success";
-            $result['message'] = "关键业务号：".$accept_code."-业务号：".$policy_code." 确认成功！";
-        }else{
+            $result['message'] = "关键业务号：" . $accept_code . "-业务号：" . $policy_code . " 确认成功！";
+        } else {
             $result['status'] = "failed";
             $e = oci_error();
-            $result['message'] = "确认失败".$e['message'];
+            $result['message'] = "确认失败" . $e['message'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1757,7 +1785,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function getNbBdDefine(){
+    public function getNbBdDefine()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $method = new MethodController();
@@ -1786,23 +1815,23 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND A.ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
         }
 
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT 
                                A.POLICY_CODE,
@@ -1821,7 +1850,7 @@ class PersonDefineFinishWorkController extends Controller
                                B.BUSINESS_TIME,
                                TO_CHAR(TPP.BPO_PRINT_DATE,'YYYY-MM-DD') AS BPO_PRINT_DATE,--外包打印日期
                                TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
-                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                --C.TC_ID,
                                (CASE
                                   WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -1832,20 +1861,20 @@ class PersonDefineFinishWorkController extends Controller
                                     ELSE C.TC_USER_NAME
                                 END) AS HD_USER_NAME,
                                (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                                --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                --C.STATUS,
-                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                             FROM TMP_QDSX_NB_BXHT A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                               ON A.POLICY_CODE = B.BUSINESS_CODE
                               --AND A.MEDIA_TYPE = B.MEDIA_TYPE
                               AND B.BUSINESS_NODE = A.BUSINESS_NODE
                               AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
-                            LEFT JOIN TMP_QDSX_TC_BUG C  
+                            LEFT JOIN TMP_SX_TC_BUG C  
                               ON C.BUSINESS_CODE = A.POLICY_CODE
                               --AND C.POLICY_CODE = A.POLICY_CODE
                               AND C.FIND_NODE = A.BUSINESS_NODE
@@ -1881,14 +1910,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['print_dz'] = $value['PRINT_DZ'];
                 $result[$i]['print_zz'] = $value['PRINT_ZZ'];
                 $result[$i]['bpo_print_date'] = $value['BPO_PRINT_DATE'];
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -1958,7 +1987,7 @@ class PersonDefineFinishWorkController extends Controller
                                B.BUSINESS_TIME,
                                TO_CHAR(TPP.BPO_PRINT_DATE,'YYYY-MM-DD') AS BPO_PRINT_DATE,--外包打印日期
                                TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
-                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                --C.TC_ID,
                                (CASE
                                   WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -1969,20 +1998,20 @@ class PersonDefineFinishWorkController extends Controller
                                     ELSE C.TC_USER_NAME
                                 END) AS HD_USER_NAME,
                                (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                                --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                --C.STATUS,
-                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.POLICY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                             FROM TMP_QDSX_NB_BXHT A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                               ON A.POLICY_CODE = B.BUSINESS_CODE
                               --AND A.MEDIA_TYPE = B.MEDIA_TYPE
                               AND B.BUSINESS_NODE = A.BUSINESS_NODE
                               AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
-                            LEFT JOIN TMP_QDSX_TC_BUG C  
+                            LEFT JOIN TMP_SX_TC_BUG C  
                               ON C.BUSINESS_CODE = A.POLICY_CODE
                               --AND C.POLICY_CODE = A.POLICY_CODE
                               AND C.FIND_NODE = A.BUSINESS_NODE
@@ -2018,14 +2047,14 @@ class PersonDefineFinishWorkController extends Controller
             $result[$i]['print_dz'] = $value['PRINT_DZ'];
             $result[$i]['print_zz'] = $value['PRINT_ZZ'];
             $result[$i]['bpo_print_date'] = $value['BPO_PRINT_DATE'];
-            if(empty( $value['TC_ID'])){
+            if (empty($value['TC_ID'])) {
                 $result[$i]['tc_id'] = "-";
-            }else{
+            } else {
                 $result[$i]['tc_id'] = $value['TC_ID'];
             }
-            if(empty( $value['RESULT'])){
+            if (empty($value['RESULT'])) {
                 $result[$i]['result'] = "-";
-            }else{
+            } else {
                 $result[$i]['result'] = $value['RESULT'];
             }
             $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -2043,7 +2072,8 @@ class PersonDefineFinishWorkController extends Controller
         $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
-    public function getNbNoticeDefine(){
+    public function getNbNoticeDefine()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $method = new MethodController();
@@ -2072,23 +2102,23 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND A.ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
         }
 
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT 
                                A.APPLY_CODE,
@@ -2098,7 +2128,7 @@ class PersonDefineFinishWorkController extends Controller
                                A.ORGAN_CODE,
                                D.BUSINESS_NAME,
                                TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
-                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                --C.TC_ID,
                                (CASE
                                   WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -2109,19 +2139,19 @@ class PersonDefineFinishWorkController extends Controller
                                     ELSE C.TC_USER_NAME
                                 END) AS HD_USER_NAME,
                                (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                --C.STATUS,
-                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.DOCUMENT_NO AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                             FROM TMP_QDSX_NB_TZS A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                               ON A.DOCUMENT_NO = B.BUSINESS_CODE
                               AND B.BUSINESS_NODE = A.BUSINESS_NODE
                               AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
-                            LEFT JOIN TMP_QDSX_TC_BUG C  
+                            LEFT JOIN TMP_SX_TC_BUG C  
                               ON C.BUSINESS_CODE = A.DOCUMENT_NO
                               --AND C.POLICY_CODE = A.POLICY_CODE
                               AND C.FIND_NODE = A.BUSINESS_NODE
@@ -2139,14 +2169,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -2170,7 +2200,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function getNbCbywDefine(){
+    public function getNbCbywDefine()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $method = new MethodController();
@@ -2191,7 +2222,7 @@ class PersonDefineFinishWorkController extends Controller
         }
         ##############################################################  测试数据  ############################################################################
         #$where_time_bqsl = "";
-        $where_type_fix  = "";
+        $where_type_fix = "";
         ##############################################################  测试数据  ############################################################################
         $user_name = "";
         $method->checkIn($user_name);
@@ -2200,23 +2231,23 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND A.ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
         }
 
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT
                                 A.APPLY_CODE,
@@ -2226,7 +2257,7 @@ class PersonDefineFinishWorkController extends Controller
                                 A.ORGAN_CODE,
                                 TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSINESS_DATE,
                                 D.BUSINESS_NAME,
-                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                --C.TC_ID,
                                (CASE
                                   WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -2237,19 +2268,19 @@ class PersonDefineFinishWorkController extends Controller
                                     ELSE C.TC_USER_NAME
                                 END) AS HD_USER_NAME,
                                (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                --C.STATUS,
-                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.APPLY_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                            FROM TMP_QDSX_NB_CBYW A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                             ON A.APPLY_CODE = B.BUSINESS_CODE
                                AND B.BUSINESS_NODE = A.BUSINESS_NODE
                             AND B.SYS_INSERT_DATE = A.SYS_INSERT_DATE
-                            LEFT JOIN TMP_QDSX_TC_BUG C  
+                            LEFT JOIN TMP_SX_TC_BUG C  
                               ON C.BUSINESS_CODE = A.APPLY_CODE
                               AND C.FIND_NODE = A.BUSINESS_NODE
                               LEFT JOIN TMP_BUSINESS_NODE D
@@ -2266,14 +2297,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSINESS_DATE'];
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -2298,7 +2329,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function getClmDefine(){
+    public function getClmDefine()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $method = new MethodController();
@@ -2327,26 +2359,26 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
 //            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-            $where_type_fix =  " AND 1=1 ";
-        }else if((int)$userType==3){
+            $where_type_fix = " AND 1=1 ";
+        } else if ((int)$userType == 3) {
 //            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
             $where_type_fix = " AND 1=1 ";
         }
-        if(in_array($user_name,$otherUser)){
+        if (in_array($user_name, $otherUser)) {
 //            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
-            $where_type_fix =  " AND 1=1 ";
+            $where_type_fix = " AND 1=1 ";
         }
 
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT  DISTINCT 
                                 TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
@@ -2366,7 +2398,7 @@ class PersonDefineFinishWorkController extends Controller
                                 A.USER_NAME,
                                 A.ORGAN_CODE,
                                 D.BUSINESS_NAME,
-                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                               (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                --C.TC_ID,
                                (CASE
                                   WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -2377,20 +2409,20 @@ class PersonDefineFinishWorkController extends Controller
                                     ELSE C.TC_USER_NAME
                                 END) AS HD_USER_NAME,
                                (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                               (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                --C.STATUS,
-                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                               (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.case_no AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                             FROM TMP_QDSX_CLM A 
                             LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                               ON A.case_no = B.BUSINESS_CODE
                               AND A.POLICY_CODE = B.POLICY_CODE
                               AND B.BUSINESS_NODE = A.BUSINESS_NODE
                               AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
-                            LEFT JOIN TMP_QDSX_TC_BUG C  
+                            LEFT JOIN TMP_SX_TC_BUG C  
                               ON C.BUSINESS_CODE = A.case_no
                               --AND C.POLICY_CODE = A.POLICY_CODE
                               AND C.FIND_NODE = A.BUSINESS_NODE
@@ -2399,8 +2431,8 @@ class PersonDefineFinishWorkController extends Controller
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
-            Log::write($user_name.' 数据库查询SQL：'.$select_bqsl,'INFO');
-            Log::write($user_name.' 数据库查询看结果：'.$bqsl_result_time,'INFO');
+            Log::write($user_name . ' 数据库查询SQL：' . $select_bqsl, 'INFO');
+            Log::write($user_name . ' 数据库查询看结果：' . $bqsl_result_time, 'INFO');
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
                 $result[$i]['case_no'] = $value['CASE_NO'];
@@ -2419,14 +2451,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -2450,7 +2482,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function getUwDefine(){
+    public function getUwDefine()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $method = new MethodController();
@@ -2479,23 +2512,23 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND A.ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
         }
 
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT  DISTINCT 
                               TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
@@ -2505,10 +2538,10 @@ class PersonDefineFinishWorkController extends Controller
                               A.ORGAN_CODE      ,
                               D.BUSINESS_NAME,
                               TO_CHAR(A.SYS_INSERT_DATE,'YYYY-MM-DD') AS BUSI_INSERT_DATE,
-                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                   (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                    --C.TC_ID,
                                    (CASE
-                                      WHEN (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) IS NOT NULL THEN '错误'
+                                      WHEN (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) IS NOT NULL THEN '错误'
                                         ELSE B.RESULT
                                     END) AS RESULT,
                                    (CASE
@@ -2516,20 +2549,20 @@ class PersonDefineFinishWorkController extends Controller
                                         ELSE C.TC_USER_NAME
                                     END) AS HD_USER_NAME,
                                   (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                                --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.BUSINESS_CODE AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                 FROM TMP_QDSX_UW A 
                                 LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                   ON  A.BUSINESS_CODE = B.BUSINESS_CODE
                                   --AND A.POLICY_CODE = B.POLICY_CODE
                                   AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                   AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
-                                LEFT JOIN TMP_QDSX_TC_BUG C  
+                                LEFT JOIN TMP_SX_TC_BUG C  
                                   ON C.BUSINESS_CODE = A.BUSINESS_CODE
                                   AND C.POLICY_CODE = A.POLICY_CODE
                                   AND C.FIND_NODE = A.BUSINESS_NODE
@@ -2538,8 +2571,8 @@ class PersonDefineFinishWorkController extends Controller
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
-            Log::write($user_name.' 数据库查询SQL：'.$select_bqsl,'INFO');
-            Log::write($user_name.' 数据库查询看结果：'.$bqsl_result_time,'INFO');
+            Log::write($user_name . ' 数据库查询SQL：' . $select_bqsl, 'INFO');
+            Log::write($user_name . ' 数据库查询看结果：' . $bqsl_result_time, 'INFO');
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
                 $value = $bqsl_result_time[$i];
                 $result[$i]['insert_date'] = $value['INSERT_DATE'];
@@ -2549,14 +2582,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -2580,7 +2613,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function getNbChatDefine(){
+    public function getNbChatDefine()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $method = new MethodController();
@@ -2609,23 +2643,23 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND A.ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
         }
 
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT 
                                   A.SEND_ID,
@@ -2649,7 +2683,7 @@ class PersonDefineFinishWorkController extends Controller
                                   A.USER_NAME,
                                   A.ORGAN_CODE,
                                   D.BUSINESS_NAME,
-                                  (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                  (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                    --C.TC_ID,
                                    (CASE
                                       WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -2660,25 +2694,25 @@ class PersonDefineFinishWorkController extends Controller
                                         ELSE C.TC_USER_NAME
                                     END) AS HD_USER_NAME,
                                     (CASE
-                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                  WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                  ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                 END) AS SYS_INSERT_DATE,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                   (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                    --C.STATUS,
-                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                   (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.SEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                   FROM TMP_QDSX_NB_CBDX A
                                   LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                      ON A.SEND_ID = B.BUSINESS_CODE
                                      AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                      AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
-                                     LEFT JOIN TMP_QDSX_TC_BUG C  
+                                     LEFT JOIN TMP_SX_TC_BUG C  
                                      ON C.BUSINESS_CODE = A.SEND_ID
                                      AND C.FIND_NODE = A.BUSINESS_NODE
                                      LEFT JOIN TMP_BUSINESS_NODE D
                                      ON D.BUSINESS_NODE = A.BUSINESS_NODE
                                  WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
-            Log::write('承保短信查询条件：'.$where_time_bqsl . $where_type_fix,'INFO');
+            Log::write('承保短信查询条件：' . $where_time_bqsl . $where_type_fix, 'INFO');
             $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
             $bqsl_result_time = $method->search_long($result_rows);
             for ($i = $num; $i < sizeof($bqsl_result_time); $i++) {
@@ -2704,14 +2738,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
@@ -2735,7 +2769,8 @@ class PersonDefineFinishWorkController extends Controller
         }
     }
 
-    public function getClmChatDefine(){
+    public function getClmChatDefine()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $method = new MethodController();
@@ -2764,24 +2799,24 @@ class PersonDefineFinishWorkController extends Controller
         $fuhe_user = $method->getFuheUser();
         $clm_user = $method->getClmUser();
         $uw_user = $method->getUwUser();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
 //            dump($organCode);
-            $where_type_fix =  " AND A.ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND A.USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND A.ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if(in_array($user_name,$otherUser)){
-            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+        if (in_array($user_name, $otherUser)) {
+            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
         }
-        Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
+        Log::write($user_name . ' 数据库查询条件：' . $where_time_bqsl . $where_type_fix, 'INFO');
 
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if((!in_array($user_name,$fuhe_user)&&!in_array($user_name,$clm_user)&&!in_array($user_name,$uw_user))||(int)$userType==1) {
+        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT  DISTINCT 
                                   TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
@@ -2793,7 +2828,7 @@ class PersonDefineFinishWorkController extends Controller
                                   DBMS_LOB.SUBSTR(A.contend_info,4000,1) AS CONTEND_INFO,
                                   A.ORGAN_CODE      , 
                                   D.BUSINESS_NAME,
-                                       (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
+                                       (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN group(order by N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS TC_ID,
                                        --C.TC_ID,
                                        (CASE
                                           WHEN C.TC_ID IS NULL THEN B.RESULT
@@ -2804,19 +2839,19 @@ class PersonDefineFinishWorkController extends Controller
                                             ELSE C.TC_USER_NAME
                                         END) AS HD_USER_NAME,
                                       (CASE
-                                         WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
-                                         ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_QDSX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
+                                         WHEN (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1) IS NULL THEN TO_CHAR(B.SYS_INSERT_DATE,'YYYY-MM-DD')
+                                         ELSE (SELECT TO_CHAR(W.CREATE_DATE,'YYYY-MM-DD') FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,N.CREATE_DATE FROM TMP_SX_TC_BUG N WHERE 1=1 order BY N.CREATE_DATE ASC) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE AND ROWNUM = 1)
                                       END) AS SYS_INSERT_DATE,
                               --C.TC_ID||'-'||C.DESCRIPTION AS DESCRIPTION,
-                                       (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
+                                       (SELECT W.DESCRIPTION FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.DESCRIPTION,',') WITHIN group(order by N.TC_ID) AS DESCRIPTION FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS DESCRIPTION,
                                        --C.STATUS,
-                                       (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_QDSX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
+                                       (SELECT W.STATUS FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID||'-'||N.STATUS_DESC,',') WITHIN group(order by N.TC_ID) AS STATUS FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = A.CONTEND_ID AND W.FIND_NODE = A.BUSINESS_NODE) AS STATUS
                                     FROM TMP_QDSX_CLM_DX A 
                                     LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION B 
                                       ON  A.CONTEND_ID = B.BUSINESS_CODE   
                                       AND B.BUSINESS_NODE = A.BUSINESS_NODE
                                       AND B.BUSINESS_DATE = A.SYS_INSERT_DATE
-                                    LEFT JOIN TMP_QDSX_TC_BUG C  
+                                    LEFT JOIN TMP_SX_TC_BUG C  
                                       ON C.BUSINESS_CODE = A.CONTEND_ID
                                       --AND C.POLICY_CODE = A.POLICY_CODE
                                       AND C.FIND_NODE = A.BUSINESS_NODE
@@ -2835,14 +2870,14 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['organ_code'] = $value['ORGAN_CODE'];
                 $result[$i]['business_name'] = $value['BUSINESS_NAME'];
                 $result[$i]['busi_insert_date'] = $value['BUSI_INSERT_DATE'];
-                if(empty( $value['TC_ID'])){
+                if (empty($value['TC_ID'])) {
                     $result[$i]['tc_id'] = "-";
-                }else{
+                } else {
                     $result[$i]['tc_id'] = $value['TC_ID'];
                 }
-                if(empty( $value['RESULT'])){
+                if (empty($value['RESULT'])) {
                     $result[$i]['result'] = "-";
-                }else{
+                } else {
                     $result[$i]['result'] = $value['RESULT'];
                 }
                 $result[$i]['hd_user_name'] = $value['HD_USER_NAME'];
