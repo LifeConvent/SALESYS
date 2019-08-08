@@ -67,6 +67,7 @@ $(function() {
     switch (list_type) {
         case '99'://管理员
             //清单导出
+            debugger;
             $('#list_out').show();
             $('#data_export').show();
             $('#data_out_ct').show();
