@@ -734,14 +734,19 @@ class PersonDefineFinishWorkController extends Controller
         } else if ((int)$userType == 3) {
             $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
-        if (in_array($user_name, $otherUser)) {
-            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
+//        if (in_array($user_name, $otherUser)) {
+//            $where_type_fix = " AND A.ORGAN_CODE NOT LIKE '8647%'";
+//        }
+        if(in_array($user_name, $fuhe_user)){
+            $where_type_fix = $where_type_fix ." AND A.BUSINESS_NODE = 'BQFH' ";
+        }else{
+            $where_type_fix = $where_type_fix ." AND A.BUSINESS_NODE = 'BQSL' ";
         }
         Log::write($user_name . ' 数据库查询条件：' . $where_time_bqsl . $where_type_fix, 'INFO');
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+        if ((!in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT  A.ACCEPT_CODE,
                                    A.POLICY_CODE,
