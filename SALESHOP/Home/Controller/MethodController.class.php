@@ -34,6 +34,7 @@ class MethodController extends Controller
         $controller->assign('is_bx_define_user',  $method->getIsBxDefineUserBySql($username));
         $controller->assign('no_show_list',  $method->getNoShowListBySql($username));
         $controller->assign('bug_show',  $method->getBugShowBySql($username));
+        $controller->assign('sx_list_type',  $method->getSxListTypeBySql($username));
     }
 
     public function getSystype($username){
@@ -270,6 +271,18 @@ class MethodController extends Controller
         oci_close($conn);
         Log::write($username.'用户缺陷列表清单权限：'.$result[0]['BUG_SHOW'],'INFO');
         return $result[0]['BUG_SHOW'];
+    }
+
+    public function getSxListTypeBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SX_LIST_TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户缺陷列表清单权限：'.$result[0]['SX_LIST_TYPE'],'INFO');
+        return $result[0]['SX_LIST_TYPE'];
     }
 
     public function checkIn(&$admin)

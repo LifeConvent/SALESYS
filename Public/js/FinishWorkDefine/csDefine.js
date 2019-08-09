@@ -6,7 +6,7 @@ $(function () {
 
     $('#home').attr('class','active');
     $('#data_ub').css('display','block');
-    $('#cs_difine').attr('class','active');
+    $('#cs_define').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',

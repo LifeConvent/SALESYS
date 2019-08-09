@@ -231,6 +231,20 @@ var TableInit = function () {
                 title: '系统比对是否一致',
                 width:150
             },{
+                field: 'organ_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '机构',
+                width:100
+            },{
+                field: 'reference_item',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '标记',
+                width:100
+            },{
                 field: 'result',
                 align: 'center',
                 valign: 'middle',

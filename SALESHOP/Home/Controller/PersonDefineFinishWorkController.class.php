@@ -1342,6 +1342,8 @@ class PersonDefineFinishWorkController extends Controller
             $select_bqsl = "SELECT A.UNIT_NUMBER,
                                 A.GROUP_NUM,
                                 A.BUSINESS_CODE,
+                                A.ORGAN_CODE,
+                                A.REFERENCE_ITEM,
                                 A.POLICY_CODE,
                                 A.BANK_ACCOUNT,
                                 A.BANK_CODE,
@@ -1380,6 +1382,8 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['policy_code'] = $value['POLICY_CODE'];
                 $result[$i]['bank_account'] = $value['BANK_ACCOUNT'];
                 $result[$i]['bank_code'] = $value['BANK_CODE'];
+                $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+                $result[$i]['reference_item'] = $value['REFERENCE_ITEM'];
                 $result[$i]['acco_name'] = $value['ACCO_NAME'];
                 $result[$i]['due_time'] = $value['DUE_TIME'];
                 $result[$i]['biz_source_name'] = $value['BIZ_SOURCE_NAME'];
@@ -1687,7 +1691,6 @@ class PersonDefineFinishWorkController extends Controller
             exit(json_encode(''));
         }
     }
-
 
     public function updateNbBdDefine()
     {
