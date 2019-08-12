@@ -236,16 +236,9 @@ $(function () {
     strs = sx_list_type.split("&"); //字符分割
     for (i = 0; i < strs.length; i++) {
         if (strs[i] == '99') {
-            $('#this_daypost').show();
-            $('#post_day_all').show();
-            $('#bug_list').show();
-            $('#user_control').show();
-            $('#data_control').show();
-            $('#list_out').show();
-            $('#list_nb').show();
-            $('#list_yd').show();
-            $('#bx_define').show();
-            $('#cap_menu').show();
+            for (i = 0; i < list_name.length; i++) {
+                $('#' + list_name[i]).show();
+            }
             break;
         }
         switch (strs[i]) {
