@@ -740,7 +740,9 @@ class PersonDefineFinishWorkController extends Controller
         if(in_array($user_name, $fuhe_user)){
             $where_type_fix = $where_type_fix ." AND A.BUSINESS_NODE = 'BQFH' ";
         }else{
-            $where_type_fix = $where_type_fix ." AND A.BUSINESS_NODE = 'BQSL' ";
+            if ((int)$userType != 1) {
+                $where_type_fix = $where_type_fix . " AND A.BUSINESS_NODE = 'BQSL' ";
+            }
         }
         Log::write($user_name . ' 数据库查询条件：' . $where_time_bqsl . $where_type_fix, 'INFO');
         $num = 0;
