@@ -294,7 +294,7 @@ class DayPostController extends Controller
                                    SUM(CBYW_BUG_SUM) AS CBYW_BUG_SUM,
                                    DECODE(SUM(CBYW_SUM),0,'100.00%', trim(to_char((SUM(CBYW_SUM)-SUM(CBYW_BUG_SUM))/SUM(CBYW_SUM)*100,'999D99')||'%')) CBYW_RATE
                             FROM TMP_QDSX_NB_DAYPOST 
-                             WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','8600') ".$where_time_bqsl."
+                             WHERE 1=1 AND ORGAN_CODE NOT IN ('8633','8600') ".$where_time_bqsl."
                             GROUP BY SYS_INSERT_DATE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         Log::write($user_name.' 契约日报数据库查询条件：'.$select_bqsl,'INFO');
@@ -565,7 +565,7 @@ class DayPostController extends Controller
                                        SUM(HBSSDX_BUG_SUM) AS HBSSDX_BUG_SUM,
                                        DECODE(SUM(HBSSDX_SUM),0,'100.00%', trim(to_char((SUM(HBSSDX_SUM)-SUM(HBSSDX_BUG_SUM))/SUM(HBSSDX_SUM)*100,'999D99')||'%')) HBSSDX_RATE
                                 FROM TMP_QDSX_UW_DAYPOST 
-                                 WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','8600') ".$where_time_bqsl."
+                                 WHERE 1=1 AND ORGAN_CODE NOT IN ('8633','8600') ".$where_time_bqsl."
                                 GROUP BY SYS_INSERT_DATE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
@@ -738,7 +738,7 @@ class DayPostController extends Controller
                                                    '%')
                                          end) AS CLM_ACCURACY
                                 FROM TMP_QDSX_LJ_DAYPOST 
-                                WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','8600') ".$where_time_bqsl."
+                                WHERE 1=1 AND ORGAN_CODE NOT IN ('8633','8600') ".$where_time_bqsl."
                                 GROUP BY SYS_INSERT_DATE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
