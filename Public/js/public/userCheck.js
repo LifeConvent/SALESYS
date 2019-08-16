@@ -100,6 +100,7 @@ $(function () {
     control_list.put("1.2", "day_post_uw_this");
     control_list.put("1.3", "day_post_cs_this");
     control_list.put("1.4", "day_post_clm_this");
+    control_list.put("1.5", "day_post_all_this");
     control_list.put("2", "post_day_all");
     control_list.put("3", "bug_list");
     control_list.put("4", "user_control");
@@ -143,6 +144,7 @@ $(function () {
     list_name.push("day_post_uw_this");
     list_name.push("day_post_cs_this");
     list_name.push("day_post_clm_this");
+    list_name.push("day_post_all_this");
     list_name.push("post_day_all");
     list_name.push("bug_list");
     list_name.push("user_control");

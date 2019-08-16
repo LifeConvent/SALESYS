@@ -61,6 +61,22 @@ class DayPostController extends Controller
         }
     }
 
+    public function dayPostAllThis()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $method->assignPublic($username,$this);
+            if(!$method->getSystype($username)){
+                $this->redirect('Index/errorSys');
+            }
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function dayPostCsThis()
     {
         $username = '';
@@ -586,6 +602,60 @@ class DayPostController extends Controller
             $result[$dictIndex[$value['ORGAN_NAME']]]['hbssdx_sum'] = $value['HBSSDX_SUM'];
             $result[$dictIndex[$value['ORGAN_NAME']]]['hbssdx_bug_sum'] = $value['HBSSDX_BUG_SUM'];
             $result[$dictIndex[$value['ORGAN_NAME']]]['hbssdx_rate'] = $value['HBSSDX_RATE'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+//        dump($res);
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getDayPostAllThis(){
+        $queryDateStart = I('get.queryDateStart');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $organCode = $method->getUserOrganCode();
+        $day_post_organ = $method->getSxDaypostOrgan($user_name);
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " ORGAN_CODE LIKE '".$day_post_organ."%' AND INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+        } else {
+            $where_time_bqsl = " ORGAN_CODE LIKE '".$day_post_organ."%' AND INSERT_DATE = TRUNC(SYSDATE) ";
+        }
+        $dictIndex = $method->getDictIndex($day_post_organ);
+        $DictArry = $method->getDictArry($day_post_organ);
+        for ($i = 0; $i < sizeof($DictArry); $i++) {
+            $result[] = array("org" => $DictArry[$i],"NB_CHECK_SUM" => 0,"NB_BUG_SUM" => 0,"NB_ACCURACY" => 0,
+                "UW_CHECK_SUM" => 0,"UW_BUG_SUM" => 0,"UW_ACCURACY" => 0,
+                "CS_CHECK_SUM" => 0,"CS_BUG_SUM" => 0,"CS_ACCURACY" => 0,
+                "CLM_CHECK_SUM" => 0,"CLM_BUG_SUM" => 0,"CLM_ACCURACY" => 0);
+        }
+        $select_bqsl = "SELECT * FROM TMP_SX_ALL_DAYPOST 
+                                 WHERE 1=1 ".$where_time_bqsl;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['NB_CHECK_SUM'] = $value['NB_CHECK_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['NB_BUG_SUM'] = $value['NB_BUG_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['NB_ACCURACY'] = $value['NB_ACCURACY'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['UW_CHECK_SUM'] = $value['UW_CHECK_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['UW_BUG_SUM'] = $value['UW_BUG_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['UW_ACCURACY'] = $value['UW_ACCURACY'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['CS_CHECK_SUM'] = $value['CS_CHECK_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['CS_BUG_SUM'] = $value['CS_BUG_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['CS_ACCURACY'] = $value['CS_ACCURACY'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['CLM_CHECK_SUM'] = $value['CLM_CHECK_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['CLM_BUG_SUM'] = $value['CLM_BUG_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['CLM_ACCURACY'] = $value['CLM_ACCURACY'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
