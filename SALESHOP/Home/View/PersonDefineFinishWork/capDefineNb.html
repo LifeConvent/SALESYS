@@ -78,6 +78,8 @@
                             <!--<input class="form-control" value="保全复核" style="width:70pt;float:left;margin-left: 5pt">-->
                             <input class="form-control" value="正确" style="width:40pt;float:left;margin-left: 5pt">
                             <input class="form-control" value="错误" style="width:40pt;float:left;margin-left: 5pt">
+                            <button type="button" id="new_user" class="btn btn-primary col-sm-3" onclick="exedefine();" style="margin-left: 10pt">批量确认正确
+                            </button>
                             <!--<input class="form-control" value="保全核保" style="width:70pt;float:left;margin-left: 5pt">-->
                             <!--<input class="form-control" value="理赔核保" style="width:70pt;float:left;margin-left: 5pt">-->
                             <!--<input class="form-control" value="出单前撤保" style="width:80pt;float:left;margin-left: 5pt">-->
@@ -88,82 +90,11 @@
                 </section>
             </div>
 
-            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信匹配数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        课程评价数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="ce-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信关注量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-sub-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!--<div class="col-lg-12" style="color:#a560f8">-->
-                <!--<section class="panel">-->
-                    <!--<header class="panel-heading">-->
-                        <!--新增用户数量变化趋势-->
-                    <!--</header>-->
-                    <!--<div class="panel-body">-->
-                        <!--<div id="weixin-new-num" class="graph">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</section>-->
-            <!--</div>-->
-
         </section>
         <!-- 主容器  -->
 
     </section>
     <!-- 主窗体 -->
-
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">删除自动回复提示</h4>
-                </div>
-                <div class="modal-body text-center">
-                    <span class="left-30 red size-16">删除后将无法恢复！确认要删除自动回复吗？</span>
-                </div>
-                <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-                    <button class="btn btn-warning" type="button" onclick="deleteSub();">确认</button>
-                </div>
-            </div>
-        </div>
-        <span style="display:none" id="myModalHide"></span>
-    </div>
-
-    <!--<div class="zfb modal fade in">-->
-        <!--<img src="zfb.png"  alt="扫描领红包" />-->
-    <!--</div>-->
 
     <include file="Public/footer-20"/>
     <include file="Public/check"/>
