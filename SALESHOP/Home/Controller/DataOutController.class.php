@@ -976,6 +976,10 @@ class DataOutController extends Controller
         }else if((int)$userType==2){
             $organCode = $method->getUserOrganCode();
             $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $channel_type = $method->getChannelTypeBySql($user_name);
+            if((int)$channel_type==2){
+                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            }
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
@@ -1241,6 +1245,10 @@ class DataOutController extends Controller
         }else if((int)$userType==2){
             $organCode = $method->getUserOrganCode();
             $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $channel_type = $method->getChannelTypeBySql($user_name);
+            if((int)$channel_type==2){
+                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            }
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
@@ -1374,6 +1382,10 @@ class DataOutController extends Controller
         }else if((int)$userType==2){
             $organCode = $method->getUserOrganCode();
             $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $channel_type = $method->getChannelTypeBySql($user_name);
+            if((int)$channel_type==2){
+                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            }
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
