@@ -141,7 +141,7 @@ var TableInit = function () {
                 valign: 'middle',
                 align: 'center',
                 title: '投保单号',
-                width:150
+                width:180
             }, {
                 field: 'policy_code',
                 sortable: true,
@@ -324,6 +324,34 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '保费是否到账',
                 width:100
+            }, {
+                field: 'value_prem',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '价值保费',
+                width:100
+            }, {
+                field: 'acknowledge_date',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '回执签收日期',
+                width:120
+            }, {
+                field: 'call_status',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '回访是否成功',
+                width:120
+            }, {
+                field: 'upload_time',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '扫描完成时间',
+                width:120
             }]
         });
     };

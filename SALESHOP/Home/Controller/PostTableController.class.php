@@ -274,36 +274,40 @@ class PostTableController extends Controller
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
         $select_bqsl = "SELECT DISTINCT
-                           TO_CHAR(APPLY_DATE,'YYYY-MM-DD HH24:MI:SS') AS APPLY_DATE,--            AS 投保日期,
-                           ORGAN_CODE,--            AS 管理机构,
-                           APPLY_CODE,--            AS 投保单号,
-                           POLICY_CODE,--           AS 保单号,
-                           TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,--            AS 承保日期,
-                           TO_CHAR(VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,--         AS 保单生效日,
-                           TO_CHAR(INITIAL_PREM_DATE,'YYYY-MM-DD') AS INITIAL_PREM_DATE,--     AS 首期缴费日,
-                           CHARGE_YEAR,--           AS 缴费年期,
-                           WINNING_START_FLAG,--是否预承保,
-                           SALES_CHANNEL_NAME,--     AS 投保渠道,
-                           CHANNEL_NAME,--          AS 投保方式,
-                           STATUS_DESC,--            AS 投保单状态,
-                           STATUS_NAME,--           AS 保单效力状态,
-                           CAUSE_NAME,--            AS 终止原因,
-                           TO_CHAR(CANCEL_DATE,'YYYY-MM-DD') AS CANCEL_DATE,--     AS 撤单日期,
-                           CUSTOMER_NAME,--         AS 投保人姓名,
-                           BANK_NAME,--              AS 银行,
-                           ACCOUNT_BANK,--         AS 银行代码,
-                           ACCOUNT,--              AS 银行账户,
-                           SERVICE_BANK_BRANCH,--   AS 银代银行网点代码,
-                           BANK_BRANCH_NAME,--      AS 银代银行网点名称,
-                           AGENT_CODE,--             AS 业务员代码,
-                           AGENT_NAME,--             AS 业务员姓名,
-                           UNIT,--                  AS 份数,
-                           PRODUCT_CODE_SYS,--      AS 险种代码,
-                           PRODUCT_NAME_SYS,--      AS 险种名称,
-                           AMOUNT, --                             AS 保额,
-                           TOTAL_PREM_AF,  --                   AS 保费,
-                           FEE_STATUS   -- AS 保费是否到账
-                     FROM TMP_QDSX_NB_QD_TB_YD
+                               TO_CHAR(APPLY_DATE,'YYYY-MM-DD HH24:MI:SS') AS APPLY_DATE,--            AS 投保日期,
+                               ORGAN_CODE,--            AS 管理机构,
+                               APPLY_CODE,--            AS 投保单号,
+                               POLICY_CODE,--           AS 保单号,
+                               TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,--            AS 承保日期,
+                               TO_CHAR(VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,--         AS 保单生效日,
+                               TO_CHAR(INITIAL_PREM_DATE,'YYYY-MM-DD') AS INITIAL_PREM_DATE,--     AS 首期缴费日,
+                               CHARGE_YEAR,--           AS 缴费年期,
+                               WINNING_START_FLAG,--   AS 是否预承保,
+                               SALES_CHANNEL_NAME,--     AS 投保渠道,
+                               CHANNEL_NAME,--          AS 投保方式,
+                               STATUS_DESC,--            AS 投保单状态,
+                               STATUS_NAME,--           AS 保单效力状态,
+                               CAUSE_NAME,--            AS 终止原因,
+                               TO_CHAR(CANCEL_DATE,'YYYY-MM-DD') AS CANCEL_DATE,--     AS 撤单日期,
+                               CUSTOMER_NAME,--         AS 投保人姓名,
+                               BANK_NAME,--              AS 银行,
+                               ACCOUNT_BANK,--         AS 银行代码,
+                               ACCOUNT,--              AS 银行账户,
+                               SERVICE_BANK_BRANCH,--   AS 银代银行网点代码,
+                               BANK_BRANCH_NAME,--      AS 银代银行网点名称,
+                               AGENT_CODE,--             AS 业务员代码,
+                               AGENT_NAME,--             AS 业务员姓名,
+                               UNIT,--                  AS 份数,
+                               PRODUCT_CODE_SYS,--      AS 险种代码,
+                               PRODUCT_NAME_SYS,--      AS 险种名称,
+                               AMOUNT, --               AS 保额,
+                               TOTAL_PREM_AF,  --       AS 保费,
+                               FEE_STATUS,   --                                         AS 保费是否到账,
+                               VALUE_PREM,--                                            AS 价值保费,
+                               TO_CHAR(ACKNOWLEDGE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ACKNOWLEDGE_DATE,--     AS 回执签收日期,
+                               CALL_STATUS,--                                           AS 回访是否成功,
+                               TO_CHAR(UPLOAD_TIME,'YYYY-MM-DD HH24:MI:SS') AS UPLOAD_TIME--           AS 扫描完成时间  
+                         FROM TMP_QDSX_NB_QD_TB_YD
                      WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
                      ORDER BY APPLY_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
@@ -339,6 +343,10 @@ class PostTableController extends Controller
             $result[$i]['amount'] = $value['AMOUNT'];
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
+            $result[$i]['value_prem'] = $value['VALUE_PREM'];
+            $result[$i]['acknowledge_date'] = $value['ACKNOWLEDGE_DATE'];
+            $result[$i]['call_status'] = $value['CALL_STATUS'];
+            $result[$i]['upload_time'] = $value['UPLOAD_TIME'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
