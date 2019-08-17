@@ -748,7 +748,7 @@ class PersonDefineFinishWorkController extends Controller
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if ((!in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+//        if ((!in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT  A.ACCEPT_CODE,
                                    A.POLICY_CODE,
@@ -836,7 +836,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
-        }
+//        }
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
@@ -893,7 +893,7 @@ class PersonDefineFinishWorkController extends Controller
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+//        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT A.CONTENT_ID,
                                    A.CHAT_NAME,
@@ -984,7 +984,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
-        }
+//        }
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
@@ -1042,7 +1042,7 @@ class PersonDefineFinishWorkController extends Controller
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+//        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT  A.ACCEPT_CODE,
                                    A.POLICY_CODE,
@@ -1133,7 +1133,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
-        }
+//        }
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
@@ -1190,7 +1190,7 @@ class PersonDefineFinishWorkController extends Controller
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+//        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT A.ORGAN_CODE2,
                                                A.ORGAN_CODE3,
@@ -1286,7 +1286,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
-        }
+//        }
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
@@ -1344,7 +1344,7 @@ class PersonDefineFinishWorkController extends Controller
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+//        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT A.UNIT_NUMBER,
                                 A.GROUP_NUM,
@@ -1421,7 +1421,7 @@ class PersonDefineFinishWorkController extends Controller
                 }
             }
             $num += sizeof($bqsl_result_time);
-        }
+//        }
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
@@ -1927,7 +1927,7 @@ class PersonDefineFinishWorkController extends Controller
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if ((!in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+//        if ((!in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT 
                                A.POLICY_CODE,
@@ -2026,7 +2026,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
-        }
+//        }
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
@@ -2214,7 +2214,7 @@ class PersonDefineFinishWorkController extends Controller
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+//        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT 
                                A.APPLY_CODE,
@@ -2285,7 +2285,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
-        }
+//        }
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
@@ -2343,7 +2343,7 @@ class PersonDefineFinishWorkController extends Controller
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+//        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT
                                 A.APPLY_CODE,
@@ -2413,7 +2413,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
-        }
+//        }
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
@@ -2624,7 +2624,7 @@ class PersonDefineFinishWorkController extends Controller
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+//        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT  DISTINCT 
                               TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD') AS INSERT_DATE,
@@ -2698,7 +2698,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
-        }
+//        }
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
@@ -2755,7 +2755,7 @@ class PersonDefineFinishWorkController extends Controller
         $num = 0;
         ################################################################   保全受理   #######################################################################
         //保全室、理赔室、核保室不参与
-        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
+//        if ((!in_array($user_name, $fuhe_user) && !in_array($user_name, $clm_user) && !in_array($user_name, $uw_user)) || (int)$userType == 1) {
             #033 个人待确认保全受理查询
             $select_bqsl = "SELECT DISTINCT 
                                   A.SEND_ID,
@@ -2854,7 +2854,7 @@ class PersonDefineFinishWorkController extends Controller
                 $result[$i]['status'] = $value['STATUS'];
             }
             $num += sizeof($bqsl_result_time);
-        }
+//        }
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
