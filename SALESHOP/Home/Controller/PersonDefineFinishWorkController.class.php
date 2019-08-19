@@ -1625,6 +1625,7 @@ class PersonDefineFinishWorkController extends Controller
         $business_name = $_POST['business_name'];
         $policy_code = $_POST['policy_code'];
         $accept_code = $_POST['accept_code'];
+//        $business_date = $_POST['business_date'];
         $method = new MethodController();
         ##############################################################  公共JS处理部分  ############################################################################
         //JS请求公共处理部分 TRUE锁定
@@ -1645,7 +1646,7 @@ class PersonDefineFinishWorkController extends Controller
         $result_rows = oci_parse($conn, $select_node); // 配置SQL语句，执行SQL
         $node_result = $method->search_long($result_rows);
         #$sysDate = date('yyyy/mm/dd', time());
-        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE) VALUES('" . $accept_code . "','" . $policy_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE))";
+        $insert_sql = "INSERT INTO TMP_QDSX_DAYPOST_DESCRIPTION(BUSINESS_CODE,POLICY_CODE,HD_USER_NAME,BUSINESS_NODE,RESULT,SYS_INSERT_DATE,BUSINESS_DATE) VALUES('" . $accept_code . "','" . $policy_code . "','" . $user_name . "','" . $node_result[0]['BUSINESS_NODE'] . "','正确',TRUNC(SYSDATE),TRUNC(SYSDATE))";
         #$update_cs_define = "UPDATE TMP_QDSX_DAYPOST_DESCRIPTION SET BUSINESS_CODE = '".$accept_code."', HD_USER_NAME = '".$user_name."', POLICY_CODE = '".$policy_code."', RESULT = '".$result."', BUSINESS_NODE = '".$node_result[0]['BUSINESS_NODE']."'";
         Log::write($user_name . ' 数据库查询SQL：' . $insert_sql, 'INFO');
         $result_rows = oci_parse($conn, $insert_sql); // 配置SQL语句，执行SQL

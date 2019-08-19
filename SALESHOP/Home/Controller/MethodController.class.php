@@ -2287,7 +2287,7 @@ class MethodController extends Controller
             $BUSINESS_NAME = $value['BUSINESS_NAME'];
             $business[$BUSINESS_NAME] = $BUSINESS_NODE;
         }
-        $statement = oci_parse($conn,"delete from TMP_QDSX_TC_BUG");
+        $statement = oci_parse($conn,"delete from TMP_SX_TC_BUG");
         echo "清空现有TC数据 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." <br>";
         foreach ($result as &$value) {
             $TC_ID = $value['TC_ID'];

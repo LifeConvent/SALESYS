@@ -340,12 +340,13 @@ window.actionEvents = {
         var business_name = row.business_name;
         var accept_code = row.accept_code;
         var policy_code = row.policy_code;
+        var business_date = row.sys_insert_date;
         var username = $("#username").text();
             $.ajax({
                 type: "POST", //用POST方式传输
                 url: HOST + "index.php/Home/PersonDefineFinishWork/updateCsOutDefine", //目标地址.
                 dataType: "json", //数据格式:JSON
-                data: {username: username, accept_code: accept_code, policy_code: policy_code, business_name:business_name},
+                data: {username: username, accept_code: accept_code, policy_code: policy_code, business_name:business_name,business_date:business_date},
                 success: function (result) {
                     if (result.status == 'success') {
                         debugger;
