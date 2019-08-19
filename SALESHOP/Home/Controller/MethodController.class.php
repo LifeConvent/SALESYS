@@ -532,7 +532,9 @@ class MethodController extends Controller
             "BPM-工作流管理平台" => 18,
             "ESB-应用集成平台" => 19,
             "MDM" => 20,
-            "合计" => 21
+            "渠道类" => 21,
+            "其他外围" => 22,
+            "合计" => 23
         );
         return $org;
     }
@@ -556,7 +558,10 @@ class MethodController extends Controller
             "ODS-数据集成平台",
             "BPM-工作流管理平台",
             "ESB-应用集成平台",
-            "MDM","合计"
+            "MDM",
+            "渠道类",
+            "其他外围",
+            "合计"
         );
         return $org;
     }
