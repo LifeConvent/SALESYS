@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- BEGIN META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Olive Enterprise">
+    <!-- END META -->
+
+    <!-- BEGIN SHORTCUT ICON -->
+    <link rel="shortcut icon" href="__PUBLIC__/img/favicon.ico">
+    <!-- END SHORTCUT ICON -->
+    <title>
+        {$TITLE}
+    </title>
+    <!-- BEGIN STYLESHEET-->
+    <link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="__PUBLIC__/css/bootstrap-reset.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="__PUBLIC__/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 -->
+    <link href="__PUBLIC__/css/style.css" rel="stylesheet"><!-- THEME BASIC CSS -->
+    <link href="__PUBLIC__/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
+    <link href="__PUBLIC__/assets/morris.js-0.4.3/morris.css" rel="stylesheet"><!-- MORRIS CHART CSS -->
+    <link href="__PUBLIC__/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/sco.message.css" rel="stylesheet">
+    <!--dashboard calendar-->
+    <link href="__PUBLIC__/css/clndr.css" rel="stylesheet"><!-- CALENDER CSS -->
+    <!--[if lt IE 9]>
+    <script src="__PUBLIC__/js/html5shiv.js">
+    </script>
+    <script src="__PUBLIC__/js/respond.min.js">
+    </script>
+    <![endif]-->
+    <!-- END STYLESHEET-->
+</head>
+<script type="text/javascript">
+    var HOST = "__HOST__";
+</script>
+<body id="body">
+<!-- SECTION -->
+<section id="container">
+
+    <include file="Public/header"/>
+    <include file="Public/aside"/>
+
+    <!-- 主窗体 -->
+    <section id="main-content">
+
+        <!-- 主容器  -->
+        <section class="wrapper">
+
+            <div class="container-fluid" >
+                <section class="panel">
+                    <header class="panel-heading">
+                        <!--<div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>-->
+                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  readonly>选择日期</button></div>
+                        <!--<div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>-->
+                        <div class="tools" style="float:left;margin-left: 10pt">
+                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                <input class="form-control" size="16" type="text" value="" readonly>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
+                            <!--<div style="width:50px;float:left;padding-left: 15px;margin-top: 5px"><strong>至</strong></div>-->
+                            <!--<div style="width:250px;float:left" class="input-group date form_date" id="form_date2" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">-->
+                                <!--<input class="form-control" size="16" type="text" value="" readonly>-->
+                                <!--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>-->
+                                <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                            <!--</div>-->
+                        </div>
+                        <input style="visibility:hidden" id="dtp_input2" value=""/>
+                        <input style="visibility:hidden" id="dtp_input3" value=""/>
+                    </header>
+                    <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
+                        <div>
+                            <input class="form-control" value="保单回执" style="width:70pt;float:left;">
+                            <input class="form-control" value="出单前撤保" style="width:70pt;float:left;margin-left: 5pt">
+                            <input class="form-control" value="完成" style="width:40pt;float:left;margin-left: 5pt">
+                            <input class="form-control" value="未完成" style="width:40pt;float:left;margin-left: 5pt">
+                            <!--<input class="form-control" value="保全核保" style="width:70pt;float:left;margin-left: 5pt">-->
+                            <!--<input class="form-control" value="理赔核保" style="width:70pt;float:left;margin-left: 5pt">-->
+                            <!--<input class="form-control" value="出单前撤保" style="width:80pt;float:left;margin-left: 5pt">-->
+                            <!--<input class="form-control" value="保单回执" style="width:70pt;float:left;margin-left: 5pt">-->
+                        </div>
+                        <table id="daily_report2" style="table-layout: fixed;"></table>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        微信匹配数量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="weixin-num" class="graph">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        课程评价数量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="ce-num" class="graph">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
+                <section class="panel">
+                    <header class="panel-heading">
+                        微信关注量变化趋势
+                    </header>
+                    <div class="panel-body">
+                        <div id="weixin-sub-num" class="graph">
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!--<div class="col-lg-12" style="color:#a560f8">-->
+                <!--<section class="panel">-->
+                    <!--<header class="panel-heading">-->
+                        <!--新增用户数量变化趋势-->
+                    <!--</header>-->
+                    <!--<div class="panel-body">-->
+                        <!--<div id="weixin-new-num" class="graph">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</section>-->
+            <!--</div>-->
+
+        </section>
+        <!-- 主容器  -->
+
+    </section>
+    <!-- 主窗体 -->
+
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">删除自动回复提示</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <span class="left-30 red size-16">删除后将无法恢复！确认要删除自动回复吗？</span>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                    <button class="btn btn-warning" type="button" onclick="deleteSub();">确认</button>
+                </div>
+            </div>
+        </div>
+        <span style="display:none" id="myModalHide"></span>
+    </div>
+
+    <!--<div class="zfb modal fade in">-->
+        <!--<img src="zfb.png"  alt="扫描领红包" />-->
+    <!--</div>-->
+
+    <include file="Public/footer-20"/>
+    <include file="Public/check"/>
+</section>
+<!-- SECTION -->
+
+<script src="__PUBLIC__/js/public/userCheck.js"></script>
+<!-- JS -->
+<script src="__PUBLIC__/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
+<script src="__PUBLIC__/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
+<script src="__PUBLIC__/js/jquery.dcjqaccordion.2.7.js"></script><!-- 左侧子菜单栏显示 -->
+<script src="__PUBLIC__/js/jquery.scrollTo.min.js"></script><!-- SCROLLTO JS -->
+<script src="__PUBLIC__/js/jquery.nicescroll.js"></script><!-- NICESCROLL JS -->
+<script src="__PUBLIC__/js/respond.min.js"></script><!-- RESPOND JS -->
+<script src="__PUBLIC__/js/jquery.sparkline.js"></script><!-- SPARKLINE JS -->
+<script src="__PUBLIC__/js/sparkline-chart.js"></script><!-- SPARKLINE CHART JS -->
+<script src="__PUBLIC__/js/common-scripts.js"></script><!-- BASIC COMMON JS -->
+<script src="__PUBLIC__/js/bootstrap-table.min.js"></script><!-- SPARKLINE CHART JS -->
+<script src="__PUBLIC__/js/bootstrap-table-zh-CN.min.js"></script><!-- BASIC COMMON JS -->
+<script src="__PUBLIC__/js/sco.message.js" type="text/javascript"></script>
+<!--统计框Morris-->
+<script src="__PUBLIC__/assets/morris.js-0.4.3/morris.min.js"></script><!-- MORRIS JS -->
+<script src="__PUBLIC__/assets/morris.js-0.4.3/raphael-min.js"></script><!-- MORRIS  JS -->
+<script src="__PUBLIC__/js/chart.js"></script><!-- CHART JS -->
+
+<script src="__PUBLIC__/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="__PUBLIC__/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<!--自定义-->
+<!--<script src="__PUBLIC__/js/Home/count.js"></script>-->
+<!--<script src="__PUBLIC__/js/Home/get-time.js"></script>-->
+<!--<script src="__PUBLIC__/js/Home/charts-home.js"></script>-->
+<script src="__PUBLIC__/js/BxWorkDefine/nbDefine.js"></script>
+<script src="__PUBLIC__/js/public/userCheck.js"></script>
+
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/locale/bootstrap-table-zh-CN.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/extensions/export/bootstrap-table-export.js"></script>
+
+<script src="__PUBLIC__/js/bootstrap_above/tableExport/libs/pdfmake/pdfmake.min.js"></script>
+<script src="__PUBLIC__/js/bootstrap_above/tableExport/libs/pdfmake/vfs_fonts.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/FileSaver/FileSaver.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/jsPDF/jspdf.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/tableExport.js"></script>
+<script>
+
+</script>
+<!-- JS -->
+
+</body>
+</html>
+
+

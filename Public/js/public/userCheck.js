@@ -116,6 +116,7 @@ $(function () {
     control_list.put("5.9", "data_cap_nb_no_arrive");
     control_list.put("5.A", "data_cap_cs_back");
     control_list.put("5.B", "data_ct_pt");
+    control_list.put("5.C", "chat_dz_define");
     control_list.put("6", "data_control");
     control_list.put("7", "list_nb");
     control_list.put("7.1", "nb_post_table_stream");
@@ -185,6 +186,7 @@ $(function () {
     list_name.push("cap_define_pa");
     list_name.push("scan_menu");
     list_name.push("data_ct_pt");
+    list_name.push("chat_dz_define");
 
 
 // <!--当日日报-this_daypost-1
