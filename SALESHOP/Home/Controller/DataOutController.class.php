@@ -579,8 +579,8 @@ class DataOutController extends Controller
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
-        /*********************************************           添加机构后删除          *********************************************/
-        $where_type_fix = "";
+//        /*********************************************           添加机构后删除          *********************************************/
+//        $where_type_fix = "";
         $select_bqsl = "SELECT POLICY_CODE,
                                PRODUCT_CODE,
                                APPLY_CODE,
