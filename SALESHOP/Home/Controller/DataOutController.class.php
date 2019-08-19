@@ -353,8 +353,8 @@ class DataOutController extends Controller
             $value = $bqsl_result_time[$i];
             $result[$i]['INSERT_TIME'] = $value['INSERT_TIME'];
             $result[$i]['SERVICE_NAME'] = $value['SERVICE_NAME'];
-            $result[$i]['APPLY_CODE'] = $value['APPLY_CODE'];
-            $result[$i]['POLICY_CODE'] = $value['POLICY_CODE'];
+            $result[$i]['APPLY_CODE'] = "'".$value['APPLY_CODE'];
+            $result[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
             $result[$i]['CUSTOMER_NAME'] = $value['CUSTOMER_NAME'];
             $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
             $result[$i]['APPLY_DATE'] = $value['APPLY_DATE'];
