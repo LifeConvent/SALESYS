@@ -626,9 +626,9 @@ class DayPostController extends Controller
         $organCode = $method->getUserOrganCode();
         $day_post_organ = $method->getSxDaypostOrgan($user_name);
         if (!empty($queryDateStart)) {
-            $where_time_bqsl = " ORGAN_CODE LIKE '".$day_post_organ."%' AND INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            $where_time_bqsl = " AND ORGAN_CODE LIKE '".$day_post_organ."%' AND INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
         } else {
-            $where_time_bqsl = " ORGAN_CODE LIKE '".$day_post_organ."%' AND INSERT_DATE = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " AND ORGAN_CODE LIKE '".$day_post_organ."%' AND INSERT_DATE = TRUNC(SYSDATE) ";
         }
         $dictIndex = $method->getDictIndex($day_post_organ);
         $DictArry = $method->getDictArry($day_post_organ);
@@ -641,6 +641,7 @@ class DayPostController extends Controller
         $select_bqsl = "SELECT * FROM TMP_SX_ALL_DAYPOST 
                                  WHERE 1=1 ".$where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        Log::write($user_name . ' 数据库查询SQL：' . $select_bqsl, 'INFO');
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
