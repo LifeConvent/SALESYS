@@ -116,6 +116,10 @@ var TableInit = function () {
                 return '搜索';
             },
             columns: [{
+                checkbox: true,
+                align: 'center',
+                valign: 'middle'
+            },{
                 field: 'ID',
                 sortable: true,
                 align: 'center',
@@ -367,4 +371,46 @@ function actionFormatter_business(value, row, index) {
 window.actionEvents_business = {
     'click .modify': function (e, value, row, index) {
     }
+};
+
+
+function exedefine(){
+    debugger;
+    $result = $('#daily_report2').bootstrapTable('getAllSelections');
+    // if ($result[0] != null) {
+    //     $.scojs_message('删除全部将会丢失所有数据，请等待开发！', $.scojs_message.TYPE_ERROR);
+    // }
+    var data = JSON.stringify($result);
+    // alert(data);
+    // $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbCb?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+
+    var username = $("#username").text();
+    $.ajax({
+        type: "POST", //用POST方式传输
+        url: HOST + "index.php/Home/PersonDefineFinishWork/exeUpdateCsDefine", //目标地址.
+        dataType: "json", //数据格式:JSON
+        data: {data: data,username:username},
+        success: function (result) {
+            if (result.status == 'success') {
+                debugger;
+                //单行刷新数据
+                // var sysDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1) +'-'+new Date().getDate();
+                // $('#daily_report2').bootstrapTable('updateRow', {index: index, row: data});
+                // $("#tc"+index).disabled = true;//BUG号
+                // $("#des"+index).disabled = true;//存在问题
+                $.scojs_message(result.message, $.scojs_message.TYPE_OK);
+            } else if (result.status == 'failed') {
+                debugger;
+                $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                if(result.lock == 'true'){
+                    window.location.href = HOST + "index.php/Home/Index/index";
+                }
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest);
+            alert(textStatus);
+            alert(errorThrown);
+        }
+    });
 };
