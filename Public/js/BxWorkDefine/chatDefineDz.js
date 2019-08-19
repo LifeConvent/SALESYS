@@ -4,9 +4,9 @@
 
 $(function () {
 
-    $('#chat_define').attr('class','active');
-    $('#chat_define_list').css('display','block');
-    $('#chat_define_dz').attr('class','active');
+    $('#home').attr('class','active');
+    $('#data_ub').css('display','block');
+    $('#chat_dz_define').attr('class','active');
 
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
