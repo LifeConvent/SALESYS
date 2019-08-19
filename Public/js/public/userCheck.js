@@ -137,6 +137,7 @@ $(function () {
     control_list.put("A.2", "cap_define_nb");
     control_list.put("A.3", "cap_define_clm");
     control_list.put("A.4", "cap_define_pa");
+    control_list.put("B", "scan_menu");
 
     var list_name = new Array();
     list_name.push("this_daypost");
@@ -181,6 +182,7 @@ $(function () {
     list_name.push("cap_define_nb");
     list_name.push("cap_define_clm");
     list_name.push("cap_define_pa");
+    list_name.push("scan_menu");
 
 
 // <!--当日日报-this_daypost-1

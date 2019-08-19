@@ -1087,6 +1087,97 @@ class DataOutController extends Controller
         }
     }
 
+    public function getScanList(){
+        $queryDateStart = I('get.queryDateStart');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+        } else {
+            $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND CASE_ORGAN LIKE '".$organCode[$user_name]."%'";
+//            $channel_type = $method->getChannelTypeBySql($user_name);
+//            if((int)$channel_type==2){
+//                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+//            }
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        $where_time_bqsl = " AND TRUNC(SCAN_TIME) >= TO_DATE('2019-08-01 00:00:00', 'yyyy-MM-dd hh24:mi:ss')";
+        $select_bqsl = "SELECT BUSS_CLASS,--                AS 业务类别,
+                                   IMAGE_SCAN_ID,--       AS 影像扫描ID,
+                                   SCAN_BATCH_NO,--         AS 扫描批次号,
+                                   POLICY_CODE,--        AS 保单号,
+                                   BILLCARD_NO,--         AS 投保单号或保单号或通知书号,
+                                   BUSS_CODE,--           AS 业务号码, 
+                                   ACCEPT_CODE,--                      AS 保全受理号,
+                                   SERVICE_NAME,--                     AS 保全项名称,
+                                   CASE_NO,--                     AS 赔案号,
+                                   TO_CHAR(CASE_TIME,'YYYY-MM-DD HH24:MI:SS') AS CASE_TIME,--                    AS 立案时间,
+                                   CASE_USER,--                     AS 签收人代码,
+                                   CASE_USER_NAME,--                     AS 签收人姓名,
+                                   CASE_ORGAN,--                     AS 签收机构,
+                                   BILLCARD_CODE,--       AS 扫描单证类型,
+                                   CARD_NAME,-- AS 扫描单证名称,
+                                   PAGES,--               AS 扫描页数,
+                                   TO_CHAR(SCAN_TIME,'YYYY-MM-DD HH24:MI:SS') AS SCAN_TIME,--           AS 扫描日期,
+                                   SCAN_USER_CODE,--      AS 扫描用户代码,
+                                   REAL_NAME,--           AS 扫描用户,
+                                   STATUS_DESC,--        AS 扫描状态,
+                                   HOLDER_NAME,--        AS 投保人姓名,
+                                   INSURED_NAME--      AS 被保人姓名
+                              FROM TMP_QDSX_QD_SM
+                             WHERE 1=1".$where_time_bqsl.$where_type_fix;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['BUSS_CLASS'] = $value['BUSS_CLASS'];
+            $result[$i]['IMAGE_SCAN_ID'] = $value['IMAGE_SCAN_ID'];
+            $result[$i]['SCAN_BATCH_NO'] = "'".$value['SCAN_BATCH_NO'];
+            $result[$i]['POLICY_CODE'] = $value['POLICY_CODE'];
+            $result[$i]['BILLCARD_NO'] = $value['BILLCARD_NO'];
+            $result[$i]['BUSS_CODE'] = $value['BUSS_CODE'];
+            $result[$i]['ACCEPT_CODE'] = $value['ACCEPT_CODE'];
+            #$result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
+            $result[$i]['SERVICE_NAME'] = $value['SERVICE_NAME'];
+            $result[$i]['CASE_NO'] = $value['CASE_NO'];
+            $result[$i]['CASE_TIME'] = $value['CASE_TIME'];
+            $result[$i]['CASE_USER'] = $value['CASE_USER'];
+            $result[$i]['CASE_USER_NAME'] = $value['CASE_USER_NAME'];
+            $result[$i]['CASE_ORGAN'] = $value['CASE_ORGAN'];
+            $result[$i]['BILLCARD_CODE'] = $value['BILLCARD_CODE'];
+            $result[$i]['CARD_NAME'] = $value['CARD_NAME'];
+            $result[$i]['PAGES'] = $value['PAGES'];
+            $result[$i]['SCAN_TIME'] = $value['SCAN_TIME'];
+            $result[$i]['SCAN_USER_CODE'] = $value['SCAN_USER_CODE'];
+            $result[$i]['REAL_NAME'] = $value['REAL_NAME'];
+            $result[$i]['STATUS_DESC'] = $value['STATUS_DESC'];
+            $result[$i]['HOLDER_NAME'] = $value['HOLDER_NAME'];
+            $result[$i]['INSURED_NAME'] = $value['INSURED_NAME'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
     public function getCsOutCt(){
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
