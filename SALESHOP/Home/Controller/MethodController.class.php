@@ -2249,7 +2249,7 @@ class MethodController extends Controller
 //        $tc_fix = $this->getTcFix();
         $queryTc = "select bt.bug_new_id as tc_id,
                                     ut.username as tc_user_name,
-                                    cfvt.value18 AS business_code,
+                                    TRIM(cfvt.value18) AS business_code,
                                     bt.date_submitted as create_date,
                                     cfvt.value21 as description,
                                     bt.status as status,
