@@ -1702,6 +1702,9 @@ class PersonDefineFinishWorkController extends Controller
         $node_result = $method->search_long($result_rows);
         Log::write($user_name . ' 业务节点：' . $business_name, 'INFO');
         $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '" . $accept_code . "' AND BUSINESS_NODE = '" . $node_result[0]['BUSINESS_NODE'] . "' AND BUSINESS_DATE = TO_DATE('" . $insert_date . "','YYYY-MM-DD') ";
+        if(strcmp($node_result[0]['BUSINESS_NODE'],'BQSL')==0||strcmp($node_result[0]['BUSINESS_NODE'],'BQFH')==0||strcmp($node_result[0]['BUSINESS_NODE'],'LPZH')==0||strcmp($node_result[0]['BUSINESS_NODE'],'LPSH')==0){
+            $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE POLICY_CODE = '" . $policy_code . "' AND BUSINESS_CODE = '" . $accept_code . "' AND BUSINESS_NODE = '" . $node_result[0]['BUSINESS_NODE'] . "' AND BUSINESS_DATE = TO_DATE('" . $insert_date . "','YYYY-MM-DD') ";
+        }
         ############################################################################################################################################################
         $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
         $select_result = $method->search_long($result_rows1);
@@ -1879,6 +1882,10 @@ class PersonDefineFinishWorkController extends Controller
         Log::write($user_name . ' 业务节点：' . $business_name, 'INFO');
         $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '" . $accept_code . "' AND BUSINESS_NODE = '" . $node_result[0]['BUSINESS_NODE'] . "' AND BUSINESS_DATE = TO_DATE('" . $insert_date . "','YYYY-MM-DD') ";
         ############################################################################################################################################################
+        if(strcmp($node_result[0]['BUSINESS_NODE'],'LPSH')==0||strcmp($node_result[0]['BUSINESS_NODE'],'LPZH')==0){
+            $select = "SELECT HD_USER_NAME FROM TMP_QDSX_DAYPOST_DESCRIPTION WHERE POLICY_CODE = '" . $policy_code . "' AND BUSINESS_CODE = '" . $accept_code . "' AND BUSINESS_NODE = '" . $node_result[0]['BUSINESS_NODE'] . "' AND BUSINESS_DATE = TO_DATE('" . $insert_date . "','YYYY-MM-DD') ";
+        }
+
         $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
         $select_result = $method->search_long($result_rows1);
         if (!empty($select_result[0]['HD_USER_NAME'])) {
