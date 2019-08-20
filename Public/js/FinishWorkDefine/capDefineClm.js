@@ -352,7 +352,7 @@ window.actionEvents = {
                 type: "POST", //用POST方式传输
                 url: HOST + "index.php/Home/PersonDefineFinishWork/updateCapDefineCs", //目标地址.
                 dataType: "json", //数据格式:JSON
-                data: {result: "正确",username: username, business_code: unit_number, link_business:business_code,policy_code: policy_code, business_name:business_name,insert_date:insert_date},
+                data: {result: "正确",username: username, business_code: unit_number, link_business:'',policy_code: policy_code, business_name:business_name,insert_date:insert_date},
                 success: function (result) {
                     if (result.status == 'success') {
                         debugger;
