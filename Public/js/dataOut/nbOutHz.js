@@ -194,3 +194,26 @@ var TableInit = function () {
 
     return oTableInit;
 };
+
+function refreshTable(){
+    // $result = $('#table_user').bootstrapTable('getAllSelections');
+    // if ($result[0] != null) {
+    //     $.scojs_message('删除全部将会丢失所有数据，请等待开发！', $.scojs_message.TYPE_ERROR);
+    // }
+    // var service_code = $("#service_code").val();
+    var policy_code = $("#policy_code").val();
+    var apply_channel = $("#apply_channel").val();
+    // alert(busi_type);
+    var fix = '';
+    // if(service_code!=''&&service_code!=null){
+    //     fix += '&service_code='+service_code;
+    // }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(apply_channel!=''&&apply_channel!=null){
+        fix += '&apply_channel='+apply_channel;
+    }
+    $('#daily_report2').bootstrapTable('removeAll');
+    $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbHz?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
+};

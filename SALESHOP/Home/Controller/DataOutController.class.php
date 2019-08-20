@@ -329,13 +329,13 @@ class DataOutController extends Controller
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
         if(!empty($service_code)){
-            $where_type_fix .= " AND SERVICE_NAME = '".$service_code."'";
+            $where_type_fix .= " AND SERVICE_NAME LIKE '%".$service_code."'%";
         }
         if(!empty($policy_code)){
             $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
         }
         if(!empty($apply_channel)){
-            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '".$apply_channel."%'";
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
         }
         $select_bqsl = "SELECT DISTINCT
                            TO_CHAR(INSERT_TIME,'YYYY-MM-DD HH24:MI:SS') AS INSERT_TIME,--             AS 退保时间,
@@ -947,10 +947,16 @@ class DataOutController extends Controller
 
     public function getNbHz(){
         $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $policy_code = I('get.policy_code');
+        $apply_channel = I('get.apply_channel');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
         } else {
             $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) = TRUNC(SYSDATE) ";
         }
@@ -964,6 +970,15 @@ class DataOutController extends Controller
             $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+//        if(!empty($busi_type)){
+//            $where_type_fix .= " AND BUSS_CLASS = '".$busi_type."'";
+//        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND POLICY_CODE = '".$policy_code."'";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
         }
         $select_bqsl = "SELECT POLICY_CODE,
                                CUSTOMER_NAME,
@@ -1096,6 +1111,12 @@ class DataOutController extends Controller
 
     public function getNbCb(){
         $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $apply_status = I('get.apply_status');
+        $policy_code = I('get.policy_code');
+        $apply_channel = I('get.apply_channel');
+        $apply_type = I('get.apply_type');
+        $apply_date = I('get.apply_date');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
@@ -1117,6 +1138,21 @@ class DataOutController extends Controller
             }
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(!empty($apply_status)){
+            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        }
+        if(!empty($apply_type)){
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%".$apply_type."%'";
+        }
+        if(!empty($apply_date)){
+            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
         }
         $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                ORGAN_CODE,
