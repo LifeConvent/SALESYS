@@ -329,7 +329,7 @@ class DataOutController extends Controller
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
         if(!empty($service_code)){
-            $where_type_fix .= " AND SERVICE_NAME LIKE '%".$service_code."'%";
+            $where_type_fix .= " AND SERVICE_NAME LIKE '%".$service_code."%'";
         }
         if(!empty($policy_code)){
             $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
@@ -346,7 +346,7 @@ class DataOutController extends Controller
                            ORGAN_CODE,--            AS 管理机构,--管理机构
                            TO_CHAR(APPLY_DATE,'YYYY-MM-DD HH24:MI:SS') AS APPLY_DATE,--            AS 投保日期,
                            TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,--            AS 承保日期,
-                           PRODUCT_CODE,--         AS 险种代码,--险种代码
+                           BUSI_PROD_CODE AS PRODUCT_CODE,--         AS 险种代码,--险种代码
                            PRODUCT_NAME_SYS,--       AS 险种名称,
                            CHARGE_YEAR,--           AS 缴费年期,
                            COVERAGE_DESC,--          AS 保障年期类型,
