@@ -80,12 +80,16 @@
                     </div>
                     <div class="col-sm-12" style="padding-top:10pt;">
                         <div class="col-sm-3">
-                            <span class="red">*</span><span><strong>业务类型: 保全...</strong></span>
+                            <span class="red">*</span><span><strong>业务类型: 保全/理赔/契约</strong></span>
                             <input type="text" class="form-control add_user" id="busi_type" placeholder="请输入业务类型">
                         </div>
                         <div class="col-sm-3">
-                            <span class="red">*</span><span><strong>用户密码: user...</strong></span>
-                            <input type="text" class="form-control add_user" id="user_pass" placeholder="请输入用户密码">
+                            <span class="red">*</span><span><strong>保单号:</strong></span>
+                            <input type="text" class="form-control add_user" id="policy_code" placeholder="请输入保单号">
+                        </div>
+                        <div class="col-sm-3">
+                            <span class="red">*</span><span><strong>业务号码:</strong></span>
+                            <input type="text" class="form-control add_user" id="busi_code" placeholder="请输入业务号码">
                         </div>
                         <!--<div class="col-sm-3">-->
                             <!--<span class="red">*</span><span><strong>用户类型: 1-管理员/2-机构组长/3-操作员</strong></span>-->
@@ -128,8 +132,7 @@
                         <!--&lt;!&ndash;<div class="col-sm-3"><span class="red">*</span><span><strong>作业范围: 柜面操作/技术支持...</strong></span><input type="text" class="form-control" id="buss_area" placeholder="请输入作业范围"></div>&ndash;&gt;-->
                     <!--</div>-->
                     <div class="col-sm-6" style="margin-top:10pt;margin-left:23.5%">
-                        <button type="button" id="new_user" class="btn btn-primary col-sm-12 getresult"
-                                style="margin-left: 10pt">查询
+                        <button type="button" id="new_user" class="btn btn-primary col-sm-12" style="margin-left: 10pt" onclick="refreshTable();">查询
                         </button>
                     </div>
                 </div>
@@ -192,20 +195,14 @@
 <!--<script src="__PUBLIC__/js/Home/charts-home.js"></script>-->
 <script src="__PUBLIC__/js/dataOut/scanList.js"></script>
 <script src="__PUBLIC__/js/public/userCheck.js"></script>
-
-<script type="text/javascript"
-        src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/bootstrap-table.js"></script>
-<script type="text/javascript"
-        src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/locale/bootstrap-table-zh-CN.js"></script>
-<script type="text/javascript"
-        src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/extensions/export/bootstrap-table-export.js"></script>
-
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/locale/bootstrap-table-zh-CN.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/extensions/export/bootstrap-table-export.js"></script>
 <script src="__PUBLIC__/js/bootstrap_above/tableExport/libs/pdfmake/pdfmake.min.js"></script>
 <script src="__PUBLIC__/js/bootstrap_above/tableExport/libs/pdfmake/vfs_fonts.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/FileSaver/FileSaver.min.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/jsPDF/jspdf.min.js"></script>
-<script type="text/javascript"
-        src="__PUBLIC__/js/bootstrap_above/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/tableExport.js"></script>
 <script>
 

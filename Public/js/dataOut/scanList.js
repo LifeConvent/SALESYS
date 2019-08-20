@@ -322,12 +322,25 @@ var TableInit = function () {
 };
 
 
-// $('#getresult').click(function () {
-//     // $result = $('#table_user').bootstrapTable('getAllSelections');
-//     // if ($result[0] != null) {
-//     //     $.scojs_message('删除全部将会丢失所有数据，请等待开发！', $.scojs_message.TYPE_ERROR);
-//     // }
-//
-//     $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbCb?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
-//
-// });
+function refreshTable(){
+    // $result = $('#table_user').bootstrapTable('getAllSelections');
+    // if ($result[0] != null) {
+    //     $.scojs_message('删除全部将会丢失所有数据，请等待开发！', $.scojs_message.TYPE_ERROR);
+    // }
+    var busi_type = $("#busi_type").val();
+    var policy_code = $("#policy_code").val();
+    var busi_code = $("#busi_code").val();
+    alert(busi_type);
+    var fix = '';
+    if(busi_type!=''&&busi_type!=null){
+        fix += '&busi_type='+busi_type;
+    }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(busi_code!=''&&busi_code!=null){
+        fix += '&busi_code='+busi_code;
+    }
+    $('#daily_report2').bootstrapTable('removeAll');
+    $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getScanList?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
+};

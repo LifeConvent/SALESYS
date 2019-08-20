@@ -303,10 +303,17 @@ class DataOutController extends Controller
 
     public function getOutCtPt(){
         $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $service_code = I('get.service_code');
+        $policy_code = I('get.policy_code');
+        $apply_channel = I('get.apply_channel');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
         } else {
             $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) = TRUNC(SYSDATE) ";
         }
@@ -320,6 +327,15 @@ class DataOutController extends Controller
             $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(!empty($service_code)){
+            $where_type_fix .= " AND SERVICE_NAME = '".$service_code."'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '".$apply_channel."%'";
         }
         $select_bqsl = "SELECT DISTINCT
                            TO_CHAR(INSERT_TIME,'YYYY-MM-DD HH24:MI:SS') AS INSERT_TIME,--             AS 退保时间,
@@ -348,7 +364,7 @@ class DataOutController extends Controller
                      WHERE 1=1".$where_type_fix.$where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write($user_name . ' 数据库查询SQL：' . $select_bqsl, 'INFO');
+        Log::write($user_name . ' 退减保清单SQL：' . $select_bqsl, 'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['INSERT_TIME'] = $value['INSERT_TIME'];
@@ -1192,12 +1208,19 @@ class DataOutController extends Controller
 
     public function getScanList(){
         $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $busi_type = I('get.busi_type');
+        $policy_code = I('get.policy_code');
+        $busi_code = I('get.busi_code');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
-            $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            $where_time_bqsl = " AND TRUNC(SCAN_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(SCAN_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
         } else {
-            $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " AND TRUNC(SCAN_TIME) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
@@ -1214,7 +1237,16 @@ class DataOutController extends Controller
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
-        $where_time_bqsl = " AND TRUNC(SCAN_TIME) >= TO_DATE('2019-08-01 00:00:00', 'yyyy-MM-dd hh24:mi:ss')";
+        if(!empty($busi_type)){
+            $where_type_fix .= " AND BUSS_CLASS = '".$busi_type."'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND POLICY_CODE = '".$policy_code."'";
+        }
+        if(!empty($busi_code)){
+            $where_type_fix .= " AND BUSS_CODE = '".$busi_code."'";
+        }
+//        $where_time_bqsl = " AND TRUNC(SCAN_TIME) >= TO_DATE('2019-08-01 00:00:00', 'yyyy-MM-dd hh24:mi:ss')";
         $select_bqsl = "SELECT BUSS_CLASS,--                AS 业务类别,
                                    IMAGE_SCAN_ID,--       AS 影像扫描ID,
                                    SCAN_BATCH_NO,--         AS 扫描批次号,
@@ -1241,7 +1273,7 @@ class DataOutController extends Controller
                              WHERE 1=1".$where_time_bqsl.$where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
+        Log::write($user_name.'新契约扫描清单 数据库查询SQL：'.$select_bqsl,'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['BUSS_CLASS'] = $value['BUSS_CLASS'];
@@ -1287,6 +1319,9 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND SYS_INSERT_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
         } else {
             $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
