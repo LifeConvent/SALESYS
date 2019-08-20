@@ -91,7 +91,7 @@ var TableInit = function () {
             columns : [
                 [{
                     title :  '核保当日作业核对情况',
-                    colspan: 10,
+                    colspan: 13,
                     align : 'center'
                 }],
                 [{
@@ -110,12 +110,11 @@ var TableInit = function () {
                     title : '保全',
                     colspan: 3,
                     align : 'center'
+                },{
+                    title : '理赔',
+                    colspan: 3,
+                    align : 'center'
                 }
-                // ,{
-                //     title : '理赔',
-                //     colspan: 3,
-                //     align : 'center'
-                // }
                 ],[{
                     field : 'org',
                     title : '地区',
@@ -156,20 +155,19 @@ var TableInit = function () {
                     field : 'CS_ACCURACY',
                     title : '正确率',
                     align : 'center'
+                },{
+                    field : 'CLM_CHECK_SUM',
+                    title : '核对量',
+                    align : 'center'
+                },{
+                    field : 'CLM_BUG_SUM',
+                    title : '问题单数量',
+                    align : 'center'
+                },{
+                    field : 'CLM_ACCURACY',
+                    title : '正确率',
+                    align : 'center'
                 }
-                // ,{
-                //     field : 'CLM_CHECK_SUM',
-                //     title : '核对量',
-                //     align : 'center'
-                // },{
-                //     field : 'CLM_BUG_SUM',
-                //     title : '问题单数量',
-                //     align : 'center'
-                // },{
-                //     field : 'CLM_ACCURACY',
-                //     title : '正确率',
-                //     align : 'center'
-                // }
                 ]]
         });
     };
