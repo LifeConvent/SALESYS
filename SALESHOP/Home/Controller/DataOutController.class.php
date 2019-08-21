@@ -1430,7 +1430,7 @@ class DataOutController extends Controller
                 $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
         } else {
-            $where_time_bqsl = " AND SYS_INSERT_DATE-1 = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
