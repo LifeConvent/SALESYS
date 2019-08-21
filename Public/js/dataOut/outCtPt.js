@@ -308,3 +308,30 @@ function refreshTable(){
     $('#daily_report2').bootstrapTable('removeAll');
     $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getOutCtPt?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
 };
+
+
+function exportExcelByTime() {
+    var policy_code = $("#policy_code").val();
+    var apply_status = $("#apply_status").val();
+    var apply_channel = $("#apply_channel").val();
+    var apply_type = $("#apply_type").val();
+    var apply_date = $('#dtp_input4').val();//投保日期
+    // alert(busi_type);
+    var fix = '';
+    if(apply_status!=''&&apply_status!=null){
+        fix += '&apply_status='+apply_status;
+    }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(apply_channel!=''&&apply_channel!=null){
+        fix += '&apply_channel='+apply_channel;
+    }
+    if(apply_type!=''&&apply_type!=null){
+        fix += '&apply_type='+apply_type;
+    }
+    if(apply_date!=''&&apply_date!=null){
+        fix += '&apply_date='+apply_date;
+    }
+    window.location.href = HOST + "index.php/Home/DataOut/expCtPtByTime?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix;
+}

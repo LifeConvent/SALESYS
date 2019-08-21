@@ -1780,4 +1780,127 @@ class DataOutController extends Controller
         }
         $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
+
+    public function expCtPtByTime()
+    {//导出Excel
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $service_code = I('get.service_code');
+        $policy_code = I('get.policy_code');
+        $apply_channel = I('get.apply_channel');
+        $xlsName = "减退保清单";
+        $xlsTitle = "减退保清单";
+        $xlsCell = array( //设置字段名和列名的映射
+            array('INSERT_TIME', '退保时间'),
+            array('SERVICE_NAME', '保全项'),
+            array('APPLY_CODE', '投保单号'),
+            array('POLICY_CODE', '保单号'),
+            array('CUSTOMER_NAME', '投保人姓名'),
+            array('ORGAN_CODE', '管理机构'),
+            array('APPLY_DATE', '投保日期'),
+            array('ISSUE_DATE', '承保日期'),
+            array('PRODUCT_CODE', '险种代码'),
+            array('PRODUCT_NAME_SYS', '险种名称'),
+            array('CHARGE_YEAR', '缴费年期'),
+            array('COVERAGE_DESC', '保障年期类型'),
+            array('COVERAGE_YEAR', '保障年期'),
+            array('TOTAL_PREM_AF', '保费'),
+            array('SURRENDER_AMOUNT', '正常退保金额'),
+            array('ADJUST_FEE_AMOUNT', '调整后解约退费'),
+            array('FEE_AMOUNT', '补退费金额'),
+            array('SALES_CHANNEL_NAME', '投保渠道'),
+            array('SERVICE_BANK_BRANCH', '银代银行网点代码'),
+            array('BANK_BRANCH_NAME', '银代银行网点名称'),
+            array('AGENT_CODE', '业务员代码'),
+            array('AGENT_NAME', '业务员姓名')
+        );
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(!empty($service_code)){
+            $where_type_fix .= " AND SERVICE_NAME LIKE '%".$service_code."%'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        }
+        $select_bqsl = "SELECT DISTINCT
+                           TO_CHAR(INSERT_TIME,'YYYY-MM-DD HH24:MI:SS') AS INSERT_TIME,--             AS 退保时间,
+                           SERVICE_NAME,--             AS 保全项,
+                           APPLY_CODE,--            AS 投保单号,--投保单号
+                           POLICY_CODE,--           AS 保单号,--保单号
+                           CUSTOMER_NAME,--          AS 投保人姓名,
+                           ORGAN_CODE,--            AS 管理机构,--管理机构
+                           TO_CHAR(APPLY_DATE,'YYYY-MM-DD HH24:MI:SS') AS APPLY_DATE,--            AS 投保日期,
+                           TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,--            AS 承保日期,
+                           BUSI_PROD_CODE AS PRODUCT_CODE,--         AS 险种代码,--险种代码
+                           PRODUCT_NAME_SYS,--       AS 险种名称,
+                           CHARGE_YEAR,--           AS 缴费年期,
+                           COVERAGE_DESC,--          AS 保障年期类型,
+                           COVERAGE_YEAR,--         AS 保障年期,
+                           TOTAL_PREM_AF,-- AS 保费,
+                           SURRENDER_AMOUNT,--         AS 正常退保金额,
+                           ADJUST_FEE_AMOUNT,--        AS 调整后解约退费,
+                           FEE_AMOUNT,--               AS 补退费金额,
+                           SALES_CHANNEL_NAME,--      AS 投保渠道,
+                           SERVICE_BANK_BRANCH,--   AS 银代银行网点代码,
+                           BANK_BRANCH_NAME,--       AS 银代银行网点名称,
+                           AGENT_CODE,--             AS 业务员代码,
+                           AGENT_NAME--             AS 业务员姓名
+                      FROM TMP_SX_TJB_JX TJB
+                     WHERE 1=1".$where_type_fix.$where_time_bqsl;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        Log::write($user_name . ' 退减保清单SQL：' . $select_bqsl, 'INFO');
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['INSERT_TIME'] = $value['INSERT_TIME'];
+            $result[$i]['SERVICE_NAME'] = $value['SERVICE_NAME'];
+            $result[$i]['APPLY_CODE'] = "'".$value['APPLY_CODE'];
+            $result[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
+            $result[$i]['CUSTOMER_NAME'] = $value['CUSTOMER_NAME'];
+            $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
+            $result[$i]['APPLY_DATE'] = $value['APPLY_DATE'];
+            $result[$i]['ISSUE_DATE'] = $value['ISSUE_DATE'];
+            $result[$i]['PRODUCT_CODE'] = $value['PRODUCT_CODE'];
+            $result[$i]['PRODUCT_NAME_SYS'] = $value['PRODUCT_NAME_SYS'];
+            $result[$i]['CHARGE_YEAR'] = $value['CHARGE_YEAR'];
+            $result[$i]['COVERAGE_DESC'] = $value['COVERAGE_DESC'];
+            $result[$i]['COVERAGE_YEAR'] = $value['COVERAGE_YEAR'];
+            $result[$i]['TOTAL_PREM_AF'] = $value['TOTAL_PREM_AF'];
+            $result[$i]['SURRENDER_AMOUNT'] = $value['SURRENDER_AMOUNT'];
+            $result[$i]['ADJUST_FEE_AMOUNT'] = $value['ADJUST_FEE_AMOUNT'];
+            $result[$i]['FEE_AMOUNT'] = $value['FEE_AMOUNT'];
+            $result[$i]['SALES_CHANNEL_NAME'] = $value['SALES_CHANNEL_NAME'];
+            $result[$i]['SERVICE_BANK_BRANCH'] = $value['SERVICE_BANK_BRANCH'];
+            $result[$i]['BANK_BRANCH_NAME'] = $value['BANK_BRANCH_NAME'];
+            $result[$i]['AGENT_CODE'] = $value['AGENT_CODE'];
+            $result[$i]['AGENT_NAME'] = $value['AGENT_NAME'];
+        }
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
+    }
+
 }

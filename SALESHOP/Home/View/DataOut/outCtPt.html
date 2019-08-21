@@ -99,9 +99,15 @@
                         <!--<input type="text" class="form-control add_user" id="user_organ_code" placeholder="请输入作业机构代码">-->
                         <!--</div>-->
                     </div>
-                    <div class="col-sm-6" style="margin-top:10pt;margin-left:23.5%">
-                        <button type="button" id="new_user" class="btn btn-primary col-sm-12" style="margin-left: 10pt" onclick="refreshTable();">查询
-                        </button>
+                    <div style="margin-top: 40pt">
+                        <div class="col-sm-6" style="margin-top:10pt;margin-left:10%;float: left ">
+                            <button type="button" class="btn btn-success  col-sm-3 exportreport" style="float:left;margin-left: 10pt"   onclick="exportExcelByTime();">导出查询结果
+                            </button>
+                        </div>
+                        <div class="col-sm-6" style="margin-top:-23pt;margin-left:30%;float: left">
+                            <button type="button" id="new_user" class="btn btn-primary col-sm-9" style="margin-left: 10pt" onclick="refreshTable();">查询
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
