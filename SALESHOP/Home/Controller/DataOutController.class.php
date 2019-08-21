@@ -1903,4 +1903,84 @@ class DataOutController extends Controller
         $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
+    public function expNbHz()
+    {//导出Excel
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $policy_code = I('get.policy_code');
+        $apply_channel = I('get.apply_channel');
+        $xlsName = "回执核销清单";
+        $xlsTitle = "回执核销清单";
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+//        if(!empty($busi_type)){
+//            $where_type_fix .= " AND BUSS_CLASS = '".$busi_type."'";
+//        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND POLICY_CODE = '".$policy_code."'";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        }
+        $xlsCell = array( //设置字段名和列名的映射
+            array('POLICY_CODE', '保单号'),
+            array('CUSTOMER_NAME', '投保人姓名'),
+            array('ISSUE_DATE', '签单日期'),
+            array('ACKNOWLEDGE_DATE', '回执签收日期'),
+            array('BRANCH_RECEIVE_DATE', '回执核销日期'),
+            array('ORGAN_CODE', '保单所属机构'),
+            array('SALES_CHANNEL_NAME', '销售渠道'),
+            array('AGENT_CODE', '业务员代码'),
+            array('AGENT_NAME', '业务员姓名')
+        );
+        $select_bqsl = "SELECT POLICY_CODE,
+                               CUSTOMER_NAME,
+                               TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,
+                               TO_CHAR(ACKNOWLEDGE_DATE,'YYYY-MM-DD') AS ACKNOWLEDGE_DATE,
+                               TO_CHAR(BRANCH_RECEIVE_DATE,'YYYY-MM-DD') AS BRANCH_RECEIVE_DATE,
+                               ORGAN_CODE,
+                               SALES_CHANNEL_NAME,
+                               AGENT_CODE,
+                               AGENT_NAME
+                          FROM TMP_QDSX_NB_QD_HZ 
+                        WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['POLICY_CODE'] = $value['POLICY_CODE'];
+            $result[$i]['CUSTOMER_NAME'] = $value['CUSTOMER_NAME'];
+            $result[$i]['ISSUE_DATE'] = $value['ISSUE_DATE'];
+            $result[$i]['ACKNOWLEDGE_DATE'] = $value['ACKNOWLEDGE_DATE'];
+            $result[$i]['BRANCH_RECEIVE_DATE'] = $value['BRANCH_RECEIVE_DATE'];
+            $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
+            $result[$i]['SALES_CHANNEL_NAME'] = $value['SALES_CHANNEL_NAME'];
+            $result[$i]['AGENT_CODE'] = $value['AGENT_CODE'];
+            $result[$i]['AGENT_NAME'] = $value['AGENT_NAME'];
+        }
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
+    }
+
 }
