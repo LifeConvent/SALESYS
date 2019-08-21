@@ -222,3 +222,44 @@ var TableInit = function () {
 
     return oTableInit;
 };
+
+function refreshTable(){
+    // $result = $('#table_user').bootstrapTable('getAllSelections');
+    // if ($result[0] != null) {
+    //     $.scojs_message('删除全部将会丢失所有数据，请等待开发！', $.scojs_message.TYPE_ERROR);
+    // }
+    var is_his = $("#is_his").val();
+    var policy_code = $("#policy_code").val();
+    var risk_code = $("#risk_code").val();
+    // alert(busi_type);
+    var fix = '';
+    if(is_his!=''&&is_his!=null){
+        fix += '&is_his='+is_his;
+    }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(risk_code!=''&&risk_code!=null){
+        fix += '&risk_code='+risk_code;
+    }
+    $('#daily_report2').bootstrapTable('removeAll');
+    $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getCsCtAll?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
+};
+
+function exportExcelByTime() {
+    var is_his = $("#is_his").val();
+    var policy_code = $("#policy_code").val();
+    var risk_code = $("#risk_code").val();
+    // alert(busi_type);
+    var fix = '';
+    if(is_his!=''&&is_his!=null){
+        fix += '&is_his='+is_his;
+    }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(risk_code!=''&&risk_code!=null){
+        fix += '&risk_code='+risk_code;
+    }
+    window.location.href = HOST + "index.php/Home/DataOut/expCtAll?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix;
+}

@@ -1281,13 +1281,13 @@ class DataOutController extends Controller
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
         if(!empty($busi_type)){
-            $where_type_fix .= " AND BUSS_CLASS = '".$busi_type."'";
+            $where_type_fix .= " AND BUSS_CLASS LIKE '%".$busi_type."%'";
         }
         if(!empty($policy_code)){
-            $where_type_fix .= " AND POLICY_CODE = '".$policy_code."'";
+            $where_type_fix .= " AND POLICY_CODE LIKE '%".$policy_code."%'";
         }
         if(!empty($busi_code)){
-            $where_type_fix .= " AND BUSS_CODE = '".$busi_code."'";
+            $where_type_fix .= " AND BUSS_CODE LIKE '%".$busi_code."%'";
         }
 //        $where_time_bqsl = " AND TRUNC(SCAN_TIME) >= TO_DATE('2019-08-01 00:00:00', 'yyyy-MM-dd hh24:mi:ss')";
         $select_bqsl = "SELECT BUSS_CLASS,--                AS 业务类别,
@@ -1418,12 +1418,19 @@ class DataOutController extends Controller
 
     public function getCsCtAll(){
         $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $is_his = I('get.is_his');
+        $policy_code = I('get.policy_code');
+        $risk_code = I('get.risk_code');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            $where_time_bqsl = " AND SYS_INSERT_DATE-1 = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
         } else {
-            $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+            $where_time_bqsl = " AND SYS_INSERT_DATE-1 = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
@@ -1435,6 +1442,15 @@ class DataOutController extends Controller
             $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(!empty($is_his)){
+            $where_type_fix .= " AND HESITATE_FLAG LIKE '%".$is_his."%'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR ACCEPT_CODE LIKE '%".$policy_code."%')";
+        }
+        if(!empty($risk_code)){
+            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%".$risk_code."%' OR PRODUCT_NAME_SYS LIKE '%".$risk_code."%')";
         }
         /*********************************************           添加机构后删除          *********************************************/
 //        $where_type_fix = "";
@@ -1483,6 +1499,104 @@ class DataOutController extends Controller
         } else {
             exit(json_encode(''));
         }
+    }
+
+    public function expCtAll()
+    {//导出Excel
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $is_his = I('get.is_his');
+        $policy_code = I('get.policy_code');
+        $risk_code = I('get.risk_code');
+        $xlsName = "退保清单";
+        $xlsTitle = "退保清单";
+        $xlsCell = array( //设置字段名和列名的映射
+            array('ACCEPT_CODE', '受理号'),
+            array('POLICY_CODE', '保单号'),
+            array('HESITATE_FLAG', '是否犹豫期'),
+            array('SERVICE_NAME', '保全项目名称'),
+            array('UPDATE_TIME', '退保日期'),
+            array('BUSI_PROD_CODE', '产品代码'),
+            array('PRODUCT_NAME_SYS', '险种名称'),
+            array('CHANNEL', '渠道'),
+            array('STATUS_NAME', '收付费状态'),
+            array('ARAP_FLAG', '收付费类型'),
+            array('TYPE_NAME', '费用类型'),
+            array('FEE_AMOUNT', '收付费金额'),
+            array('ORGAN_CODE', '管理机构')
+        );
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND SYS_INSERT_DATE-1 = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " AND SYS_INSERT_DATE-1 = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(!empty($is_his)){
+            $where_type_fix .= " AND HESITATE_FLAG LIKE '%".$is_his."%'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR ACCEPT_CODE LIKE '%".$policy_code."%')";
+        }
+        if(!empty($risk_code)){
+            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%".$risk_code."%' OR PRODUCT_NAME_SYS LIKE '%".$risk_code."%')";
+        }
+        /*********************************************           添加机构后删除          *********************************************/
+//        $where_type_fix = "";
+        $select_bqsl = "SELECT ACCEPT_CODE,
+                                   SERVICE_NAME,
+                                   UPDATE_TIME,
+                                   POLICY_CODE,
+                                   BUSI_PROD_CODE,
+                                   PRODUCT_NAME_SYS,
+                                   STATUS_NAME,
+                                   ARAP_FLAG,
+                                   TYPE_NAME,
+                                   FEE_AMOUNT,
+                                   SYS_INSERT_DATE,
+                                   CHANNEL,
+                                   HESITATE_FLAG,
+                                   ORGAN_CODE
+                                   FROM  TMP_QDSX_CS_CT_DETAIL WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+        Log::write($user_name.' 保全退保全量数据查询SQL：'.$select_bqsl,'INFO');
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['ACCEPT_CODE'] = $value['ACCEPT_CODE'];
+            $result[$i]['HESITATE_FLAG'] = $value['HESITATE_FLAG'];
+            $result[$i]['SERVICE_NAME'] = $value['SERVICE_NAME'];
+            $result[$i]['UPDATE_TIME'] = $value['UPDATE_TIME'];
+            $result[$i]['POLICY_CODE'] = $value['POLICY_CODE'];
+            $result[$i]['BUSI_PROD_CODE'] = $value['BUSI_PROD_CODE'];
+            $result[$i]['PRODUCT_NAME_SYS'] = $value['PRODUCT_NAME_SYS'];
+            $result[$i]['STATUS_NAME'] = $value['STATUS_NAME'];
+            $result[$i]['ARAP_FLAG'] = $value['ARAP_FLAG'];
+            $result[$i]['TYPE_NAME'] = $value['TYPE_NAME'];
+            $result[$i]['FEE_AMOUNT'] = $value['FEE_AMOUNT'];
+            $result[$i]['CHANNEL'] = $value['CHANNEL'];
+            $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
+        }
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
     public function expNbOutCbByTime()
