@@ -330,7 +330,7 @@ function refreshTable(){
     var busi_type = $("#busi_type").val();
     var policy_code = $("#policy_code").val();
     var busi_code = $("#busi_code").val();
-    alert(busi_type);
+    // alert(busi_type);
     var fix = '';
     if(busi_type!=''&&busi_type!=null){
         fix += '&busi_type='+busi_type;
@@ -344,3 +344,22 @@ function refreshTable(){
     $('#daily_report2').bootstrapTable('removeAll');
     $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getScanList?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
 };
+
+
+function exportExcelByTime() {
+    var busi_type = $("#busi_type").val();
+    var policy_code = $("#policy_code").val();
+    var busi_code = $("#busi_code").val();
+    // alert(busi_type);
+    var fix = '';
+    if(busi_type!=''&&busi_type!=null){
+        fix += '&busi_type='+busi_type;
+    }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(busi_code!=''&&busi_code!=null){
+        fix += '&busi_code='+busi_code;
+    }
+    window.location.href = HOST + "index.php/Home/DataOut/expScanList?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix;
+}

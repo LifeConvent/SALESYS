@@ -400,7 +400,7 @@ class DayPostController extends Controller
                                    SUM(TQCD_BUG_SUM) AS TQCD_BUG_SUM,
                                    DECODE(SUM(TQCD_SUM),0,'100.00%', TRIM(TO_CHAR((SUM(TQCD_SUM)-SUM(TQCD_BUG_SUM))/SUM(TQCD_SUM)*100,'999D99')||'%')) TQCD_RATE
                               FROM TMP_QDSX_CLM_DAYPOST 
-                             WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','864700') 
+                             WHERE 1=1 AND ORGAN_CODE NOT IN ('8633','863300')
                                ".$where_time_bqsl."
                              GROUP BY SYS_INSERT_DATE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
@@ -483,7 +483,7 @@ class DayPostController extends Controller
                                    SUM(BQDX_BUG_SUM) AS BQDX_BUG_SUM,
                                    DECODE(SUM(BQDX_SUM),0,'100.00%', trim(to_char((SUM(BQDX_SUM)-SUM(BQDX_BUG_SUM))/SUM(BQDX_SUM)*100,'999D99')||'%')) BQDX_RATE
                               FROM TMP_QDSX_CS_DAYPOST 
-                             WHERE 1=1 AND ORGAN_CODE NOT IN ('8647','864700') 
+                             WHERE 1=1 AND ORGAN_CODE NOT IN ('8633','863300') 
                               ".$where_time_bqsl."
                              GROUP BY SYS_INSERT_DATE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL

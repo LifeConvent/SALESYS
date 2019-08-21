@@ -131,9 +131,19 @@
                         <!--&lt;!&ndash;<div class="col-sm-3"><span class="red">*</span><span><strong>所属公司: 总公司/河北分公司/高伟达...</strong></span><input type="text" class="form-control" id="user_company" placeholder="请输入所属公司"></div>&ndash;&gt;-->
                         <!--&lt;!&ndash;<div class="col-sm-3"><span class="red">*</span><span><strong>作业范围: 柜面操作/技术支持...</strong></span><input type="text" class="form-control" id="buss_area" placeholder="请输入作业范围"></div>&ndash;&gt;-->
                     <!--</div>-->
-                    <div class="col-sm-6" style="margin-top:10pt;margin-left:23.5%">
-                        <button type="button" id="new_user" class="btn btn-primary col-sm-12" style="margin-left: 10pt" onclick="refreshTable();">查询
-                        </button>
+                    <!--<div class="col-sm-6" style="margin-top:10pt;margin-left:23.5%">-->
+                        <!--<button type="button" id="new_user" class="btn btn-primary col-sm-12" style="margin-left: 10pt" onclick="refreshTable();">查询-->
+                        <!--</button>-->
+                    <!--</div>-->
+                    <div style="margin-top: 40pt">
+                        <div class="col-sm-6" style="margin-top:10pt;margin-left:10%;float: left ">
+                            <button type="button" class="btn btn-success  col-sm-3 exportreport" style="float:left;margin-left: 10pt"   onclick="exportExcelByTime();">导出查询结果
+                            </button>
+                        </div>
+                        <div class="col-sm-6" style="margin-top:-23pt;margin-left:30%;float: left">
+                            <button type="button" id="new_user" class="btn btn-primary col-sm-9" style="margin-left: 10pt" onclick="refreshTable();">查询
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
