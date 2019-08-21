@@ -244,6 +244,24 @@ function refreshTable(){
     }
     $('#daily_report2').bootstrapTable('removeAll');
     $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getCsCtAll?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
+    $.ajax({
+        type: "GET", //用POST方式传输
+        url: HOST + "index.php/Home/DataOut/getSumALLCt?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix, //目标地址.
+        dataType: "json", //数据格式:JSON
+        success: function (result) {
+            if (result.status == 'success') {
+                debugger;
+                $('#sum_all').text(result.message);
+            } else if (result.status == 'failed') {
+                $('#sum_all').text(result.message);
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest);
+            alert(textStatus);
+            alert(errorThrown);
+        }
+    });
 };
 
 function exportExcelByTime() {

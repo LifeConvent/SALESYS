@@ -1501,6 +1501,66 @@ class DataOutController extends Controller
         }
     }
 
+    public function getSumALLCt(){
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $is_his = I('get.is_his');
+        $policy_code = I('get.policy_code');
+        $risk_code = I('get.risk_code');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND SYS_INSERT_DATE-1 = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(!empty($is_his)){
+            $where_type_fix .= " AND HESITATE_FLAG LIKE '%".$is_his."%'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR ACCEPT_CODE LIKE '%".$policy_code."%')";
+        }
+        if(!empty($risk_code)){
+            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%".$risk_code."%' OR PRODUCT_NAME_SYS LIKE '%".$risk_code."%')";
+        }
+        /*********************************************           添加机构后删除          *********************************************/
+//        $where_type_fix = "";
+        $select_bqsl = "SELECT SUM(FEE_AMOUNT) AS SUM_ALL
+                                   FROM  TMP_QDSX_CS_CT_DETAIL WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+        Log::write($user_name.' 保全退保全量数据查询SQL：'.$select_bqsl,'INFO');
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if(!empty($bqsl_result_time[0]['SUM_ALL'])) {
+            $result['status'] = "success";
+            $result['message'] = $bqsl_result_time[0]['SUM_ALL'];
+        }else{
+            $result['status'] = "failed";
+            $result['message'] = "计算错误";
+        }
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
     public function expCtAll()
     {//导出Excel
         $queryDateStart = I('get.queryDateStart');
