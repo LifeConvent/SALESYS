@@ -314,7 +314,7 @@ class DataOutController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($service_code)&&empty($policy_code)&&empty($apply_channel)){
             $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
@@ -961,7 +961,7 @@ class DataOutController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($policy_code)&&empty($apply_channel)){
             $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
@@ -1128,7 +1128,7 @@ class DataOutController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(ISSUE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)&&empty($apply_date)){
             $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
@@ -1262,7 +1262,7 @@ class DataOutController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(SCAN_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($busi_type)&&empty($policy_code)&&empty($busi_code)){
             $where_time_bqsl = " AND TRUNC(SCAN_TIME) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
@@ -1429,7 +1429,7 @@ class DataOutController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        } else if(empty($is_his)&&empty($policy_code)&&empty($risk_code)){
             $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
         $user_name = "";
@@ -1504,9 +1504,9 @@ class DataOutController extends Controller
     public function getSumALLCt(){
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $is_his = I('get.is_his');
-        $policy_code = I('get.policy_code');
-        $risk_code = I('get.risk_code');
+        $is_his = trim(I('get.is_his'));
+        $policy_code = trim(I('get.policy_code'));
+        $risk_code = trim(I('get.risk_code'));
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
@@ -1514,7 +1514,7 @@ class DataOutController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        } else if(empty($is_his)&&empty($policy_code)&&empty($risk_code)){
             $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
         $user_name = "";
@@ -1565,9 +1565,9 @@ class DataOutController extends Controller
     {//导出Excel
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $is_his = I('get.is_his');
-        $policy_code = I('get.policy_code');
-        $risk_code = I('get.risk_code');
+        $is_his = trim(I('get.is_his'));
+        $policy_code = trim(I('get.policy_code'));
+        $risk_code = trim(I('get.risk_code'));
         $xlsName = "退保清单";
         $xlsTitle = "退保清单";
         $xlsCell = array( //设置字段名和列名的映射
@@ -1592,7 +1592,7 @@ class DataOutController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($is_his)&&empty($policy_code)&&empty($risk_code)){
             $where_time_bqsl = " AND SYS_INSERT_DATE-1 = TRUNC(SYSDATE) ";
         }
         $user_name = "";
@@ -1714,7 +1714,7 @@ class DataOutController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(ISSUE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)){
             $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
         }
         if((int)$userType==1){
@@ -2006,7 +2006,7 @@ class DataOutController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($service_code)&&empty($policy_code)&&empty($apply_channel)){
             $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
@@ -2105,7 +2105,7 @@ class DataOutController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($apply_channel)&&empty($policy_code)){
             $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
@@ -2188,7 +2188,7 @@ class DataOutController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(SCAN_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($busi_type)&&empty($policy_code)&&empty($busi_code)){
             $where_time_bqsl = " AND TRUNC(SCAN_TIME) = TRUNC(SYSDATE) ";
         }
         $user_name = "";

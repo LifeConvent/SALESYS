@@ -127,7 +127,7 @@ class PostTableController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(ISSUE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($charge_type)&&empty($scan_date)&&empty($apply_date)&&empty($validate_date)){
             $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
         }
         if((int)$userType==1){
@@ -306,7 +306,7 @@ class PostTableController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(ISSUE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($charge_type)&&empty($scan_date)&&empty($apply_date)&&empty($validate_date)){
             $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
         }
         if((int)$userType==1){
@@ -492,7 +492,7 @@ class PostTableController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(APPLY_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)&&empty($apply_date)){
             $where_time_bqsl = " AND TRUNC(APPLY_DATE) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
@@ -625,7 +625,7 @@ class PostTableController extends Controller
             if(!empty($queryDateEnd)){
                 $where_time_bqsl = " AND TRUNC(APPLY_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else {
+        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)&&empty($apply_date)){
             $where_time_bqsl = " AND TRUNC(APPLY_DATE) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
