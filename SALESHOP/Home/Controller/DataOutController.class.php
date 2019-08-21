@@ -1121,6 +1121,9 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(ISSUE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
         } else {
             $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
         }
@@ -1479,7 +1482,11 @@ class DataOutController extends Controller
     {//导出Excel
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $time_fix = " AND (TRUNC(ISSUE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND  to_date('" . $queryDateEnd . "','yyyy-mm-dd'))";
+        $apply_status = I('get.apply_status');
+        $policy_code = I('get.policy_code');
+        $apply_channel = I('get.apply_channel');
+        $apply_type = I('get.apply_type');
+        $apply_date = I('get.apply_date');
         $xlsName = "新契约承保清单";
         $xlsTitle = "新契约承保清单";
         $xlsCell = array( //设置字段名和列名的映射
@@ -1521,6 +1528,14 @@ class DataOutController extends Controller
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(ISSUE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
+        }
         if((int)$userType==1){
             $where_type_fix = "";
         }else if((int)$userType==2){
@@ -1532,6 +1547,21 @@ class DataOutController extends Controller
             }
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(!empty($apply_status)){
+            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        }
+        if(!empty($apply_type)){
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%".$apply_type."%'";
+        }
+        if(!empty($apply_date)){
+            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
         }
         $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                ORGAN_CODE,
@@ -1567,7 +1597,7 @@ class DataOutController extends Controller
                                FEE_STATUS,
                                FYC
                           FROM TMP_QDSX_NB_QD_CB
-                          WHERE 1=1 ".$where_type_fix.$time_fix."
+                          WHERE 1=1 ".$where_type_fix.$where_time_bqsl."
                            --AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE)
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL

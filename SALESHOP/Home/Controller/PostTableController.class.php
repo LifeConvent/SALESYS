@@ -255,10 +255,19 @@ class PostTableController extends Controller
 
     public function getYdPostTb(){
         $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $apply_status = I('get.apply_status');
+        $policy_code = I('get.policy_code');
+        $apply_channel = I('get.apply_channel');
+        $apply_type = I('get.apply_type');
+        $apply_date = I('get.apply_date');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(APPLY_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(APPLY_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
         } else {
             $where_time_bqsl = " AND TRUNC(APPLY_DATE) = TRUNC(SYSDATE) ";
         }
@@ -272,6 +281,21 @@ class PostTableController extends Controller
             $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(!empty($apply_status)){
+            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        }
+        if(!empty($apply_type)){
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%".$apply_type."%'";
+        }
+        if(!empty($apply_date)){
+            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
         }
         $select_bqsl = "SELECT DISTINCT
                                TO_CHAR(APPLY_DATE,'YYYY-MM-DD HH24:MI:SS') AS APPLY_DATE,--            AS 投保日期,
@@ -363,6 +387,49 @@ class PostTableController extends Controller
 
     public function expYsPostTb()
     {
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $apply_status = I('get.apply_status');
+        $policy_code = I('get.policy_code');
+        $apply_channel = I('get.apply_channel');
+        $apply_type = I('get.apply_type');
+        $apply_date = I('get.apply_date');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(APPLY_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(APPLY_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " AND TRUNC(APPLY_DATE) = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(!empty($apply_status)){
+            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        }
+        if(!empty($apply_type)){
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%".$apply_type."%'";
+        }
+        if(!empty($apply_date)){
+            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
+        }
         //导出Excel
         $xlsName = "新契约银代财富投保清单";
         $xlsTitle = "新契约银代财富投保清单";
@@ -397,19 +464,6 @@ class PostTableController extends Controller
             array('total_prem_af', '保费'),
             array('fee_status', '保费是否到账')
         );
-        $method = new MethodController();
-        $conn = $method->OracleOldDBCon();
-        $user_name = "";
-        $method->checkIn($user_name);
-        $userType = $method->getUserType();
-        if((int)$userType==1){
-            $where_type_fix = "";
-        }else if((int)$userType==2){
-            $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
-        }
         $select_bqsl = "SELECT DISTINCT
                            TO_CHAR(APPLY_DATE,'YYYY-MM-DD HH24:MI:SS') AS APPLY_DATE,--            AS 投保日期,
                            ORGAN_CODE,--            AS 管理机构,
@@ -441,7 +495,7 @@ class PostTableController extends Controller
                            TOTAL_PREM_AF,  --                   AS 保费,
                            FEE_STATUS   -- AS 保费是否到账
                      FROM TMP_QDSX_NB_QD_TB_YD
-                     WHERE 1=1 ".$where_type_fix."
+                     WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
                      ORDER BY APPLY_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);

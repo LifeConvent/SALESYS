@@ -70,7 +70,7 @@
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </div>
-                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  onclick="exportExcelByTime();">导出明细</button></div>
+                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  onclick="exportExcel();">导出明细</button></div>
                         <br><br>
                         <div style="width:150px;float:left;padding-left: 15px;margin-top: 5px">
                             <strong>承保日期区间导出：</strong></div>
@@ -87,7 +87,7 @@
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
                         </div>
-                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  onclick="exportExcel();">导出明细</button></div>
+                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  onclick="exportExcelByTime();">导出明细</button></div>
                         <input style="visibility:hidden" id="dtp_input1" value=""/>
                         <input style="visibility:hidden" id="dtp_input2" value=""/>
                         <input style="visibility:hidden" id="dtp_input3" value=""/>
@@ -101,30 +101,33 @@
                         <div style="margin-top: 10pt">
                         <div class="col-sm-3">
                             <span class="red">*</span><span><strong>投保单状态: 待回执/已回执/已承保/出单前撤保</strong></span>
-                            <input type="text" class="form-control add_user" id="apply_status" placeholder="请输入保全项">
+                            <input type="text" class="form-control add_user" id="apply_status" placeholder="请输入投保单状态">
                         </div>
                         <div class="col-sm-3">
                             <span class="red">*</span><span><strong>保单号/投保单号:</strong></span>
                             <input type="text" class="form-control add_user" id="policy_code" placeholder="请输入保单号/投保单号">
                         </div>
                         <div class="col-sm-3">
-                            <span class="red">*</span><span><strong>投保渠道:个人/银行...</strong></span>
+                            <span class="red">*</span><span><strong>投保渠道:银行/财富...</strong></span>
                             <input type="text" class="form-control add_user" id="apply_channel" placeholder="请输入投保渠道">
                         </div>
                         <div class="col-sm-3">
                             <span class="red">*</span><span><strong>投保方式:E保通/银保通</strong></span>
                             <input type="text" class="form-control add_user" id="apply_type" placeholder="请输入投保方式">
                         </div>
-                        <div style="width:100px;float:left;padding-left: 15px;margin-top: 10pt">
-                            <strong>投保日期：</strong></div>
-                        <div class="tools" style="float:left;margin-left: 10pt;margin-top: 10pt">
-                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date4" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input4" data-link-format="yyyy-mm-dd">
-                                <input class="form-control" size="16" type="text" value="" readonly>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <div>
+                                <div style="width:100px;float:left;padding-left: 15px;margin-top: 10pt">
+                                    <strong>回执签收日期：</strong>
+                                </div>
+                                <div class="tools" style="float:left;margin-left: 10pt;margin-top: 10pt">
+                                    <div style="width:250px;float:left" class="input-group date form_date" id="form_date4" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input4" data-link-format="yyyy-mm-dd">
+                                        <input class="form-control" size="16" type="text" value="" readonly>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                </div>
+                                <input style="visibility:hidden" id="dtp_input4" value=""/>
                             </div>
-                        </div>
-                        <input style="visibility:hidden" id="dtp_input4" value=""/>
                         </div>
                         <!--<div class="col-sm-3">-->
                         <!--<span class="red">*</span><span><strong>用户类型: 1-管理员/2-机构组长/3-操作员</strong></span>-->
@@ -135,9 +138,19 @@
                         <!--<input type="text" class="form-control add_user" id="user_organ_code" placeholder="请输入作业机构代码">-->
                         <!--</div>-->
                     </div>
-                    <div class="col-sm-6" style="margin-top:10pt;margin-left:23.5%">
-                        <button type="button" id="new_user" class="btn btn-primary col-sm-12" style="margin-left: 10pt" onclick="refreshTable();">查询
-                        </button>
+                    <!--<div class="col-sm-6" style="margin-top:10pt;margin-left:23.5%">-->
+                        <!--<button type="button" id="new_user" class="btn btn-primary col-sm-12" style="margin-left: 10pt" onclick="refreshTable();">查询-->
+                        <!--</button>-->
+                    <!--</div>-->
+                    <div style="margin-top: 40pt">
+                        <div class="col-sm-6" style="margin-top:10pt;margin-left:10%;float: left ">
+                            <button type="button" class="btn btn-success  col-sm-3 exportreport" style="float:left;margin-left: 10pt"   onclick="exportExcelByTime();">导出查询结果
+                            </button>
+                        </div>
+                        <div class="col-sm-6" style="margin-top:-23pt;margin-left:30%;float: left">
+                            <button type="button" id="new_user" class="btn btn-primary col-sm-9" style="margin-left: 10pt" onclick="refreshTable();">查询
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
