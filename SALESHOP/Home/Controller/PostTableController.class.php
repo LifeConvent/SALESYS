@@ -48,6 +48,13 @@ class PostTableController extends Controller
     {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
+        $apply_date = I('get.apply_date');
+        $validate_date = I('get.validate_date');
+        $scan_date = I('get.scan_date');
+        $apply_status = trim(I('get.apply_status'));
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
+        $charge_type = trim(I('get.charge_type'));
         //导出Excel
         $xlsName = "新契约流程清单";
         $xlsTitle = "新契约流程清单";
@@ -115,6 +122,14 @@ class PostTableController extends Controller
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(ISSUE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
+        }
         if((int)$userType==1){
             $where_type_fix = "";
         }else if((int)$userType==2){
@@ -122,6 +137,21 @@ class PostTableController extends Controller
             $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
         }else if((int)$userType==3){
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(!empty($apply_status)){
+            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR APPLY_CODE LIKE '%".$policy_code."%')";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        }
+        if(!empty($apply_type)){
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%".$apply_type."%'";
+        }
+        if(!empty($apply_date)){
+            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
         }
         $select_bqsl = "SELECT ORGAN_CODE,--管理机构,
                                APPLY_CODE,--投保单号,
@@ -182,9 +212,9 @@ class PostTableController extends Controller
                                TO_CHAR(SL_CHECK_DATE,'YYYY-MM-DD HH24:MI:SS') AS SL_CHECK_DATE,--双录发送外包商质检时间
                                SL_CHECK_STATUS--双录外包商质检状态
                           FROM TMP_QDSX_NB_QD_LC
-                          WHERE 1=1 AND TO_CHAR(ISSUE_DATE,'YYYY-MM-DD') BETWEEN '".$queryDateStart."' AND '".$queryDateEnd."'".$where_type_fix;
+                          WHERE 1=1 ".$where_type_fix.$where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
-        Log::write($user_name.' 数据库查询SQL：'.$select_bqsl,'INFO');
+        Log::write($user_name.' 契约全流程导出数据库查询SQL：'.$select_bqsl,'INFO');
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
@@ -250,16 +280,210 @@ class PostTableController extends Controller
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
+        oci_free_statement($result_rows);
+        oci_close($conn);
         $method->exportExcelNbPostStream($xlsTitle, $xlsCell, $res, $xlsName);
+    }
+
+    public function getNbPostStream()
+    {
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $apply_date = I('get.apply_date');
+        $validate_date = I('get.validate_date');
+        $scan_date = I('get.scan_date');
+        $apply_status = trim(I('get.apply_status'));
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
+        $charge_type = trim(I('get.charge_type'));
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(ISSUE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else {
+            $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
+        }
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+        if(!empty($apply_status)){
+            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR APPLY_CODE LIKE '%".$policy_code."%')";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        }
+        if(!empty($apply_type)){
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%".$apply_type."%'";
+        }
+        if(!empty($charge_type)){
+            $where_type_fix .= " AND PAY_MODE LIKE '%".$charge_type."%'";
+        }
+        if(!empty($apply_date)){
+            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
+        }
+        if(!empty($validate_date)){
+            $where_type_fix .= " AND TRUNC(VALIDATE_DATE) = to_date('".$validate_date. "','yyyy-mm-dd')";
+        }
+        if(!empty($scan_date)){
+            $where_type_fix .= " AND TRUNC(UA031_SCAN_TIME) = to_date('".$scan_date. "','yyyy-mm-dd')";
+        }
+        $select_bqsl = "SELECT ORGAN_CODE,--管理机构,
+                               APPLY_CODE,--投保单号,
+                               POLICY_CODE,--保单号,
+                               TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE, --投保日期,
+                               TO_CHAR(INSERT_TIME,'YYYY-MM-DD HH24:MI:SS') AS INSERT_TIME, --入库时间,
+                               TO_CHAR(BUSI_APPLY_DATE,'YYYY-MM-DD') AS BUSI_APPLY_DATE,--预收申请日期,
+                               --TO_CHAR(INITIAL_PREM_DATE,'YYYY-MM-DD HH24:MI:SS') AS INITIAL_PREM_DATE,--首期缴费日,
+                               TO_CHAR(FINISH_TIME,'YYYY-MM-DD') AS FINISH_TIME,--到账日期,
+                               TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,--承保日期,
+                               TO_CHAR(SIGN_TIME,'YYYY-MM-DD HH24:MI:SS') AS SIGN_TIME,--签单时间,
+                               TO_CHAR(VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,--保单生效日,
+                               TO_CHAR(INSERT_TIME_ZZ,'YYYY-MM-DD HH24:MI:SS') AS INSERT_TIME_ZZ,--纸质保单核心推送打印日期, 
+                               TO_CHAR(PRINT_TIME_ZZ,'YYYY-MM-DD HH24:MI:SS')  AS PRINT_TIME_ZZ,--纸质保单打印推送外包商日期,
+                               TO_CHAR(BPO_PRINT_DATE_ZZ,'YYYY-MM-DD')  AS BPO_PRINT_DATE_ZZ,--纸质保单外包商制单日期,
+                               TO_CHAR(INSERT_TIME_DZ,'YYYY-MM-DD HH24:MI:SS') AS INSERT_TIME_DZ,--电子保单核心推送打印日期, 
+                               TO_CHAR(PRINT_TIME_DZ,'YYYY-MM-DD HH24:MI:SS') AS PRINT_TIME_DZ,--电子保单打印日期,
+                               TO_CHAR(ACKNOWLEDGE_DATE,'YYYY-MM-DD') AS ACKNOWLEDGE_DATE,--回执签收日期,
+                               TO_CHAR(BRANCH_RECEIVE_DATE,'YYYY-MM-DD') AS BRANCH_RECEIVE_DATE,--回执核销日期,
+                               TO_CHAR(EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE,--保单终止日期,
+                               PAY_MODE,  --缴费方式
+                               PAY_MODE2, --制返盘状态,
+                               CHARGE_YEAR,--缴费年期,
+                               WINNING_START_FLAG, -- 是否预承保
+                               SALES_CHANNEL_NAME,--投保渠道
+                               CHANNEL_NAME, --投保方式
+                               STATUS_DESC,--投保单状态
+                               STATUS_NAME,--保单效力状态
+                               CAUSE_NAME,--终止原因
+                               TO_CHAR(CANCEL_DATE,'YYYY-MM-DD') AS CANCEL_DATE,--撤单日期
+                               CUSTOMER_NAME,--投保人姓名
+                               TO_CHAR(CUSTOMER_BIRTHDAY,'YYYY-MM-DD') AS CUSTOMER_BIRTHDAY,--投保人生日
+                               BILLCARD_STATUS,--单证UA031扫描状态
+                               TO_CHAR(UA031_SCAN_TIME,'YYYY-MM-DD') AS UA031_SCAN_TIME,--单证UA031扫描时间,
+                               BILLCARD_STATUS_UA008,--单证UA008扫描状态
+                               TO_CHAR(UA008_SCAN_TIME,'YYYY-MM-DD') AS UA008_SCAN_TIME,--单证UA008扫描时间,
+                               BANK_NAME,--银行
+                               ACCOUNT_BANK,--银行代码
+                               ACCOUNT,--银行账户
+                               SERVICE_BANK_BRANCH,--银代银行网点代码
+                               BANK_BRANCH_NAME,--银代银行网点名称
+                               AGENT_CODE,--业务员代码
+                               AGENT_NAME,--业务员姓名
+                               AGENT_AREA,--业务员营业区
+                               AGENT_PART,--业务员营业部
+                               AGENT_GROUP,--业务员营业组
+                               UNIT,--份数
+                               PRODUCT_CODE_SYS,--险种代码
+                               PRODUCT_NAME_SYS,--险种名称
+                               AMOUNT,--保额
+                               TOTAL_PREM_AF,--保费
+                               FEE_STATUS,--保费是否到账
+                               DZ_SIGN,--是否电子签名
+                               DZ_SIGN_TYPE,   --电子签名质检类型
+                               --DZ_SIGN_STATUS,   --电子签名质检结论
+                               DRQ_FLAG,
+                               TO_CHAR(SL_SEND_DATE,'YYYY-MM-DD HH24:MI:SS') AS SL_SEND_DATE,--双录影音接收时间
+                               TO_CHAR(SL_CHECK_DATE,'YYYY-MM-DD HH24:MI:SS') AS SL_CHECK_DATE,--双录发送外包商质检时间
+                               SL_CHECK_STATUS--双录外包商质检状态
+                          FROM TMP_QDSX_NB_QD_LC
+                          WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        Log::write($user_name.' 新契约全流程数据库查询SQL：'.$select_bqsl,'INFO');
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
+            $result[$i]['APPLY_CODE'] = "'".$value['APPLY_CODE'];
+            $result[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
+            $result[$i]['APPLY_DATE'] = $value['APPLY_DATE'];
+            $result[$i]['INSERT_TIME'] = $value['INSERT_TIME'];
+            $result[$i]['BUSI_APPLY_DATE'] = $value['BUSI_APPLY_DATE'];
+            #$result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
+            $result[$i]['FINISH_TIME'] = $value['FINISH_TIME'];
+            $result[$i]['ISSUE_DATE'] = $value['ISSUE_DATE'];
+            $result[$i]['SIGN_TIME'] = $value['SIGN_TIME'];
+            $result[$i]['VALIDATE_DATE'] = $value['VALIDATE_DATE'];
+            $result[$i]['INSERT_TIME_ZZ'] = $value['INSERT_TIME_ZZ'];
+            $result[$i]['PRINT_TIME_ZZ'] = $value['PRINT_TIME_ZZ'];
+            $result[$i]['BPO_PRINT_DATE_ZZ'] = $value['BPO_PRINT_DATE_ZZ'];
+            $result[$i]['INSERT_TIME_DZ'] = $value['INSERT_TIME_DZ'];
+            $result[$i]['PRINT_TIME_DZ'] = $value['PRINT_TIME_DZ'];
+            $result[$i]['ACKNOWLEDGE_DATE'] = $value['ACKNOWLEDGE_DATE'];
+            $result[$i]['BRANCH_RECEIVE_DATE'] = $value['BRANCH_RECEIVE_DATE'];
+            $result[$i]['EXPIRY_DATE'] = $value['EXPIRY_DATE'];
+            $result[$i]['CHARGE_YEAR'] = $value['CHARGE_YEAR'];
+            $result[$i]['WINNING_START_FLAG'] = $value['WINNING_START_FLAG'];
+            $result[$i]['SALES_CHANNEL_NAME'] = $value['SALES_CHANNEL_NAME'];
+            $result[$i]['CHANNEL_NAME'] = $value['CHANNEL_NAME'];
+            $result[$i]['STATUS_DESC'] = $value['STATUS_DESC'];
+            $result[$i]['STATUS_NAME'] = $value['STATUS_NAME'];
+            $result[$i]['CAUSE_NAME'] = $value['CAUSE_NAME'];
+            $result[$i]['CANCEL_DATE'] = $value['CANCEL_DATE'];
+            $result[$i]['CUSTOMER_NAME'] = $value['CUSTOMER_NAME'];
+            $result[$i]['BILLCARD_STATUS'] = $value['BILLCARD_STATUS'];
+            $result[$i]['UA031_SCAN_TIME'] = $value['UA031_SCAN_TIME'];
+            $result[$i]['BILLCARD_STATUS_UA008'] = $value['BILLCARD_STATUS_UA008'];
+            $result[$i]['UA008_SCAN_TIME'] = $value['UA008_SCAN_TIME'];
+            $result[$i]['BANK_NAME'] = $value['BANK_NAME'];
+            $result[$i]['ACCOUNT_BANK'] = $value['ACCOUNT_BANK'];
+            $result[$i]['ACCOUNT'] = "'".$value['ACCOUNT'];
+            $result[$i]['SERVICE_BANK_BRANCH'] = $value['SERVICE_BANK_BRANCH'];
+            $result[$i]['BANK_BRANCH_NAME'] = $value['BANK_BRANCH_NAME'];
+            $result[$i]['AGENT_CODE'] = $value['AGENT_CODE'];
+            $result[$i]['AGENT_NAME'] = $value['AGENT_NAME'];
+            $result[$i]['AGENT_AREA'] = $value['AGENT_AREA'];
+            $result[$i]['AGENT_PART'] = $value['AGENT_PART'];
+            $result[$i]['AGENT_GROUP'] = $value['AGENT_GROUP'];
+            $result[$i]['UNIT'] = $value['UNIT'];
+            $result[$i]['PRODUCT_CODE_SYS'] = $value['PRODUCT_CODE_SYS'];
+            $result[$i]['PRODUCT_NAME_SYS'] = $value['PRODUCT_NAME_SYS'];
+            $result[$i]['AMOUNT'] = $value['AMOUNT'];
+            $result[$i]['TOTAL_PREM_AF'] = $value['TOTAL_PREM_AF'];
+            $result[$i]['FEE_STATUS'] = $value['FEE_STATUS'];
+            $result[$i]['PAY_MODE'] = $value['PAY_MODE'];
+            $result[$i]['PAY_MODE2'] = $value['PAY_MODE2'];
+            $result[$i]['CUSTOMER_BIRTHDAY'] = $value['CUSTOMER_BIRTHDAY'];
+            $result[$i]['DZ_SIGN'] = $value['DZ_SIGN'];
+            $result[$i]['DZ_SIGN_TYPE'] = $value['DZ_SIGN_TYPE'];
+            #$result[$i]['dz_sign_status'] = $value['DZ_SIGN_STATUS'];
+            $result[$i]['DRQ_FLAG'] = $value['DRQ_FLAG'];
+            $result[$i]['SL_SEND_DATE'] = $value['SL_SEND_DATE'];
+            $result[$i]['SL_CHECK_DATE'] = $value['SL_CHECK_DATE'];
+            $result[$i]['SL_CHECK_STATUS'] = $value['SL_CHECK_STATUS'];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
     }
 
     public function getYdPostTb(){
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $apply_status = I('get.apply_status');
-        $policy_code = I('get.policy_code');
-        $apply_channel = I('get.apply_channel');
-        $apply_type = I('get.apply_type');
+        $apply_status = trim(I('get.apply_status'));
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
+        $apply_type = trim(I('get.apply_type'));
         $apply_date = I('get.apply_date');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -286,7 +510,7 @@ class PostTableController extends Controller
             $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
         }
         if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR APPLY_CODE LIKE '%".$policy_code."%')";
         }
         if(!empty($apply_channel)){
             $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
@@ -389,10 +613,10 @@ class PostTableController extends Controller
     {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $apply_status = I('get.apply_status');
-        $policy_code = I('get.policy_code');
-        $apply_channel = I('get.apply_channel');
-        $apply_type = I('get.apply_type');
+        $apply_status = trim(I('get.apply_status'));
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
+        $apply_type = trim(I('get.apply_type'));
         $apply_date = I('get.apply_date');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -419,7 +643,7 @@ class PostTableController extends Controller
             $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
         }
         if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR APPLY_CODE LIKE '%".$policy_code."%')";
         }
         if(!empty($apply_channel)){
             $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
@@ -531,6 +755,8 @@ class PostTableController extends Controller
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
         }
+        oci_free_statement($result_rows);
+        oci_close($conn);
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
@@ -605,6 +831,8 @@ class PostTableController extends Controller
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
+        oci_free_statement($result_rows);
+        oci_close($conn);
         $method->exportExcelNbPostStream($xlsTitle, $xlsCell, $res, $xlsName);
     }
 }

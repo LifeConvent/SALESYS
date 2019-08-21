@@ -22,7 +22,7 @@ $(function () {
         //     // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
         // }
         $('#daily_report2').bootstrapTable('removeAll');
-        // $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbYs?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PostTable/getNbPostStream?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
     $('#form_date2').datetimepicker({
@@ -40,8 +40,43 @@ $(function () {
             return;
         }
     $('#daily_report2').bootstrapTable('removeAll');
-        // $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbYs?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+        $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PostTable/getNbPostStream?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
+
+
+    $('#form_date3').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    }).on('changeDate', function(ev){});
+
+    $('#form_date4').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    }).on('changeDate', function(ev){});
+
+    $('#form_date5').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    }).on('changeDate', function(ev){});
+
 
     //1.初始化Table
     var oTable = new TableInit();
@@ -62,7 +97,36 @@ $(function () {
 });
 
 function exportExcel() {
-    window.location.href = HOST + "index.php/Home/PostTable/expNbPostStream?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val();
+    var apply_status = $("#apply_status").val();
+    var policy_code = $("#policy_code").val();
+    var apply_channel = $("#apply_channel").val();
+    var charge_type = $("#charge_type").val();
+    var apply_date = $('#dtp_input4').val();//投保日期
+    var validate_date = $('#dtp_input5').val();//生效日期
+    var scan_date = $('#dtp_input6').val();//UA301扫描日期
+    var fix = '';
+    if(apply_status!=''&&apply_status!=null){
+        fix += '&apply_status='+apply_status;
+    }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(apply_channel!=''&&apply_channel!=null){
+        fix += '&apply_channel='+apply_channel;
+    }
+    if(charge_type!=''&&charge_type!=null){
+        fix += '&charge_type='+charge_type;
+    }
+    if(apply_date!=''&&apply_date!=null){
+        fix += '&apply_date='+apply_date;
+    }
+    if(validate_date!=''&&validate_date!=null){
+        fix += '&validate_date='+validate_date;
+    }
+    if(scan_date!=''&&scan_date!=null){
+        fix += '&scan_date='+scan_date;
+    }
+    window.location.href = HOST + "index.php/Home/PostTable/expNbPostStream?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix;
 }
 
 function exportExcelScan() {
@@ -124,131 +188,397 @@ var TableInit = function () {
                     return index+1;
                 }
             }, {
-                field: 'policy_code',
+                field: 'ORGAN_CODE',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '保单号',
-                width:170
-            }, {
-                field: 'product_code',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '险种代码',
+                title: '管理机构',
                 width:100
-            },{
-                field: 'apply_code',
+            }, {
+                field: 'APPLY_CODE',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
                 title: '投保单号',
+                width:180
+            },{
+                field: 'POLICY_CODE',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '保单号',
                 width:130
             }, {
-                field: 'status_desc',
+                field: 'APPLY_DATE',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '投保单状态',
+                title: '投保日期',
                 width:120
             }, {
-                field: 'winning_start_flag',
+                field: 'INSERT_TIME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '是否预承保',
+                title: '入库时间',
                 width:120
             },{
-                field: 'agent_code',
+                field: 'BUSI_APPLY_DATE',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '业务员号码',
-                width:100
+                title: '预收申请日期',
+                width:120
             }, {
-                field: 'agent_name',
+                field: 'FINISH_TIME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '业务员姓名',
+                title: '到账日期',
                 width:100
             },{
-                field: 'total_prem_af',
+                field: 'ISSUE_DATE',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '规模保费',
+                title: '承保日期',
                 width:100
             }, {
-                field: 'fyc',
+                field: 'SIGN_TIME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: 'FYC',
+                title: '签单时间',
                 width:100
             }, {
-                field: 'status_name',
+                field: 'VALIDATE_DATE',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '收付状态',
+                title: '保单生效日',
+                width:120
+            }, {
+                field: 'INSERT_TIME_ZZ',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '纸质保单核心推送打印日期',
+                width:150
+            }, {
+                field: 'PRINT_TIME_ZZ',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '纸质保单打印推送外包商日期',
+                width:180
+            }, {
+                field: 'BPO_PRINT_DATE_ZZ',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '纸质保单外包商制单日期',
                 width:100
             }, {
-                field: 'charge_year',
+                field: 'INSERT_TIME_DZ',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '电子保单核心推送打印日期',
+                width:150
+            }, {
+                field: 'PRINT_TIME_DZ',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '电子保单打印日期',
+                width:150
+            }, {
+                field: 'ACKNOWLEDGE_DATE',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '回执签收日期',
+                width:130
+            }, {
+                field: 'BRANCH_RECEIVE_DATE',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '回执核销日期',
+                width:130
+            }, {
+                field: 'EXPIRY_DATE',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保单终止日期',
+                width:130
+            }, {
+                field: 'PAY_MODE',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '缴费方式',
+                width:100
+            }, {
+                field: 'PAY_MODE2',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '制返盘状态',
+                width:120
+            }, {
+                field: 'CHARGE_YEAR',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '缴费年期',
                 width:100
             }, {
-                field: 'validate_date',
+                field: 'WINNING_START_FLAG',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '险种生效日',
+                title: '是否预承保',
+                width:130
+            }, {
+                field: 'SALES_CHANNEL_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '投保渠道',
                 width:100
             }, {
-                field: 'amount',
+                field: 'CHANNEL_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '投保方式',
+                width:100
+            }, {
+                field: 'STATUS_DESC',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '投保单状态',
+                width:120
+            }, {
+                field: 'STATUS_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保单效力状态',
+                width:130
+            }, {
+                field: 'CAUSE_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '终止原因',
+                width:100
+            }, {
+                field: 'CANCEL_DATE',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '撤单日期',
+                width:100
+            }, {
+                field: 'CUSTOMER_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '投保人姓名',
+                width:120
+            }, {
+                field: 'CUSTOMER_BIRTHDAY',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '投保人生日',
+                width:120
+            }, {
+                field: 'BILLCARD_STATUS',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '单证UA031扫描状态',
+                width:150
+            }, {
+                field: 'UA031_SCAN_TIME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '单证UA031扫描时间',
+                width:150
+            }, {
+                field: 'BILLCARD_STATUS_UA008',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '单证UA008扫描状态',
+                width:150
+            }, {
+                field: 'UA008_SCAN_TIME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '单证UA008扫描时间',
+                width:150
+            }, {
+                field: 'BANK_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '银行',
+                width:100
+            }, {
+                field: 'ACCOUNT_BANK',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '银行代码',
+                width:100
+            }, {
+                field: 'ACCOUNT',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '银行账户',
+                width:180
+            }, {
+                field: 'SERVICE_BANK_BRANCH',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '银代银行网点代码',
+                width:150
+            }, {
+                field: 'BANK_BRANCH_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '银代银行网点名称',
+                width:150
+            }, {
+                field: 'AGENT_CODE',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务员代码',
+                width:100
+            }, {
+                field: 'AGENT_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务员姓名',
+                width:100
+            }, {
+                field: 'AGENT_AREA',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务员营业区',
+                width:120
+            }, {
+                field: 'AGENT_PART',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务员营业部',
+                width:120
+            }, {
+                field: 'AGENT_GROUP',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '业务员营业组',
+                width:120
+            }, {
+                field: 'UNIT',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '份数',
+                width:100
+            }, {
+                field: 'PRODUCT_CODE_SYS',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '险种代码',
+                width:100
+            }, {
+                field: 'PRODUCT_NAME_SYS',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '险种名称',
+                width:100
+            }, {
+                field: 'AMOUNT',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '保额',
                 width:100
             }, {
-                field: 'master_busi_item_id',
+                field: 'TOTAL_PREM_AF',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '主附险标记',
-                width:120
-            }, {
-                field: 'busi_apply_date',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '预收日期',
+                title: '保费',
                 width:100
             }, {
-                field: 'due_time',
+                field: 'FEE_STATUS',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '实际预收日期',
+                title: '保费是否到账',
                 width:120
             }, {
-                field: 'apply_date',
+                field: 'DZ_SIGN',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '保单投保日',
+                title: '是否电子签名',
                 width:120
             }, {
-                field: 'issue_date',
+                field: 'DZ_SIGN_TYPE',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '承保日期',
-                width:100
+                title: '电子签名质检类型',
+                width:130
+            }, {
+                field: 'DRQ_FLAG',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '是否双录保单',
+                width:120
+            }, {
+                field: 'SL_SEND_DATE',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '双录影音接收时间',
+                width:130
+            }, {
+                field: 'SL_CHECK_DATE',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '双录发送外包商质检时间',
+                width:180
+            }, {
+                field: 'SL_CHECK_STATUS',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '双录外包商质检状态',
+                width:150
             }]
         });
     };
@@ -264,4 +594,45 @@ var TableInit = function () {
     };
 
     return oTableInit;
+};
+
+
+function refreshTable(){
+    // $result = $('#table_user').bootstrapTable('getAllSelections');
+    // if ($result[0] != null) {
+    //     $.scojs_message('删除全部将会丢失所有数据，请等待开发！', $.scojs_message.TYPE_ERROR);
+    // }
+    // var service_code = $("#service_code").val();
+    var apply_status = $("#apply_status").val();
+    var policy_code = $("#policy_code").val();
+    var apply_channel = $("#apply_channel").val();
+    var charge_type = $("#charge_type").val();
+    var apply_date = $('#dtp_input4').val();//投保日期
+    var validate_date = $('#dtp_input5').val();//生效日期
+    var scan_date = $('#dtp_input6').val();//UA301扫描日期
+    // alert(busi_type);
+    var fix = '';
+    if(apply_status!=''&&apply_status!=null){
+        fix += '&apply_status='+apply_status;
+    }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(apply_channel!=''&&apply_channel!=null){
+        fix += '&apply_channel='+apply_channel;
+    }
+    if(charge_type!=''&&charge_type!=null){
+        fix += '&charge_type='+charge_type;
+    }
+    if(apply_date!=''&&apply_date!=null){
+        fix += '&apply_date='+apply_date;
+    }
+    if(validate_date!=''&&validate_date!=null){
+        fix += '&validate_date='+validate_date;
+    }
+    if(scan_date!=''&&scan_date!=null){
+        fix += '&scan_date='+scan_date;
+    }
+    $('#daily_report2').bootstrapTable('removeAll');
+    $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/PostTable/getNbPostStream?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
 };

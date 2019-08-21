@@ -304,9 +304,9 @@ class DataOutController extends Controller
     public function getOutCtPt(){
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $service_code = I('get.service_code');
-        $policy_code = I('get.policy_code');
-        $apply_channel = I('get.apply_channel');
+        $service_code = trim(I('get.service_code'));
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
@@ -846,6 +846,8 @@ class DataOutController extends Controller
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
+        oci_free_statement($result_rows);
+        oci_close($conn);
         $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
@@ -942,14 +944,16 @@ class DataOutController extends Controller
 //        for ($i = 0; $i < sizeof($result); $i++) {
 //            $res[] = $result[$i];
 //        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
         $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
     public function getNbHz(){
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $policy_code = I('get.policy_code');
-        $apply_channel = I('get.apply_channel');
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
@@ -1112,10 +1116,10 @@ class DataOutController extends Controller
     public function getNbCb(){
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $apply_status = I('get.apply_status');
-        $policy_code = I('get.policy_code');
-        $apply_channel = I('get.apply_channel');
-        $apply_type = I('get.apply_type');
+        $apply_status = trim(I('get.apply_status'));
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
+        $apply_type = trim(I('get.apply_type'));
         $apply_date = I('get.apply_date');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -1248,9 +1252,9 @@ class DataOutController extends Controller
     public function getScanList(){
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $busi_type = I('get.busi_type');
-        $policy_code = I('get.policy_code');
-        $busi_code = I('get.busi_code');
+        $busi_type = trim(I('get.busi_type'));
+        $policy_code = trim(I('get.policy_code'));
+        $busi_code = trim(I('get.busi_code'));
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
@@ -1376,12 +1380,12 @@ class DataOutController extends Controller
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
         /*********************************************           添加机构后删除          *********************************************/
-        $where_type_fix = "";
+//        $where_type_fix = "";
 //        if(in_array($user_name,$otherUser)){
 //            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
 //        }
         Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
-        $select_bqsl = "SELECT * FROM  TMP_QDSX_CS_OUT_CT_DETAIL WHERE 1=1 ".$where_time_bqsl;
+        $select_bqsl = "SELECT * FROM  TMP_QDSX_CS_OUT_CT_DETAIL WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -1397,6 +1401,7 @@ class DataOutController extends Controller
             $result[$i]['type_name'] = $value['TYPE_NAME'];
             $result[$i]['fee_amount'] = $value['FEE_AMOUNT'];
             $result[$i]['channel'] = $value['CHANNEL'];
+            $result[$i]['organ_code'] = $value['ORGAN_CODE'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1432,7 +1437,7 @@ class DataOutController extends Controller
             $where_type_fix = " AND USER_NAME = '".$user_name."'";
         }
         /*********************************************           添加机构后删除          *********************************************/
-        $where_type_fix = "";
+//        $where_type_fix = "";
         $select_bqsl = "SELECT ACCEPT_CODE,
                                    SERVICE_NAME,
                                    UPDATE_TIME,
@@ -1445,7 +1450,8 @@ class DataOutController extends Controller
                                    FEE_AMOUNT,
                                    SYS_INSERT_DATE,
                                    CHANNEL,
-                                   HESITATE_FLAG 
+                                   HESITATE_FLAG,
+                                   ORGAN_CODE
                                    FROM  TMP_QDSX_CS_CT_DETAIL WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
         Log::write($user_name.' 保全退保全量数据查询SQL：'.$select_bqsl,'INFO');
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
@@ -1464,6 +1470,7 @@ class DataOutController extends Controller
             $result[$i]['type_name'] = $value['TYPE_NAME'];
             $result[$i]['fee_amount'] = $value['FEE_AMOUNT'];
             $result[$i]['channel'] = $value['CHANNEL'];
+            $result[$i]['organ_code'] = $value['ORGAN_CODE'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1482,10 +1489,10 @@ class DataOutController extends Controller
     {//导出Excel
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $apply_status = I('get.apply_status');
-        $policy_code = I('get.policy_code');
-        $apply_channel = I('get.apply_channel');
-        $apply_type = I('get.apply_type');
+        $apply_status = trim(I('get.apply_status'));
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
+        $apply_type = trim(I('get.apply_type'));
         $apply_date = I('get.apply_date');
         $xlsName = "新契约承保清单";
         $xlsTitle = "新契约承保清单";
@@ -1642,6 +1649,8 @@ class DataOutController extends Controller
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
+        oci_free_statement($result_rows);
+        oci_close($conn);
         $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
@@ -1778,6 +1787,8 @@ class DataOutController extends Controller
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
+        oci_free_statement($result_rows);
+        oci_close($conn);
         $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
@@ -1785,9 +1796,9 @@ class DataOutController extends Controller
     {//导出Excel
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $service_code = I('get.service_code');
-        $policy_code = I('get.policy_code');
-        $apply_channel = I('get.apply_channel');
+        $service_code = trim(I('get.service_code'));
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
         $xlsName = "减退保清单";
         $xlsTitle = "减退保清单";
         $xlsCell = array( //设置字段名和列名的映射
@@ -1900,6 +1911,8 @@ class DataOutController extends Controller
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
+        oci_free_statement($result_rows);
+        oci_close($conn);
         $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
@@ -1907,8 +1920,8 @@ class DataOutController extends Controller
     {//导出Excel
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $policy_code = I('get.policy_code');
-        $apply_channel = I('get.apply_channel');
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
         $xlsName = "回执核销清单";
         $xlsTitle = "回执核销清单";
         $method = new MethodController();
@@ -1980,6 +1993,8 @@ class DataOutController extends Controller
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
+        oci_free_statement($result_rows);
+        oci_close($conn);
         $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
@@ -1987,9 +2002,9 @@ class DataOutController extends Controller
     {//导出Excel
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
-        $busi_type = I('get.busi_type');
-        $policy_code = I('get.policy_code');
-        $busi_code = I('get.busi_code');
+        $busi_type = trim(I('get.busi_type'));
+        $policy_code = trim(I('get.policy_code'));
+        $busi_code = trim(I('get.busi_code'));
         $xlsName = "扫描清单";
         $xlsTitle = "扫描清单";
         $method = new MethodController();
@@ -2106,6 +2121,8 @@ class DataOutController extends Controller
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
         }
+        oci_free_statement($result_rows);
+        oci_close($conn);
         $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
 

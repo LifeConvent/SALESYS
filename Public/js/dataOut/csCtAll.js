@@ -199,6 +199,13 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '收付费金额',
                 width:100
+            }, {
+                field: 'organ_code',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '管理机构',
+                width:100
             }]
         });
     };
