@@ -100,7 +100,7 @@ var TableInit = function () {
                     colspan: 1,
                     align : 'center'
                 },{
-                    title : '理赔审核',
+                    title : '理赔受理/审核',
                     colspan: 3,
                     align : 'center'
                 },{
