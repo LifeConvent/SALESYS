@@ -477,7 +477,7 @@ class MethodController extends Controller
 
     public function getDictArry($OrganCode){
         $conn = $this->OracleOldDBCon();
-        $select_des = "SELECT A.ORGAN_NAME FROM ORGAN_CODE_NAME A WHERE DAY_POST_CODE LIKE '".$OrganCode."%' ORDER BY SHOW_LIST";
+        $select_des = "SELECT A.ORGAN_NAME FROM ORGAN_CODE_NAME A WHERE DAY_POST_CODE LIKE '".$OrganCode."%' AND IS_VALID = '1' ORDER BY SHOW_LIST";
         Log::write('日报机构查询SQL：'.$select_des,'INFO');
         $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
         $result = $this->search_long($result_rows);
@@ -491,7 +491,7 @@ class MethodController extends Controller
 
     public function getDictIndex($OrganCode){
         $conn = $this->OracleOldDBCon();
-        $select_des = "SELECT A.ORGAN_NAME,A.SHOW_LIST FROM ORGAN_CODE_NAME A WHERE DAY_POST_CODE LIKE '".$OrganCode."%' ORDER BY SHOW_LIST";
+        $select_des = "SELECT A.ORGAN_NAME,A.SHOW_LIST FROM ORGAN_CODE_NAME A WHERE DAY_POST_CODE LIKE '".$OrganCode."%' AND IS_VALID = '1' ORDER BY SHOW_LIST";
         Log::write('日报机构查询SQL：'.$select_des,'INFO');
         $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
         $result = $this->search_long($result_rows);

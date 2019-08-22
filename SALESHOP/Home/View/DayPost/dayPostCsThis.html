@@ -53,16 +53,23 @@
                 <section class="panel">
                     <header class="panel-heading">
                         <!--<div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>-->
-                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt">选择日期</button></div>
+                        <div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  readonly>选择日期</button></div>
                         <!--<div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>-->
                         <div class="tools" style="float:left;margin-left: 10pt">
-                            <div style="width:250px;" class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
                                 <input class="form-control" size="16" type="text" value="" readonly>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                             </div>
+                            <div style="width:50px;float:left;padding-left: 15px;margin-top: 5px"><strong>至</strong></div>
+                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date2" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
+                            <input class="form-control" size="16" type="text" value="" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            </div>
                         </div>
                         <input style="visibility:hidden" id="dtp_input2" value=""/>
+                        <input style="visibility:hidden" id="dtp_input3" value=""/>
                     </header>
                     <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
                         <!--<span style="color: red;"><strong>请粘贴相应标签至“表内查询”搜索框搜索,选中后拖拽时记得拽回来啊！</strong></span>-->
@@ -78,7 +85,8 @@
                         </div>
                         <table id="daily_report"></table>
                     </div>
-                </section>
+                    </section>
+                </div>
             </div>
 
         </section>

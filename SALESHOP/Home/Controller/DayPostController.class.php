@@ -515,6 +515,199 @@ class DayPostController extends Controller
         }
     }
 
+    public function getCsDayPostThisByTime(){
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $organCode = $method->getUserOrganCode();
+        $day_post_organ = $method->getSxDaypostOrgan($user_name);
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%') AND SYS_INSERT_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+        } else {
+            $where_time_bqsl = " AND (ORGAN_CODE = '8600' OR ORGAN_CODE LIKE '".$day_post_organ."%')  AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+        }
+        $where_time_bqsl = " AND T.SYS_INSERT_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd')";
+        $dictIndex = $method->getDictIndex($day_post_organ);
+        $DictArry = $method->getDictArry($day_post_organ);
+        for ($i = 0; $i < sizeof($DictArry); $i++) {
+            $result[] = array("org" => $DictArry[$i],"slfh_gm_sum" => 0,"slfh_gm_bug_sum" => 0,"slfh_gm_rate" => 0,
+                "slfh_ww_sum" => 0,"slfh_ww_bug_sum" => 0,"slfh_ww_rate" => 0,
+                "bqdx_sum" => 0,"bqdx_bug_sum" => 0,"bqdx_rate" => 0);
+        }
+        $select_bqsl = "SELECT A.ORGAN_CODE,
+                               A.ORGAN_NAME,
+                               A.SLFH_GM_SUM,
+                               A.BUG_NUM AS SLFH_GM_BUG_SUM,
+                               A.RATE AS SLFH_GM_RATE,
+                               B.SLFH_WW_SUM AS SLFH_WW_SUM,
+                               B.BUG_NUM AS SLFH_WW_BUG_SUM,
+                               B.RATE AS SLFH_WW_RATE,
+                               C.BQDX_SUM AS BQDX_SUM,
+                               C.BUG_NUM AS BQDX_BUG_SUM,
+                               C.RATE AS BQDX_RATE
+                          FROM (SELECT  ORG.ORGAN_CODE,
+                                        ORG.ORGAN_NAME,
+                                        COUNT(N.BUSINESS_CODE) AS SLFH_GM_SUM,
+                                        COUNT(CASE WHEN N.RESULT <> '正确' THEN 1 ELSE NULL END) AS BUG_NUM,
+                                        DECODE(COUNT(N.BUSINESS_CODE),0,'100.00%', TRIM(TO_CHAR((COUNT(N.BUSINESS_CODE)-COUNT(CASE WHEN N.RESULT <> '正确' THEN 1 ELSE NULL END))/COUNT(N.BUSINESS_CODE)*100,'999D99')||'%')) RATE
+                                   FROM ORGAN_CODE_NAME ORG
+                              LEFT JOIN (SELECT DISTINCT T.ACCEPT_CODE AS BUSINESS_CODE,
+                                     (CASE
+                                         WHEN T.TC_ID IS NULL THEN T.RESULT
+                                         ELSE '错误'
+                                     END) AS RESULT,/*T.POLICY_CODE,*/T.BUSINESS_NODE,
+                                                SUBSTR(T.ORGAN_CODE,0,6) AS ORGAN_CODE
+                                           FROM (SELECT SLFH.ACCEPT_CODE,/*SLFH.POLICY_CODE,*/SLFH.BUSINESS_NODE,
+                                                  --(CASE WHEN BUG.TC_ID IS NOT NULL THEN '错误' ELSE DESCRIP.RESULT END) AS RESULT,
+                                                  (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN GROUP(ORDER BY N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = SLFH.ACCEPT_CODE AND W.FIND_NODE = SLFH.BUSINESS_NODE) AS TC_ID,
+                                                  --BUG.TC_ID,
+                                                  DESCRIP.RESULT AS RESULT,
+                                                  (CASE WHEN BUG.CREATE_DATE IS NULL THEN TRUNC(DESCRIP.SYS_INSERT_DATE) ELSE TRUNC(BUG.CREATE_DATE) END) AS SYS_INSERT_DATE,
+                                                  (CASE WHEN D_U_TC.HD_USER_CODE IS NULL THEN D_U_DESC.HD_USER_CODE ELSE D_U_TC.HD_USER_CODE END) AS ORGAN_CODE
+                                                  FROM TMP_QDSX_CS_SLFH_GM SLFH
+                                              LEFT JOIN TMP_SX_TC_BUG BUG
+                                                     ON BUG.BUSINESS_CODE = SLFH.ACCEPT_CODE
+                                                     AND BUG.FIND_NODE = SLFH.BUSINESS_NODE
+                                                     AND TRUNC(BUG.CREATE_DATE) = TRUNC(SLFH.SYS_INSERT_DATE)                            --AND BUG.POLICY_CODE = SLFH.POLICY_CODE
+                                              LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION DESCRIP
+                                                     ON DESCRIP.BUSINESS_CODE = SLFH.ACCEPT_CODE
+                                                    AND DESCRIP.POLICY_CODE = SLFH.POLICY_CODE
+                                                    AND DESCRIP.BUSINESS_NODE = SLFH.BUSINESS_NODE
+                                                    AND DESCRIP.BUSINESS_DATE = SLFH.SYS_INSERT_DATE
+                                                    --AND TRUNC(DESCRIP.SYS_INSERT_DATE) = TRUNC(SYSDATE-2)
+                                              LEFT JOIN TMP_DAYPOST_USER D_U_TC
+                                                     ON D_U_TC.ACCOUNT = BUG.TC_USER_NAME
+                                              LEFT JOIN TMP_DAYPOST_USER D_U_DESC
+                                                     ON D_U_DESC.ACCOUNT = DESCRIP.HD_USER_NAME
+                                                   /* WHERE ((TRUNC(BQDX.SYS_INSERT_DATE) BETWEEN TO_DATE('2019-08-19','YYYY-MM-DD') AND TRUNC(SYSDATE-2)) OR 
+                        (TRUNC(DESCRIP.SYS_INSERT_DATE) BETWEEN TO_DATE('2019-08-19','YYYY-MM-DD') AND  TRUNC(SYSDATE-2)))*/
+                                                    )  T  ---------------------------------------------------------
+                                              WHERE T.ORGAN_CODE IS NOT NULL ".$where_time_bqsl."
+                                            )  N  ------------------------------------------------------------------
+                                     ON N.ORGAN_CODE = ORG.ORGAN_CODE
+                              WHERE ORG.IS_VALID = '1'
+                               GROUP BY ORG.ORGAN_CODE,ORG.ORGAN_NAME
+                               ) A    -----------------------------------------------------保全受理复核柜面清单结束
+                          LEFT JOIN (SELECT ORG.ORGAN_CODE,
+                                            COUNT(N.BUSINESS_CODE) AS SLFH_WW_SUM,
+                                            COUNT(CASE WHEN N.RESULT <> '正确' THEN 1 ELSE NULL END) AS BUG_NUM,
+                                            DECODE(COUNT(N.BUSINESS_CODE),0,'100.00%', TRIM(TO_CHAR((COUNT(N.BUSINESS_CODE)-COUNT(CASE WHEN N.RESULT <> '正确' THEN 1 ELSE NULL END))/COUNT(N.BUSINESS_CODE)*100,'999D99')||'%')) RATE
+                                       FROM ORGAN_CODE_NAME ORG
+                                  LEFT JOIN (SELECT DISTINCT  T.ACCEPT_CODE AS BUSINESS_CODE,
+                                     (CASE
+                                         WHEN T.TC_ID IS NULL THEN T.RESULT
+                                         ELSE '错误'
+                                     END) AS RESULT,/*T.POLICY_CODE,*/T.BUSINESS_NODE,
+                                                    SUBSTR(T.ORGAN_CODE,0,6) AS ORGAN_CODE
+                                               FROM (SELECT SLWW.ACCEPT_CODE,/*SLWW.POLICY_CODE,*/SLWW.BUSINESS_NODE,
+                                                  --(CASE WHEN BUG.TC_ID IS NOT NULL THEN '错误' ELSE DESCRIP.RESULT END) AS RESULT,
+                                                  (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN GROUP(ORDER BY N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = SLWW.ACCEPT_CODE AND W.FIND_NODE = SLWW.BUSINESS_NODE) AS TC_ID,
+                                                  --BUG.TC_ID,
+                                                  DESCRIP.RESULT AS RESULT,
+                                                  (CASE WHEN BUG.CREATE_DATE IS NULL THEN TRUNC(DESCRIP.SYS_INSERT_DATE) ELSE TRUNC(BUG.CREATE_DATE) END) AS SYS_INSERT_DATE,
+                                                  (CASE WHEN D_U_TC.HD_USER_CODE IS NULL THEN D_U_DESC.HD_USER_CODE ELSE D_U_TC.HD_USER_CODE END) AS ORGAN_CODE
+                                                  FROM TMP_QDSX_CS_SLFH_WW SLWW
+                                                  LEFT JOIN TMP_SX_TC_BUG BUG
+                                                         ON BUG.BUSINESS_CODE = SLWW.ACCEPT_CODE
+                                                        --AND BUG.POLICY_CODE = SLWW.POLICY_CODE
+                                                         AND BUG.FIND_NODE = SLWW.BUSINESS_NODE
+                                                         AND TRUNC(BUG.CREATE_DATE) = TRUNC(SLWW.SYS_INSERT_DATE)
+                                                  LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION DESCRIP
+                                                         ON DESCRIP.BUSINESS_CODE = SLWW.ACCEPT_CODE
+                                                        AND DESCRIP.POLICY_CODE = SLWW.POLICY_CODE
+                                                        AND DESCRIP.BUSINESS_NODE = SLWW.BUSINESS_NODE
+                                                        AND DESCRIP.BUSINESS_DATE = SLWW.SYS_INSERT_DATE
+                                                    --AND TRUNC(DESCRIP.SYS_INSERT_DATE) = TRUNC(SYSDATE-2)
+                                                  LEFT JOIN TMP_DAYPOST_USER D_U_TC
+                                                         ON D_U_TC.ACCOUNT = BUG.TC_USER_NAME
+                                                  LEFT JOIN TMP_DAYPOST_USER D_U_DESC
+                                                         ON D_U_DESC.ACCOUNT = DESCRIP.HD_USER_NAME
+                                                   /* WHERE ((TRUNC(BQDX.SYS_INSERT_DATE) BETWEEN TO_DATE('2019-08-19','YYYY-MM-DD') AND TRUNC(SYSDATE-2)) OR 
+                        (TRUNC(DESCRIP.SYS_INSERT_DATE) BETWEEN TO_DATE('2019-08-19','YYYY-MM-DD') AND  TRUNC(SYSDATE-2)))*/
+                                                    )  T  ---------------------------------------------------------
+                                              WHERE T.ORGAN_CODE IS NOT NULL ".$where_time_bqsl."
+                                            )  N  ------------------------------------------------------------------                         LEFT JOIN TMP_DAYPOST_USER D_U_DESC
+                        
+                                         ON N.ORGAN_CODE = ORG.ORGAN_CODE
+                              WHERE ORG.IS_VALID = '1'
+                                      GROUP BY ORG.ORGAN_CODE
+                                    ) B  -----------------------------------------------------------------------------
+                                 ON A.ORGAN_CODE = B.ORGAN_CODE
+                          LEFT JOIN (SELECT ORG.ORGAN_CODE,
+                                            COUNT(N.BUSINESS_CODE) AS BQDX_SUM,
+                                            COUNT(CASE WHEN N.RESULT <> '正确' THEN 1 ELSE NULL END) AS BUG_NUM,
+                                            DECODE(COUNT(N.BUSINESS_CODE),0,'100.00%', TRIM(TO_CHAR((COUNT(N.BUSINESS_CODE)-COUNT(CASE WHEN N.RESULT <> '正确' THEN 1 ELSE NULL END))/COUNT(N.BUSINESS_CODE)*100,'999D99')||'%')) RATE
+                                       FROM ORGAN_CODE_NAME ORG
+                                  LEFT JOIN (SELECT DISTINCT  T.CONTENT_ID AS BUSINESS_CODE,
+                                     (CASE
+                                         WHEN T.TC_ID IS NULL THEN T.RESULT
+                                         ELSE '错误'
+                                     END) AS RESULT,
+                                                    SUBSTR(T.ORGAN_CODE,0,6) AS ORGAN_CODE
+                                               FROM (SELECT BQDX.CONTENT_ID,
+                                                  --(CASE WHEN BUG.TC_ID IS NOT NULL THEN '错误' ELSE DESCRIP.RESULT END) AS RESULT,
+                                                  (SELECT W.TC_ID FROM (SELECT N.BUSINESS_CODE,N.FIND_NODE,LISTAGG(N.TC_ID,',') WITHIN GROUP(ORDER BY N.TC_ID) AS TC_ID FROM TMP_SX_TC_BUG N WHERE 1=1 GROUP BY N.BUSINESS_CODE,N.FIND_NODE) W WHERE W.BUSINESS_CODE = BQDX.CONTENT_ID AND W.FIND_NODE = BQDX.BUSINESS_NODE) AS TC_ID,
+                                                  --BUG.TC_ID,
+                                                  DESCRIP.RESULT AS RESULT,
+                                                  (CASE WHEN BUG.CREATE_DATE IS NULL THEN TRUNC(DESCRIP.SYS_INSERT_DATE) ELSE TRUNC(BUG.CREATE_DATE) END) AS SYS_INSERT_DATE,
+                                                  (CASE WHEN D_U_TC.HD_USER_CODE IS NULL THEN D_U_DESC.HD_USER_CODE ELSE D_U_TC.HD_USER_CODE END) AS ORGAN_CODE
+                                                  FROM TMP_QDSX_CS_BQDX BQDX
+                                                  LEFT JOIN TMP_SX_TC_BUG BUG
+                                                         ON BUG.BUSINESS_CODE = BQDX.CONTENT_ID
+                                                         AND BUG.FIND_NODE = BQDX.BUSINESS_NODE
+                                                        AND TRUNC(BUG.CREATE_DATE) = TRUNC(BQDX.SYS_INSERT_DATE)
+                                                  LEFT JOIN TMP_QDSX_DAYPOST_DESCRIPTION DESCRIP
+                                                         ON DESCRIP.BUSINESS_CODE = BQDX.CONTENT_ID
+                                                        AND DESCRIP.BUSINESS_NODE = BQDX.BUSINESS_NODE
+                                                        AND DESCRIP.BUSINESS_DATE = BQDX.SYS_INSERT_DATE
+                                                    --AND TRUNC(DESCRIP.SYS_INSERT_DATE) = TRUNC(SYSDATE-2)
+                                                  LEFT JOIN TMP_DAYPOST_USER D_U_TC
+                                                         ON D_U_TC.ACCOUNT = BUG.TC_USER_NAME
+                                                  LEFT JOIN TMP_DAYPOST_USER D_U_DESC
+                                                         ON D_U_DESC.ACCOUNT = DESCRIP.HD_USER_NAME
+                                                   /* WHERE ((TRUNC(BQDX.SYS_INSERT_DATE) BETWEEN TO_DATE('2019-08-19','YYYY-MM-DD') AND TRUNC(SYSDATE-2)) OR 
+                        (TRUNC(DESCRIP.SYS_INSERT_DATE) BETWEEN TO_DATE('2019-08-19','YYYY-MM-DD') AND  TRUNC(SYSDATE-2)))*/
+                                                    )  T  ---------------------------------------------------------
+                                              WHERE T.ORGAN_CODE IS NOT NULL ".$where_time_bqsl."
+                                            )  N  ------------------------------------------------------------------
+                                         ON N.ORGAN_CODE = ORG.ORGAN_CODE
+                              WHERE ORG.IS_VALID = '1'
+                                      GROUP BY ORG.ORGAN_CODE
+                                    ) C  ---------------------------------------------------------------------------
+                                 ON A.ORGAN_CODE = C.ORGAN_CODE";
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        Log::write($user_name . ' 保全日报区间查询SQL：' . $select_bqsl, 'INFO');
+//        dump($bqsl_result_time);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['slfh_gm_sum'] = $value['SLFH_GM_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['slfh_gm_bug_sum'] = $value['SLFH_GM_BUG_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['slfh_gm_rate'] = $value['SLFH_GM_RATE'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['slfh_ww_sum'] = $value['SLFH_WW_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['slfh_ww_bug_sum'] = $value['SLFH_WW_BUG_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['slfh_ww_rate'] = $value['SLFH_WW_RATE'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['bqdx_sum'] = $value['BQDX_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['bqdx_bug_sum'] = $value['BQDX_BUG_SUM'];
+            $result[$dictIndex[$value['ORGAN_NAME']]]['bqdx_rate'] = $value['BQDX_RATE'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+//        dump($res);
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
     public function getUwDayPostThis(){
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
