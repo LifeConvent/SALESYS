@@ -177,12 +177,33 @@ class DayPostController extends Controller
 //                    and tp.plname = 'bug_table_status'
 //                    and tp.tx_value = bt.status ".$where."
 //                GROUP BY cfvt.value3";
+
+//        $queryTc = "select  cfvt.value3 as sys,
+//                                    SUM(case when cfvt.value2 = '江西上线生产问题' then 1 else 0 end) AS BUG_SUM,
+//                                    count(case  when bt.`status` in ('8','11','42') and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_close_sum,
+//                                    count(case  when bt.`status` not in ('8','11','42') and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_no_close_sum,
+//                                    count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_this_sum,
+//                                    count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and bt.`status` in ('8','11','42') and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_this_close_sum
+//                    from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp
+//                    where ut.id = bt.reporter_id
+//                        and bt.id = cfvt.bug_id
+//                        and tp.plname = 'bug_table_status'
+//                        #and cfvt.value2 = '江西上线生产问题'
+//                        #and cfvt.value2 = '青岛上线生产问题'
+//                        and tp.tx_value = bt.status ".$where."
+//                    GROUP BY cfvt.value3";
+
         $queryTc = "select  cfvt.value3 as sys,
                                     SUM(case when cfvt.value2 = '江西上线生产问题' then 1 else 0 end) AS BUG_SUM,
                                     count(case  when bt.`status` in ('8','11','42') and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_close_sum,
                                     count(case  when bt.`status` not in ('8','11','42') and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_no_close_sum,
                                     count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_this_sum,
-                                    count(case  when date_format(bt.date_submitted,'%Y-%m-%d') = ".$endStart." and bt.`status` in ('8','11','42') and cfvt.value2 = '江西上线生产问题' then 1 else null end) as bug_this_close_sum
+                                    count(case  when #date_format(bt.date_submitted,'%Y-%m-%d') = '2019-08-08' and
+                                    (select date_format(MIN(bhr.date_modified),'%Y-%m-%d') from bug_history_remark bhr 
+                                                            where 1=1 AND (bhr.newStatus LIKE '%关闭%' OR bhr.newStatus = '已取消') AND bhr.bug_id = cfvt.bug_id) = ".$endStart." 				#关闭最早日期是当日
+                                    and bt.`status` in ('8','11','42') #状态是关闭
+                                    and cfvt.value2 = '江西上线生产问题' 
+                                    then 1 else null end) as bug_this_close_sum
                     from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
                     where ut.id = bt.reporter_id 
                         and bt.id = cfvt.bug_id 
