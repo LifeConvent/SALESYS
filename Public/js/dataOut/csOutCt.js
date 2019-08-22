@@ -215,3 +215,63 @@ var TableInit = function () {
 
     return oTableInit;
 };
+
+
+function refreshTable(){
+    // $result = $('#table_user').bootstrapTable('getAllSelections');
+    // if ($result[0] != null) {
+    //     $.scojs_message('删除全部将会丢失所有数据，请等待开发！', $.scojs_message.TYPE_ERROR);
+    // }
+    var service_name = $("#service_name").val();
+    var policy_code = $("#policy_code").val();
+    var risk_code = $("#risk_code").val();
+    // alert(busi_type);
+    var fix = '';
+    if(service_name!=''&&service_name!=null){
+        fix += '&service_name='+service_name;
+    }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(risk_code!=''&&risk_code!=null){
+        fix += '&risk_code='+risk_code;
+    }
+    $('#daily_report2').bootstrapTable('removeAll');
+    $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getCsOutCt?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
+    $.ajax({
+        type: "GET", //用POST方式传输
+        url: HOST + "index.php/Home/DataOut/getSumALLOutCt?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix, //目标地址.
+        dataType: "json", //数据格式:JSON
+        success: function (result) {
+            if (result.status == 'success') {
+                debugger;
+                $('#sum_all').text(result.message);
+            } else if (result.status == 'failed') {
+                $('#sum_all').text(result.message);
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest);
+            alert(textStatus);
+            alert(errorThrown);
+        }
+    });
+};
+
+function exportExcelByTime() {
+    var service_name = $("#service_name").val();
+    var policy_code = $("#policy_code").val();
+    var risk_code = $("#risk_code").val();
+    // alert(busi_type);
+    var fix = '';
+    if(service_name!=''&&service_name!=null){
+        fix += '&service_name='+service_name;
+    }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(risk_code!=''&&risk_code!=null){
+        fix += '&risk_code='+risk_code;
+    }
+    window.location.href = HOST + "index.php/Home/DataOut/expCsOutCt?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix;
+}
