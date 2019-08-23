@@ -2101,7 +2101,7 @@ class DataOutController extends Controller
             array('total_prem_af', '保费'),
             array('fee_status', '保费是否到账'),
             array('fyc', 'FYC'),
-            array('validate_tome', '生效日期')
+            array('validate_time', '生效日期')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
