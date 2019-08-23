@@ -1311,7 +1311,8 @@ class DataOutController extends Controller
                                    REAL_NAME,--           AS 扫描用户,
                                    STATUS_DESC,--        AS 扫描状态,
                                    HOLDER_NAME,--        AS 投保人姓名,
-                                   INSURED_NAME--      AS 被保人姓名
+                                   INSURED_NAME--,      AS 被保人姓名
+--                                   ORGAN_CODE AS SCAN_ORGAN_CODE
                               FROM TMP_QDSX_QD_SM
                              WHERE 1=1".$where_time_bqsl.$where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
@@ -1342,6 +1343,7 @@ class DataOutController extends Controller
             $result[$i]['STATUS_DESC'] = $value['STATUS_DESC'];
             $result[$i]['HOLDER_NAME'] = $value['HOLDER_NAME'];
             $result[$i]['INSURED_NAME'] = $value['INSURED_NAME'];
+//            $result[$i]['SCAN_ORGAN_CODE'] = $value['SCAN_ORGAN_CODE'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -2311,6 +2313,8 @@ class DataOutController extends Controller
             array('REAL_NAME', '扫描状态'),
             array('HOLDER_NAME', '投保人姓名'),
             array('INSURED_NAME', '被保人姓名')
+//        ,
+//            array('SCAN_ORGAN_CODE', '扫描机构')
         );
         $select_bqsl = "SELECT BUSS_CLASS,--                AS 业务类别,
                                    IMAGE_SCAN_ID,--       AS 影像扫描ID,
@@ -2333,7 +2337,8 @@ class DataOutController extends Controller
                                    REAL_NAME,--           AS 扫描用户,
                                    STATUS_DESC,--        AS 扫描状态,
                                    HOLDER_NAME,--        AS 投保人姓名,
-                                   INSURED_NAME--      AS 被保人姓名
+                                   INSURED_NAME--,      AS 被保人姓名
+                                   --ORGAN_CODE AS SCAN_ORGAN_CODE
                               FROM TMP_QDSX_QD_SM
                              WHERE 1=1".$where_time_bqsl.$where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
@@ -2364,6 +2369,7 @@ class DataOutController extends Controller
             $result[$i]['STATUS_DESC'] = $value['STATUS_DESC'];
             $result[$i]['HOLDER_NAME'] = $value['HOLDER_NAME'];
             $result[$i]['INSURED_NAME'] = $value['INSURED_NAME'];
+//            $result[$i]['SCAN_ORGAN_CODE'] = $value['SCAN_ORGAN_CODE'];
         }
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];

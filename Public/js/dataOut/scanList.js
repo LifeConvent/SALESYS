@@ -304,7 +304,16 @@ var TableInit = function () {
                     valign: 'middle',
                     title: '被保人姓名',
                     width:200
-                }]
+                }
+                // , {
+                //     field: 'SCAN_ORGAN_CODE',
+                //     sortable: true,
+                //     align: 'center',
+                //     valign: 'middle',
+                //     title: '扫描机构',
+                //     width:200
+                // }
+                ]
         });
     };
 
