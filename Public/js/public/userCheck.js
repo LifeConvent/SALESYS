@@ -116,8 +116,7 @@ $(function () {
     control_list.put("5.9", "data_cap_nb_no_arrive");
     control_list.put("5.A", "data_cap_cs_back");
     control_list.put("5.B", "data_ct_pt");
-    control_list.put("5.C", "chat_dz_define");
-    control_list.put("5.D", "data_cs_cb_style");
+    control_list.put("5.C", "data_cs_cb_style");
     control_list.put("6", "data_control");
     control_list.put("7", "list_nb");
     control_list.put("7.1", "nb_post_table_stream");
@@ -135,6 +134,7 @@ $(function () {
     control_list.put("9.9", "nb_notice_define");
     control_list.put("9.A", "nb_cbyw_define");
     control_list.put("9.B", "clm_chat_define");
+    control_list.put("9.C", "chat_dz_define");
     control_list.put("A", "cap_menu");
     control_list.put("A.1", "cap_define_cs");
     control_list.put("A.2", "cap_define_nb");
