@@ -2066,8 +2066,8 @@ class DataOutController extends Controller
         $apply_channel = trim(I('get.apply_channel'));
         $apply_type = trim(I('get.apply_type'));
         $apply_date = I('get.apply_date');
-        $xlsName = "新契约承保清单";
-        $xlsTitle = "新契约承保清单";
+        $xlsName = "新增附加险清单";
+        $xlsTitle = "新增附加险清单";
         $xlsCell = array( //设置字段名和列名的映射
             array('apply_date', '投保日期'),
             array('organ_code', '管理机构'),
@@ -2101,7 +2101,7 @@ class DataOutController extends Controller
             array('total_prem_af', '保费'),
             array('fee_status', '保费是否到账'),
             array('fyc', 'FYC'),
-            array('validate_tome', 'VALIDATE_TIME')
+            array('validate_tome', '生效日期')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
