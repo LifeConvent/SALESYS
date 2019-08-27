@@ -222,6 +222,22 @@ class DataOutController extends Controller
         }
     }
 
+    public function policyNoCharge()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $method->assignPublic($username,$this);
+            if(!$method->getSystype($username)){
+                $this->redirect('Index/errorSys');
+            }
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function csCtAll()
     {
         $username = '';
@@ -1263,6 +1279,256 @@ class DataOutController extends Controller
         } else {
             exit(json_encode(''));
         }
+    }
+
+    public function getPolicyNoCharge(){
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+//        $apply_status = trim(I('get.apply_status'));
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
+        $apply_type = trim(I('get.apply_type'));
+        $apply_date = I('get.apply_date');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(PAY_END_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(PAY_END_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)&&empty($apply_date)){
+            $where_time_bqsl = "  ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $channel_type = $method->getChannelTypeBySql($user_name);
+            if((int)$channel_type==2){
+                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            }
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+//        if(!empty($apply_status)){
+//            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+//        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND POLICY_CODE LIKE '%".$policy_code."%'";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND CHANNEL_TYPE LIKE '%".$apply_channel."%'";
+        }
+        if(!empty($apply_type)){
+            $where_type_fix .= " AND POLICY_FLAG LIKE '%".$apply_type."%'";
+        }
+        if(!empty($apply_date)){
+            $where_type_fix .= " AND TRUNC(PAY_END_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
+        }
+        $select_bqsl = "SELECT TO_CHAR(PAY_END_DATE,'YYYY-MM-DD') AS PAY_END_DATE, --宽限到期日
+                               POLICY_CODE, --保单号
+                               HOLDER_NAME, --投保人姓名
+                               TO_CHAR(DUE_TIME,'YYYY-MM-DD') AS DUE_TIME, --缴费对应日
+                               FEE_AMOUNT, --应交保费（含附加险）
+                               PAID_COUNT, --缴费次数 
+                               PAY_MODE, --缴费形式
+                               BANK_NAME, --划款银行名称
+                               BANK_ACCOUNT, --银行账号（后四位）
+                               HOLDER_TEL, --联系电话
+                               HOLDER_ADDRESS, --通讯地址
+                               UPORGAN_CODE, --保单所属中支
+                               CHANNEL_TYPE, --保单所属渠道
+                               ORGAN_CODE, --保单所属四级机构
+                               YINGYB, --保单所属营业部
+                               TCA_CHANNEL_TYPE, --现服务渠道
+                               AGENT_NAME, --现服务人员姓名
+                               ORIGINAL_CHANNEL_TYPE_NAME, --原销售渠道  
+                               ORIGINAL_AGENT_NAME, --原销售人员姓名
+                               LIABILITY_STATE, --保单状态
+                               IS_SELF_INSURED, --自保件标识  0-否 1-是
+                               POLICY_FLAG --保单标识（自有单、赋予单、孤儿单）
+                        FROM TEMP_RENEWAL_PREM
+                        WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
+                        ORDER BY PAY_END_DATE DESC";
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['PAY_END_DATE'] = $value['PAY_END_DATE'];
+            $result[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
+            $result[$i]['HOLDER_NAME'] = $value['HOLDER_NAME'];
+            $result[$i]['DUE_TIME'] = $value['DUE_TIME'];
+            $result[$i]['FEE_AMOUNT'] = $value['FEE_AMOUNT'];
+            $result[$i]['PAID_COUNT'] = $value['PAID_COUNT'];
+            $result[$i]['PAY_MODE'] = $value['PAY_MODE'];
+            $result[$i]['BANK_NAME'] = $value['BANK_NAME'];
+            $result[$i]['BANK_ACCOUNT'] = $value['BANK_ACCOUNT'];
+            $result[$i]['HOLDER_TEL'] = $value['HOLDER_TEL'];
+            $result[$i]['HOLDER_ADDRESS'] = $value['HOLDER_ADDRESS'];
+            $result[$i]['UPORGAN_CODE'] = $value['UPORGAN_CODE'];
+            $result[$i]['CHANNEL_TYPE'] = $value['CHANNEL_TYPE'];
+            $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
+            $result[$i]['YINGYB'] = $value['YINGYB'];
+            $result[$i]['TCA_CHANNEL_TYPE'] = $value['TCA_CHANNEL_TYPE'];
+            $result[$i]['AGENT_NAME'] = $value['AGENT_NAME'];
+            $result[$i]['ORIGINAL_CHANNEL_TYPE_NAME'] = $value['ORIGINAL_CHANNEL_TYPE_NAME'];
+            $result[$i]['ORIGINAL_AGENT_NAME'] = $value['ORIGINAL_AGENT_NAME'];
+            $result[$i]['LIABILITY_STATE'] = $value['LIABILITY_STATE'];
+            $result[$i]['IS_SELF_INSURED'] = $value['IS_SELF_INSURED'];
+            $result[$i]['POLICY_FLAG'] = $value['POLICY_FLAG'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function expPolicyNoCharge()
+    {//导出Excel
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+//        $apply_status = trim(I('get.apply_status'));
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
+        $apply_type = trim(I('get.apply_type'));
+        $apply_date = I('get.apply_date');
+        $xlsName = "保单应缴未缴清单";
+        $xlsTitle = "保单应缴未缴清单";
+        $xlsCell = array( //设置字段名和列名的映射
+            array('PAY_END_DATE', '宽限到期日'),
+            array('POLICY_CODE', '保单号'),
+            array('HOLDER_NAME', '投保人姓名'),
+            array('DUE_TIME', '缴费对应日'),
+            array('FEE_AMOUNT', '应交保费（含附加险）'),
+            array('PAID_COUNT', '缴费次数'),
+            array('PAY_MODE', '缴费形式'),
+            array('BANK_NAME', '划款银行名称'),
+            array('BANK_ACCOUNT', '银行账号（后四位）'),
+            array('HOLDER_TEL', '联系电话'),
+            array('HOLDER_ADDRESS', '通讯地址'),
+            array('UPORGAN_CODE', '保单所属中支'),
+            array('CHANNEL_TYPE', '保单所属渠道'),
+            array('ORGAN_CODE', '保单所属四级机构'),
+            array('YINGYB', '保单所属营业部'),
+            array('TCA_CHANNEL_TYPE', '现服务渠道'),
+            array('AGENT_NAME', '现服务人员姓名'),
+            array('ORIGINAL_CHANNEL_TYPE_NAME', '原销售渠道'),
+            array('ORIGINAL_AGENT_NAME', '原销售人员姓名'),
+            array('LIABILITY_STATE', '保单状态'),
+            array('IS_SELF_INSURED', '自保件标识'),
+            array('POLICY_FLAG', '保单标识')
+        );
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(PAY_END_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if(!empty($queryDateEnd)){
+                $where_time_bqsl = " AND TRUNC(PAY_END_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)&&empty($apply_date)){
+            $where_time_bqsl = "  ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $where_type_fix = "";
+        }else if((int)$userType==2){
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $channel_type = $method->getChannelTypeBySql($user_name);
+            if((int)$channel_type==2){
+                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            }
+        }else if((int)$userType==3){
+            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        }
+//        if(!empty($apply_status)){
+//            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+//        }
+        if(!empty($policy_code)){
+            $where_type_fix .= " AND POLICY_CODE LIKE '%".$policy_code."%'";
+        }
+        if(!empty($apply_channel)){
+            $where_type_fix .= " AND CHANNEL_TYPE LIKE '%".$apply_channel."%'";
+        }
+        if(!empty($apply_type)){
+            $where_type_fix .= " AND POLICY_FLAG LIKE '%".$apply_type."%'";
+        }
+        if(!empty($apply_date)){
+            $where_type_fix .= " AND TRUNC(PAY_END_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
+        }
+        $select_bqsl = "SELECT TO_CHAR(PAY_END_DATE,'YYYY-MM-DD') AS PAY_END_DATE, --宽限到期日
+                               POLICY_CODE, --保单号
+                               HOLDER_NAME, --投保人姓名
+                               TO_CHAR(DUE_TIME,'YYYY-MM-DD') AS DUE_TIME, --缴费对应日
+                               FEE_AMOUNT, --应交保费（含附加险）
+                               PAID_COUNT, --缴费次数 
+                               PAY_MODE, --缴费形式
+                               BANK_NAME, --划款银行名称
+                               BANK_ACCOUNT, --银行账号（后四位）
+                               HOLDER_TEL, --联系电话
+                               HOLDER_ADDRESS, --通讯地址
+                               UPORGAN_CODE, --保单所属中支
+                               CHANNEL_TYPE, --保单所属渠道
+                               ORGAN_CODE, --保单所属四级机构
+                               YINGYB, --保单所属营业部
+                               TCA_CHANNEL_TYPE, --现服务渠道
+                               AGENT_NAME, --现服务人员姓名
+                               ORIGINAL_CHANNEL_TYPE_NAME, --原销售渠道  
+                               ORIGINAL_AGENT_NAME, --原销售人员姓名
+                               LIABILITY_STATE, --保单状态
+                               IS_SELF_INSURED, --自保件标识  0-否 1-是
+                               POLICY_FLAG --保单标识（自有单、赋予单、孤儿单）
+                        FROM TEMP_RENEWAL_PREM
+                        WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
+                        ORDER BY PAY_END_DATE DESC";
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['PAY_END_DATE'] = $value['PAY_END_DATE'];
+            $result[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
+            $result[$i]['HOLDER_NAME'] = $value['HOLDER_NAME'];
+            $result[$i]['DUE_TIME'] = $value['DUE_TIME'];
+            $result[$i]['FEE_AMOUNT'] = $value['FEE_AMOUNT'];
+            $result[$i]['PAID_COUNT'] = $value['PAID_COUNT'];
+            $result[$i]['PAY_MODE'] = $value['PAY_MODE'];
+            $result[$i]['BANK_NAME'] = $value['BANK_NAME'];
+            $result[$i]['BANK_ACCOUNT'] = $value['BANK_ACCOUNT'];
+            $result[$i]['HOLDER_TEL'] = $value['HOLDER_TEL'];
+            $result[$i]['HOLDER_ADDRESS'] = $value['HOLDER_ADDRESS'];
+            $result[$i]['UPORGAN_CODE'] = $value['UPORGAN_CODE'];
+            $result[$i]['CHANNEL_TYPE'] = $value['CHANNEL_TYPE'];
+            $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
+            $result[$i]['YINGYB'] = $value['YINGYB'];
+            $result[$i]['TCA_CHANNEL_TYPE'] = $value['TCA_CHANNEL_TYPE'];
+            $result[$i]['AGENT_NAME'] = $value['AGENT_NAME'];
+            $result[$i]['ORIGINAL_CHANNEL_TYPE_NAME'] = $value['ORIGINAL_CHANNEL_TYPE_NAME'];
+            $result[$i]['ORIGINAL_AGENT_NAME'] = $value['ORIGINAL_AGENT_NAME'];
+            $result[$i]['LIABILITY_STATE'] = $value['LIABILITY_STATE'];
+            $result[$i]['IS_SELF_INSURED'] = $value['IS_SELF_INSURED'];
+            $result[$i]['POLICY_FLAG'] = $value['POLICY_FLAG'];
+        }
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
     public function getCsCbStyle(){

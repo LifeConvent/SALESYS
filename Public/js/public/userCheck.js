@@ -117,6 +117,7 @@ $(function () {
     control_list.put("5.A", "data_cap_cs_back");
     control_list.put("5.B", "data_ct_pt");
     control_list.put("5.C", "data_cs_cb_style");
+    control_list.put("5.D", "data_pa_no_charge");
     control_list.put("6", "data_control");
     control_list.put("7", "list_nb");
     control_list.put("7.1", "nb_post_table_stream");
@@ -189,6 +190,7 @@ $(function () {
     list_name.push("data_ct_pt");
     list_name.push("chat_dz_define");
     list_name.push("data_cs_cb_style");
+    list_name.push("data_pa_no_charge");
 
 
 // <!--当日日报-this_daypost-1
