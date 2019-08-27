@@ -321,7 +321,7 @@ var TableInit = function () {
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '自保件标识',
+                title: '自保互保标识',
                 width: 100
             }, {
                 field: 'POLICY_FLAG',

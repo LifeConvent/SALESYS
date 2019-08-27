@@ -1427,7 +1427,7 @@ class DataOutController extends Controller
             array('ORIGINAL_CHANNEL_TYPE_NAME', '原销售渠道'),
             array('ORIGINAL_AGENT_NAME', '原销售人员姓名'),
             array('LIABILITY_STATE', '保单状态'),
-            array('IS_SELF_INSURED', '自保件标识'),
+            array('IS_SELF_INSURED', '自保互保标识'),
             array('POLICY_FLAG', '保单标识')
         );
         $method = new MethodController();
