@@ -1338,8 +1338,10 @@ class DataOutController extends Controller
                                PAY_MODE, --缴费形式
                                BANK_NAME, --划款银行名称
                                BANK_ACCOUNT, --银行账号（后四位）
-                               HOLDER_TEL, --联系电话
-                               HOLDER_ADDRESS, --通讯地址
+                               --HOLDER_TEL, --联系电话
+                               REPLACE(HOLDER_TEL,SUBSTR(HOLDER_TEL,4,4),'****') AS HOLDER_TEL,
+                               --HOLDER_ADDRESS, --通讯地址
+                               REPLACE(HOLDER_ADDRESS,SUBSTR(HOLDER_ADDRESS,4,15),'********') AS HOLDER_ADDRESS,
                                UPORGAN_CODE, --保单所属中支
                                CHANNEL_TYPE, --保单所属渠道
                                ORGAN_CODE, --保单所属四级机构
@@ -1479,8 +1481,10 @@ class DataOutController extends Controller
                                PAY_MODE, --缴费形式
                                BANK_NAME, --划款银行名称
                                BANK_ACCOUNT, --银行账号（后四位）
-                               HOLDER_TEL, --联系电话
-                               HOLDER_ADDRESS, --通讯地址
+                               --HOLDER_TEL, --联系电话
+                               REPLACE(HOLDER_TEL,SUBSTR(HOLDER_TEL,4,4),'****') AS HOLDER_TEL,
+                               --HOLDER_ADDRESS, --通讯地址
+                               REPLACE(HOLDER_ADDRESS,SUBSTR(HOLDER_ADDRESS,4,15),'********') AS HOLDER_ADDRESS,
                                UPORGAN_CODE, --保单所属中支
                                CHANNEL_TYPE, --保单所属渠道
                                ORGAN_CODE, --保单所属四级机构
