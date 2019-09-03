@@ -325,6 +325,13 @@ var TableInit = function () {
                     title: '银行账户',
                     width:200
                 }, {
+                    field: 'service_bank_branch8',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '8位银行网点代码',
+                    width:150
+                },{
                     field: 'service_bank_branch',
                     sortable: true,
                     align: 'center',

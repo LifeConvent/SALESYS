@@ -1214,6 +1214,7 @@ class DataOutController extends Controller
                                BANK_NAME,
                                ACCOUNT_BANK,
                                ACCOUNT,
+                               SUBSTR(SERVICE_BANK_BRANCH,0,8) AS SERVICE_BANK_BRANCH8,--银代银行网点代码6位,
                                SERVICE_BANK_BRANCH,--银代银行网点代码,
                                BANK_BRANCH_NAME,--银代银行网点名称,
                                AGENT_CODE,
@@ -1255,6 +1256,7 @@ class DataOutController extends Controller
             $result[$i]['bank_name'] = $value['BANK_NAME'];
             $result[$i]['account_bank'] = $value['ACCOUNT_BANK'];
             $result[$i]['account'] = $value['ACCOUNT'];
+            $result[$i]['service_bank_branch8'] = $value['SERVICE_BANK_BRANCH8'];
             $result[$i]['service_bank_branch'] = $value['SERVICE_BANK_BRANCH'];
             $result[$i]['bank_branch_name'] = $value['BANK_BRANCH_NAME'];
             $result[$i]['agent_code'] = $value['AGENT_CODE'];
@@ -2190,6 +2192,7 @@ class DataOutController extends Controller
             array('bank_name', '银行'),
             array('account_bank', '银行代码'),
             array('account', '银行账户'),
+            array('service_bank_branch8', '8位银代银行网点代码'),
             array('service_bank_branch', '银代银行网点代码'),
             array('bank_branch_name', '银代银行网点名称'),
             array('agent_code', '业务员代码'),
@@ -2264,6 +2267,7 @@ class DataOutController extends Controller
                                BANK_NAME,
                                ACCOUNT_BANK,
                                ACCOUNT,
+                               SUBSTR(SERVICE_BANK_BRANCH,0,8) AS SERVICE_BANK_BRANCH8,--银代银行网点代码6位,
                                SERVICE_BANK_BRANCH,--银代银行网点代码,
                                BANK_BRANCH_NAME,--银代银行网点名称,
                                AGENT_CODE,
@@ -2277,12 +2281,11 @@ class DataOutController extends Controller
                                FEE_STATUS,
                                FYC
                           FROM TMP_QDSX_NB_QD_CB
-                          WHERE 1=1 ".$where_type_fix.$where_time_bqsl."
-                           --AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE)
+                         WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write(' 契约承保清单区间导出SQL：'.$select_bqsl,'INFO');
+        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['apply_date'] = $value['APPLY_DATE'];
@@ -2292,7 +2295,7 @@ class DataOutController extends Controller
             $result[$i]['issue_date'] = $value['ISSUE_DATE'];
             $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
             $result[$i]['finish_time'] = $value['FINISH_TIME'];
-//            $result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
+            #$result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
             $result[$i]['charge_year'] = $value['CHARGE_YEAR'];
             $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
             $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
@@ -2306,6 +2309,7 @@ class DataOutController extends Controller
             $result[$i]['bank_name'] = $value['BANK_NAME'];
             $result[$i]['account_bank'] = $value['ACCOUNT_BANK'];
             $result[$i]['account'] = $value['ACCOUNT'];
+            $result[$i]['service_bank_branch8'] = $value['SERVICE_BANK_BRANCH8'];
             $result[$i]['service_bank_branch'] = $value['SERVICE_BANK_BRANCH'];
             $result[$i]['bank_branch_name'] = $value['BANK_BRANCH_NAME'];
             $result[$i]['agent_code'] = $value['AGENT_CODE'];
@@ -2524,6 +2528,7 @@ class DataOutController extends Controller
             array('bank_name', '银行'),
             array('account_bank', '银行代码'),
             array('account', '银行账户'),
+            array('service_bank_branch8', '8位银代银行网点代码'),
             array('service_bank_branch', '银代银行网点代码'),
             array('bank_branch_name', '银代银行网点名称'),
             array('agent_code', '业务员代码'),
@@ -2575,6 +2580,7 @@ class DataOutController extends Controller
                                BANK_NAME,
                                ACCOUNT_BANK,
                                ACCOUNT,
+                               SUBSTR(SERVICE_BANK_BRANCH,0,8) AS SERVICE_BANK_BRANCH8,--银代银行网点代码6位,
                                SERVICE_BANK_BRANCH,--银代银行网点代码,
                                BANK_BRANCH_NAME,--银代银行网点名称,
                                AGENT_CODE,
@@ -2588,11 +2594,11 @@ class DataOutController extends Controller
                                FEE_STATUS,
                                FYC
                           FROM TMP_QDSX_NB_QD_CB
-                          WHERE 1=1 ".$where_type_fix."
-                           --AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE)
+                         WHERE 1=1 ".$where_type_fix."
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
+        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['apply_date'] = $value['APPLY_DATE'];
@@ -2602,7 +2608,7 @@ class DataOutController extends Controller
             $result[$i]['issue_date'] = $value['ISSUE_DATE'];
             $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
             $result[$i]['finish_time'] = $value['FINISH_TIME'];
-//            $result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
+            #$result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
             $result[$i]['charge_year'] = $value['CHARGE_YEAR'];
             $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
             $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
@@ -2616,6 +2622,7 @@ class DataOutController extends Controller
             $result[$i]['bank_name'] = $value['BANK_NAME'];
             $result[$i]['account_bank'] = $value['ACCOUNT_BANK'];
             $result[$i]['account'] = $value['ACCOUNT'];
+            $result[$i]['service_bank_branch8'] = $value['SERVICE_BANK_BRANCH8'];
             $result[$i]['service_bank_branch'] = $value['SERVICE_BANK_BRANCH'];
             $result[$i]['bank_branch_name'] = $value['BANK_BRANCH_NAME'];
             $result[$i]['agent_code'] = $value['AGENT_CODE'];
