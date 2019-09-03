@@ -275,7 +275,7 @@ var TableInit = function () {
                 title: '四级机构',
                 width: 100
             }, {
-                field: 'YINGYB',
+                field: 'YINGYBU',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
