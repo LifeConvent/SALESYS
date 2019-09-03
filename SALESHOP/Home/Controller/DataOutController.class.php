@@ -1347,7 +1347,7 @@ class DataOutController extends Controller
                                UPORGAN_CODE, --保单所属中支
                                CHANNEL_TYPE, --保单所属渠道
                                ORGAN_CODE, --保单所属四级机构
-                               YINGYB, --保单所属营业部
+                               YINGYBU, --保单所属营业部
                                TCA_CHANNEL_TYPE, --现服务渠道
                                AGENT_NAME, --现服务人员姓名
                                ORIGINAL_CHANNEL_TYPE_NAME, --原销售渠道  
@@ -1377,7 +1377,7 @@ class DataOutController extends Controller
             $result[$i]['UPORGAN_CODE'] = $value['UPORGAN_CODE'];
             $result[$i]['CHANNEL_TYPE'] = $value['CHANNEL_TYPE'];
             $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
-            $result[$i]['YINGYB'] = $value['YINGYB'];
+            $result[$i]['YINGYBU'] = $value['YINGYBU'];
             $result[$i]['TCA_CHANNEL_TYPE'] = $value['TCA_CHANNEL_TYPE'];
             $result[$i]['AGENT_NAME'] = $value['AGENT_NAME'];
             $result[$i]['ORIGINAL_CHANNEL_TYPE_NAME'] = $value['ORIGINAL_CHANNEL_TYPE_NAME'];
@@ -1425,7 +1425,7 @@ class DataOutController extends Controller
             array('UPORGAN_CODE', '保单所属中支'),
             array('CHANNEL_TYPE', '保单所属渠道'),
             array('ORGAN_CODE', '保单所属四级机构'),
-            array('YINGYB', '保单所属营业部'),
+            array('YINGYBU', '保单所属营业部'),
             array('TCA_CHANNEL_TYPE', '现服务渠道'),
             array('AGENT_NAME', '现服务人员姓名'),
             array('ORIGINAL_CHANNEL_TYPE_NAME', '原销售渠道'),
@@ -1490,7 +1490,7 @@ class DataOutController extends Controller
                                UPORGAN_CODE, --保单所属中支
                                CHANNEL_TYPE, --保单所属渠道
                                ORGAN_CODE, --保单所属四级机构
-                               YINGYB, --保单所属营业部
+                               YINGYBU, --保单所属营业部
                                TCA_CHANNEL_TYPE, --现服务渠道
                                AGENT_NAME, --现服务人员姓名
                                ORIGINAL_CHANNEL_TYPE_NAME, --原销售渠道  
@@ -1520,7 +1520,7 @@ class DataOutController extends Controller
             $result[$i]['UPORGAN_CODE'] = $value['UPORGAN_CODE'];
             $result[$i]['CHANNEL_TYPE'] = $value['CHANNEL_TYPE'];
             $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
-            $result[$i]['YINGYB'] = $value['YINGYB'];
+            $result[$i]['YINGYBU'] = $value['YINGYBU'];
             $result[$i]['TCA_CHANNEL_TYPE'] = $value['TCA_CHANNEL_TYPE'];
             $result[$i]['AGENT_NAME'] = $value['AGENT_NAME'];
             $result[$i]['ORIGINAL_CHANNEL_TYPE_NAME'] = $value['ORIGINAL_CHANNEL_TYPE_NAME'];
