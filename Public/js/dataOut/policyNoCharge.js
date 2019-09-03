@@ -330,6 +330,20 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '保单标识',
                 width: 100
+            }, {
+                field: 'CHECK_USER_CODE',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '督管编码',
+                width: 100
+            }, {
+                field: 'CHECK_USER_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '督管姓名',
+                width: 100
             }]
         });
     };

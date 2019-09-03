@@ -7,6 +7,7 @@
  */
 
 namespace Home\Controller;
+
 use Think\Controller;
 use Think\Log;
 
@@ -20,8 +21,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -36,8 +37,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -52,8 +53,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -68,8 +69,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -84,8 +85,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -100,8 +101,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -116,8 +117,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -132,8 +133,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -148,8 +149,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -164,8 +165,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -180,8 +181,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -196,8 +197,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -212,8 +213,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -228,8 +229,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -244,8 +245,8 @@ class DataOutController extends Controller
         $method = new MethodController();
         $result = $method->checkIn($username);
         if ($result) {
-            $method->assignPublic($username,$this);
-            if(!$method->getSystype($username)){
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
                 $this->redirect('Index/errorSys');
             }
             $this->display();
@@ -254,16 +255,18 @@ class DataOutController extends Controller
         }
     }
 
-    public function test(){
+    public function test()
+    {
         $username = '';
         $method = new MethodController();
         $result = $method->checkIn($username);
-        $type =  $method->getUserTypeBySql($username);
+        $type = $method->getUserTypeBySql($username);
         echo $username;
         echo $type;
     }
 
-    public function getCapCsBack(){
+    public function getCapCsBack()
+    {
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -275,13 +278,13 @@ class DataOutController extends Controller
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
         $select_bqsl = "select c.*,TUU.USER_NAME,TUU.REAL_NAME,TCAC.INSERT_OPERATOR_ID from 
                             (select t.unit_number UNIT_NUMBER,max(bs.biz_source_name) BIZ_SOURCE_NAME,max(t.business_code) BUSINESS_CODE,max(t.organ_code) ORGAN_CODE,sum(case when t.arap_flag='1' then t.fee_amount else -t.fee_amount end) FEE_AMOUNT,max(to_char(t.due_time,'YYYY-MM-DD')) DUE_TIME,
@@ -293,14 +296,14 @@ class DataOutController extends Controller
                              left join dev_cap.t_fee_status@bxpas16 s on t.fee_status = s.status_code
                              left join dev_cap.t_business_type_def@bxpas16 d on t.business_type = d.business_type
                              left join dev_cap.t_biz_source@bxpas16 bs on bs.biz_source_code = t.deriv_type 
-                             where 1=1 ".$where_time_bqsl." and t.fee_status in ('00','03','04','01')
+                             where 1=1 " . $where_time_bqsl . " and t.fee_status in ('00','03','04','01')
                             and t.deriv_type IN ('001','005','004') --and t.pay_mode = '32'
                             group by t.unit_number)c 
                             LEFT JOIN APP___PAS__DBUSER.T_CS_ACCEPT_CHANGE@bxpas16 TCAC
                             ON c.BUSINESS_CODE = TCAC.ACCEPT_CODE
                             LEFT JOIN APP___PAS__DBUSER.T_UDMP_USER@bxpas16 TUU
                             ON TCAC.INSERT_BY = TUU.USER_ID
-                            where c.FEE_AMOUNT <> 0".$where_type_fix;
+                            where c.FEE_AMOUNT <> 0" . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -333,7 +336,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getOutCtPt(){
+    public function getOutCtPt()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $service_code = trim(I('get.service_code'));
@@ -343,31 +347,31 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($service_code)&&empty($policy_code)&&empty($apply_channel)){
+        } else if (empty($service_code) && empty($policy_code) && empty($apply_channel)) {
             $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($service_code)){
-            $where_type_fix .= " AND SERVICE_NAME LIKE '%".$service_code."%'";
+        if (!empty($service_code)) {
+            $where_type_fix .= " AND SERVICE_NAME LIKE '%" . $service_code . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE = '" . $policy_code . "' OR APPLY_CODE = '" . $policy_code . "')";
         }
-        if(!empty($apply_channel)){
-            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
         }
         $select_bqsl = "SELECT DISTINCT
                            TO_CHAR(INSERT_TIME,'YYYY-MM-DD HH24:MI:SS') AS INSERT_TIME,--             AS 退保时间,
@@ -393,7 +397,7 @@ class DataOutController extends Controller
                            AGENT_CODE,--             AS 业务员代码,
                            AGENT_NAME--             AS 业务员姓名
                       FROM TMP_SX_TJB_JX TJB
-                     WHERE 1=1".$where_type_fix.$where_time_bqsl;
+                     WHERE 1=1" . $where_type_fix . $where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         Log::write($user_name . ' 退减保清单SQL：' . $select_bqsl, 'INFO');
@@ -401,8 +405,8 @@ class DataOutController extends Controller
             $value = $bqsl_result_time[$i];
             $result[$i]['INSERT_TIME'] = $value['INSERT_TIME'];
             $result[$i]['SERVICE_NAME'] = $value['SERVICE_NAME'];
-            $result[$i]['APPLY_CODE'] = "'".$value['APPLY_CODE'];
-            $result[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
+            $result[$i]['APPLY_CODE'] = "'" . $value['APPLY_CODE'];
+            $result[$i]['POLICY_CODE'] = "'" . $value['POLICY_CODE'];
             $result[$i]['CUSTOMER_NAME'] = $value['CUSTOMER_NAME'];
             $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
             $result[$i]['APPLY_DATE'] = $value['APPLY_DATE'];
@@ -435,7 +439,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getCapCs(){
+    public function getCapCs()
+    {
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -448,13 +453,13 @@ class DataOutController extends Controller
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
         /*********************************************           添加机构后删除          *********************************************/
         $where_type_fix = "";
@@ -522,7 +527,7 @@ class DataOutController extends Controller
                                 ORDER BY TCPA.BUSINESS_CODE,TCPA.POLICY_CODE)A
                               GROUP BY A.ACCEPT_CODE,A.POLICY_CODE)B
                               ON B.ACCEPT_CODE = A.business_code AND B.POLICY_CODE = A.policy_code 
-                         WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+                         WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -558,7 +563,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getCapNb(){
+    public function getCapNb()
+    {
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -570,13 +576,13 @@ class DataOutController extends Controller
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
         /*********************************************           添加机构后删除          *********************************************/
         $where_type_fix = "";
@@ -611,7 +617,7 @@ class DataOutController extends Controller
                                        FROM APP___NB__DBUSER.T_NB_CONTRACT_PRODUCT@BXNBS15 TNCP 
                                        GROUP BY TNCP.APPLY_CODE HAVING COUNT(TNCP.APPLY_CODE) > 0 ) NBPREMSUM --新契约保费
                             ON TPA.BUSINESS_CODE = NBPREMSUM.APPLY_CODE
-                         WHERE T.BANK_TEXT_STATUS = '2' and t.deriv_type='001'".$where_type_fix."
+                         WHERE T.BANK_TEXT_STATUS = '2' and t.deriv_type='001'" . $where_type_fix . "
                            AND T.DISC_NO = '000000'
                            AND T.SEND_ID <1000000
                          GROUP BY TPA.UNIT_NUMBER ORDER BY MAX(T.BANK_CODE),MAX(T.DERIV_TYPE),MAX(TPA.DUE_TIME)";
@@ -648,7 +654,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getNbNoArrive(){
+    public function getNbNoArrive()
+    {
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -661,13 +668,13 @@ class DataOutController extends Controller
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
         $select_bqsl = "SELECT UNIT_NUMBER,--唯一号,
                                BUSINESS_CODE,--业务号,
@@ -680,7 +687,7 @@ class DataOutController extends Controller
                                BUSINESS_TYPE_NAME,--业务类型,
                                BANK_RET_NAME--失败原因
                           FROM TMP_QDSX_NB_QD_WDZ
-                         WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+                         WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -709,7 +716,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getNbYs(){
+    public function getNbYs()
+    {
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -722,13 +730,13 @@ class DataOutController extends Controller
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
 //        /*********************************************           添加机构后删除          *********************************************/
 //        $where_type_fix = "";
@@ -753,7 +761,7 @@ class DataOutController extends Controller
                                TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE
                           FROM TMP_QDSX_NB_QD_YS
-                          WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+                          WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -819,13 +827,13 @@ class DataOutController extends Controller
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
         /*********************************************           添加机构后删除          *********************************************/
         $where_type_fix = "";
@@ -850,15 +858,15 @@ class DataOutController extends Controller
                                TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE
                           FROM TMP_QDSX_NB_QD_YS
-                          WHERE 1=1 ".$where_type_fix;
+                          WHERE 1=1 " . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
-        Log::write($user_name.' 预收清单 数据库查询条件：'.$select_bqsl,'INFO');
+        Log::write($user_name . ' 预收清单 数据库查询条件：' . $select_bqsl, 'INFO');
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['policy_code'] = $value['POLICY_CODE'];
             $result[$i]['product_code'] = $value['PRODUCT_CODE'];
-            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+            $result[$i]['apply_code'] = "'" . $value['APPLY_CODE'];
             $result[$i]['status_desc'] = $value['STATUS_DESC'];
             $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
             $result[$i]['agent_code'] = $value['AGENT_CODE'];
@@ -888,7 +896,7 @@ class DataOutController extends Controller
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         //导出Excel
-        if (!empty($queryDateStart)&&!empty($queryDateEnd)) {
+        if (!empty($queryDateStart) && !empty($queryDateEnd)) {
             $where_time_bqsl = " AND BUSI_APPLY_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd')";
         } else {
             $where_time_bqsl = "";
@@ -920,13 +928,13 @@ class DataOutController extends Controller
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
         $select_bqsl = "SELECT APPLY_CODE,--投保单号,
                                    POLICY_CODE,--保单号,
@@ -947,15 +955,15 @@ class DataOutController extends Controller
                                    TOTAL_PREM_AF,--规模保费,
                                    FYC
                           FROM TMP_SX_YS_JX
-                          WHERE 1=1 ".$where_type_fix.$where_time_bqsl;
+                          WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
-        Log::write($user_name.' 预收清单 数据库查询条件：'.$select_bqsl,'INFO');
+        Log::write($user_name . ' 预收清单 数据库查询条件：' . $select_bqsl, 'INFO');
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $res[] = $value;
-            $res[$i]['APPLY_CODE'] = "'".$value['APPLY_CODE'];
-            $res[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
+            $res[$i]['APPLY_CODE'] = "'" . $value['APPLY_CODE'];
+            $res[$i]['POLICY_CODE'] = "'" . $value['POLICY_CODE'];
 //            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
 //            $result[$i]['status_desc'] = $value['STATUS_DESC'];
 //            $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
@@ -981,7 +989,8 @@ class DataOutController extends Controller
         $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
-    public function getNbHz(){
+    public function getNbHz()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $policy_code = trim(I('get.policy_code'));
@@ -990,31 +999,31 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($policy_code)&&empty($apply_channel)){
+        } else if (empty($policy_code) && empty($apply_channel)) {
             $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
 //        if(!empty($busi_type)){
 //            $where_type_fix .= " AND BUSS_CLASS = '".$busi_type."'";
 //        }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND POLICY_CODE = '".$policy_code."'";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND POLICY_CODE = '" . $policy_code . "'";
         }
-        if(!empty($apply_channel)){
-            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
         }
         $select_bqsl = "SELECT POLICY_CODE,
                                CUSTOMER_NAME,
@@ -1026,7 +1035,7 @@ class DataOutController extends Controller
                                AGENT_CODE,
                                AGENT_NAME
                           FROM TMP_QDSX_NB_QD_HZ 
-                        WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+                        WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -1054,7 +1063,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getNbTb(){
+    public function getNbTb()
+    {
         $queryDateStart = I('get.queryDateStart');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -1066,13 +1076,13 @@ class DataOutController extends Controller
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
         $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                ORGAN_CODE,
@@ -1100,7 +1110,7 @@ class DataOutController extends Controller
                                TOTAL_PREM_AF,
                                FEE_STATUS
                           FROM TMP_QDSX_NB_QD_CB
-                         WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
+                         WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
                          ORDER BY APPLY_DATE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
@@ -1145,7 +1155,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getNbCb(){
+    public function getNbCb()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $apply_status = trim(I('get.apply_status'));
@@ -1157,41 +1168,41 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(ISSUE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)&&empty($apply_date)){
+        } else if (empty($apply_status) && empty($policy_code) && empty($apply_channel) && empty($apply_type) && empty($apply_date)) {
             $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
             $channel_type = $method->getChannelTypeBySql($user_name);
-            if((int)$channel_type==2){
-                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            if ((int)$channel_type == 2) {
+                $where_type_fix = $where_type_fix . " AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
             }
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($apply_status)){
-            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+        if (!empty($apply_status)) {
+            $where_type_fix .= " AND STATUS_DESC LIKE '%" . $apply_status . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR APPLY_CODE = '%".$policy_code."%')";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR APPLY_CODE = '%" . $policy_code . "%')";
         }
-        if(!empty($apply_channel)){
-            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
         }
-        if(!empty($apply_type)){
-            $where_type_fix .= " AND CHANNEL_NAME LIKE '%".$apply_type."%'";
+        if (!empty($apply_type)) {
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%" . $apply_type . "%'";
         }
-        if(!empty($apply_date)){
-            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
+        if (!empty($apply_date)) {
+            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('" . $apply_date . "','yyyy-mm-dd')";
         }
         $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                ORGAN_CODE,
@@ -1228,16 +1239,16 @@ class DataOutController extends Controller
                                FEE_STATUS,
                                FYC
                           FROM TMP_QDSX_NB_QD_CB
-                         WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
+                         WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
+        Log::write($user_name . '新契约承保 数据库查询SQL：' . $select_bqsl, 'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['apply_date'] = $value['APPLY_DATE'];
             $result[$i]['organ_code'] = $value['ORGAN_CODE'];
-            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+            $result[$i]['apply_code'] = "'" . $value['APPLY_CODE'];
             $result[$i]['policy_code'] = $value['POLICY_CODE'];
             $result[$i]['issue_date'] = $value['ISSUE_DATE'];
             $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
@@ -1283,7 +1294,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getPolicyNoCharge(){
+    public function getPolicyNoCharge()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
 //        $apply_status = trim(I('get.apply_status'));
@@ -1295,41 +1307,41 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(PAY_END_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(PAY_END_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)&&empty($apply_date)){
+        } else if (empty($apply_status) && empty($policy_code) && empty($apply_channel) && empty($apply_type) && empty($apply_date)) {
             $where_time_bqsl = "  ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
             $channel_type = $method->getChannelTypeBySql($user_name);
-            if((int)$channel_type==2){
-                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            if ((int)$channel_type == 2) {
+                $where_type_fix = $where_type_fix . " AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
             }
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
 //        if(!empty($apply_status)){
 //            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
 //        }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND POLICY_CODE LIKE '%".$policy_code."%'";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND POLICY_CODE LIKE '%" . $policy_code . "%'";
         }
-        if(!empty($apply_channel)){
-            $where_type_fix .= " AND CHANNEL_TYPE LIKE '%".$apply_channel."%'";
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND CHANNEL_TYPE LIKE '%" . $apply_channel . "%'";
         }
-        if(!empty($apply_type)){
-            $where_type_fix .= " AND POLICY_FLAG LIKE '%".$apply_type."%'";
+        if (!empty($apply_type)) {
+            $where_type_fix .= " AND POLICY_FLAG LIKE '%" . $apply_type . "%'";
         }
-        if(!empty($apply_date)){
-            $where_type_fix .= " AND TRUNC(PAY_END_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
+        if (!empty($apply_date)) {
+            $where_type_fix .= " AND TRUNC(PAY_END_DATE) = to_date('" . $apply_date . "','yyyy-mm-dd')";
         }
         $select_bqsl = "SELECT TO_CHAR(PAY_END_DATE,'YYYY-MM-DD') AS PAY_END_DATE, --宽限到期日
                                POLICY_CODE, --保单号
@@ -1346,7 +1358,7 @@ class DataOutController extends Controller
                                REPLACE(HOLDER_ADDRESS,SUBSTR(HOLDER_ADDRESS,4,15),'********') AS HOLDER_ADDRESS,
                                UPORGAN_CODE, --保单所属中支
                                CHANNEL_TYPE, --保单所属渠道
-                               ORGAN_CODE, --保单所属四级机构
+                               A.ORGAN_CODE, --保单所属四级机构
                                YINGYBU, --保单所属营业部
                                TCA_CHANNEL_TYPE, --现服务渠道
                                AGENT_NAME, --现服务人员姓名
@@ -1354,17 +1366,22 @@ class DataOutController extends Controller
                                ORIGINAL_AGENT_NAME, --原销售人员姓名
                                LIABILITY_STATE, --保单状态
                                IS_SELF_INSURED, --自保件标识  0-否 1-是
-                               POLICY_FLAG --保单标识（自有单、赋予单、孤儿单）
-                        FROM TEMP_RENEWAL_PREM
-                        WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
+                               POLICY_FLAG, --保单标识（自有单、赋予单、孤儿单）
+                               CHECK_USER_CODE,
+                               CHECK_USER_NAME
+                        FROM TEMP_RENEWAL_PREM A
+                          LEFT JOIN TMP_SX_QD_DG DG
+                          ON A.YINGYBUCODE = SALE_DEPARTMENT_CODE
+                          AND (DG.SALE_GROUP_CODE IS NULL OR A.YINGYZUCODE = DG.SALE_GROUP_CODE)
+                        WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
                         ORDER BY PAY_END_DATE DESC";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
+        Log::write($user_name . '新契约承保 数据库查询SQL：' . $select_bqsl, 'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['PAY_END_DATE'] = $value['PAY_END_DATE'];
-            $result[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
+            $result[$i]['POLICY_CODE'] = "'" . $value['POLICY_CODE'];
             $result[$i]['HOLDER_NAME'] = $value['HOLDER_NAME'];
             $result[$i]['DUE_TIME'] = $value['DUE_TIME'];
             $result[$i]['FEE_AMOUNT'] = $value['FEE_AMOUNT'];
@@ -1385,6 +1402,8 @@ class DataOutController extends Controller
             $result[$i]['LIABILITY_STATE'] = $value['LIABILITY_STATE'];
             $result[$i]['IS_SELF_INSURED'] = $value['IS_SELF_INSURED'];
             $result[$i]['POLICY_FLAG'] = $value['POLICY_FLAG'];
+            $result[$i]['CHECK_USER_CODE'] = $value['CHECK_USER_CODE'];
+            $result[$i]['CHECK_USER_NAME'] = $value['CHECK_USER_NAME'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1432,47 +1451,49 @@ class DataOutController extends Controller
             array('ORIGINAL_AGENT_NAME', '原销售人员姓名'),
             array('LIABILITY_STATE', '保单状态'),
             array('IS_SELF_INSURED', '自保互保标识'),
-            array('POLICY_FLAG', '保单标识')
+            array('POLICY_FLAG', '保单标识'),
+            array('CHECK_USER_CODE', '督管编码'),
+            array('CHECK_USER_NAME', '督管姓名')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(PAY_END_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(PAY_END_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)&&empty($apply_date)){
+        } else if (empty($apply_status) && empty($policy_code) && empty($apply_channel) && empty($apply_type) && empty($apply_date)) {
             $where_time_bqsl = "  ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
             $channel_type = $method->getChannelTypeBySql($user_name);
-            if((int)$channel_type==2){
-                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            if ((int)$channel_type == 2) {
+                $where_type_fix = $where_type_fix . " AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
             }
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
 //        if(!empty($apply_status)){
 //            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
 //        }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND POLICY_CODE LIKE '%".$policy_code."%'";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND POLICY_CODE LIKE '%" . $policy_code . "%'";
         }
-        if(!empty($apply_channel)){
-            $where_type_fix .= " AND CHANNEL_TYPE LIKE '%".$apply_channel."%'";
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND CHANNEL_TYPE LIKE '%" . $apply_channel . "%'";
         }
-        if(!empty($apply_type)){
-            $where_type_fix .= " AND POLICY_FLAG LIKE '%".$apply_type."%'";
+        if (!empty($apply_type)) {
+            $where_type_fix .= " AND POLICY_FLAG LIKE '%" . $apply_type . "%'";
         }
-        if(!empty($apply_date)){
-            $where_type_fix .= " AND TRUNC(PAY_END_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
+        if (!empty($apply_date)) {
+            $where_type_fix .= " AND TRUNC(PAY_END_DATE) = to_date('" . $apply_date . "','yyyy-mm-dd')";
         }
         $select_bqsl = "SELECT TO_CHAR(PAY_END_DATE,'YYYY-MM-DD') AS PAY_END_DATE, --宽限到期日
                                POLICY_CODE, --保单号
@@ -1489,7 +1510,7 @@ class DataOutController extends Controller
                                REPLACE(HOLDER_ADDRESS,SUBSTR(HOLDER_ADDRESS,4,15),'********') AS HOLDER_ADDRESS,
                                UPORGAN_CODE, --保单所属中支
                                CHANNEL_TYPE, --保单所属渠道
-                               ORGAN_CODE, --保单所属四级机构
+                               A.ORGAN_CODE, --保单所属四级机构
                                YINGYBU, --保单所属营业部
                                TCA_CHANNEL_TYPE, --现服务渠道
                                AGENT_NAME, --现服务人员姓名
@@ -1497,17 +1518,22 @@ class DataOutController extends Controller
                                ORIGINAL_AGENT_NAME, --原销售人员姓名
                                LIABILITY_STATE, --保单状态
                                IS_SELF_INSURED, --自保件标识  0-否 1-是
-                               POLICY_FLAG --保单标识（自有单、赋予单、孤儿单）
-                        FROM TEMP_RENEWAL_PREM
-                        WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
+                               POLICY_FLAG, --保单标识（自有单、赋予单、孤儿单）
+                               CHECK_USER_CODE,
+                               CHECK_USER_NAME
+                        FROM TEMP_RENEWAL_PREM A
+                          LEFT JOIN TMP_SX_QD_DG DG
+                          ON A.YINGYBUCODE = SALE_DEPARTMENT_CODE
+                          AND (DG.SALE_GROUP_CODE IS NULL OR A.YINGYZUCODE = DG.SALE_GROUP_CODE)
+                        WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
                         ORDER BY PAY_END_DATE DESC";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
+        Log::write($user_name . '新契约承保 数据库查询SQL：' . $select_bqsl, 'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['PAY_END_DATE'] = $value['PAY_END_DATE'];
-            $result[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
+            $result[$i]['POLICY_CODE'] = "'" . $value['POLICY_CODE'];
             $result[$i]['HOLDER_NAME'] = $value['HOLDER_NAME'];
             $result[$i]['DUE_TIME'] = $value['DUE_TIME'];
             $result[$i]['FEE_AMOUNT'] = $value['FEE_AMOUNT'];
@@ -1528,6 +1554,8 @@ class DataOutController extends Controller
             $result[$i]['LIABILITY_STATE'] = $value['LIABILITY_STATE'];
             $result[$i]['IS_SELF_INSURED'] = $value['IS_SELF_INSURED'];
             $result[$i]['POLICY_FLAG'] = $value['POLICY_FLAG'];
+            $result[$i]['CHECK_USER_CODE'] = $value['CHECK_USER_CODE'];
+            $result[$i]['CHECK_USER_NAME'] = $value['CHECK_USER_NAME'];
         }
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
@@ -1537,7 +1565,8 @@ class DataOutController extends Controller
         $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
-    public function getCsCbStyle(){
+    public function getCsCbStyle()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $apply_status = trim(I('get.apply_status'));
@@ -1549,41 +1578,41 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(VALIDATE_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(VALIDATE_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)&&empty($apply_date)){
+        } else if (empty($apply_status) && empty($policy_code) && empty($apply_channel) && empty($apply_type) && empty($apply_date)) {
             $where_time_bqsl = " AND TRUNC(VALIDATE_TIME) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
             $channel_type = $method->getChannelTypeBySql($user_name);
-            if((int)$channel_type==2){
-                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            if ((int)$channel_type == 2) {
+                $where_type_fix = $where_type_fix . " AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
             }
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($apply_status)){
-            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+        if (!empty($apply_status)) {
+            $where_type_fix .= " AND STATUS_DESC LIKE '%" . $apply_status . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR APPLY_CODE = '%".$policy_code."%')";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR APPLY_CODE = '%" . $policy_code . "%')";
         }
-        if(!empty($apply_channel)){
-            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
         }
-        if(!empty($apply_type)){
-            $where_type_fix .= " AND CHANNEL_NAME LIKE '%".$apply_type."%'";
+        if (!empty($apply_type)) {
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%" . $apply_type . "%'";
         }
-        if(!empty($apply_date)){
-            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
+        if (!empty($apply_date)) {
+            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('" . $apply_date . "','yyyy-mm-dd')";
         }
         $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                ORGAN_CODE,
@@ -1620,16 +1649,16 @@ class DataOutController extends Controller
                                FYC,
                                TO_CHAR(VALIDATE_TIME,'YYYY-MM-DD') AS VALIDATE_TIME
                           FROM TMP_SX_NB_JX_CBCS
-                         WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
+                         WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
+        Log::write($user_name . '新契约承保 数据库查询SQL：' . $select_bqsl, 'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['apply_date'] = $value['APPLY_DATE'];
             $result[$i]['organ_code'] = $value['ORGAN_CODE'];
-            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+            $result[$i]['apply_code'] = "'" . $value['APPLY_CODE'];
             $result[$i]['policy_code'] = $value['POLICY_CODE'];
             $result[$i]['issue_date'] = $value['ISSUE_DATE'];
             $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
@@ -1675,7 +1704,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getScanList(){
+    public function getScanList()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $busi_type = trim(I('get.busi_type'));
@@ -1685,35 +1715,35 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(SCAN_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(SCAN_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($busi_type)&&empty($policy_code)&&empty($busi_code)){
+        } else if (empty($busi_type) && empty($policy_code) && empty($busi_code)) {
             $where_time_bqsl = " AND TRUNC(SCAN_TIME) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND CASE_ORGAN LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix = " AND CASE_ORGAN LIKE '" . $organCode[$user_name] . "%'";
 //            $channel_type = $method->getChannelTypeBySql($user_name);
 //            if((int)$channel_type==2){
 //                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
 //            }
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($busi_type)){
-            $where_type_fix .= " AND BUSS_CLASS LIKE '%".$busi_type."%'";
+        if (!empty($busi_type)) {
+            $where_type_fix .= " AND BUSS_CLASS LIKE '%" . $busi_type . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND POLICY_CODE LIKE '%".$policy_code."%'";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND POLICY_CODE LIKE '%" . $policy_code . "%'";
         }
-        if(!empty($busi_code)){
-            $where_type_fix .= " AND BUSS_CODE LIKE '%".$busi_code."%'";
+        if (!empty($busi_code)) {
+            $where_type_fix .= " AND BUSS_CODE LIKE '%" . $busi_code . "%'";
         }
 //        $where_time_bqsl = " AND TRUNC(SCAN_TIME) >= TO_DATE('2019-08-01 00:00:00', 'yyyy-MM-dd hh24:mi:ss')";
         $select_bqsl = "SELECT BUSS_CLASS,--                AS 业务类别,
@@ -1740,15 +1770,15 @@ class DataOutController extends Controller
                                    INSURED_NAME--,      AS 被保人姓名
 --                                   ORGAN_CODE AS SCAN_ORGAN_CODE
                               FROM TMP_QDSX_QD_SM
-                             WHERE 1=1".$where_time_bqsl.$where_type_fix;
+                             WHERE 1=1" . $where_time_bqsl . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write($user_name.'新契约扫描清单 数据库查询SQL：'.$select_bqsl,'INFO');
+        Log::write($user_name . '新契约扫描清单 数据库查询SQL：' . $select_bqsl, 'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['BUSS_CLASS'] = $value['BUSS_CLASS'];
             $result[$i]['IMAGE_SCAN_ID'] = $value['IMAGE_SCAN_ID'];
-            $result[$i]['SCAN_BATCH_NO'] = "'".$value['SCAN_BATCH_NO'];
+            $result[$i]['SCAN_BATCH_NO'] = "'" . $value['SCAN_BATCH_NO'];
             $result[$i]['POLICY_CODE'] = $value['POLICY_CODE'];
             $result[$i]['BILLCARD_NO'] = $value['BILLCARD_NO'];
             $result[$i]['BUSS_CODE'] = $value['BUSS_CODE'];
@@ -1784,7 +1814,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getCsOutCt(){
+    public function getCsOutCt()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $service_name = trim(I('get.service_name'));
@@ -1794,39 +1825,39 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND SYS_INSERT_DATE-1 = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else if(empty($service_name)&&empty($policy_code)&&empty($risk_code)){
+        } else if (empty($service_name) && empty($policy_code) && empty($risk_code)) {
             $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($service_name)){
-            $where_type_fix .= " AND SERVICE_NAME LIKE '%".$service_name."%'";
+        if (!empty($service_name)) {
+            $where_type_fix .= " AND SERVICE_NAME LIKE '%" . $service_name . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR ACCEPT_CODE LIKE '%".$policy_code."%')";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR ACCEPT_CODE LIKE '%" . $policy_code . "%')";
         }
-        if(!empty($risk_code)){
-            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%".$risk_code."%' OR PRODUCT_NAME_SYS LIKE '%".$risk_code."%')";
+        if (!empty($risk_code)) {
+            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%" . $risk_code . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_code . "%')";
         }
         /*********************************************           添加机构后删除          *********************************************/
 //        $where_type_fix = "";
 //        if(in_array($user_name,$otherUser)){
 //            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
 //        }
-        Log::write($user_name.' 数据库查询条件：'.$where_time_bqsl.$where_type_fix,'INFO');
-        $select_bqsl = "SELECT * FROM  TMP_QDSX_CS_OUT_CT_DETAIL WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+        Log::write($user_name . ' 数据库查询条件：' . $where_time_bqsl . $where_type_fix, 'INFO');
+        $select_bqsl = "SELECT * FROM  TMP_QDSX_CS_OUT_CT_DETAIL WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -1857,7 +1888,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getCsCtAll(){
+    public function getCsCtAll()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $is_his = I('get.is_his');
@@ -1867,31 +1899,31 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND SYS_INSERT_DATE-1 = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else if(empty($is_his)&&empty($policy_code)&&empty($risk_code)){
+        } else if (empty($is_his) && empty($policy_code) && empty($risk_code)) {
             $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($is_his)){
-            $where_type_fix .= " AND HESITATE_FLAG LIKE '%".$is_his."%'";
+        if (!empty($is_his)) {
+            $where_type_fix .= " AND HESITATE_FLAG LIKE '%" . $is_his . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR ACCEPT_CODE LIKE '%".$policy_code."%')";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR ACCEPT_CODE LIKE '%" . $policy_code . "%')";
         }
-        if(!empty($risk_code)){
-            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%".$risk_code."%' OR PRODUCT_NAME_SYS LIKE '%".$risk_code."%')";
+        if (!empty($risk_code)) {
+            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%" . $risk_code . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_code . "%')";
         }
         /*********************************************           添加机构后删除          *********************************************/
 //        $where_type_fix = "";
@@ -1909,8 +1941,8 @@ class DataOutController extends Controller
                                    CHANNEL,
                                    HESITATE_FLAG,
                                    ORGAN_CODE
-                                   FROM  TMP_QDSX_CS_CT_DETAIL WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
-        Log::write($user_name.' 保全退保全量数据查询SQL：'.$select_bqsl,'INFO');
+                                   FROM  TMP_QDSX_CS_CT_DETAIL WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+        Log::write($user_name . ' 保全退保全量数据查询SQL：' . $select_bqsl, 'INFO');
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -1942,7 +1974,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getSumALLCt(){
+    public function getSumALLCt()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $is_his = trim(I('get.is_his'));
@@ -1952,46 +1985,46 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND SYS_INSERT_DATE-1 = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else if(empty($is_his)&&empty($policy_code)&&empty($risk_code)){
+        } else if (empty($is_his) && empty($policy_code) && empty($risk_code)) {
             $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($is_his)){
-            $where_type_fix .= " AND HESITATE_FLAG LIKE '%".$is_his."%'";
+        if (!empty($is_his)) {
+            $where_type_fix .= " AND HESITATE_FLAG LIKE '%" . $is_his . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR ACCEPT_CODE LIKE '%".$policy_code."%')";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR ACCEPT_CODE LIKE '%" . $policy_code . "%')";
         }
-        if(!empty($risk_code)){
-            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%".$risk_code."%' OR PRODUCT_NAME_SYS LIKE '%".$risk_code."%')";
+        if (!empty($risk_code)) {
+            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%" . $risk_code . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_code . "%')";
         }
         /*********************************************           添加机构后删除          *********************************************/
 //        $where_type_fix = "";
         $select_bqsl = "SELECT SUM(FEE_AMOUNT) AS SUM_ALL
-                                   FROM  TMP_QDSX_CS_CT_DETAIL WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
-        Log::write($user_name.' 保全退保全量数据查询SQL：'.$select_bqsl,'INFO');
+                                   FROM  TMP_QDSX_CS_CT_DETAIL WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+        Log::write($user_name . ' 保全退保全量数据查询SQL：' . $select_bqsl, 'INFO');
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
-        if(!empty($bqsl_result_time[0]['SUM_ALL'])) {
+        if (!empty($bqsl_result_time[0]['SUM_ALL'])) {
             $result['status'] = "success";
             $result['message'] = $bqsl_result_time[0]['SUM_ALL'];
-        }else{
+        } else {
             $result['status'] = "failed";
             $result['message'] = "计算错误";
         }
@@ -2002,7 +2035,8 @@ class DataOutController extends Controller
         }
     }
 
-    public function getSumALLOutCt(){
+    public function getSumALLOutCt()
+    {
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
         $service_name = trim(I('get.service_name'));
@@ -2012,46 +2046,46 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND SYS_INSERT_DATE-1 = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        } else if(empty($service_name)&&empty($policy_code)&&empty($risk_code)){
+        } else if (empty($service_name) && empty($policy_code) && empty($risk_code)) {
             $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($service_name)){
-            $where_type_fix .= " AND SERVICE_NAME LIKE '%".$service_name."%'";
+        if (!empty($service_name)) {
+            $where_type_fix .= " AND SERVICE_NAME LIKE '%" . $service_name . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR ACCEPT_CODE LIKE '%".$policy_code."%')";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR ACCEPT_CODE LIKE '%" . $policy_code . "%')";
         }
-        if(!empty($risk_code)){
-            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%".$risk_code."%' OR PRODUCT_NAME_SYS LIKE '%".$risk_code."%')";
+        if (!empty($risk_code)) {
+            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%" . $risk_code . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_code . "%')";
         }
         /*********************************************           添加机构后删除          *********************************************/
 //        $where_type_fix = "";
         $select_bqsl = "SELECT SUM(FEE_AMOUNT) AS SUM_ALL
-                                   FROM  TMP_QDSX_CS_OUT_CT_DETAIL WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
-        Log::write($user_name.' 保全除退保全量数据总数查询SQL：'.$select_bqsl,'INFO');
+                                   FROM  TMP_QDSX_CS_OUT_CT_DETAIL WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+        Log::write($user_name . ' 保全除退保全量数据总数查询SQL：' . $select_bqsl, 'INFO');
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         #######################################################################################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
-        if(!empty($bqsl_result_time[0]['SUM_ALL'])) {
+        if (!empty($bqsl_result_time[0]['SUM_ALL'])) {
             $result['status'] = "success";
             $result['message'] = $bqsl_result_time[0]['SUM_ALL'];
-        }else{
+        } else {
             $result['status'] = "failed";
             $result['message'] = "计算错误";
         }
@@ -2090,31 +2124,31 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND SYS_INSERT_DATE-1 = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($is_his)&&empty($policy_code)&&empty($risk_code)){
+        } else if (empty($is_his) && empty($policy_code) && empty($risk_code)) {
             $where_time_bqsl = " AND SYS_INSERT_DATE-1 = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($is_his)){
-            $where_type_fix .= " AND HESITATE_FLAG LIKE '%".$is_his."%'";
+        if (!empty($is_his)) {
+            $where_type_fix .= " AND HESITATE_FLAG LIKE '%" . $is_his . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR ACCEPT_CODE LIKE '%".$policy_code."%')";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR ACCEPT_CODE LIKE '%" . $policy_code . "%')";
         }
-        if(!empty($risk_code)){
-            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%".$risk_code."%' OR PRODUCT_NAME_SYS LIKE '%".$risk_code."%')";
+        if (!empty($risk_code)) {
+            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%" . $risk_code . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_code . "%')";
         }
         /*********************************************           添加机构后删除          *********************************************/
 //        $where_type_fix = "";
@@ -2132,8 +2166,8 @@ class DataOutController extends Controller
                                    CHANNEL,
                                    HESITATE_FLAG,
                                    ORGAN_CODE
-                                   FROM  TMP_QDSX_CS_CT_DETAIL WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
-        Log::write($user_name.' 保全退保全量数据查询SQL：'.$select_bqsl,'INFO');
+                                   FROM  TMP_QDSX_CS_CT_DETAIL WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+        Log::write($user_name . ' 保全退保全量数据查询SQL：' . $select_bqsl, 'INFO');
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -2213,38 +2247,38 @@ class DataOutController extends Controller
         $userType = $method->getUserType();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(ISSUE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)){
+        } else if (empty($apply_status) && empty($policy_code) && empty($apply_channel) && empty($apply_type)) {
             $where_time_bqsl = " AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE) ";
         }
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
             $channel_type = $method->getChannelTypeBySql($user_name);
-            if((int)$channel_type==2){
-                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            if ((int)$channel_type == 2) {
+                $where_type_fix = $where_type_fix . " AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
             }
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($apply_status)){
-            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+        if (!empty($apply_status)) {
+            $where_type_fix .= " AND STATUS_DESC LIKE '%" . $apply_status . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR APPLY_CODE = '%".$policy_code."%')";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR APPLY_CODE = '%" . $policy_code . "%')";
         }
-        if(!empty($apply_channel)){
-            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
         }
-        if(!empty($apply_type)){
-            $where_type_fix .= " AND CHANNEL_NAME LIKE '%".$apply_type."%'";
+        if (!empty($apply_type)) {
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%" . $apply_type . "%'";
         }
-        if(!empty($apply_date)){
-            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
+        if (!empty($apply_date)) {
+            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('" . $apply_date . "','yyyy-mm-dd')";
         }
         $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                ORGAN_CODE,
@@ -2281,16 +2315,16 @@ class DataOutController extends Controller
                                FEE_STATUS,
                                FYC
                           FROM TMP_QDSX_NB_QD_CB
-                         WHERE 1=1 ".$where_time_bqsl.$where_type_fix."
+                         WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
+        Log::write($user_name . '新契约承保 数据库查询SQL：' . $select_bqsl, 'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['apply_date'] = $value['APPLY_DATE'];
             $result[$i]['organ_code'] = $value['ORGAN_CODE'];
-            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+            $result[$i]['apply_code'] = "'" . $value['APPLY_CODE'];
             $result[$i]['policy_code'] = $value['POLICY_CODE'];
             $result[$i]['issue_date'] = $value['ISSUE_DATE'];
             $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
@@ -2384,38 +2418,38 @@ class DataOutController extends Controller
         $userType = $method->getUserType();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(VALIDATE_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(VALIDATE_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($apply_status)&&empty($policy_code)&&empty($apply_channel)&&empty($apply_type)){
+        } else if (empty($apply_status) && empty($policy_code) && empty($apply_channel) && empty($apply_type)) {
             $where_time_bqsl = " AND TRUNC(VALIDATE_TIME) = TRUNC(SYSDATE) ";
         }
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
             $channel_type = $method->getChannelTypeBySql($user_name);
-            if((int)$channel_type==2){
-                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            if ((int)$channel_type == 2) {
+                $where_type_fix = $where_type_fix . " AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
             }
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($apply_status)){
-            $where_type_fix .= " AND STATUS_DESC LIKE '%".$apply_status."%'";
+        if (!empty($apply_status)) {
+            $where_type_fix .= " AND STATUS_DESC LIKE '%" . $apply_status . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE LIKE '%".$policy_code."%' OR APPLY_CODE = '%".$policy_code."%')";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR APPLY_CODE = '%" . $policy_code . "%')";
         }
-        if(!empty($apply_channel)){
-            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
         }
-        if(!empty($apply_type)){
-            $where_type_fix .= " AND CHANNEL_NAME LIKE '%".$apply_type."%'";
+        if (!empty($apply_type)) {
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%" . $apply_type . "%'";
         }
-        if(!empty($apply_date)){
-            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('".$apply_date. "','yyyy-mm-dd')";
+        if (!empty($apply_date)) {
+            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('" . $apply_date . "','yyyy-mm-dd')";
         }
         $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                ORGAN_CODE,
@@ -2452,17 +2486,17 @@ class DataOutController extends Controller
                                FYC,
                                TO_CHAR(VALIDATE_TIME,'YYYY-MM-DD') AS VALIDATE_TIME
                           FROM TMP_SX_NB_JX_CBCS
-                          WHERE 1=1 ".$where_type_fix.$where_time_bqsl."
+                          WHERE 1=1 " . $where_type_fix . $where_time_bqsl . "
                            --AND TRUNC(ISSUE_DATE) = TRUNC(SYSDATE)
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write(' 契约承保清单区间导出SQL：'.$select_bqsl,'INFO');
+        Log::write(' 契约承保清单区间导出SQL：' . $select_bqsl, 'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['apply_date'] = $value['APPLY_DATE'];
             $result[$i]['organ_code'] = $value['ORGAN_CODE'];
-            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+            $result[$i]['apply_code'] = "'" . $value['APPLY_CODE'];
             $result[$i]['policy_code'] = $value['POLICY_CODE'];
             $result[$i]['issue_date'] = $value['ISSUE_DATE'];
             $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
@@ -2547,17 +2581,17 @@ class DataOutController extends Controller
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
             $channel_type = $method->getChannelTypeBySql($user_name);
-            if((int)$channel_type==2){
-                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
+            if ((int)$channel_type == 2) {
+                $where_type_fix = $where_type_fix . " AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
             }
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
         $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                ORGAN_CODE,
@@ -2594,16 +2628,16 @@ class DataOutController extends Controller
                                FEE_STATUS,
                                FYC
                           FROM TMP_QDSX_NB_QD_CB
-                         WHERE 1=1 ".$where_type_fix."
+                         WHERE 1=1 " . $where_type_fix . "
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write($user_name.'新契约承保 数据库查询SQL：'.$select_bqsl,'INFO');
+        Log::write($user_name . '新契约承保 数据库查询SQL：' . $select_bqsl, 'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['apply_date'] = $value['APPLY_DATE'];
             $result[$i]['organ_code'] = $value['ORGAN_CODE'];
-            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+            $result[$i]['apply_code'] = "'" . $value['APPLY_CODE'];
             $result[$i]['policy_code'] = $value['POLICY_CODE'];
             $result[$i]['issue_date'] = $value['ISSUE_DATE'];
             $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
@@ -2681,31 +2715,31 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($service_code)&&empty($policy_code)&&empty($apply_channel)){
+        } else if (empty($service_code) && empty($policy_code) && empty($apply_channel)) {
             $where_time_bqsl = " AND TRUNC(TJB.INSERT_TIME) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($service_code)){
-            $where_type_fix .= " AND SERVICE_NAME LIKE '%".$service_code."%'";
+        if (!empty($service_code)) {
+            $where_type_fix .= " AND SERVICE_NAME LIKE '%" . $service_code . "%'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND (POLICY_CODE = '".$policy_code."' OR APPLY_CODE = '".$policy_code."')";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE = '" . $policy_code . "' OR APPLY_CODE = '" . $policy_code . "')";
         }
-        if(!empty($apply_channel)){
-            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
         }
         $select_bqsl = "SELECT DISTINCT
                            TO_CHAR(INSERT_TIME,'YYYY-MM-DD HH24:MI:SS') AS INSERT_TIME,--             AS 退保时间,
@@ -2731,7 +2765,7 @@ class DataOutController extends Controller
                            AGENT_CODE,--             AS 业务员代码,
                            AGENT_NAME--             AS 业务员姓名
                       FROM TMP_SX_TJB_JX TJB
-                     WHERE 1=1".$where_type_fix.$where_time_bqsl;
+                     WHERE 1=1" . $where_type_fix . $where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         Log::write($user_name . ' 退减保清单SQL：' . $select_bqsl, 'INFO');
@@ -2739,8 +2773,8 @@ class DataOutController extends Controller
             $value = $bqsl_result_time[$i];
             $result[$i]['INSERT_TIME'] = $value['INSERT_TIME'];
             $result[$i]['SERVICE_NAME'] = $value['SERVICE_NAME'];
-            $result[$i]['APPLY_CODE'] = "'".$value['APPLY_CODE'];
-            $result[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
+            $result[$i]['APPLY_CODE'] = "'" . $value['APPLY_CODE'];
+            $result[$i]['POLICY_CODE'] = "'" . $value['POLICY_CODE'];
             $result[$i]['CUSTOMER_NAME'] = $value['CUSTOMER_NAME'];
             $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
             $result[$i]['APPLY_DATE'] = $value['APPLY_DATE'];
@@ -2780,31 +2814,31 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($apply_channel)&&empty($policy_code)){
+        } else if (empty($apply_channel) && empty($policy_code)) {
             $where_time_bqsl = " AND TRUNC(BRANCH_RECEIVE_DATE) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND ORGAN_CODE LIKE '".$organCode[$user_name]."%'";
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
 //        if(!empty($busi_type)){
 //            $where_type_fix .= " AND BUSS_CLASS = '".$busi_type."'";
 //        }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND POLICY_CODE = '".$policy_code."'";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND POLICY_CODE = '" . $policy_code . "'";
         }
-        if(!empty($apply_channel)){
-            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%".$apply_channel."%'";
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
         }
         $xlsCell = array( //设置字段名和列名的映射
             array('POLICY_CODE', '保单号'),
@@ -2827,7 +2861,7 @@ class DataOutController extends Controller
                                AGENT_CODE,
                                AGENT_NAME
                           FROM TMP_QDSX_NB_QD_HZ 
-                        WHERE 1=1 ".$where_time_bqsl.$where_type_fix;
+                        WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -2863,35 +2897,35 @@ class DataOutController extends Controller
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(SCAN_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-            if(!empty($queryDateEnd)){
+            if (!empty($queryDateEnd)) {
                 $where_time_bqsl = " AND TRUNC(SCAN_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
-        }else if(empty($busi_type)&&empty($policy_code)&&empty($busi_code)){
+        } else if (empty($busi_type) && empty($policy_code) && empty($busi_code)) {
             $where_time_bqsl = " AND TRUNC(SCAN_TIME) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
-        if((int)$userType==1){
+        if ((int)$userType == 1) {
             $where_type_fix = "";
-        }else if((int)$userType==2){
+        } else if ((int)$userType == 2) {
             $organCode = $method->getUserOrganCode();
-            $where_type_fix =  " AND CASE_ORGAN LIKE '".$organCode[$user_name]."%'";
+            $where_type_fix = " AND CASE_ORGAN LIKE '" . $organCode[$user_name] . "%'";
 //            $channel_type = $method->getChannelTypeBySql($user_name);
 //            if((int)$channel_type==2){
 //                $where_type_fix = $where_type_fix." AND SALES_CHANNEL_NAME IN ('银行代理','财富管理') ";
 //            }
-        }else if((int)$userType==3){
-            $where_type_fix = " AND USER_NAME = '".$user_name."'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        if(!empty($busi_type)){
-            $where_type_fix .= " AND BUSS_CLASS = '".$busi_type."'";
+        if (!empty($busi_type)) {
+            $where_type_fix .= " AND BUSS_CLASS = '" . $busi_type . "'";
         }
-        if(!empty($policy_code)){
-            $where_type_fix .= " AND POLICY_CODE = '".$policy_code."'";
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND POLICY_CODE = '" . $policy_code . "'";
         }
-        if(!empty($busi_code)){
-            $where_type_fix .= " AND BUSS_CODE = '".$busi_code."'";
+        if (!empty($busi_code)) {
+            $where_type_fix .= " AND BUSS_CODE = '" . $busi_code . "'";
         }
         $xlsCell = array( //设置字段名和列名的映射
             array('BUSS_CLASS', '业务类别'),
@@ -2943,15 +2977,15 @@ class DataOutController extends Controller
                                    INSURED_NAME--,      AS 被保人姓名
                                    --ORGAN_CODE AS SCAN_ORGAN_CODE
                               FROM TMP_QDSX_QD_SM
-                             WHERE 1=1".$where_time_bqsl.$where_type_fix;
+                             WHERE 1=1" . $where_time_bqsl . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
-        Log::write($user_name.'新契约扫描清单 数据库查询SQL：'.$select_bqsl,'INFO');
+        Log::write($user_name . '新契约扫描清单 数据库查询SQL：' . $select_bqsl, 'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['BUSS_CLASS'] = $value['BUSS_CLASS'];
             $result[$i]['IMAGE_SCAN_ID'] = $value['IMAGE_SCAN_ID'];
-            $result[$i]['SCAN_BATCH_NO'] = "'".$value['SCAN_BATCH_NO'];
+            $result[$i]['SCAN_BATCH_NO'] = "'" . $value['SCAN_BATCH_NO'];
             $result[$i]['POLICY_CODE'] = $value['POLICY_CODE'];
             $result[$i]['BILLCARD_NO'] = $value['BILLCARD_NO'];
             $result[$i]['BUSS_CODE'] = $value['BUSS_CODE'];
