@@ -102,7 +102,7 @@ function exportExcel() {
 }
 
 function exportExcelLargerPolicy() {
-    window.location.href = HOST + "index.php/Home/DataOut/expLargerPolicyNoShow?queryDateStart="+$('#dtp_input3').val()+"&queryDateEnd="+$('#dtp_input4').val();
+    window.location.href = HOST + "index.php/Home/DataOut/expLargerPolicyNoShow?queryDateStart="+$('#dtp_input4').val()+"&queryDateEnd="+$('#dtp_input4').val();
 }
 
 var TableInit = function () {

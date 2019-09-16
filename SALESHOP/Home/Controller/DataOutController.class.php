@@ -1007,15 +1007,18 @@ class DataOutController extends Controller
             array('AGENT_CODE', '代理人编码'),
             array('AGENT_NAME', '代理人姓名'),
             array('POLICY_ORGAN_CODE', '保单所属机构'),
-            array('AREA_CODE', '营业区编码'),
+            #array('AREA_CODE', '营业区编码'),
             array('AREA_NAME', '营业区'),
-            array('PART_CODE', '营业部编码'),
+            #array('PART_CODE', '营业部编码'),
             array('PART_NAME', '营业部'),
-            array('GROUP_CODE', '营业组编码'),
+            #array('GROUP_CODE', '营业组编码'),
             array('GROUP_NAME', '营业组'),
             array('FEE_AMOUNT', '保费'),
             array('FEE_STATUS', '费用状态'),
-            array('DUE_TIME', '应缴应付日')
+            array('POLICY_FLAG', '保单标识'),
+            array('IS_SELF_INSURED', '自保互保标识'),
+            array('CHECK_USER_CODE', '督管编码'),
+            array('CHECK_USER_NAME', '督管姓名')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -1035,15 +1038,19 @@ class DataOutController extends Controller
                                A.AGENT_CODE, --代理人编码
                                A.AGENT_NAME, --代理人姓名
                                A.POLICY_ORGAN_CODE, --保单所属机构
-                               A.AREA_CODE, --营业区编码
+                               --A.AREA_CODE, --营业区编码
                                A.AREA_NAME, --营业区
-                               A.PART_CODE, --营业部编码
+                               --A.PART_CODE, --营业部编码
                                A.PART_NAME, --营业部
-                               A.GROUP_CODE, --营业组编码
+                               --A.GROUP_CODE, --营业组编码
                                A.GROUP_NAME, --营业组
                                A.FEE_AMOUNT, --保费
-                               (CASE A.FEE_STATUS WHEN '1' THEN '实收' ELSE '应收' END) AS FEE_STATUS, --费用状态
-                               TO_CHAR(A.DUE_TIME,'YYYY-MM-DD') AS DUE_TIME --应缴应付日
+                               A.FEE_STATUS, --费用状态
+                               TO_CHAR(A.DUE_TIME,'YYYY-MM-DD') AS DUE_TIME, --应缴应付日
+                               A.POLICY_FLAG, --保单标识
+                               A.IS_SELF_INSURED, --自保互保标识
+                               A.CHECK_USER_CODE, --督管编码
+                               A.CHECK_USER_NAME --督管姓名
                            FROM NCL_1.T_LARGE_POLICY_FEE A
                           WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
