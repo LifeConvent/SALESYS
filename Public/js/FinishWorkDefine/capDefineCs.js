@@ -8,6 +8,8 @@ $(function () {
     $('#cap_define_list').css('display','block');
     $('#cap_define_cs').attr('class','active');
 
+    $.scojs_message("收付费预制盘数据核对工作已经停止，即日起无需核对，请知悉！", $.scojs_message.TYPE_ERROR);
+
     $('#form_date1').datetimepicker({
         language:  'zh-CN',
         weekStart: 1,
