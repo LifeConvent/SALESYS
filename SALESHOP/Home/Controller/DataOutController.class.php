@@ -989,6 +989,96 @@ class DataOutController extends Controller
         $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
+    public function expLargerPolicyNoShow()
+    {   //导出Excel
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        //导出Excel
+        if (!empty($queryDateStart) && !empty($queryDateEnd)) {
+            $where_time_bqsl = " AND DUE_TIME BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd')";
+        } else {
+            $where_time_bqsl = "";
+        }
+        $xlsName = "大额保单清单";
+        $xlsTitle = "大额保单清单";
+        $xlsCell = array( //设置字段名和列名的映射
+            array('POLICY_CODE', '保单号'),
+            array('HOLDER_NAME', '投保人姓名'),
+            array('AGENT_CODE', '代理人编码'),
+            array('AGENT_NAME', '代理人姓名'),
+            array('POLICY_ORGAN_CODE', '保单所属机构'),
+            array('AREA_CODE', '营业区编码'),
+            array('AREA_NAME', '营业区'),
+            array('PART_CODE', '营业部编码'),
+            array('PART_NAME', '营业部'),
+            array('GROUP_CODE', '营业组编码'),
+            array('GROUP_NAME', '营业组'),
+            array('FEE_AMOUNT', '保费'),
+            array('FEE_STATUS', '费用状态'),
+            array('DUE_TIME', '应缴应付日')
+        );
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if ((int)$userType == 1) {
+            $where_type_fix = "";
+        } else if ((int)$userType == 2) {
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix = " AND POLICY_ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+        }
+        $select_bqsl = "SELECT A.POLICY_CODE, --保单号 
+                               A.HOLDER_NAME, --投保人姓名
+                               A.AGENT_CODE, --代理人编码
+                               A.AGENT_NAME, --代理人姓名
+                               A.POLICY_ORGAN_CODE, --保单所属机构
+                               A.AREA_CODE, --营业区编码
+                               A.AREA_NAME, --营业区
+                               A.PART_CODE, --营业部编码
+                               A.PART_NAME, --营业部
+                               A.GROUP_CODE, --营业组编码
+                               A.GROUP_NAME, --营业组
+                               A.FEE_AMOUNT, --保费
+                               (CASE A.FEE_STATUS WHEN '1' THEN '实收' ELSE '应收' END) AS FEE_STATUS, --费用状态
+                               TO_CHAR(A.DUE_TIME,'YYYY-MM-DD') AS DUE_TIME --应缴应付日
+                           FROM NCL_1.T_LARGE_POLICY_FEE A
+                          WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        Log::write($user_name . ' 预收清单 数据库查询条件：' . $select_bqsl, 'INFO');
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $res[] = $value;
+//            $res[$i]['APPLY_CODE'] = "'" . $value['APPLY_CODE'];
+            $res[$i]['POLICY_CODE'] = "'" . $value['POLICY_CODE'];
+//            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+//            $result[$i]['status_desc'] = $value['STATUS_DESC'];
+//            $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
+//            $result[$i]['agent_code'] = $value['AGENT_CODE'];
+//            $result[$i]['agent_name'] = $value['AGENT_NAME'];
+//            $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
+//            $result[$i]['fyc'] = $value['FYC'];
+//            $result[$i]['status_name'] = $value['STATUS_NAME'];
+//            $result[$i]['charge_year'] = $value['CHARGE_YEAR'];
+//            $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
+//            $result[$i]['amount'] = $value['AMOUNT'];
+//            $result[$i]['master_busi_item_id'] = $value['MASTER_BUSI_ITEM_ID'];
+//            $result[$i]['busi_apply_date'] = $value['BUSI_APPLY_DATE'];
+//            $result[$i]['due_time'] = $value['DUE_TIME'];
+//            $result[$i]['apply_date'] = $value['APPLY_DATE'];
+//            $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+        }
+//        for ($i = 0; $i < sizeof($result); $i++) {
+//            $res[] = $result[$i];
+//        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
+    }
+
     public function getNbHz()
     {
         $queryDateStart = I('get.queryDateStart');

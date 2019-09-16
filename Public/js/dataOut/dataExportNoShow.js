@@ -43,6 +43,42 @@ $(function () {
         // $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbYs?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
+
+    $('#form_date3').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    }).on('changeDate', function(ev){
+        // if($('#dtp_input3').val()==null||$('#dtp_input3').val()==''||$('#dtp_input3').val()=='undefined'){
+        //     // $.scojs_message('此次查询为单日查询！', $.scojs_message.TYPE_ERROR);
+        // }
+        // $('#daily_report2').bootstrapTable('removeAll');
+        // $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbYs?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+    });
+
+    $('#form_date4').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    }).on('changeDate', function(ev){
+        if($('#dtp_input4').val()==null||$('#dtp_input4').val()==''||$('#dtp_input4').val()=='undefined'){
+            $.scojs_message('请输入区间查询起始日期！', $.scojs_message.TYPE_ERROR);
+            return;
+        }
+        // $('#daily_report2').bootstrapTable('removeAll');
+        // $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbYs?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
+    });
+
     //1.初始化Table
     var oTable = new TableInit();
     oTable.Init();
@@ -65,8 +101,8 @@ function exportExcel() {
     window.location.href = HOST + "index.php/Home/DataOut/expNbYsNoShow?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val();
 }
 
-function exportExcelScan() {
-    window.location.href = HOST + "index.php/Home/PostTable/expNbScan";
+function exportExcelLargerPolicy() {
+    window.location.href = HOST + "index.php/Home/DataOut/expLargerPolicyNoShow?queryDateStart="+$('#dtp_input3').val()+"&queryDateEnd="+$('#dtp_input4').val();
 }
 
 var TableInit = function () {
