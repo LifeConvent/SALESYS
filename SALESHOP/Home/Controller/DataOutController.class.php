@@ -1006,6 +1006,7 @@ class DataOutController extends Controller
             array('HOLDER_NAME', '投保人姓名'),
             array('AGENT_CODE', '代理人编码'),
             array('AGENT_NAME', '代理人姓名'),
+            array('SALES_CHANNEL_NAME', '代理人所属渠道'),
             array('POLICY_ORGAN_CODE', '保单所属机构'),
             #array('AREA_CODE', '营业区编码'),
             array('AREA_NAME', '营业区'),
@@ -1015,6 +1016,7 @@ class DataOutController extends Controller
             array('GROUP_NAME', '营业组'),
             array('FEE_AMOUNT', '保费'),
             array('FEE_STATUS', '费用状态'),
+            array('DUE_TIME', '应缴应付日'),
             array('POLICY_FLAG', '保单标识'),
             array('IS_SELF_INSURED', '自保互保标识'),
             array('CHECK_USER_CODE', '督管编码'),
@@ -1037,6 +1039,7 @@ class DataOutController extends Controller
                                A.HOLDER_NAME, --投保人姓名
                                A.AGENT_CODE, --代理人编码
                                A.AGENT_NAME, --代理人姓名
+                               A.SALES_CHANNEL_NAME, --代理人所属渠道
                                A.POLICY_ORGAN_CODE, --保单所属机构
                                --A.AREA_CODE, --营业区编码
                                A.AREA_NAME, --营业区
