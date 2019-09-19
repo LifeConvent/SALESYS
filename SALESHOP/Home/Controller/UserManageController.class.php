@@ -29,6 +29,22 @@ class UserManageController extends Controller
         }
     }
 
+    public function qdUserManage()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $method->assignPublic($username,$this);
+            if(!$method->getSystype($username)){
+                $this->redirect('Index/errorSys');
+            }
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function getUser()
     {
         $user = M('user');
@@ -337,4 +353,180 @@ class UserManageController extends Controller
         oci_close($conn);
         exit(json_encode($result));
     }
+
+    public function getPostDgUserList(){
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_select  = "SELECT * FROM TMP_SX_QD_DG";
+        $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
+        $user_result =  $method->search_long($result_rows);
+        $num = sizeof($user_result);
+        for($i=0;$i<$num;$i++){
+            $result[$i]['dg_user_organ_name'] = $user_result[$i]['ORGAN_NAME'];
+            $result[$i]['dg_code'] = $user_result[$i]['CHECK_USER_CODE'];
+            $result[$i]['dg_user_organ_code'] = $user_result[$i]['ORGAN_CODE'];
+            $result[$i]['dg_name'] = $user_result[$i]['CHECK_USER_NAME'];
+            $result[$i]['yx_organ_code'] = $user_result[$i]['SALE_ORGAN_CODE'];
+            $result[$i]['yx_organ_name'] = $user_result[$i]['SALE_ORGAN_NAME'];
+            $result[$i]['yx_bu_code'] = $user_result[$i]['SALE_DEPARTMENT_CODE'];
+            $result[$i]['yx_bu_name'] = $user_result[$i]['SALE_DEPARTMENT_NAME'];
+            $result[$i]['yx_zu_code'] = $user_result[$i]['SALE_GROUP_CODE'];
+            $result[$i]['yx_zu_name'] = $user_result[$i]['SALE_GROUP_NAME'];
+            $result[$i]['order_id'] = $user_result[$i]['ORDER_ID'];
+        }
+//        dump($result);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($result) {
+            exit(json_encode($result));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function postAddDgUser(){
+        $ORGAN_NAME = I('post.dg_user_organ_name');
+        $CHECK_USER_CODE = I('post.dg_code');
+        $ORGAN_CODE = I('post.dg_user_organ_code');
+        $CHECK_USER_NAME = I('post.dg_name');
+        $SALE_ORGAN_CODE = I('post.yx_organ_code');
+        $SALE_ORGAN_NAME = I('post.yx_organ_name');
+        $SALE_DEPARTMENT_CODE = I('post.yx_bu_code');
+        $SALE_DEPARTMENT_NAME = I('post.yx_bu_name');
+        $SALE_GROUP_CODE = I('post.yx_zu_code');
+        $SALE_GROUP_NAME = I('post.yx_zu_name');
+
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if(empty($SALE_GROUP_CODE)){
+            $dg_select =  "SELECT * FROM TMP_SX_QD_DG WHERE CHECK_USER_CODE = '".$CHECK_USER_CODE."' AND ORGAN_CODE = '".$ORGAN_CODE."' AND CHECK_USER_NAME = '".$CHECK_USER_NAME.
+                "' AND SALE_ORGAN_CODE = '".$SALE_ORGAN_CODE."' AND SALE_ORGAN_NAME = '".$SALE_ORGAN_NAME."' AND SALE_DEPARTMENT_CODE = '".$SALE_DEPARTMENT_CODE."' AND SALE_DEPARTMENT_NAME = '".$SALE_DEPARTMENT_NAME."'";
+        }else{
+            $dg_select =  "SELECT * FROM TMP_SX_QD_DG WHERE CHECK_USER_CODE = '".$CHECK_USER_CODE."' AND ORGAN_CODE = '".$ORGAN_CODE."' AND CHECK_USER_NAME = '".$CHECK_USER_NAME.
+                "' AND SALE_ORGAN_CODE = '".$SALE_ORGAN_CODE."' AND SALE_ORGAN_NAME = '".$SALE_ORGAN_NAME."' AND SALE_DEPARTMENT_CODE = '".$SALE_DEPARTMENT_CODE."' AND SALE_DEPARTMENT_NAME = '".$SALE_DEPARTMENT_NAME.
+                "' AND SALE_GROUP_CODE = '".$SALE_GROUP_CODE."' AND SALE_GROUP_NAME = '".$SALE_GROUP_NAME."'";
+        }
+        $result_rows = oci_parse($conn, $dg_select); // 配置SQL语句，执行SQL
+        Log::write('督管新增人员 数据库查询条件：' . $dg_select, 'INFO');
+        $dg = $method->search_long($result_rows);
+        if(!empty($dg[0]['ORGAN_NAME'])){
+            $result['status'] = "failed";
+            $result['message'] = "该条人员督管信息已经存在，新建失败！";
+            exit(json_encode($result));
+        }
+        $select_num = "SELECT MAX(ORDER_ID) AS ID FROM TMP_SX_QD_DG";
+        $result_rows = oci_parse($conn, $select_num); // 配置SQL语句，执行SQL
+        Log::write('督管新增人员 ID 数据库查询条件：' . $select_num, 'INFO');
+        $num = $method->search_long($result_rows);
+        $ID = $num[0]['ID'] + 1;
+        if(empty($SALE_GROUP_CODE)) {
+            $dg_add = "INSERT INTO TMP_SX_QD_DG(ORGAN_NAME,CHECK_USER_CODE,ORGAN_CODE,CHECK_USER_NAME,SALE_ORGAN_CODE,SALE_ORGAN_NAME,SALE_DEPARTMENT_CODE,SALE_DEPARTMENT_NAME,ORDER_ID) 
+            VALUES('" . $ORGAN_NAME . "','" . $CHECK_USER_CODE . "','" . $ORGAN_CODE . "','" . $CHECK_USER_NAME . "','" . $SALE_ORGAN_CODE . "','" . $SALE_ORGAN_NAME . "','" . $SALE_DEPARTMENT_CODE . "','" . $SALE_DEPARTMENT_NAME . "',".$ID.")";
+        }else{
+            $dg_add = "INSERT INTO TMP_SX_QD_DG(ORGAN_NAME,CHECK_USER_CODE,ORGAN_CODE,CHECK_USER_NAME,SALE_ORGAN_CODE,SALE_ORGAN_NAME,SALE_DEPARTMENT_CODE,SALE_DEPARTMENT_NAME,SALE_GROUP_CODE,SALE_GROUP_NAME,ORDER_ID) 
+            VALUES('" . $ORGAN_NAME . "','" . $CHECK_USER_CODE . "','" . $ORGAN_CODE . "','" . $CHECK_USER_NAME . "','" . $SALE_ORGAN_CODE . "','" . $SALE_ORGAN_NAME . "','" . $SALE_DEPARTMENT_CODE . "','" . $SALE_DEPARTMENT_NAME .  "','" . $SALE_GROUP_CODE .  "','" . $SALE_GROUP_NAME . "',".$ID.")";
+        }
+        Log::write('督管新增人员 数据库查询条件：' . $dg_add, 'INFO');
+        $result_rows = oci_parse($conn, $dg_add); // 配置SQL语句，执行SQL
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
+            $result['status'] = "success";
+            $result['message'] = "督管关系新建成功！";
+        } else {
+            $result['status'] = "failed";
+            $result['message'] = "督管关系新建失败！";
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
+    }
+
+    public function postDeleteDgUser(){
+        $ORGAN_NAME = I('post.dg_user_organ_name');
+        $CHECK_USER_CODE = I('post.dg_code');
+        $ORGAN_CODE = I('post.dg_user_organ_code');
+        $CHECK_USER_NAME = I('post.dg_name');
+        $SALE_ORGAN_CODE = I('post.yx_organ_code');
+        $SALE_ORGAN_NAME = I('post.yx_organ_name');
+        $SALE_DEPARTMENT_CODE = I('post.yx_bu_code');
+        $SALE_DEPARTMENT_NAME = I('post.yx_bu_name');
+        $SALE_GROUP_CODE = I('post.yx_zu_code');
+        $SALE_GROUP_NAME = I('post.yx_zu_name');
+
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if(empty($SALE_GROUP_CODE)||$SALE_GROUP_CODE=='null'){
+            $dg_delete =  "DELETE FROM TMP_SX_QD_DG WHERE CHECK_USER_CODE = '".$CHECK_USER_CODE."' AND ORGAN_CODE = '".$ORGAN_CODE."' AND CHECK_USER_NAME = '".$CHECK_USER_NAME.
+                "' AND SALE_ORGAN_CODE = '".$SALE_ORGAN_CODE."' AND SALE_ORGAN_NAME = '".$SALE_ORGAN_NAME."' AND SALE_DEPARTMENT_CODE = '".$SALE_DEPARTMENT_CODE."' AND SALE_DEPARTMENT_NAME = '".$SALE_DEPARTMENT_NAME."'";
+        }else{
+            $dg_delete =  "DELETE FROM TMP_SX_QD_DG WHERE CHECK_USER_CODE = '".$CHECK_USER_CODE."' AND ORGAN_CODE = '".$ORGAN_CODE."' AND CHECK_USER_NAME = '".$CHECK_USER_NAME.
+                "' AND SALE_ORGAN_CODE = '".$SALE_ORGAN_CODE."' AND SALE_ORGAN_NAME = '".$SALE_ORGAN_NAME."' AND SALE_DEPARTMENT_CODE = '".$SALE_DEPARTMENT_CODE."' AND SALE_DEPARTMENT_NAME = '".$SALE_DEPARTMENT_NAME.
+                "' AND SALE_GROUP_CODE = '".$SALE_GROUP_CODE."' AND SALE_GROUP_NAME = '".$SALE_GROUP_NAME."'";
+        }
+        Log::write('督管删除人员 数据库查询条件：' . $dg_delete, 'INFO');
+        $result_rows = oci_parse($conn, $dg_delete); // 配置SQL语句，执行SQL
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
+            $result['status'] = "success";
+            $result['message'] = "督管关系删除成功！";
+        } else {
+            $result['status'] = "failed";
+            $result['message'] = "督管关系删除失败！";
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
+    }
+
+    public function postModifyDgUser(){
+        $ORGAN_NAME = I('post.dg_user_organ_name');
+        $CHECK_USER_CODE = I('post.dg_code');
+        $ORGAN_CODE = I('post.dg_user_organ_code');
+        $CHECK_USER_NAME = I('post.dg_name');
+        $SALE_ORGAN_CODE = I('post.yx_organ_code');
+        $SALE_ORGAN_NAME = I('post.yx_organ_name');
+        $SALE_DEPARTMENT_CODE = I('post.yx_bu_code');
+        $SALE_DEPARTMENT_NAME = I('post.yx_bu_name');
+        $SALE_GROUP_CODE = I('post.yx_zu_code');
+        $SALE_GROUP_NAME = I('post.yx_zu_name');
+        $ID = I('post.id');
+
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if(empty($SALE_GROUP_CODE)){
+            $dg_select =  "SELECT * FROM TMP_SX_QD_DG WHERE CHECK_USER_CODE = '".$CHECK_USER_CODE."' AND ORGAN_CODE = '".$ORGAN_CODE."' AND CHECK_USER_NAME = '".$CHECK_USER_NAME.
+                "' AND SALE_ORGAN_CODE = '".$SALE_ORGAN_CODE."' AND SALE_ORGAN_NAME = '".$SALE_ORGAN_NAME."' AND SALE_DEPARTMENT_CODE = '".$SALE_DEPARTMENT_CODE."' AND SALE_DEPARTMENT_NAME = '".$SALE_DEPARTMENT_NAME."'";
+        }else{
+            $dg_select =  "SELECT * FROM TMP_SX_QD_DG WHERE CHECK_USER_CODE = '".$CHECK_USER_CODE."' AND ORGAN_CODE = '".$ORGAN_CODE."' AND CHECK_USER_NAME = '".$CHECK_USER_NAME.
+                "' AND SALE_ORGAN_CODE = '".$SALE_ORGAN_CODE."' AND SALE_ORGAN_NAME = '".$SALE_ORGAN_NAME."' AND SALE_DEPARTMENT_CODE = '".$SALE_DEPARTMENT_CODE."' AND SALE_DEPARTMENT_NAME = '".$SALE_DEPARTMENT_NAME.
+                "' AND SALE_GROUP_CODE = '".$SALE_GROUP_CODE."' AND SALE_GROUP_NAME = '".$SALE_GROUP_NAME."'";
+        }
+        $result_rows = oci_parse($conn, $dg_select); // 配置SQL语句，执行SQL
+        Log::write('督管修改人员查询 数据库查询条件：' . $dg_select, 'INFO');
+        $dg = $method->search_long($result_rows);
+        if(!empty($dg[0]['ORGAN_NAME'])){
+            $result['status'] = "failed";
+            $result['message'] = "修改后的人员督管信息已经存在，新建失败！";
+            exit(json_encode($result));
+        }
+        if(empty($SALE_GROUP_CODE)) {
+            $dg_update = "UPDATE TMP_SX_QD_DG SET CHECK_USER_CODE = '" . $CHECK_USER_CODE . "', ORGAN_CODE = '" . $ORGAN_CODE . "', CHECK_USER_NAME = '" . $CHECK_USER_NAME .
+                "', SALE_ORGAN_CODE = '" . $SALE_ORGAN_CODE . "' , SALE_ORGAN_NAME = '" . $SALE_ORGAN_NAME . "', SALE_DEPARTMENT_CODE = '" . $SALE_DEPARTMENT_CODE . "' , SALE_DEPARTMENT_NAME = '" . $SALE_DEPARTMENT_NAME . "' WHERE ORDER_ID = '" . $ID . "'";
+        }else{
+            $dg_update = "UPDATE TMP_SX_QD_DG SET CHECK_USER_CODE = '" . $CHECK_USER_CODE . "', ORGAN_CODE = '" . $ORGAN_CODE . "', CHECK_USER_NAME = '" . $CHECK_USER_NAME .
+                "', SALE_ORGAN_CODE = '" . $SALE_ORGAN_CODE . "' , SALE_ORGAN_NAME = '" . $SALE_ORGAN_NAME . "', SALE_DEPARTMENT_CODE = '" . $SALE_DEPARTMENT_CODE . "' , SALE_DEPARTMENT_NAME = '" . $SALE_DEPARTMENT_NAME .
+                "' , SALE_GROUP_CODE = '".$SALE_GROUP_CODE."' , SALE_GROUP_NAME = '".$SALE_GROUP_NAME."' WHERE ORDER_ID = '" . $ID . "'";
+        }
+        $result_rows = oci_parse($conn, $dg_update); // 配置SQL语句，执行SQL
+        Log::write('督管修改人员查询 数据库更新：' . $dg_update, 'INFO');
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
+            $result['status'] = "success";
+            $result['message'] = "督管关系更新成功！";
+        } else {
+            $result['status'] = "failed";
+            $result['message'] = "督管关系更新失败！";
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
+    }
+
 }

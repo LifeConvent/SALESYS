@@ -104,6 +104,8 @@ $(function () {
     control_list.put("2", "post_day_all");
     control_list.put("3", "bug_list");
     control_list.put("4", "user_control");
+    control_list.put("4.1", "user_manager");
+    control_list.put("4.2", "qd_user_manager");
     control_list.put("5", "list_out");
     control_list.put("5.1", "data_out_ct");
     control_list.put("5.2", "data_ct_all");
@@ -153,6 +155,8 @@ $(function () {
     list_name.push("post_day_all");
     list_name.push("bug_list");
     list_name.push("user_control");
+    list_name.push("user_manager");
+    list_name.push("qd_user_manager");
     list_name.push("list_out");
     list_name.push("data_out_ct");
     list_name.push("data_ct_all");
