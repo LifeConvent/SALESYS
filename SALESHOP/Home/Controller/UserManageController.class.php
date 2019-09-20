@@ -45,6 +45,27 @@ class UserManageController extends Controller
         }
     }
 
+    public function dataTableManage()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $table = $method->getUserTableStruct();
+            $DBtable = '<option value="0">|----     无</option>';
+            foreach ($table AS $key => $val) {
+                $DBtable .= '<option value="'.$val['table'].'">'. '|----    ' .$val['name'].'</option>';
+            }
+            $this->assign('DBtable', $DBtable);
+            $method->assignPublic($username,$this);
+            if(!$method->getSystype($username)){
+                $this->redirect('Index/errorSys');
+            }
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
     public function getUser()
     {
         $user = M('user');

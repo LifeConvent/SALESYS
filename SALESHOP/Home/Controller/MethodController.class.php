@@ -4273,6 +4273,101 @@ class MethodController extends Controller
         exit(json_encode($result));
     }
 
+    //第二种方案.发过来数据(新增临时文件夹名称-时间戳)后断开连接,之后开始轮询请求查询取得文件中的数据解析,JOSN包含处理进度
+    public function startUploadsSx()
+    {
+        $time = I('post.time');
+        $file_name = I('post.f_n');
+        $table_name = I('post.t_n');
+        $match_relation = I('post.m_r');
+
+        $result['status'] = 'success';
+        $result['percent'] = '0%';
+        $this->write($time, json_encode($result));
+
+        //解析匹配关系
+        $match_relation = explode(',', $match_relation);
+        $data = $this->import_excel('Public/uploads/' . $file_name);
+//        dump($data);
+        $match = $field = $count = null;
+        foreach ($match_relation AS $key => $val) {
+            $match[$key] = explode('-', $val);
+        }
+        $num = 0;
+        //调整与EXCEL的对应关系
+        foreach ($data[1] AS $key => $val) {
+            foreach ($match AS $k => $v) {
+                if ($v[1] == $val) {
+                    $data[1][$key] = $val[0];
+                    $field[$num] = $v[0];
+                    $count[$num++] = $key;
+                }
+            }
+        }
+//        $table = M($table_name);
+        $result = null;
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        //data是EXCEL数据表的值
+        $select_where = '';
+        $count_i = 0;$insert_be ='';$insert_af = '';
+        for ($j = 2; $j < sizeof($data); $j++) {
+            $condition = null;
+            //field是指数据库表头的名称
+            for ($i = 0; $i < sizeof($field); $i++) {
+                $condition[$field[$i]] = $data[$j][$count[$i]];
+                $select_where .= " AND ".$field[$i]." = '".$data[$j][$count[$i]]."'";
+                if($count_i==0){
+                    $insert_be .= $field[$i];
+                    $insert_af.= "'".$data[$j][$count[$i]]."'";
+                }else{
+                    $insert_be .= ",".$field[$i];
+                    $insert_af.= ",'".$data[$j][$count[$i]]."'";
+                }
+            }
+            $percent = (float)$j / (sizeof($data) - 1);
+            //查询单行数据是否存在-缺少必导入项判断条件
+            if(empty($SALE_GROUP_CODE)){
+                $dg_select =  "SELECT * FROM TMP_SX_QD_DG WHERE 1=1 ".$select_where;
+            }else{
+                $dg_select =  "SELECT * FROM TMP_SX_QD_DG WHERE 1=1 ".$select_where;
+            }
+            $result_rows = oci_parse($conn, $dg_select); // 配置SQL语句，执行SQL
+            Log::write('数据表导入 数据库查询条件：' . $dg_select, 'INFO');
+            $dg = $method->search_long($result_rows);
+            if(!empty($dg[0]['ORGAN_NAME'])){
+                $res = true;
+            }
+            if (!$res) {
+                //单行添加数据
+                if(empty($SALE_GROUP_CODE)) {
+                    $dg_add = "INSERT INTO TMP_SX_QD_DG(".$insert_be.") 
+                              VALUES(".$insert_af.")";
+                }else{
+                    $dg_add = "INSERT INTO TMP_SX_QD_DG(".$insert_be.") 
+                              VALUES(".$insert_af.")";
+                }
+                Log::write('数据表导入 数据库插入新增：' . $dg_select, 'INFO');
+                $result_rows = oci_parse($conn, $dg_add); // 配置SQL语句，执行SQL
+                if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
+                    $result['status'] = 'success';
+                    $result['percent'] = ($percent * 100) . '%';
+                } else {
+                    $result['status'] = 'failed';
+                    $result['message'] = $res;
+                }
+                $this->write($time, json_encode($result));
+            }
+        }
+        if ($result == null) {
+            $result['status'] = 'success';
+            $result['message'] = '无数据更新!';
+            $result['percent'] = '100%';
+            $this->write($time, json_encode($result));
+        }
+        exit(json_encode($result));
+    }
+
     public function deleteFile()
     {
         $time = I('post.time');
@@ -4307,6 +4402,34 @@ class MethodController extends Controller
         return $col;
     }
 
+    //获取数据库数据表结构
+    public function getUserTableStruct()
+    {
+        //查询获取所有用户可选择的数据表
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $user = 'ADMIN';
+        }else{
+            $user = $user_name;
+        }
+        $select_table = "SELECT DISTINCT TABLE_CODE,TABLE_NAME FROM TMP_USER_CONTROL_TABLE WHERE 1=1 AND USER_ACCOUNT = '".$user."'";
+        $result_rows = oci_parse($conn, $select_table); // 配置SQL语句，执行SQL
+        $table_result = $method->search_long($result_rows);
+        Log::write($user_name . '用户可编辑数据表 数据库查询SQL：' . $select_table, 'INFO');
+        $col = null;
+        for($i=0;$i<sizeof($table_result);$i++){
+            $col[$i]['name'] = $table_result[$i]['TABLE_CODE'].'-'.$table_result[$i]['TABLE_NAME'];
+            $col[$i]['table'] = $table_result[$i]['TABLE_CODE'];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $col;
+    }
+
     //获取数据库数据表字段
     public function getTableFiled()
     {
@@ -4317,6 +4440,37 @@ class MethodController extends Controller
         $result['file_field'] = $data[1];
         $result['data'] = M($field)->getDbFields();
         exit(json_encode($result));
+    }
+
+    //获取数据库数据表字段
+    public function getTableFiledSx()
+    {
+        $field = I('post.table_name');
+        $file_name = I('post.file_name');
+        $data = $this->import_excel('Public/uploads/' . $file_name);
+        $result['status'] = 'success';
+        $result['file_field'] = $data[1];
+        $result['data'] = $this->getDbFieldsByTable($field);
+        exit(json_encode($result));
+    }
+
+    public function getDbFieldsByTable($field){
+        $conn = $this->OracleOldDBCon();
+        $select_table = "select column_name from user_tab_columns where table_name= '".$field."'";
+        Log::write( '用户可编辑数据表列名查询 数据库查询SQL：' . $select_table, 'INFO');
+        $result_rows = oci_parse($conn, $select_table); // 配置SQL语句，执行SQL
+        $table_result = $this->search_long($result_rows);
+        $data = '';
+        for($i=0;$i<sizeof($table_result);$i++){
+            if($i==0){
+                $data = $table_result[$i]['COLUMN_NAME'];
+            }else{
+                $data .= ','.$table_result[$i]['COLUMN_NAME'];
+            }
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $data;
     }
 
     public function outTest()
