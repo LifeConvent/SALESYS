@@ -92,9 +92,9 @@ function upload_next(id) {
                     select_data += ($(select_id).val() + ',');
             }
             debugger;
-            alert(select_data);
+            // alert(select_data);
             select_data = select_data.substring(0, select_data.length - 1);
-            alert(select_data);
+            // alert(select_data);
             $('#match_relation').val(select_data);
             $('#field1').hide();
             $('#stepy_form-title-1').attr("class", "");
@@ -183,6 +183,7 @@ function startMatch() {
             m_r: match_relation, f_n: file_name, t_n: table_name, time: time
         }
     });
+    debugger;
     var ajaxData = {
         type: "POST",
         url: HOST + "index.php/Home/Method/getFile",
@@ -190,6 +191,7 @@ function startMatch() {
         data: {time: time},
         success: function (result) {
             if (result.status == "success") {
+                debugger;
                 var num = parseInt(result.percent.substring(0, result.percent.length - 1));
                 if (num >= 99) {
                     $("#progress").css('width', '100%');
@@ -218,7 +220,8 @@ function startMatch() {
                             f_n: file_name, time: time
                         }
                     });
-                    //setTimeout($('#uploadStep').modal('hide'),3000);
+                    $('#uploadStep').modal('hide')
+                    // setTimeout($('#uploadStep').modal('hide'),3000);
                 }
             } else {
                 scojs_message(result.message, $.scojs_message.TYPE_ERROR);

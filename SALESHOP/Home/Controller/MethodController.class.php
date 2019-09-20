@@ -4308,55 +4308,59 @@ class MethodController extends Controller
         $result = null;
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        Log::write('数据表导入 表名称：' . $table_name, 'INFO');
+        if(strcmp($table_name,'TMP_TEST')==0){
+            $delete =  "DELETE FROM ".$table_name;
+            Log::write('数据表导入 清空数据表：' . $delete, 'INFO');
+            $result_rows = oci_parse($conn, $delete); // 配置SQL语句，执行SQL
+            if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
+            } else {
+                $result['status'] = 'failed';
+                $result['message'] = '清空初始化失败，导入失败！';
+            }
+        }
         //data是EXCEL数据表的值
-        $select_where = '';
-        $count_i = 0;$insert_be ='';$insert_af = '';
         for ($j = 2; $j < sizeof($data); $j++) {
             $condition = null;
+            $select_where = '';$insert_be ='';$insert_af = '';
+            $count_i = 0;
             //field是指数据库表头的名称
             for ($i = 0; $i < sizeof($field); $i++) {
-                $condition[$field[$i]] = $data[$j][$count[$i]];
+//                $condition[$field[$i]] = $data[$j][$count[$i]];
                 $select_where .= " AND ".$field[$i]." = '".$data[$j][$count[$i]]."'";
                 if($count_i==0){
                     $insert_be .= $field[$i];
-                    $insert_af.= "'".$data[$j][$count[$i]]."'";
+                    $insert_af .= "'".$data[$j][$count[$i]]."'";
+                    $count_i++;
                 }else{
                     $insert_be .= ",".$field[$i];
-                    $insert_af.= ",'".$data[$j][$count[$i]]."'";
+                    $insert_af .= ",'".$data[$j][$count[$i]]."'";
+                    $count_i++;
                 }
             }
             $percent = (float)$j / (sizeof($data) - 1);
             //查询单行数据是否存在-缺少必导入项判断条件
-            if(empty($SALE_GROUP_CODE)){
-                $dg_select =  "SELECT * FROM TMP_SX_QD_DG WHERE 1=1 ".$select_where;
-            }else{
-                $dg_select =  "SELECT * FROM TMP_SX_QD_DG WHERE 1=1 ".$select_where;
-            }
+            $dg_select =  "SELECT * FROM ".$table_name." WHERE 1=1 ".$select_where;
             $result_rows = oci_parse($conn, $dg_select); // 配置SQL语句，执行SQL
             Log::write('数据表导入 数据库查询条件：' . $dg_select, 'INFO');
             $dg = $method->search_long($result_rows);
-            if(!empty($dg[0]['ORGAN_NAME'])){
-                $res = true;
-            }
-            if (!$res) {
+            Log::write('数据表导入 数据库查询结果：' . $dg[0], 'INFO');
+            if(empty($dg[0])){
                 //单行添加数据
-                if(empty($SALE_GROUP_CODE)) {
-                    $dg_add = "INSERT INTO TMP_SX_QD_DG(".$insert_be.") 
-                              VALUES(".$insert_af.")";
-                }else{
-                    $dg_add = "INSERT INTO TMP_SX_QD_DG(".$insert_be.") 
-                              VALUES(".$insert_af.")";
-                }
-                Log::write('数据表导入 数据库插入新增：' . $dg_select, 'INFO');
+                $dg_add = "INSERT INTO ".$table_name." (".$insert_be.") 
+                                  VALUES(".$insert_af.")";
+                Log::write('数据表导入 数据库插入新增：' . $dg_add, 'INFO');
                 $result_rows = oci_parse($conn, $dg_add); // 配置SQL语句，执行SQL
                 if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
                     $result['status'] = 'success';
                     $result['percent'] = ($percent * 100) . '%';
                 } else {
                     $result['status'] = 'failed';
-                    $result['message'] = $res;
+                    $result['message'] = '数据导入出现未知错误，请联系管理员处理！';
                 }
-                $this->write($time, json_encode($result));
+            }else{
+                $result['status'] = 'success';
+                $result['percent'] = ($percent * 100) . '%';
             }
         }
         if ($result == null) {
@@ -4364,8 +4368,9 @@ class MethodController extends Controller
             $result['message'] = '无数据更新!';
             $result['percent'] = '100%';
             $this->write($time, json_encode($result));
+        }else{
+            $this->write($time, json_encode($result));
         }
-        exit(json_encode($result));
     }
 
     public function deleteFile()
@@ -4416,7 +4421,7 @@ class MethodController extends Controller
         }else{
             $user = $user_name;
         }
-        $select_table = "SELECT DISTINCT TABLE_CODE,TABLE_NAME FROM TMP_USER_CONTROL_TABLE WHERE 1=1 AND USER_ACCOUNT = '".$user."'";
+        $select_table = "SELECT DISTINCT TABLE_CODE,TABLE_NAME FROM TMP_USER_CONTROL_TABLE WHERE 1=1 AND USER_ACCOUNT IN ( 'PUBLIC','".$user."')";
         $result_rows = oci_parse($conn, $select_table); // 配置SQL语句，执行SQL
         $table_result = $method->search_long($result_rows);
         Log::write($user_name . '用户可编辑数据表 数据库查询SQL：' . $select_table, 'INFO');
