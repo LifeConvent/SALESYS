@@ -936,7 +936,7 @@ class DataOutController extends Controller
         } else if ((int)$userType == 3) {
             $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-        $select_bqsl = "SELECT APPLY_CODE,--投保单号,
+        $select_bqsl = "SELECT DISTINCT APPLY_CODE,--投保单号,
                                    POLICY_CODE,--保单号,
                                    TO_CHAR(BUSI_APPLY_DATE,'YYYY-MM-DD') AS BUSI_APPLY_DATE,--预收日期,
                                    STATUS_DESC,--投保单状态,
