@@ -1054,7 +1054,7 @@ class DataOutController extends Controller
                                A.IS_SELF_INSURED, --自保互保标识
                                A.CHECK_USER_CODE, --督管编码
                                A.CHECK_USER_NAME --督管姓名
-                           FROM NCL_1.T_LARGE_POLICY_FEE A
+                           FROM T_LARGE_POLICY_FEE A
                           WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         Log::write($user_name . ' 预收清单 数据库查询条件：' . $select_bqsl, 'INFO');
@@ -1209,7 +1209,7 @@ class DataOutController extends Controller
                                AMOUNT,
                                TOTAL_PREM_AF,
                                FEE_STATUS
-                          FROM TMP_QDSX_NB_QD_CB
+                          FROM TMP_QDSX_NB_QD_TB
                          WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
                          ORDER BY APPLY_DATE";
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
@@ -1381,7 +1381,7 @@ class DataOutController extends Controller
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
             $result[$i]['fyc'] = $value['FYC'];
         }
-        #######################################################################################################################################
+        ##########################################################dataExportNoShow#############################################################################
         oci_free_statement($result_rows);
         oci_close($conn);
         for ($i = 0; $i < sizeof($result); $i++) {
