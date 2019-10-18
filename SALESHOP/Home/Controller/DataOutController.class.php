@@ -719,17 +719,25 @@ class DataOutController extends Controller
     public function getNbYs()
     {
         $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $apply_status = trim(I('get.apply_status'));
+        $policy_code = trim(I('get.policy_code'));
+        $agent_code = trim(I('get.agent_code'));
+        $product_code = trim(I('get.product_code'));
+
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-        if (!empty($queryDateStart)) {
-            $where_time_bqsl = " AND BUSI_APPLY_DATE = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-        } else {
-//            $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
-            $where_time_bqsl = "";
-        }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else if (empty($apply_status) && empty($policy_code) && empty($apply_channel) && empty($apply_type)) {
+            $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) = TRUNC(SYSDATE) ";
+        }
         if ((int)$userType == 1) {
             $where_type_fix = "";
         } else if ((int)$userType == 2) {
@@ -738,8 +746,22 @@ class DataOutController extends Controller
         } else if ((int)$userType == 3) {
             $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
-//        /*********************************************           添加机构后删除          *********************************************/
-//        $where_type_fix = "";
+        if (!empty($apply_status)) {
+            $where_type_fix .= " AND STATUS_DESC LIKE '%" . $apply_status . "%'";
+        }
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR APPLY_CODE = '%" . $policy_code . "%')";
+        }
+        if (!empty($agent_code)) {
+            $where_type_fix .= " AND AGENT_CODE LIKE '%" . $agent_code . "%'";
+        }
+        if (!empty($product_code)) {
+            $where_type_fix .= " AND PRODUCT_CODE LIKE '%" . $product_code . "%'";
+        }
+//        if (!empty($apply_date)) {
+//            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('" . $apply_date . "','yyyy-mm-dd')";
+//        }
+        Log::write($user_name . '青岛新契约预收 数据库查询条件SQL：' . $where_type_fix, 'INFO');
         $select_bqsl = "SELECT POLICY_CODE,
                                PRODUCT_CODE,
                                APPLY_CODE,
@@ -764,6 +786,7 @@ class DataOutController extends Controller
                           WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
+        Log::write($user_name . ' 青岛预收清单 无查询条件SQL：' . $select_bqsl, 'INFO');
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
             $result[$i]['policy_code'] = $value['POLICY_CODE'];
@@ -2456,6 +2479,128 @@ class DataOutController extends Controller
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
             $result[$i]['fyc'] = $value['FYC'];
+        }
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
+    }
+
+    public function expNbOutYsByTime()
+    {//导出Excel
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $apply_status = trim(I('get.apply_status'));
+        $policy_code = trim(I('get.policy_code'));
+        $agent_code = trim(I('get.agent_code'));
+        $product_code = trim(I('get.product_code'));
+//        $apply_date = I('get.apply_date');
+        $xlsName = "新契约预收清单";
+        $xlsTitle = "新契约预收清单";
+        $xlsCell = array( //设置字段名和列名的映射
+            array('policy_code', '保单号'),
+            array('product_code', '险种代码'),
+            array('apply_code', '投保单号'),
+            array('status_desc', '投保单状态'),
+            array('winning_start_flag', '是否预承保'),
+            array('agent_code', '业务员号码'),
+            array('agent_name', '业务员姓名'),
+            array('total_prem_af', '规模保费'),
+            array('fyc', 'FYC'),
+            array('status_name', '收付状态'),
+            array('charge_year', '缴费年期'),
+            array('validate_date', '险种生效日'),
+            array('amount', '保额'),
+            array('master_busi_item_id', '主附险标记'),
+            array('busi_apply_date', '预收日期'),
+            array('due_time', '实际预收日期'),
+            array('apply_date', '保单投保日'),
+            array('issue_date', '承保日期')
+        );
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else if (empty($apply_status) && empty($policy_code) && empty($apply_channel) && empty($apply_type)) {
+            $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) = TRUNC(SYSDATE) ";
+        }
+        if ((int)$userType == 1) {
+            $where_type_fix = "";
+        } else if ((int)$userType == 2) {
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+        }
+        if (!empty($apply_status)) {
+            $where_type_fix .= " AND STATUS_DESC LIKE '%" . $apply_status . "%'";
+        }
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR APPLY_CODE = '%" . $policy_code . "%')";
+        }
+        if (!empty($agent_code)) {
+            $where_type_fix .= " AND AGENT_CODE LIKE '%" . $agent_code . "%'";
+        }
+        if (!empty($product_code)) {
+            $where_type_fix .= " AND PRODUCT_CODE LIKE '%" . $product_code . "%'";
+        }
+//        if (!empty($apply_date)) {
+//            $where_type_fix .= " AND TRUNC(APPLY_DATE) = to_date('" . $apply_date . "','yyyy-mm-dd')";
+//        }
+        Log::write($user_name . '青岛新契约预收 数据库查询条件SQL：' . $where_type_fix, 'INFO');
+        $select_bqsl = "SELECT POLICY_CODE,
+                               PRODUCT_CODE,
+                               APPLY_CODE,
+                               STATUS_DESC,
+                               WINNING_START_FLAG,--是否预承保
+                               AGENT_CODE,
+                               AGENT_NAME,
+                               TOTAL_PREM_AF,
+                               FYC,
+                               STATUS_NAME,
+                               --CHANNEL_TYPE, 
+                               --PREM_FREQ,
+                               CHARGE_YEAR,
+                               TO_CHAR(VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,       
+                               AMOUNT,
+                               MASTER_BUSI_ITEM_ID,
+                               TO_CHAR(BUSI_APPLY_DATE,'YYYY-MM-DD') AS BUSI_APPLY_DATE,
+                               TO_CHAR(DUE_TIME,'YYYY-MM-DD') AS DUE_TIME,
+                               TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
+                               TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE
+                          FROM TMP_QDSX_NB_QD_YS
+                          WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        Log::write($user_name . '青岛新契约预收 数据库查询SQL：' . $select_bqsl, 'INFO');
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['policy_code'] = $value['POLICY_CODE'];
+            $result[$i]['product_code'] = $value['PRODUCT_CODE'];
+            $result[$i]['apply_code'] = "'" . $value['APPLY_CODE'];
+            $result[$i]['status_desc'] = $value['STATUS_DESC'];
+            $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
+            $result[$i]['agent_code'] = $value['AGENT_CODE'];
+            $result[$i]['agent_name'] = $value['AGENT_NAME'];
+            $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
+            $result[$i]['fyc'] = $value['FYC'];
+            $result[$i]['status_name'] = $value['STATUS_NAME'];
+            $result[$i]['charge_year'] = $value['CHARGE_YEAR'];
+            $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
+            $result[$i]['amount'] = $value['AMOUNT'];
+            $result[$i]['master_busi_item_id'] = $value['MASTER_BUSI_ITEM_ID'];
+            $result[$i]['busi_apply_date'] = $value['BUSI_APPLY_DATE'];
+            $result[$i]['due_time'] = $value['DUE_TIME'];
+            $result[$i]['apply_date'] = $value['APPLY_DATE'];
+            $result[$i]['issue_date'] = $value['ISSUE_DATE'];
         }
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];

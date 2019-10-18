@@ -8,7 +8,7 @@ $(function () {
     $('#data_out').css('display','block');
     $('#data_nb_ys').attr('class','active');
 
-    $('#form_date1').datetimepicker({
+    $('#form_date2').datetimepicker({
         language:  'zh-CN',
         weekStart: 1,
         todayBtn:  1,
@@ -25,7 +25,7 @@ $(function () {
         $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbYs?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()});
     });
 
-    $('#form_date2').datetimepicker({
+    $('#form_date3').datetimepicker({
         language:  'zh-CN',
         weekStart: 1,
         todayBtn:  1,
@@ -64,6 +64,55 @@ $(function () {
 function exportExcel() {
     window.location.href = HOST + "index.php/Home/DataOut/expNbYs";
 }
+
+function exportExcelByTime() {
+    var policy_code = $("#policy_code").val();
+    var apply_status = $("#apply_status").val();
+    var agent_code = $("#agent_code").val();
+    var product_code = $("#product_code").val();
+    // var apply_date = $('#dtp_input4').val();//投保日期
+    // alert(busi_type);
+    var fix = '';
+    if(apply_status!=''&&apply_status!=null){
+        fix += '&apply_status='+apply_status;
+    }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(agent_code!=''&&agent_code!=null){
+        fix += '&agent_code='+agent_code;
+    }
+    if(product_code!=''&&product_code!=null){
+        fix += '&product_code='+product_code;
+    }
+    // if(apply_date!=''&&apply_date!=null){
+    //     fix += '&apply_date='+apply_date;
+    // }
+    window.location.href = HOST + "index.php/Home/DataOut/expNbOutYsByTime?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix;
+}
+
+function refreshTable(){
+    var policy_code = $("#policy_code").val();
+    var apply_status = $("#apply_status").val();
+    var agent_code = $("#agent_code").val();
+    var product_code = $("#product_code").val();
+    // alert(busi_type);
+    var fix = '';
+    if(apply_status!=''&&apply_status!=null){
+        fix += '&apply_status='+apply_status;
+    }
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(agent_code!=''&&agent_code!=null){
+        fix += '&agent_code='+agent_code;
+    }
+    if(product_code!=''&&product_code!=null){
+        fix += '&product_code='+product_code;
+    }
+    $('#daily_report2').bootstrapTable('removeAll');
+    $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbYs?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
+};
 
 var TableInit = function () {
     var oTableInit = new Object();

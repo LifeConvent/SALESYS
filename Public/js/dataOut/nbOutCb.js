@@ -24,7 +24,6 @@ $(function () {
         $('#daily_report2').bootstrapTable('removeAll');
         $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbCb?queryDateStart="+$('#dtp_input1').val()});
     });
-
     $('#form_date2').datetimepicker({
         language:  'zh-CN',
         weekStart: 1,

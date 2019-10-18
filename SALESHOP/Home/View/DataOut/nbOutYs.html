@@ -50,91 +50,117 @@
         <!-- 主容器  -->
         <section class="wrapper">
 
-            <div class="container-fluid" >
-                <section class="panel">
-                    <header class="panel-heading">
-                        <!--<div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>-->
-                        <div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt"  onclick="exportExcel();">导出明细</button></div>
-                        <!--<div><button type="button" class="btn btn-primary exportdetail" style="float:left;margin-left: 10pt">导出明细</button></div>-->
-                        <div class="tools" style="float:left;margin-left: 10pt">
-                            <div style="width:250px;float:left" class="input-group date form_date" id="form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                                <input class="form-control" size="16" type="text" value="" readonly>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+
+            <div class="panel">
+                <header class="panel-heading">
+                    <span><strong>查询: <span class="red"> 注意：承保日期区间导出支持2.条件查询，可选择日期区间后点击查询按钮</span></strong></span>
+                </header>
+
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div style="margin-top: 10pt">
+                            <!--<div><button type="button" class="btn btn-primary reloadtc" style="float:left">刷新TC</button></div>-->
+                            <!--<div style="width:150px;float:left;padding-left: 15px;margin-top: 5px">-->
+                            <!--<strong>承保日期全量导出：</strong></div>-->
+                            <!--<div class="tools" style="float:left;margin-left: 10pt">-->
+                            <!--<div style="width:250px;float:left" class="input-group date form_date" id="form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input1" data-link-format="yyyy-mm-dd">-->
+                            <!--<input class="form-control" size="16" type="text" value="" readonly>-->
+                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>-->
+                            <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--<div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  onclick="exportExcel();">导出明细</button></div>-->
+                            <!--<br><br>-->
+                            <div style="width:150px;float:left;padding-left: 15px;margin-top: 5px">
+                                <strong>预收日期区间导出：</strong></div>
+                            <div class="tools" style="float:left;margin-left: 10pt">
+                                <div style="width:250px;float:left" class="input-group date form_date" id="form_date2" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                    <input class="form-control" size="16" type="text" value="" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                                <div style="width:50px;float:left;padding-left: 15px;margin-top: 5px"><strong>至</strong></div>
+                                <div style="width:250px;float:left" class="input-group date form_date" id="form_date3" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">
+                                    <input class="form-control" size="16" type="text" value="" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
                             </div>
-                            <!--<div style="width:50px;float:left;padding-left: 15px;margin-top: 5px"><strong>至</strong></div>-->
-                            <!--<div style="width:250px;float:left" class="input-group date form_date" id="form_date2" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input3" data-link-format="yyyy-mm-dd">-->
-                                <!--<input class="form-control" size="16" type="text" value="" readonly>-->
-                                <!--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>-->
-                                <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                            <!--<div><button type="button" class="btn btn-primary exportreport" style="float:left;margin-left: 10pt"  onclick="exportExcelByTime();">导出明细</button></div>-->
+                            <input style="visibility:hidden" id="dtp_input1" value=""/>
+                            <input style="visibility:hidden" id="dtp_input2" value=""/>
+                            <input style="visibility:hidden" id="dtp_input3" value=""/>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12" style="padding-top:10pt;">
+                        <div style="margin-top: 10pt">
+                            <div class="col-sm-3">
+                                <span class="red">*</span><span><strong>投保单状态: 待回执/已回执/已承保/出单前撤保</strong></span>
+                                <input type="text" class="form-control add_user" id="apply_status" placeholder="请输入投保单状态">
+                            </div>
+                            <div class="col-sm-3">
+                                <span class="red">*</span><span><strong>保单号/投保单号:</strong></span>
+                                <input type="text" class="form-control add_user" id="policy_code" placeholder="请输入保单号/投保单号">
+                            </div>
+                            <div class="col-sm-3">
+                                <span class="red">*</span><span><strong>业务员号码:38236003...</strong></span>
+                                <input type="text" class="form-control add_user" id="agent_code" placeholder="请输入业务员号码">
+                            </div>
+                            <div class="col-sm-3">
+                                <span class="red">*</span><span><strong>险种代码:00555000</strong></span>
+                                <input type="text" class="form-control add_user" id="product_code" placeholder="请输入险种代码">
+                            </div>
+                            <!--<div>-->
+                                <!--<div style="width:100px;float:left;padding-left: 15px;margin-top: 10pt">-->
+                                    <!--<strong>回执签收日期：</strong>-->
+                                <!--</div>-->
+                                <!--<div class="tools" style="float:left;margin-left: 10pt;margin-top: 10pt">-->
+                                    <!--<div style="width:250px;float:left" class="input-group date form_date" id="form_date4" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input4" data-link-format="yyyy-mm-dd">-->
+                                        <!--<input class="form-control" size="16" type="text" value="" readonly>-->
+                                        <!--<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>-->
+                                        <!--<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<input style="visibility:hidden" id="dtp_input4" value=""/>-->
                             <!--</div>-->
                         </div>
-                        <input style="visibility:hidden" id="dtp_input2" value=""/>
-                        <input style="visibility:hidden" id="dtp_input3" value=""/>
+                        <!--<div class="col-sm-3">-->
+                        <!--<span class="red">*</span><span><strong>用户类型: 1-管理员/2-机构组长/3-操作员</strong></span>-->
+                        <!--<input type="text" class="form-control add_user" id="user_type_input" placeholder="请输入用户类型">-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-3">-->
+                        <!--<span class="red">*</span><span><strong>作业机构代码: 8647...</strong></span>-->
+                        <!--<input type="text" class="form-control add_user" id="user_organ_code" placeholder="请输入作业机构代码">-->
+                        <!--</div>-->
+                    </div>
+                    <!--<div class="col-sm-6" style="margin-top:10pt;margin-left:23.5%">-->
+                    <!--<button type="button" id="new_user" class="btn btn-primary col-sm-12" style="margin-left: 10pt" onclick="refreshTable();">查询-->
+                    <!--</button>-->
+                    <!--</div>-->
+                    <div style="margin-top: 40pt">
+                        <div class="col-sm-6" style="margin-top:10pt;margin-left:10%;float: left ">
+                            <button type="button" class="btn btn-success  col-sm-3 exportreport" style="float:left;margin-left: 10pt"   onclick="exportExcelByTime();">导出查询结果
+                            </button>
+                        </div>
+                        <div class="col-sm-6" style="margin-top:-23pt;margin-left:30%;float: left">
+                            <button type="button" id="new_user" class="btn btn-primary col-sm-9" style="margin-left: 10pt" onclick="refreshTable();">查询
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel" >
+                    <header class="panel-heading">
+                        <span><strong>查询结果</strong></span>
                     </header>
                     <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
                         <div>
-                            <input class="form-control" value="保全受理" style="width:70pt;float:left;">
-                            <input class="form-control" value="保全复核" style="width:70pt;float:left;margin-left: 5pt">
-                            <input class="form-control" value="正确" style="width:40pt;float:left;margin-left: 5pt">
-                            <input class="form-control" value="错误" style="width:40pt;float:left;margin-left: 5pt">
-                            <!--<input class="form-control" value="保全核保" style="width:70pt;float:left;margin-left: 5pt">-->
-                            <!--<input class="form-control" value="理赔核保" style="width:70pt;float:left;margin-left: 5pt">-->
-                            <!--<input class="form-control" value="出单前撤保" style="width:80pt;float:left;margin-left: 5pt">-->
-                            <!--<input class="form-control" value="保单回执" style="width:70pt;float:left;margin-left: 5pt">-->
                         </div>
                         <table id="daily_report2" style="table-layout: fixed;"></table>
                     </div>
-                </section>
             </div>
-
-            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信匹配数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        课程评价数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="ce-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信关注量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-sub-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!--<div class="col-lg-12" style="color:#a560f8">-->
-                <!--<section class="panel">-->
-                    <!--<header class="panel-heading">-->
-                        <!--新增用户数量变化趋势-->
-                    <!--</header>-->
-                    <!--<div class="panel-body">-->
-                        <!--<div id="weixin-new-num" class="graph">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</section>-->
-            <!--</div>-->
 
         </section>
         <!-- 主容器  -->
