@@ -285,6 +285,40 @@ class MethodController extends Controller
         return $result[0]['SX_LIST_TYPE'];
     }
 
+    public function getUserOrganCodeStr($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.USER_ORGAN_CODE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户清单权限：'.$result[0]['USER_ORGAN_CODE'],'INFO');
+        return $result[0]['USER_ORGAN_CODE'];
+    }
+
+    public function getSetOrganCode($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SET_ORGAN_CODE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户初始机构：'.$result[0]['SET_ORGAN_CODE'],'INFO');
+        return $result[0]['SET_ORGAN_CODE'];
+    }
+
+    public function getBxListTypeBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.BX_LIST_TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['BX_LIST_TYPE'];
+    }
 
     public function getChannelTypeBySql($username){
         $conn = $this->OracleOldDBCon();
@@ -297,6 +331,84 @@ class MethodController extends Controller
         Log::write($username.'用户缺陷列表清单权限：'.$result[0]['CHANNEL_TYPE'],'INFO');
         return $result[0]['CHANNEL_TYPE'];
     }
+
+    public function getIsLock($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_LOCK FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户锁定SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['IS_LOCK'];
+    }
+
+    public function getHdUserCode($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.HD_USER_CODE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'核对用户机构SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['HD_USER_CODE'];
+    }
+
+    public function getSysTypeNum($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SYS_TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'系统类型SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['SYS_TYPE'];
+    }
+
+    public function getBxDayPostOrgan($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.BX_DAYPOST_ORGAN FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'并行日报SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['BX_DAYPOST_ORGAN'];
+    }
+
+    public function getBxDayPostOrganList($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.BX_DAYPOST_ORGAN_LIST FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'并行日报LIST SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['BX_DAYPOST_ORGAN_LIST'];
+    }
+
+    public function getSxDayPostOrganCode($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SX_DAYPOST_ORGAN FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'上线日报SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['SX_DAYPOST_ORGAN'];
+    }
+
+    public function getSxDayPostOrganList($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SX_DAYPOST_ORGAN_LIST FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'上线日报LIST SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['SX_DAYPOST_ORGAN_LIST'];
+    }
+
 
     public function checkIn(&$admin)
     {
@@ -4280,6 +4392,7 @@ class MethodController extends Controller
         $file_name = I('post.f_n');
         $table_name = I('post.t_n');
         $match_relation = I('post.m_r');
+        $is_delete = I('post.is_delete');
 
         $result['status'] = 'success';
         $result['percent'] = '0%';
@@ -4309,7 +4422,7 @@ class MethodController extends Controller
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         Log::write('数据表导入 表名称：' . $table_name, 'INFO');
-        if(strcmp($table_name,'TMP_TEST')==0){
+        if((int)$is_delete==0){
             $delete =  "DELETE FROM ".$table_name;
             Log::write('数据表导入 清空数据表：' . $delete, 'INFO');
             $result_rows = oci_parse($conn, $delete); // 配置SQL语句，执行SQL
@@ -4357,6 +4470,8 @@ class MethodController extends Controller
                 } else {
                     $result['status'] = 'failed';
                     $result['message'] = '数据导入出现未知错误，请联系管理员处理！';
+                    $this->write($time, json_encode($result));
+                    return;
                 }
             }else{
                 $result['status'] = 'success';
@@ -4379,6 +4494,9 @@ class MethodController extends Controller
         $file_name = I('post.f_n');
         unlink("Public/file/" . $time . ".txt");
         unlink("Public/uploads/" . $file_name);
+        $result['status'] = 'success';
+        $result['message'] = '加载成功!';
+        exit(json_encode($result));
     }
 
     public function getFile()
@@ -4417,11 +4535,11 @@ class MethodController extends Controller
         $method->checkIn($user_name);
         $userType = $method->getUserType();
         if((int)$userType==1){
-            $user = 'ADMIN';
+            $user = "'ADMIN','".$user_name."'";
         }else{
             $user = $user_name;
         }
-        $select_table = "SELECT DISTINCT TABLE_CODE,TABLE_NAME FROM TMP_USER_CONTROL_TABLE WHERE 1=1 AND USER_ACCOUNT IN ( 'PUBLIC','".$user."')";
+        $select_table = "SELECT DISTINCT RECORD_ID,USER_ACCOUNT,TABLE_CODE,TABLE_NAME,DEAL_TYPE FROM TMP_USER_CONTROL_TABLE WHERE 1=1 AND USER_ACCOUNT IN ( 'PUBLIC',".$user.")";
         $result_rows = oci_parse($conn, $select_table); // 配置SQL语句，执行SQL
         $table_result = $method->search_long($result_rows);
         Log::write($user_name . '用户可编辑数据表 数据库查询SQL：' . $select_table, 'INFO');
@@ -4429,6 +4547,10 @@ class MethodController extends Controller
         for($i=0;$i<sizeof($table_result);$i++){
             $col[$i]['name'] = $table_result[$i]['TABLE_CODE'].'-'.$table_result[$i]['TABLE_NAME'];
             $col[$i]['table'] = $table_result[$i]['TABLE_CODE'];
+            $col[$i]['id'] = $table_result[$i]['RECORD_ID'];
+            $col[$i]['table_code'] = $table_result[$i]['TABLE_CODE'];
+            $col[$i]['type'] = $table_result[$i]['DEAL_TYPE'];
+            $col[$i]['account'] = $table_result[$i]['USER_ACCOUNT'];
         }
         oci_free_statement($result_rows);
         oci_close($conn);

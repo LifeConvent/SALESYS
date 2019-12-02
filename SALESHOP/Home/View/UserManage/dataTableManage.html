@@ -26,6 +26,7 @@
     <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/setAutoRes/set-auto-list.css">
     <link rel="stylesheet" type="text/css" href="__PUBLIC__/assets/dropzone/css/dropzone.css">
     <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/jquery.stepy.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/bootstrap-select.min.css">
 
     <!--[if lt IE 9]>
     <script src="__PUBLIC__/js/html5shiv.js">
@@ -147,12 +148,23 @@
                                         <div id="field1">
                                             <textarea id="table_name" rows="1" style="visibility:hidden"></textarea>
 
-                                            <div class="col-sm-10" style="margin-left:10%">
-                                                <select id="db_table" class="form-control">
-                                                    <option disabled="" value="0">数据库表格选项</option>
+                                            <div class="col-sm-12" style="margin-left:2%">
+                                                <span class="red">*</span><span><strong>数据库表格选项: </strong></span>
+                                                <select id="db_table" class="selectpicker show-tick form-control">
                                                     {$DBtable}
                                                 </select>
                                             </div>
+
+                                            <div class="col-sm-10" style="margin-left:10%;margin-top: 10pt">
+                                                <span class="red">*</span><span><strong>数据库表格操作类型: </strong></span>
+                                                <select id="is_delete" class="selectpicker show-tick form-control">
+                                                    <!--<option value="-1">==选择==</option>-->
+                                                    <!--<option value="0">清空后新增</option>-->
+                                                    <!--<option value="1">直接新增</option>-->
+                                                    <!--<option value="2">主键更新（暂不支持）</option>-->
+                                                </select>
+                                            </div>
+
                                                 <textarea rows="2" class="col-sm-12"
                                                           style="visibility:hidden"></textarea>
                                             <button id="stepy_form-next-1" onclick="upload_next('1');"
@@ -248,6 +260,7 @@
 <script src="__PUBLIC__/js/jquery.validate.min.js" type="text/javascript"></script>
 <script src="__PUBLIC__/js/jquery.stepy.js" type="text/javascript"></script>
 <script src="__PUBLIC__/js/public/userCheck.js"></script>
+<script src="__PUBLIC__/js/bootstrap-select.min.js"></script>
 
 <script>
     $("#dropzone").dropzone({

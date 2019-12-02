@@ -93,6 +93,44 @@
                 </ul>
             </li>
 
+            <!--系统维护-->
+            <li class="sub-menu" id="sysMaintain_master">
+                <a href="javascript:;" id="sysMaintain">
+                    <i class="fa fa-dashboard"></i>
+                    <span style="font-size: 14px;">系统维护</span>
+                    <span class="label btn-danger span-sidebar">
+                        5
+                    </span>
+                </a>
+                <ul class="sub" id="sysMaintainSub">
+                    <li id="sysMaintainSub_menu">
+                        <a href="{:U('Home/SysMaintain/menuManage')}" style="font-size: 12px;">
+                            菜单管理维护
+                        </a>
+                    </li>
+                    <li id="sysMaintainSub_user">
+                        <a href="{:U('Home/SysMaintain/userManage')}" style="font-size: 12px;">
+                            用户管理维护
+                        </a>
+                    </li>
+                    <li id="sysMaintainSub_user_limits">
+                        <a href="{:U('Home/SysMaintain/userLimitsManage')}" style="font-size: 12px;">
+                            用户权限维护
+                        </a>
+                    </li>
+                    <li id="sysMaintainSub_data_limits">
+                        <a href="{:U('Home/DataTableMaintain/tableManage')}" style="font-size: 12px;">
+                            数据表权限维护
+                        </a>
+                    </li>
+                    <li id="sysMaintainSub_sql">
+                        <a href="{:U('Home/DataTableMaintain/sqlManage')}" style="font-size: 12px;">
+                            生产脚本执行
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
             <!--用户管理-->
             <li class="sub-menu" id="user_control">
                 <a href="javascript;" id="user">

@@ -7,20 +7,6 @@ $(function () {
     $('#user_sub').css('display', 'block');
     $('#table_manage').attr('class', 'active');
 
-    //var i = 1;
-    //var result = setInterval(function () {
-    //    if (i <= 100) {
-    //        //var percent = i / 100.0;
-    //        $('#progress').css('width', i + "%");
-    //        $('#show_progress').text(i++);
-    //    } else {
-    //        clearInterval(result);
-    //    }
-    //}, 1000);
-
-    $('.selectpicker').selectpicker({});
-    $('.selectpicker').val('-1');
-    $('.selectpicker').selectpicker('render');
 });
 
 function upload_next(id) {
@@ -29,17 +15,8 @@ function upload_next(id) {
         case '1':
         {
             table_name = $('#db_table').val();
-            if (table_name == '-1') {
-                $.scojs_message('请选择需要导入的数据库表后再进行下一步!', $.scojs_message.TYPE_ERROR);
-                return;
-            }
-            var is_delete = $('#is_delete').val();
-            if(is_delete == '-1'||is_delete=='null'){
-                $.scojs_message('数据库表格修改方式必选!', $.scojs_message.TYPE_ERROR);
-                return;
-            }
-            if(is_delete == '2'){
-                $.scojs_message('暂不支持主键更新方式，请选择其他方式!', $.scojs_message.TYPE_ERROR);
+            if (table_name == 0) {
+                $.scojs_message('请选择需要导入的数据库表后再进行下一步!', $.scojs_message.TYPE_ERROR)
                 return;
             }
             $('#table_name').text(table_name);
@@ -144,67 +121,6 @@ function upload_back(id) {
     }
 }
 
-//function startMatch() {
-//    //表格对应关系,先拆,号再拆-
-//    var match_relation = $('#match_relation').val();
-//    //文件名称
-//    var file_name = $('#list_output').val();
-//    var table_name = $('#table_name').val();
-//    //alert(match_relation);
-//    //alert(file_name);
-//    //alert(table_name);
-//    $.ajax({
-//        type: "POST", //用POST方式传输
-//        url: HOST + "index.php/Home/Method/startUploads", //目标地址.
-//        dataType: "JSON", //数据格式:JSON
-//        data: {m_r: match_relation, f_n: file_name, t_n: table_name},
-//        success: function (result) {
-//            if (result.status == 'success') {
-//                $.scojs_message('正在上传', $.scojs_message.TYPE_OK);
-//                $('#uploadStep').modal('hide');
-//            } else {
-//                $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
-//            }
-//        },
-//        error: function (XMLHttpRequest, textStatus, errorThrown) {
-//            alert(XMLHttpRequest);
-//            alert(textStatus);
-//            alert(errorThrown);
-//            $.scojs_message('网络连接发生未知错误，请稍后再试！', $.scojs_message.TYPE_ERROR);
-//        }
-//    });
-//    //$.scojs_message('正在上传', $.scojs_message.TYPE_OK);
-//    //$('#uploadStep').modal('hide');
-//}
-
-$('#db_table').change(function(){
-    var db_table = $('#db_table').val();
-    //获取该数据表可操作权限
-    $.ajax({
-        type: "POST", //用POST方式传输
-        url: HOST + "index.php/Home/SysMaintain/getTableKLimits", //目标地址.
-        dataType: "json", //数据格式:JSON
-        data: {
-            db_table: db_table
-        },
-        success: function (result) {
-            if (result.status == 'success') {
-                debugger;
-                $('#is_delete').empty();
-                $('#is_delete').append(result.message);
-                $('#is_delete').selectpicker('refresh');
-            } else if (result.status == 'failed') {
-                debugger;
-            }
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            alert(XMLHttpRequest);
-            alert(textStatus);
-            alert(errorThrown);
-        }
-    });
-});
-
 function startMatch() {
     //表格对应关系,先拆,号再拆-
     var match_relation = $('#match_relation').val();
@@ -212,7 +128,6 @@ function startMatch() {
     var file_name = $('#list_output').val();
     var table_name = $('#table_name').val();
     var time = (new Date()).valueOf();
-    var is_delete = $('#is_delete').val();
     //alert(match_relation);
     //alert(file_name);
     //alert(table_name);
@@ -221,7 +136,7 @@ function startMatch() {
         url: HOST + "index.php/Home/Method/startUploadsSx", //目标地址.
         dataType: "JSON", //数据格式:JSON
         data: {
-            m_r: match_relation, f_n: file_name, t_n: table_name, time: time, is_delete:is_delete
+            m_r: match_relation, f_n: file_name, t_n: table_name, time: time
         }
     });
     debugger;
@@ -237,18 +152,12 @@ function startMatch() {
                 if (num >= 99) {
                     $("#progress").css('width', '100%');
                     $('#show_progress').text(100);
-                    $('#uploadStep').modal('hide');
                     $.ajax({
                         type: "POST", //用POST方式传输
                         url: HOST + "index.php/Home/Method/deleteFile", //目标地址.
                         dataType: "JSON", //数据格式:JSON
                         data: {
                             f_n: file_name, time: time
-                        },
-                        success: function (result) {
-                            if (result.status == "success") {
-                                $.scojs_message(result.message,$.scojs_message.TYPE_OK);
-                            }
                         }
                     });
                     //setTimeout($('#uploadStep').modal('hide'),3000);
@@ -259,20 +168,16 @@ function startMatch() {
                 } else if (result.percent == "100%") {
                     $("#progress").css('width', result.percent);
                     $('#show_progress').text(num);
-                    $('#uploadStep').modal('hide');
                     $.ajax({
                         type: "POST", //用POST方式传输
                         url: HOST + "index.php/Home/Method/deleteFile", //目标地址.
                         dataType: "JSON", //数据格式:JSON
                         data: {
                             f_n: file_name, time: time
-                        },
-                        success: function (result) {
-                            if (result.status == "success") {
-                                $.scojs_message(result.message,$.scojs_message.TYPE_OK);
-                            }
                         }
                     });
+                    $('#uploadStep').modal('hide')
+                    // setTimeout($('#uploadStep').modal('hide'),3000);
                 }
             } else {
                 scojs_message(result.message, $.scojs_message.TYPE_ERROR);
@@ -284,6 +189,4 @@ function startMatch() {
         }
     };
     $.ajax(ajaxData);
-    //$.scojs_message('正在上传', $.scojs_message.TYPE_OK);
-    //$('#uploadStep').modal('hide');
 }
