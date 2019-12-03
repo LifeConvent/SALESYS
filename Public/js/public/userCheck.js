@@ -38,6 +38,8 @@ $(function () {
                                     time--;
                                 }
                             },1000);
+                        }else{
+                            $('#sysNotice').modal('hide');
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
