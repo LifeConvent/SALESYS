@@ -69,7 +69,6 @@ class SysMaintainController extends Controller
     {
         $user_pass = I('post.user_pass');
         $user_name = I('post.user_name');
-        $user_account = I('post.user_account');
         $user_select = "SELECT * FROM TMP_USER_PASS WHERE IS_VAILD = '1' AND END_TIME >= SYSDATE AND USER_ACCOUNT = '" . $user_name . "'";
         Log::write('用户： ' . $user_name . ' 执行SQL：' . $user_select, 'INFO');
         $method = new MethodController();
@@ -80,7 +79,7 @@ class SysMaintainController extends Controller
         $result_rows = "SELECT A.SET_ORGAN_CODE,B.ORGAN_NAME FROM TMP_DAYPOST_USER A,TMP_USED_ORGAN B WHERE A.SET_ORGAN_CODE = B.ORGAN_CODE AND A.ACCOUNT = '" . $user_name . "'";
         $result_set_organ = oci_parse($conn, $result_rows); // 配置SQL语句，执行SQL
         $set_organ = $method->search_long($result_set_organ);
-        $user_check = "SELECT SET_ORGAN_CODE FROM TMP_DAYPOST_USER WHERE ACCOUNT = '" . $user_account . "'";
+        $user_check = "SELECT SET_ORGAN_CODE FROM TMP_DAYPOST_USER WHERE ACCOUNT = '" . $user_name . "'";
         Log::write('用户修改权限校验： ' . $user_name . ' 执行SQL：' . $user_check, 'INFO');
         $result_rows = oci_parse($conn, $user_check); // 配置SQL语句，执行SQL
         $user_check = $method->search_long($result_rows);
