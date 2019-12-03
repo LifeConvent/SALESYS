@@ -1189,11 +1189,20 @@ class DataOutController extends Controller
     public function getNbTb()
     {
         $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $policy_code = I('get.policy_code');
+        $apply_channel = I('get.apply_channel');
+        $apply_type = I('get.apply_type');
+        $agent_info = I('get.agent_info');
+        $risk_info = I('get.risk_info');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
             $where_time_bqsl = " AND TRUNC(APPLY_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
-        } else {
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND TRUNC(APPLY_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else if (empty($policy_code) && empty($apply_channel)) {
             $where_time_bqsl = " AND TRUNC(APPLY_DATE) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
@@ -1206,6 +1215,21 @@ class DataOutController extends Controller
             $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
         } else if ((int)$userType == 3) {
             $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+        }
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR APPLY_CODE LIKE '%" . $policy_code . "%')";
+        }
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
+        }
+        if (!empty($apply_type)) {
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%" . $apply_type . "%'";
+        }
+        if (!empty($agent_info)) {
+            $where_type_fix .= " AND (AGENT_CODE LIKE '%" . $agent_info . "%' OR AGENT_NAME LIKE '%" . $agent_info . "%')";
+        }
+        if (!empty($risk_info)) {
+            $where_type_fix .= " AND (PRODUCT_CODE_SYS LIKE '%" . $risk_info . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_info . "%')";
         }
         $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                ORGAN_CODE,
@@ -1235,6 +1259,7 @@ class DataOutController extends Controller
                           FROM TMP_QDSX_NB_QD_TB
                          WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
                          ORDER BY APPLY_DATE";
+        Log::write('投保清单查询： ' . $user_name . ' 执行SQL：' . $select_bqsl, 'INFO');
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
@@ -1276,6 +1301,147 @@ class DataOutController extends Controller
         } else {
             exit(json_encode(''));
         }
+    }
+
+    public function expNbOutTbByTime()
+    {//导出Excel
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $policy_code = I('get.policy_code');
+        $apply_channel = I('get.apply_channel');
+        $apply_type = I('get.apply_type');
+        $agent_info = I('get.agent_info');
+        $risk_info = I('get.risk_info');
+        $xlsName = "新契约投保清单";
+        $xlsTitle = "新契约投保清单";
+        $xlsCell = array( //设置字段名和列名的映射
+            array('apply_date', '投保日期'),
+            array('organ_code', '管理机构'),
+            array('apply_code', '投保单号'),
+            array('policy_code', '保单号'),
+            array('issue_date', '承保日期'),
+            array('validate_date', '保单生效日'),
+            array('initial_prem_date', '首期缴费日'),
+            array('charge_year', '缴费年期'),
+            array('winning_start_flag', '是否预承保'),
+            array('sales_channel_name', '投保渠道'),
+            array('channel_name', '投保方式'),
+            array('status_desc', '投保单状态'),
+            array('billcard_code', '单证UA031扫描状态'),
+            array('customer_name', '投保人姓名'),
+            array('bank_name', '银行'),
+            array('account_bank', '银行代码'),
+            array('account', '银行账户'),
+            array('agent_code', '业务员代码'),
+            array('agent_name', '业务员姓名'),
+            array('unit', '份数'),
+            array('master_busi', '主附险标志'),
+            array('product_code_sys', '险种代码'),
+            array('product_name_sys', '险种名称'),
+            array('amount', '保额'),
+            array('total_prem_af', '保费'),
+            array('fee_status', '保费是否到账')
+        );
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(APPLY_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND TRUNC(APPLY_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else if (empty($policy_code) && empty($apply_channel)) {
+            $where_time_bqsl = " AND TRUNC(APPLY_DATE) = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if ((int)$userType == 1) {
+            $where_type_fix = "";
+        } else if ((int)$userType == 2) {
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+        }
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR APPLY_CODE LIKE '%" . $policy_code . "%')";
+        }
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
+        }
+        if (!empty($apply_type)) {
+            $where_type_fix .= " AND CHANNEL_NAME LIKE '%" . $apply_type . "%'";
+        }
+        if (!empty($agent_info)) {
+            $where_type_fix .= " AND (AGENT_CODE LIKE '%" . $agent_info . "%' OR AGENT_NAME LIKE '%" . $agent_info . "%')";
+        }
+        if (!empty($risk_info)) {
+            $where_type_fix .= " AND (PRODUCT_CODE_SYS LIKE '%" . $risk_info . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_info . "%')";
+        }
+        $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
+                               ORGAN_CODE,
+                               APPLY_CODE,
+                               POLICY_CODE,
+                               TO_CHAR(ISSUE_DATE,'YYYY-MM-DD HH24:MI:SS') AS ISSUE_DATE,
+                               TO_CHAR(VALIDATE_DATE,'YYYY-MM-DD') AS VALIDATE_DATE,
+                               TO_CHAR(INITIAL_PREM_DATE,'YYYY-MM-DD') AS INITIAL_PREM_DATE,
+                               CHARGE_YEAR,
+                               WINNING_START_FLAG,
+                               SALES_CHANNEL_NAME,
+                               CHANNEL_NAME,
+                               STATUS_DESC,
+                               BILLCARD_CODE,--单证UA031扫描状态
+                               CUSTOMER_NAME,
+                               BANK_NAME,
+                               ACCOUNT_BANK,
+                               ACCOUNT,
+                               AGENT_CODE,
+                               AGENT_NAME,
+                               UNIT,
+                               PRODUCT_CODE_SYS,
+                               PRODUCT_NAME_SYS,
+                               AMOUNT,
+                               TOTAL_PREM_AF,
+                               FEE_STATUS
+                          FROM TMP_QDSX_NB_QD_TB
+                         WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
+                         ORDER BY APPLY_DATE";
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['apply_date'] = $value['APPLY_DATE'];
+            $result[$i]['organ_code'] = $value['ORGAN_CODE'];
+            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+            $result[$i]['policy_code'] = "'".$value['POLICY_CODE'];
+            $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+            $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
+            $result[$i]['initial_prem_date'] = $value['INITIAL_PREM_DATE'];
+            $result[$i]['charge_year'] = $value['CHARGE_YEAR'];
+            $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
+            $result[$i]['sales_channel_name'] = $value['SALES_CHANNEL_NAME'];
+            $result[$i]['channel_name'] = $value['CHANNEL_NAME'];
+            $result[$i]['status_desc'] = $value['STATUS_DESC'];
+            $result[$i]['billcard_code'] = $value['BILLCARD_CODE'];
+            $result[$i]['customer_name'] = $value['CUSTOMER_NAME'];
+            $result[$i]['bank_name'] = $value['BANK_NAME'];
+            $result[$i]['account_bank'] = $value['ACCOUNT_BANK'];
+            $result[$i]['account'] = $value['ACCOUNT'];
+            $result[$i]['agent_code'] = $value['AGENT_CODE'];
+            $result[$i]['agent_name'] = $value['AGENT_NAME'];
+            $result[$i]['unit'] = $value['UNIT'];
+            $result[$i]['product_code_sys'] = $value['PRODUCT_CODE_SYS'];
+            $result[$i]['product_name_sys'] = $value['PRODUCT_NAME_SYS'];
+            $result[$i]['amount'] = $value['AMOUNT'];
+            $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
+            $result[$i]['fee_status'] = $value['FEE_STATUS'];
+        }
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
     }
 
     public function getNbCb()

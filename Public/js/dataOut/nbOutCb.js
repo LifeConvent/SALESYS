@@ -181,7 +181,7 @@ var TableInit = function () {
                 valign: 'middle',
                 align: 'center',
                 title: '投保单号',
-                width:150
+                width:160
             },{
                 field: 'policy_code',
                 sortable: true,

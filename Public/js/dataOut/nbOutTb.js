@@ -122,7 +122,7 @@ var TableInit = function () {
                 valign: 'middle',
                 align: 'center',
                 title: '投保单号',
-                width:150
+                width:160
             }, {
                 field: 'policy_code',
                 sortable: true,
@@ -227,14 +227,14 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: '业务员代码',
-                width:100
+                width:120
             }, {
                 field: 'agent_name',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
                 title: '业务员姓名',
-                width:100
+                width:120
             }, {
                 field: 'unit',
                 sortable: true,
@@ -292,4 +292,61 @@ var TableInit = function () {
     };
 
     return oTableInit;
+};
+
+
+function exportExcel() {
+    window.location.href = HOST + "index.php/Home/DataOut/expNbOutTb";
+}
+
+function exportExcelByTime() {
+    var policy_code = $("#policy_code").val();
+    var apply_channel = $("#apply_channel").val();
+    var apply_type = $("#apply_type").val();
+    var agent_info = $("#agent_info").val();
+    var risk_info = $('#risk_info').val();
+    var fix = '';
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(apply_channel!=''&&apply_channel!=null){
+        fix += '&apply_channel='+apply_channel;
+    }
+    if(apply_type!=''&&apply_type!=null){
+        fix += '&apply_type='+apply_type;
+    }
+    if(agent_info!=''&&agent_info!=null){
+        fix += '&agent_info='+agent_info;
+    }
+    if(risk_info!=''&&risk_info!=null){
+        fix += '&risk_info='+risk_info;
+    }
+    window.location.href = HOST + "index.php/Home/DataOut/expNbOutTbByTime?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix;
+}
+
+
+function refreshTable(){
+    var policy_code = $("#policy_code").val();
+    var apply_channel = $("#apply_channel").val();
+    var apply_type = $("#apply_type").val();
+    var agent_info = $("#agent_info").val();
+    var risk_info = $('#risk_info').val();
+    var fix = '';
+    if(policy_code!=''&&policy_code!=null){
+        fix += '&policy_code='+policy_code;
+    }
+    if(apply_channel!=''&&apply_channel!=null){
+        fix += '&apply_channel='+apply_channel;
+    }
+    if(apply_type!=''&&apply_type!=null){
+        fix += '&apply_type='+apply_type;
+    }
+    if(agent_info!=''&&agent_info!=null){
+        fix += '&agent_info='+agent_info;
+    }
+    if(risk_info!=''&&risk_info!=null){
+        fix += '&risk_info='+risk_info;
+    }
+    $('#daily_report2').bootstrapTable('removeAll');
+    $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbTb?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
 };
