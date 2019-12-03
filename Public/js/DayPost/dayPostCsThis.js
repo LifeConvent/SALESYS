@@ -38,32 +38,9 @@ $(function () {
     //1.初始化Table
     var oTable = new TableInit();
     oTable.Init();
-//        $[sessionStorage] = oTable.queryParams;
-
-    //2.初始化Button的点击事件
-    var oButtonInit = new ButtonInit();
-    oButtonInit.Init();
-
-    $('input').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
-        increaseArea: '2%' // optional
-    });
-
-
 });
 
 var TableInit = function () {
-    // countFooter =  function(v){
-    //     var count = 0;
-    //     for (var i in v) {
-    //         if(v[i]['org']=='小计'){
-    //             continue;
-    //         }
-    //         count += v[i][this.field];
-    //     }
-    //     return count+'';
-    // };
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {

@@ -20,14 +20,6 @@ $(function () {
     //1.初始化Table
     var oTable = new TableInit();
     oTable.Init();
-
-    $('input').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
-        increaseArea: '2%' // optional
-    });
-
-
 });
 
 var TableInit = function () {
