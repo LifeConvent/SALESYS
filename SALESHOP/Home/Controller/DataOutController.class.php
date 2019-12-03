@@ -2011,6 +2011,94 @@ class DataOutController extends Controller
         }
     }
 
+    public function expCsOutCt()
+    {
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $service_name = trim(I('get.service_name'));
+        $policy_code = trim(I('get.policy_code'));
+        $risk_code = trim(I('get.risk_code'));
+        $xlsName = "除退保外保全项清单";
+        $xlsTitle = "除退保外保全项清单";
+        $xlsCell = array( //设置字段名和列名的映射
+            array('ACCEPT_CODE', '受理号'),
+            array('POLICY_CODE', '保单号'),
+            array('SERVICE_NAME', '保全项目名称'),
+            array('UPDATE_TIME', '生效日期'),
+            array('BUSI_PROD_CODE', '产品代码'),
+            array('PRODUCT_NAME_SYS', '险种名称'),
+            array('CHANNEL', '渠道'),
+            array('STATUS_NAME', '收付费状态'),
+            array('ARAP_FLAG', '收付费类型'),
+            array('TYPE_NAME', '费用类型'),
+            array('FEE_AMOUNT', '收付费金额'),
+            array('ORGAN_CODE', '管理机构')
+        );
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND SYS_INSERT_DATE-1 = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND SYS_INSERT_DATE-1 BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else if (empty($service_name) && empty($policy_code) && empty($risk_code)) {
+            $where_time_bqsl = " AND SYS_INSERT_DATE = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if ((int)$userType == 1) {
+            $where_type_fix = "";
+        } else if ((int)$userType == 2) {
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+        }
+        if (!empty($service_name)) {
+            $where_type_fix .= " AND SERVICE_NAME LIKE '%" . $service_name . "%'";
+        }
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR ACCEPT_CODE LIKE '%" . $policy_code . "%')";
+        }
+        if (!empty($risk_code)) {
+            $where_type_fix .= " AND (BUSI_PROD_CODE LIKE '%" . $risk_code . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_code . "%')";
+        }
+        /*********************************************           添加机构后删除          *********************************************/
+//        $where_type_fix = "";
+//        if(in_array($user_name,$otherUser)){
+//            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
+//        }
+        Log::write($user_name . ' 数据库查询条件：' . $where_time_bqsl . $where_type_fix, 'INFO');
+        $select_bqsl = "SELECT * FROM  TMP_QDSX_CS_OUT_CT_DETAIL WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $result[$i]['ACCEPT_CODE'] = $value['ACCEPT_CODE'];
+            $result[$i]['SERVICE_NAME'] = $value['SERVICE_NAME'];
+            $result[$i]['UPDATE_TIME'] = $value['UPDATE_TIME'];
+            $result[$i]['POLICY_CODE'] = "'".$value['POLICY_CODE'];
+            $result[$i]['BUSI_PROD_CODE'] = $value['BUSI_PROD_CODE'];
+            $result[$i]['PRODUCT_NAME_SYS'] = $value['PRODUCT_NAME_SYS'];
+            $result[$i]['STATUS_NAME'] = $value['STATUS_NAME'];
+            $result[$i]['ARAP_FLAG'] = $value['ARAP_FLAG'];
+            $result[$i]['TYPE_NAME'] = $value['TYPE_NAME'];
+            $result[$i]['FEE_AMOUNT'] = $value['FEE_AMOUNT'];
+            $result[$i]['CHANNEL'] = $value['CHANNEL'];
+            $result[$i]['ORGAN_CODE'] = $value['ORGAN_CODE'];
+        }
+        #######################################################################################################################################
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($result); $i++) {
+            $res[] = $result[$i];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        $method->exportExcel($xlsTitle, $xlsCell, $res, $xlsName);
+    }
+
     public function getCsCtAll()
     {
         $queryDateStart = I('get.queryDateStart');
