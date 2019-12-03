@@ -305,6 +305,7 @@ function exportExcelByTime() {
     var apply_type = $("#apply_type").val();
     var agent_info = $("#agent_info").val();
     var risk_info = $('#risk_info').val();
+    var is_yu = $('#is_yu').val();
     var fix = '';
     if(policy_code!=''&&policy_code!=null){
         fix += '&policy_code='+policy_code;
@@ -320,6 +321,9 @@ function exportExcelByTime() {
     }
     if(risk_info!=''&&risk_info!=null){
         fix += '&risk_info='+risk_info;
+    }
+    if(is_yu!=''&&is_yu!=null){
+        fix += '&is_yu='+is_yu;
     }
     window.location.href = HOST + "index.php/Home/DataOut/expNbOutTbByTime?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix;
 }
@@ -331,6 +335,7 @@ function refreshTable(){
     var apply_type = $("#apply_type").val();
     var agent_info = $("#agent_info").val();
     var risk_info = $('#risk_info').val();
+    var is_yu = $('#is_yu').val();
     var fix = '';
     if(policy_code!=''&&policy_code!=null){
         fix += '&policy_code='+policy_code;
@@ -346,6 +351,9 @@ function refreshTable(){
     }
     if(risk_info!=''&&risk_info!=null){
         fix += '&risk_info='+risk_info;
+    }
+    if(is_yu!=''&&is_yu!=null){
+        fix += '&is_yu='+is_yu;
     }
     $('#daily_report2').bootstrapTable('removeAll');
     $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getNbTb?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});

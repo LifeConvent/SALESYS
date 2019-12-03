@@ -1195,6 +1195,7 @@ class DataOutController extends Controller
         $apply_type = I('get.apply_type');
         $agent_info = I('get.agent_info');
         $risk_info = I('get.risk_info');
+        $is_yu = I('get.is_yu');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         if (!empty($queryDateStart)) {
@@ -1230,6 +1231,9 @@ class DataOutController extends Controller
         }
         if (!empty($risk_info)) {
             $where_type_fix .= " AND (PRODUCT_CODE_SYS LIKE '%" . $risk_info . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_info . "%')";
+        }
+        if (!empty($is_yu)) {
+            $where_type_fix .= " AND WINNING_START_FLAG LIKE '%" . $is_yu . "%'";
         }
         $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                ORGAN_CODE,
@@ -1312,6 +1316,7 @@ class DataOutController extends Controller
         $apply_type = I('get.apply_type');
         $agent_info = I('get.agent_info');
         $risk_info = I('get.risk_info');
+        $is_yu = I('get.is_yu');
         $xlsName = "新契约投保清单";
         $xlsTitle = "新契约投保清单";
         $xlsCell = array( //设置字段名和列名的映射
@@ -1377,6 +1382,9 @@ class DataOutController extends Controller
         }
         if (!empty($risk_info)) {
             $where_type_fix .= " AND (PRODUCT_CODE_SYS LIKE '%" . $risk_info . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_info . "%')";
+        }
+        if (!empty($is_yu)) {
+            $where_type_fix .= " AND WINNING_START_FLAG LIKE '%" . $is_yu . "%'";
         }
         $select_bqsl = "SELECT TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,
                                ORGAN_CODE,
