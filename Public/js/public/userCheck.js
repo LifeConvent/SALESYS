@@ -2,7 +2,6 @@ $(function () {
     var user_day_post = $('#user_day_post').text();
     var user_name = $('#user_name').text();
     var user_type = $('#user_type').text();
-    $('#sysNotice').modal({backdrop:'static', keyboard: false});
     $.ajax({
         type: "POST", //用POST方式传输
         url: HOST + "index.php/Home/SysMaintain/getMenu", //目标地址.
@@ -20,6 +19,7 @@ $(function () {
                         if (result.status == 'success') {
                             debugger;
                             var str = '';
+                            $('#sysNotice').modal({backdrop:'static', keyboard: false});
                             $('#sysNotice').modal('show');
                             for (var i = 0; i < result.message.length; i++) {
                                 //拼凑html通知
@@ -40,6 +40,7 @@ $(function () {
                             },1000);
                         }else{
                             $('#sysNotice').modal('hide');
+                            sleep(2000);
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -83,5 +84,15 @@ function showMenu(result){
         }
         debugger;
         $('#' + result[strs[i]]).show();
+    }
+}
+
+function sleep(numberMillis) {
+    var now = new Date();
+    var exitTime = now.getTime() + numberMillis;
+    while (true) {
+        now = new Date();
+        if (now.getTime() > exitTime)
+            return;
     }
 }
