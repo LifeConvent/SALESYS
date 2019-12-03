@@ -36,6 +36,35 @@ class UserManageController extends Controller
         }
     }
 
+    public function dataTableManage()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $table = $method->getUserTableStruct();
+            $DBtable = '<option value="-1">|----     无</option>';
+            foreach ($table AS $key => $val) {
+                if((int)$val['type']==1){
+                    $val['type'] = '仅支持删除后新增';
+                }else if((int)$val['type']==2){
+                    $val['type'] = '仅支持直接新增';
+                }else{
+                    $val['type'] = '支持全部类型操作';
+                }
+                $DBtable .= '<option value="'.$val['table'].'">'. '|----  ' .$val['account'] .'---'.$val['name'] .' --- '. $val['type'].'</option>';
+            }
+            $this->assign('DBtable', $DBtable);
+            $method->assignPublic($username,$this);
+            if(!$method->getSystype($username)){
+                $this->redirect('Index/errorSys');
+            }
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function getUser()
     {
         $user = M('user');
@@ -273,7 +302,15 @@ class UserManageController extends Controller
 
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-        $user_add  = "INSERT INTO TMP_DAYPOST_USER(ACCOUNT,PASS,TYPE,USER_NAME,USER_ORGAN_CODE,USER_ORGAN_NAME,USER_SEX,USER_COMPANY,BUSS_AREA) VALUES('".$user_account."','".$user_pass."','".$user_type."','".$user_name."','".$user_organ_code."','".$user_organ_name."','".$user_sex."','".$user_company."','".$buss_area."')";
+        if(strlen($user_organ_code)<=4){
+            $set_organ_code = $user_organ_code;
+        }else if(strlen($user_organ_code)==6){
+            $set_organ_code = substr($user_organ_code,0,4);
+        }else{
+            $set_organ_code = substr($user_organ_code,0,6);
+        }
+        $user_add  = "INSERT INTO TMP_DAYPOST_USER(ACCOUNT,PASS,TYPE,USER_NAME,USER_ORGAN_CODE,SET_ORGAN_CODE,USER_ORGAN_NAME,USER_SEX,USER_COMPANY,BUSS_AREA) VALUES('".$user_account."','".$user_pass."','".$user_type."','".$user_name."','".$user_organ_code."','".$set_organ_code."','".$user_organ_name."','".$user_sex."','".$user_company."','".$buss_area."')";
+
         $result_rows = oci_parse($conn, $user_add); // 配置SQL语句，执行SQL
         if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
             $result['status'] = "success";

@@ -46,6 +46,7 @@ class MethodController extends Controller
         $controller->assign('list_type',  $method->getListTypeBySql($username));
         $controller->assign('is_dz_chat',  $method->getIsDzChatBySql($username));
         $controller->assign('is_back_user',  $method->getIsBackUserBySql($username));
+        $controller->assign('bx_list_type',  $method->getBxListTypeBySql($username));
     }
 
     public function getSystype($username){
@@ -166,6 +167,42 @@ class MethodController extends Controller
         return $result[0]['IS_BACK_USER'];
     }
 
+    public function getUserOrganCodeStr($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.USER_ORGAN_CODE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户清单权限：'.$result[0]['USER_ORGAN_CODE'],'INFO');
+        return $result[0]['USER_ORGAN_CODE'];
+    }
+
+    public function getSetOrganCode($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SET_ORGAN_CODE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户初始机构：'.$result[0]['SET_ORGAN_CODE'],'INFO');
+        return $result[0]['SET_ORGAN_CODE'];
+    }
+
+    public function getBxListTypeBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.BX_LIST_TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户并行清单权限：'.$result[0]['BX_LIST_TYPE'],'INFO');
+        return $result[0]['BX_LIST_TYPE'];
+    }
+
     public function getUserCNNameBySql($username){
         $conn = $this->OracleOldDBCon();
         $select_des = "SELECT A.USER_NAME,A.USER_ORGAN_NAME FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
@@ -247,6 +284,107 @@ class MethodController extends Controller
         oci_free_statement($result_rows);
         oci_close($conn);
         return (int)$result[0]['IS_REVIEWER'];
+    }
+
+    public function getHdUserCode($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.HD_USER_CODE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'核对用户机构SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['HD_USER_CODE'];
+    }
+
+    public function getSysTypeNum($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SYS_TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'系统类型SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['SYS_TYPE'];
+    }
+
+    public function getBxDayPostOrgan($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.BX_DAYPOST_ORGAN FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'并行日报SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['BX_DAYPOST_ORGAN'];
+    }
+
+    public function getBxDayPostOrganList($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.BX_DAYPOST_ORGAN_LIST FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'并行日报LIST SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['BX_DAYPOST_ORGAN_LIST'];
+    }
+
+    public function getSxDayPostOrganCode($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SX_DAYPOST_ORGAN FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'上线日报SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['SX_DAYPOST_ORGAN'];
+    }
+
+    public function getSxDayPostOrganList($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SX_DAYPOST_ORGAN_LIST FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'上线日报LIST SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['SX_DAYPOST_ORGAN_LIST'];
+    }
+
+    public function getChannelTypeBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.CHANNEL_TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户缺陷列表清单权限：'.$result[0]['CHANNEL_TYPE'],'INFO');
+        return $result[0]['CHANNEL_TYPE'];
+    }
+
+    public function getSxListTypeBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.SX_LIST_TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户缺陷列表清单权限：'.$result[0]['SX_LIST_TYPE'],'INFO');
+        return $result[0]['SX_LIST_TYPE'];
+    }
+
+    public function getIsLock($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_LOCK FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户锁定SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $result[0]['IS_LOCK'];
     }
 
     public function checkIn(&$admin)

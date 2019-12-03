@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- BEGIN META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Olive Enterprise">
+    <!-- END META -->
+
+    <!-- BEGIN SHORTCUT ICON -->
+    <link rel="shortcut icon" href="__PUBLIC__/img/favicon.ico">
+    <!-- END SHORTCUT ICON -->
+    <title>
+        {$TITLE}
+    </title>
+    <!-- BEGIN STYLESHEET-->
+    <link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="__PUBLIC__/css/bootstrap-reset.css" rel="stylesheet"><!-- BOOTSTRAP CSS -->
+    <link href="__PUBLIC__/assets/font-awesome/css/font-awesome.css" rel="stylesheet"><!-- 字体 -->
+    <link href="__PUBLIC__/css/style.css" rel="stylesheet"><!-- THEME BASIC CSS -->
+    <link href="__PUBLIC__/css/style-responsive.css" rel="stylesheet"><!-- THEME RESPONSIVE CSS -->
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/assets/nestable/jquery.nestable.css"><!-- NESTABLE CSS -->
+    <link href="__PUBLIC__/css/sco.message.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/bootstrap-table.min.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/userManage/modify-user.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/bootstrap-select.min.css">
+    <link href="__PUBLIC__/js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="__PUBLIC__/js/html5shiv.js">
+    </script>
+    <script src="__PUBLIC__/js/respond.min.js">
+    </script>
+    <![endif]-->
+    <!-- END STYLESHEET-->
+</head>
+<script type="text/javascript">
+    var HOST = "__HOST__";
+</script>
+<body id="body">
+<!-- SECTION -->
+<section id="container">
+
+    <include file="Public/header"/>
+    <include file="Public/aside"/>
+
+    <!-- 主窗体 -->
+    <section id="main-content">
+
+        <!-- 主容器  -->
+        <section class="wrapper">
+
+            <div class="panel">
+                <header class="panel-heading">
+                    <span><strong>校验用户: <span class="red"> 先校验用户，通过相关校验后即可更新用户权限</span></strong></span>
+                </header>
+                <div class="panel-body">
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <!--<span class="red">*</span><span><strong>选择用户：</strong></span>-->
+                            <!--<input type="text" class="form-control add_user" id="user_account" placeholder="请输入用户账号">-->
+
+                            <div class="col-sm-12" style="margin-top: 10pt;clear:both">
+                                <span class="red">*</span><span><strong>选择用户： </strong></span>
+                                <select id="user_account" data-live-search="true" class="selectpicker show-tick form-control">
+                                    <option disabled="" value="-1">==选择==</option>
+                                    {$user_lists}
+                                </select>
+                            </div>
+                        </div>
+                        <!--<div class="col-sm-3"><span class="red">*</span><span><strong>用户密码: user...</strong></span>-->
+                        <!--<input type="text" class="form-control add_user" id="user_pass" placeholder="请输入用户密码">-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-3"><span class="red">*</span><span><strong>用户类型: 1-管理员/2-机构组长/3-操作员</strong></span>-->
+                        <!--<input type="text" class="form-control add_user" id="user_type_input" placeholder="请输入用户类型">-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-3"><span class="red">*</span><span><strong>作业机构代码: 8647...</strong></span>-->
+                        <!--<input type="text" class="form-control add_user" id="user_organ_code" placeholder="请输入作业机构代码">-->
+                        <!--</div>-->
+                    </div>
+                    <!--<div class="col-sm-12" style="padding-top:10pt;">-->
+                    <!--<div class="col-sm-3" style="margin-top: 14pt"><span class="red">*</span><span><strong>作业机构名称: 分公司核保室/平度柜面...</strong></span>-->
+                    <!--<input type="text" class="form-control add_user" id="user_organ_name" placeholder="请输入作业机构名称">-->
+                    <!--</div>-->
+                    <!--<div class="col-sm-3" style="margin-top: 14pt"><span class="red">*</span><span><strong>用户性别: 男/女</strong></span>-->
+                    <!--<input type="text" class="form-control add_user" id="user_sex" placeholder="请输入用户性别">-->
+                    <!--</div>-->
+                    <!--<div class="col-sm-3" style="margin-top: 14pt"><span class="red">*</span><span><strong>所属公司: 总公司/河北分公司/高伟达...</strong></span>-->
+                    <!--<input type="text" class="form-control add_user" id="user_company" placeholder="请输入所属公司"></div>-->
+                    <!--<div class="col-sm-3"><span class="red">*</span><span><strong>作业范围: <span class="red">*</span>核保/<span class="red">*</span>保全复核/<span class="red">*</span>理赔审核/<span class="red">*</span>异地作业/柜面操作/技术支持...</strong></span>-->
+                    <!--<input type="text" class="form-control add_user" id="buss_area" placeholder="请输入作业范围"></div>-->
+                    <!--</div>-->
+                    <!--<div class="col-sm-12" style="padding-top:14pt;">-->
+                    <!--<div class="col-sm-3"><span class="red">*</span><span><strong>用户姓名: 用户...</strong></span>-->
+                    <!--<input type="text" class="form-control add_user" id="user_name" placeholder="请输入用户姓名"></div>-->
+                    <!--&lt;!&ndash;<div class="col-sm-3"><span class="red">*</span><span><strong>用户性别: 男/女</strong></span><input type="text" class="form-control" id="user_sex" placeholder="请输入用户性别"></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="col-sm-3"><span class="red">*</span><span><strong>所属公司: 总公司/河北分公司/高伟达...</strong></span><input type="text" class="form-control" id="user_company" placeholder="请输入所属公司"></div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="col-sm-3"><span class="red">*</span><span><strong>作业范围: 柜面操作/技术支持...</strong></span><input type="text" class="form-control" id="buss_area" placeholder="请输入作业范围"></div>&ndash;&gt;-->
+                    <!--</div>-->
+                    <div class="col-sm-3" style="margin-top:10pt;margin-left:43.5%">
+                        <button type="button" id="check_user" class="btn btn-primary exportreport"
+                                style="margin-left: 10pt">校验用户信息
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel" id="user_limits_1">
+                <header class="panel-heading">
+                    <span><strong>权限配置（上线环境）: <span class="red">对应修改，无需修改的可不处理</span></strong></span>
+                </header>
+                <div class="panel-body">
+                    <div class="col-sm-12" style="float: left;">
+
+                        <div class="col-sm-6">
+                            <div>
+                                <span class="red">*</span><span><strong>用户账号: </strong></span>
+                                <input type="text" class="form-control add_user user_account" id="modify_user_account"
+                                       disabled>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>用户锁定状态: </strong></span>
+                            <select id="user_lock_select" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+
+                        <div style="clear:both;padding-top: 10pt;">
+                            <div class="col-sm-4" id="set_organ_show1">
+                                <span class="red">*</span><span><strong>用户初始机构配置: </strong></span>
+                                <select id="user_set_organcode_select1" data-live-search="true" class="selectpicker show-tick form-control">
+                                    <option disabled="" value="-1">==选择==</option>
+                                    {$organCodeList1}
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4" id="set_organ_show2" style="display:none">
+                                <span class="red">*</span><span><strong>三级: </strong></span>
+                                <select id="user_set_organcode_select2" data-live-search="true" class="selectpicker show-tick form-control">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="clear:both;padding-top: 10pt;">
+                            <div class="col-sm-4" id="list_organ_show1">
+                                <span class="red">*</span><span><strong>用户清单机构配置: </strong></span>
+                                <select id="user_list_organcode_select1" data-live-search="true" class="selectpicker show-tick form-control">
+                                    <option disabled="" value="-1">==选择==</option>
+                                    {$organCodeList1}
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4" id="list_organ_show2" style="display:none">
+                                <span class="red">*</span><span><strong>三级: </strong></span>
+                                <select id="user_list_organcode_select2" data-live-search="true" class="selectpicker show-tick form-control">
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4" id="list_organ_show3" style="display:none">
+                                <span class="red">*</span><span><strong>四级: </strong></span>
+                                <select id="user_list_organcode_select3" data-live-search="true" class="selectpicker show-tick form-control">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="clear:both;padding-top: 10pt;">
+                            <div class="col-sm-4" id="hd_organ_show1">
+                                <span class="red">*</span><span><strong>用户核对机构配置: </strong></span>
+                                <select id="user_hd_organcode_select1" data-live-search="true" class="selectpicker show-tick form-control">
+                                    <option disabled="" value="-1">==选择==</option>
+                                    {$organCodeList1}
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4" id="hd_organ_show2" style="display:none">
+                                <span class="red">*</span><span><strong>三级: </strong></span>
+                                <select id="user_hd_organcode_select2" data-live-search="true" class="selectpicker show-tick form-control">
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4" id="hd_organ_show3" style="display:none">
+                                <span class="red">*</span><span><strong>四级: </strong></span>
+                                <select id="user_hd_organcode_select3" data-live-search="true" class="selectpicker show-tick form-control">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>菜单权限配置: <span class="red">勾选二级菜单时一级菜单必选(系统无校验，但选错时菜单无法显示)</span></strong></span>
+                            <select id="survey_search_group" data-live-search="true" multiple class="selectpicker show-tick form-control">
+                                <option value="-1">==选择菜单==</option>
+                                <option value="99">==全部菜单==</option>
+                                {$menuList}
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>登录系统调整: </strong></span>
+                            <select id="user_sys_type_select" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">上线系统</option>
+                                <option value="2">并行系统</option>
+                                <option value="12">上线/并行系统</option>
+                                <option value="999">全部系统</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>清单调取类型: </strong></span>
+                            <select id="is_yd_list_select" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="0">全部</option>
+                                <option value="1">个人</option>
+                                <option value="2">银代财富</option>
+                            </select>
+                        </div>
+
+                        <div style="clear:both;padding-top: 10pt;" id="daypost_organ_show">
+                            <div class="col-sm-4" id="daypost_organ_show1">
+                                <span class="red">*</span><span><strong>用户日报查询机构配置(单机构): </strong></span>
+                                <select id="user_daypost_organcode_select1" data-live-search="true" class="selectpicker show-tick form-control">
+                                    <option disabled="" value="-1">==选择==</option>
+                                    <option value="99">无权限查看</option>
+                                    {$organCodeList1}
+                                </select>
+                            </div>
+                            <div class="col-sm-8" id="daypost_organ_show2">
+                                <span class="red">*</span><span><strong>用户日报查询机构列表配置（多机构）: </strong></span>
+                                <select id="user_daypost_organcode_select2" data-live-search="true" multiple class="selectpicker show-tick form-control">
+                                    <option disabled="" value="-1">==选择==</option>
+                                    <option value="99">无权限查看</option>
+                                    {$organCodeList1}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-sm-12" style="margin-top:20pt;margin-left:43.5%">
+                        <button type="button" id="modify_user_limits" class="btn btn-primary exportreport"
+                                style="margin-left: 10pt">调整用户权限
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel" id="user_limits_bx">
+                <header class="panel-heading">
+                    <span><strong>权限配置（并行环境）: <span class="red">对应修改，无需修改的可不处理</span></strong></span>
+                </header>
+                <div class="panel-body">
+                    <div class="col-sm-12" style="float: left;">
+
+                        <div class="col-sm-6">
+                            <div>
+                                <span class="red">*</span><span><strong>用户账号: </strong></span>
+                                <input type="text" class="form-control add_user user_account" id="modify_user_account_bx"
+                                       disabled>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>用户锁定状态: </strong></span>
+                            <select id="user_lock_select_bx" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+
+                        <div style="clear:both;padding-top: 10pt;">
+                            <div class="col-sm-4" id="set_organ_show1_bx">
+                                <span class="red">*</span><span><strong>用户初始机构配置: </strong></span>
+                                <select id="user_set_organcode_select1_bx" data-live-search="true" class="selectpicker show-tick form-control">
+                                    <option value="-1">==选择==</option>
+                                    {$organCodeList1}
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4" id="set_organ_show2_bx" style="display:none">
+                                <span class="red">*</span><span><strong>三级: </strong></span>
+                                <select id="user_set_organcode_select2_bx" data-live-search="true" class="selectpicker show-tick form-control">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="clear:both;padding-top: 10pt;">
+                            <div class="col-sm-4" id="list_organ_show1_bx">
+                                <span class="red">*</span><span><strong>用户清单机构配置: </strong></span>
+                                <select id="user_list_organcode_select1_bx" data-live-search="true" class="selectpicker show-tick form-control">
+                                    <option value="-1">==选择==</option>
+                                    {$organCodeList1}
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4" id="list_organ_show2_bx" style="display:none">
+                                <span class="red">*</span><span><strong>三级: </strong></span>
+                                <select id="user_list_organcode_select2_bx" data-live-search="true" class="selectpicker show-tick form-control">
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4" id="list_organ_show3_bx" style="display:none">
+                                <span class="red">*</span><span><strong>四级: </strong></span>
+                                <select id="user_list_organcode_select3_bx" data-live-search="true" class="selectpicker show-tick form-control">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="clear:both;padding-top: 10pt;">
+                            <div class="col-sm-4" id="hd_organ_show1_bx">
+                                <span class="red">*</span><span><strong>用户核对机构配置: </strong></span>
+                                <select id="user_hd_organcode_select1_bx" data-live-search="true" class="selectpicker show-tick form-control">
+                                    <option disabled="" value="-1">==选择==</option>
+                                    {$organCodeList1}
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4" id="hd_organ_show2_bx" style="display:none">
+                                <span class="red">*</span><span><strong>三级: </strong></span>
+                                <select id="user_hd_organcode_select2_bx" data-live-search="true" class="selectpicker show-tick form-control">
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4" id="hd_organ_show3_bx" style="display:none">
+                                <span class="red">*</span><span><strong>四级: </strong></span>
+                                <select id="user_hd_organcode_select3_bx" data-live-search="true" class="selectpicker show-tick form-control">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>菜单权限配置（并行环境预留）: <span class="red">勾选二级菜单时一级菜单必选</span></strong></span>
+                            <select id="survey_search_group_bx" multiple data-live-search="true" class="selectpicker show-tick form-control">
+                                <option value="-1">==选择菜单==</option>
+                                <option value="99">==全部菜单==</option>
+                                {$menuListBx}
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>登录系统调整: </strong></span>
+                            <select id="user_sys_type_select_bx" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">上线系统</option>
+                                <option value="2">并行系统</option>
+                                <option value="12">上线/并行系统</option>
+                                <option value="999">全部系统</option>
+                            </select>
+                        </div>
+
+                        <div style="clear:both;padding-top: 10pt;">
+                            <div class="col-sm-4" id="daypost_organ_show1_bx">
+                                <span class="red">*</span><span><strong>用户日报查询机构配置(单机构): </strong></span>
+                                <select id="user_daypost_organcode_select1_bx" data-live-search="true" class="selectpicker show-tick form-control">
+                                    <option disabled="" value="-1">==选择==</option>
+                                    <option value="99">无权限查看</option>
+                                    {$organCodeList1}
+                                </select>
+                            </div>
+                            <div class="col-sm-8" id="daypost_organ_show2_bx">
+                                <span class="red">*</span><span><strong>用户日报查询机构列表配置（多机构）: </strong></span>
+                                <select id="user_daypost_organcode_select2_bx" data-live-search="true" multiple class="selectpicker show-tick form-control">
+                                    <option disabled="" value="-1">==选择==</option>
+                                    <option value="99">无权限查看</option>
+                                    {$organCodeList1}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12" style="margin-top: 10pt;">
+                            <span class="red" style="font-size: larger"><strong>并行清单权限配置: </strong></span>
+                        </div>
+
+                        <div class="col-sm-4" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>并行清单核对权限配置: </strong></span>
+                            <select id="is_bx_define_user_select" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-4" style="margin-top: 10pt;">
+                            <span class="red">*</span><span><strong>回退权限: </strong></span>
+                            <select id="is_back_user_select" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-4" style="margin-top: 10pt;">
+                            <span class="red">*</span><span><strong>审核权限: </strong></span>
+                            <select id="is_reviewer_select" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+
+
+                        <div class="col-sm-12" style="margin-top: 10pt;">
+                            <span class="red" style="font-size: larger"><strong>并行数据处理权限配置: </strong></span>
+                        </div>
+
+                        <div class="col-sm-5" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>申请权限配置: </strong></span>
+                            <select id="is_delete_apply_select" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-5" style="margin-top: 10pt;">
+                            <span class="red">*</span><span><strong>审核权限: </strong></span>
+                            <select id="is_delete_reviewer_select" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-5" style="margin-top: 10pt;">
+                            <span class="red">*</span><span><strong>系统数据确认权限: </strong></span>
+                            <select id="is_sys_delete_select" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-5" style="margin-top: 10pt;">
+                            <span class="red">*</span><span><strong>工作流数据确认权限: </strong></span>
+                            <select id="is_work_delete_select" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-12" style="margin-top:20pt;margin-left:43.5%">
+                        <button type="button" id="modify_user_limits_bx" class="btn btn-primary exportreport"
+                                style="margin-left: 10pt">调整用户权限
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel" id="key_manage">
+                <header class="panel-heading">
+                    <span><strong>密钥配置（通用）: <span class="red">对应修改，无需修改的可不处理</span></strong></span>
+                </header>
+                <div class="panel-body">
+                    <div class="col-sm-12" style="float: left;">
+
+                        <div class="col-sm-6">
+                            <div>
+                                <span class="red">*</span><span><strong>选择用户：<span id="key_user_hint" class="red"></span> </strong></span>
+                                <select id="key_user_account" data-live-search="true" class="selectpicker show-tick form-control">
+                                    <option disabled="" value="-1">==选择==</option>
+                                    {$user_lists}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6"  style="margin-top: 10pt;clear:both" id="key_user_show">
+                            <div>
+                                <span class="red">*</span><span><strong>密钥选择：<span id="key_id_hint" class="red"></span></strong></span>
+                                <select id="key_user_select" data-live-search="true" class="selectpicker show-tick form-control">
+                                    {$user_key_lists}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>设置密钥状态（是否有效）: </strong></span>
+                            <select id="is_valid" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-4" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>操作类型: </strong></span>
+                            <select id="is_new" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="0">新增</option>
+                                <option value="1">修改</option>
+                                <option value="2">删除</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6" style="margin-top: 10pt;clear:both">
+                            <div>
+                                <span class="red">*</span><span><strong>自定义密钥： </strong></span>
+                                <input type="text" class="form-control add_user" id="key_user_pass">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4"  style="margin-top: 10pt;clear:both">
+                            <div class="tools" style="float:left;">
+                                <div><span class="red">*</span><span><strong>有效期至: </strong></span></div>
+                                <div style="width:250px;float:left" class="input-group date form_date" id="form_date1" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                                    <input class="form-control" size="16" type="text" value="" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                            </div>
+                            <input style="visibility:hidden" id="dtp_input2" value=""/>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-12" style="margin-top:20pt;margin-left:43.5%">
+                        <button type="button" id="modify_user_key" class="btn btn-primary exportreport"
+                                style="margin-left: 10pt">修改/新增用户权限
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="user_limits_2">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <span><strong>用户信息列表<span class="red">： 请先点击解锁后再修改用户信息</span></strong></span>
+                    </header>
+                    <div style="margin:0 5px;margin-top: 10pt;margin-left: 10pt">
+                        <table id="user_list_table" style="table-layout: fixed;"></table>
+                    </div>
+                </section>
+            </div>
+
+            <!--测试用文本框-->
+            <textarea id="list_output" rows="3" class="form-control" style="visibility:hidden"></textarea>
+
+        </section>
+        <!-- 主容器  -->
+
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">删除用户信息提示</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <span class="left-30 red size-16">删除数据库中数据后无法恢复！确认要删除该用户信息吗？</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                        <button class="btn btn-warning" type="button" onclick="deleteUser();">确认</button>
+                    </div>
+                </div>
+            </div>
+            <span style="display:none" id="myModalHide"></span>
+        </div>
+
+        <div class="modal fade" id="checkPass">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title center">数据库修改密钥校验</h4>
+                    </div>
+                    <div class="panel-body" style="margin-top:20px;">
+
+                        <div class="col-lg-12" style="margin-top:10px;">
+                            <section class="panel">
+                                <form class="form-horizontal tasi-form" method="get">
+                                    <div class="form-group">
+                                        <div class="order-left-10 modify-user-div">
+                                            <label class="order-label modify-user-label"> <span
+                                                    class="star-red">*</span>&nbsp;密 钥：</label>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="check_pass">
+                                        </div>
+                                    </div>
+                                </form>
+                            </section>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+                        <button class="btn btn-warning" type="button" onclick="checkPass();">确认</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <textarea style="display:none" id="user_stu_num"></textarea>
+            <textarea style="display:none" id="user_stu_name"></textarea>
+            <textarea style="display:none" id="user_stu_graclass"></textarea>
+            <textarea style="display:none" id="user_stu_pro"></textarea>
+            <textarea style="display:none" id="user_stu_class"></textarea>
+            <textarea style="display:none" id="user_stu_phone"></textarea>
+            <textarea style="display:none" id="user_stu_sex"></textarea>
+            <textarea style="display:none" id="user_stu_qq"></textarea>
+        </div>
+
+        <textarea id="username" style="display:none">{$username}</textarea>
+        <textarea id="usertype" style="display:none">{$usertype}</textarea>
+
+
+    </section>
+    <!-- 主窗体 -->
+
+    <include file="Public/footer-20"/>
+    <include file="Public/check"/>
+
+</section>
+<!-- SECTION -->
+
+<!-- JS -->
+
+<!--<script src="__PUBLIC__/js/jquery.js"></script>&lt;!&ndash; BASIC JQUERY LIB. JS &ndash;&gt;-->
+<script src="__PUBLIC__/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
+<script src="__PUBLIC__/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
+<script src="__PUBLIC__/js/jquery.dcjqaccordion.2.7.js"></script><!-- 左侧子菜单栏显示 -->
+<script src="__PUBLIC__/js/jquery.scrollTo.min.js"></script><!-- SCROLLTO JS -->
+<script src="__PUBLIC__/js/jquery.nicescroll.js"></script><!-- NICESCROLL JS -->
+<script src="__PUBLIC__/js/respond.min.js"></script><!-- RESPOND JS -->
+<script src="__PUBLIC__/js/jquery.sparkline.js"></script><!-- SPARKLINE JS -->
+<script src="__PUBLIC__/js/common-scripts.js"></script><!-- BASIC COMMON JS -->
+<script src="__PUBLIC__/js/sco.message.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/bootstrap-table.min.js"></script>
+<script src="__PUBLIC__/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="__PUBLIC__/js/sysMaintain/sysUserLimits.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/public/userCheck.js"></script>
+<!--<script src="__PUBLIC__/js/userManage/userManage.js" type="text/javascript"></script>-->
+<script type="text/javascript"
+        src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/bootstrap-table.js"></script>
+<script type="text/javascript"
+        src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/locale/bootstrap-table-zh-CN.js"></script>
+<script type="text/javascript"
+        src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/extensions/export/bootstrap-table-export.js"></script>
+<script src="__PUBLIC__/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="__PUBLIC__/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
+<script src="__PUBLIC__/js/bootstrap_above/tableExport/libs/pdfmake/pdfmake.min.js"></script>
+<script src="__PUBLIC__/js/bootstrap_above/tableExport/libs/pdfmake/vfs_fonts.js"></script>
+<script src="__PUBLIC__/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/FileSaver/FileSaver.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/libs/jsPDF/jspdf.min.js"></script>
+<script type="text/javascript"
+        src="__PUBLIC__/js/bootstrap_above/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/tableExport/tableExport.js"></script>
+<script src="__PUBLIC__/js/md5.js" type="text/javascript"></script>
+
+</body>
+</html>
+
+

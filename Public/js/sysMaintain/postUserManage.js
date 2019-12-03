@@ -3,9 +3,9 @@
  */
 
 $(function () {
-    $('#user').attr('class', 'active');
-    $('#user_sub').css('display', 'block');
-    $('#user_manager').attr('class', 'active');
+    $('#sysMaintain').attr('class', 'active');
+    $('#sysMaintainSub').css('display', 'block');
+    $('#sysMaintainSub_user').attr('class', 'active');
 
     //1.初始化Table
     var oTable = new TableInit();

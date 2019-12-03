@@ -2,188 +2,53 @@ $(function() {
 
     var is_delete_reviewer = $('#is_delete_reviewer').text();
     var is_delete_apply = $('#is_delete_apply').text();
-    // if(is_delete_apply!='1'&&is_delete_apply!='1'){
-    //     $('#data_apply').hide();
-    // }
 
     var is_dz_chat = $('#is_dz_chat').text();
     if(is_dz_chat!='1'){
         $('#chat_define_dz').hide();
     }
 
-    //日报权限
-    var user_day_post = $('#user_day_post').text();
-    if(user_day_post!='1'){
-        $('#day_post').hide();
-        $('#day_post_this').hide();
-        $('#day_post_all').hide();
-        $('#day_post_two').hide();
-        $('#day_post_qx').hide();
-    }else{
-    }
-    var user_type = $('#user_type').text();
-    //数据管理权限
-    if(user_type!='1'){
-        $('#data_control').hide();
-    }
-    //用户管理权限
-    // if(user_type!='1'){
-    //     $('#user_control').hide();
-    // }
-    var user_name = $('#user_name').text();
-    if(user_name=='zhuxj_qd'||user_name=='quanli'||user_name=='cuizhan'||user_name=='zhouyang_qd'||user_name=='yuyi'||user_type=='1'){
-    }else{
-        $('#data_export').hide();
-        $('#data_out').hide();
-        $('#data_ct_all').hide();
-        $('#data_out_ct').hide();
-    }
-    if(user_name=='yindai'){
-        $('#day_post').hide();
-        $('#day_post_two').hide();
-        $('#day_post_other').hide();
-        $('#user').hide();
-        $('#course').hide();
-        $('#nb_post').hide();
-        $('#home').hide();
-        $('#sale').hide();
-        $('#data_export').show();
-        $('#data_out_ct').show();
-        $('#data_ct_all').show();
-        $('#data_nb_cb').hide();
-        $('#data_nb_tb').hide();
-        $('#data_nb_hz').hide();
-        $('#data_nb_ys').hide();
-        $('#data_cap_cs').hide();
-        $('#data_cap_nb').hide();
-        $('#data_cap_nb_no_arrive').hide();
-        $('#data_cap_cs_back').hide();
-        $('#data_export_num').text(2);
-        // $('#data_export').hide();
-    }
-    if(user_type!='1'){
-        // $('#user_control').hide();
-        $('#post_day_this').hide();
-        $('#post_day_all').hide();
-    }
-    //上线环境清单类型权限控制
-    var list_type = $('#list_type').text();
-    switch (list_type) {
-        case '99'://管理员
-            //清单导出
-            $('#list_out').show();
-            $('#data_export').show();
-            $('#data_out_ct').show();
-            $('#data_ct_all').show();
-            $('#data_nb_cb').show();
-            $('#data_nb_tb').show();
-            $('#data_nb_hz').show();
-            $('#data_nb_ys').show();
-            $('#data_cap_cs').show();
-            $('#data_cap_nb').show();
-            $('#data_cap_nb_no_arrive').show();
-            $('#data_cap_cs_back').show();
-            //契约清单
-            $('#list_nb').show();
-            $('#nb_post_table_stream').show();
-            //银代清单
-            $('#list_yd').show();
-            //收付费
-            $('#cap_menu').show();
-            $('#cap_define').show();
-            $('#cap_define_cs').show();
-            $('#cap_define_nb').show();
-            $('#cap_define_clm').show();
-            $('#cap_define_pa').show();
-            break;
-        case '0':
-            $('#list_out').hide();
-            $('#list_nb').hide();
-            $('#list_yd').hide();
-            $('#cap_menu').hide();
-            break;
-        case '1'://保全
-            $('#list_out').show();
-            $('#data_export').show();
-            $('#data_out_ct').show();
-            $('#data_ct_all').show();
-            $('#data_cap_cs').show();
-            $('#data_cap_cs_back').show();
-            $('#data_export_num').text(4);
-            //契约
-            $('#data_nb_cb').hide();
-            $('#data_nb_tb').hide();
-            $('#data_nb_hz').hide();
-            $('#data_nb_ys').hide();
-            $('#data_cap_nb').hide();
-            $('#data_cap_nb_no_arrive').hide();
-            //银代契约
-            $('#list_nb').hide();
-            $('#list_yd').hide();
-            $('#cap_menu').hide();
-            break;
-        case '2'://契约
-            $('#list_out').show();
-            $('#data_export').show();
-            //保全
-            $('#data_out_ct').hide();
-            $('#data_ct_all').hide();
-            $('#data_cap_cs').hide();
-            $('#data_cap_cs_back').hide();
-            //契约
-            $('#data_nb_cb').show();
-            $('#data_nb_tb').show();
-            $('#data_nb_hz').show();
-            $('#data_nb_ys').show();
-            $('#data_cap_nb').show();
-            $('#data_cap_nb_no_arrive').show();
-            $('#data_export_num').text(6);
-            //银代契约
-            $('#list_nb').hide();
-            $('#list_yd').hide();
-            $('#cap_menu').hide();
-            break;
-        case '3':
-            break;
-        case '4':
-            break;
-        case '5'://收付费
-            $('#list_out').hide();
-            $('#list_nb').hide();
-            $('#list_yd').hide();
-            $('#cap_menu').show();
-            $('#cap_define_cs').show();
-            $('#cap_define_nb').show();
-            $('#cap_define_clm').show();
-            $('#cap_define_pa').show();
-            break;
-        case '6':
-            //银代财富
-            $('#list_yd').show();
-            $('#yd_post_table').show();
-            //导出清单
-            $('#list_out').show();
-            $('#data_export').show();
-            $('#data_out_ct').show();
-            $('#data_ct_all').show();
-            $('#data_export_num').text(2);
-            $('#data_nb_cb').hide();
-            $('#data_nb_tb').hide();
-            $('#data_nb_hz').hide();
-            $('#data_nb_ys').hide();
-            $('#data_cap_cs').hide();
-            $('#data_cap_nb').hide();
-            $('#data_cap_nb_no_arrive').hide();
-            $('#data_cap_cs_back').hide();
-            //契约清单
-            $('#list_nb').hide();
-            $('#cap_menu').hide();
-            break;
-        default://全部隐藏
-            $('#list_out').hide();
-            $('#list_nb').hide();
-            $('#list_yd').hide();
-            $('#cap_menu').hide();
-            break;
-    }
+    $.ajax({
+        type: "POST", //用POST方式传输
+        url: HOST + "index.php/Home/SysMaintain/getMenuBx", //目标地址.
+        dataType: "json", //数据格式:JSON
+        success: function (result) {
+            if (result.status == 'success') {
+                debugger;
+                showMenu(result);
+            } else if (result.status == 'failed') {
+                debugger;
+                $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest);
+            alert(textStatus);
+            alert(errorThrown);
+        }
+    });
 });
+
+function showMenu(result){
+    //全部隐藏
+    debugger;
+    var list_name = result.MENUCODE;
+    for (i = 0; i < list_name.length; i++) {
+        $('#' + list_name[i]).hide();
+    }
+    //拆分菜单权限维数组
+    var bx_list_type = $('#bx_list_type').text();
+    var strs = new Array(); //定义一数组
+    strs = bx_list_type.split("&"); //字符分割
+    //分权限展示
+    for (i = 0; i < strs.length; i++) {
+        if (strs[i] == '99') {
+            for (i = 0; i < list_name.length; i++) {
+                $('#' + list_name[i]).show();
+            }
+            break;
+        }
+        debugger;
+        $('#' + result[strs[i]]).show();
+    }
+}
