@@ -33,3 +33,33 @@
 <p id="channel_type" style="display:none">{$channel_type}</p>
 <p id="bx_list_type" style="display:none">{$bx_list_type}</p>
 <p id="user_organ_code" style="display:none">{$user_organ_code}</p>
+
+<div class="modal fade" id="sysNotice" aria-hidden="true">
+    <div class="modal-dialog"  aria-hidden="true">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title center"><strong>系统通知</strong></h4>
+            </div>
+            <div class="panel-body" style="margin-top:20px;">
+
+                <div class="col-lg-12" style="margin-top:10px;">
+                    <section class="panel">
+                        <form class="form-horizontal tasi-form" method="get">
+                            <div class="form-group">
+                                <div class="order-left-10 modify-user-div">
+                                    <strong><div class="star-red" id="sys_notice_text" style="font-size: larger"></div></strong>
+                                </div>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-warning" type="button" id="dealModal" data-dismiss="modal" disabled>确认</button>
+            </div>
+        </div>
+    </div>
+</div>

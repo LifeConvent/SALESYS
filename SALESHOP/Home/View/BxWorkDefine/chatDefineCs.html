@@ -88,158 +88,6 @@
                 </section>
             </div>
 
-            <!-- 第一行数据统计  -->
-            <div class="row state-overview" style="visibility:hidden">
-
-                <!--四个统计框-->
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-tags blue">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class="count" style="display:none">{$count}</h1>
-
-                            <h1 class=" show_count">
-                                0
-                            </h1>
-
-                            <p>
-                                微信匹配用户总量
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-tasks red">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class="count1" style="display:none">{$count1}</h1>
-
-                            <h1 class=" show_count1">
-                                0
-                            </h1>
-
-                            <p>
-                                课程评价总数
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-user yellow">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class=" count2" style="display:none">{$count2}</h1>
-
-                            <h1 class=" show_count2">0</h1>
-
-                            <p>
-                                微信关注量
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <div class="col-lg-3 col-sm-6">
-
-                    <section class="panel">
-
-                        <div class="symbol">
-                            <i class="fa fa-plus purple">
-                            </i>
-                        </div>
-
-                        <div class="value">
-                            <h1 class=" count3" style="display:none">{$count3}</h1>
-
-                            <h1 class=" show_count3">
-                                0
-                            </h1>
-
-                            <p>
-                                新增用户数量
-                            </p>
-                        </div>
-
-                    </section>
-
-                </div>
-
-            </div>
-             <!--第一行数据统计-->
-
-            <div class="col-lg-12" style="color:#5eb7dd;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信匹配数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#fd6d4d;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        课程评价数量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="ce-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <div class="col-lg-12" style="color:#f7d254;visibility:hidden">
-                <section class="panel">
-                    <header class="panel-heading">
-                        微信关注量变化趋势
-                    </header>
-                    <div class="panel-body">
-                        <div id="weixin-sub-num" class="graph">
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!--<div class="col-lg-12" style="color:#a560f8">-->
-                <!--<section class="panel">-->
-                    <!--<header class="panel-heading">-->
-                        <!--新增用户数量变化趋势-->
-                    <!--</header>-->
-                    <!--<div class="panel-body">-->
-                        <!--<div id="weixin-new-num" class="graph">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</section>-->
-            <!--</div>-->
 
         </section>
         <!-- 主容器  -->
@@ -266,16 +114,11 @@
         <span style="display:none" id="myModalHide"></span>
     </div>
 
-    <!--<div class="zfb modal fade in">-->
-        <!--<img src="zfb.png"  alt="扫描领红包" />-->
-    <!--</div>-->
-
     <include file="Public/footer-20"/>
     <include file="Public/check"/>
 </section>
 <!-- SECTION -->
 
-<script src="__PUBLIC__/js/public/userCheck.js"></script>
 <!-- JS -->
 <script src="__PUBLIC__/js/jquery-3.1.1.min.js"></script><!-- BASIC JQUERY 1.8.3 LIB. JS -->
 <script src="__PUBLIC__/js/bootstrap.min.js"></script><!-- BOOTSTRAP JS -->
@@ -297,9 +140,6 @@
 <script src="__PUBLIC__/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <script src="__PUBLIC__/js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 <!--自定义-->
-<!--<script src="__PUBLIC__/js/Home/count.js"></script>-->
-<!--<script src="__PUBLIC__/js/Home/get-time.js"></script>-->
-<!--<script src="__PUBLIC__/js/Home/charts-home.js"></script>-->
 
 <script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/bootstrap-table.js"></script>
 <script type="text/javascript" src="__PUBLIC__/js/bootstrap_above/bootstrap-table-develop/dist/locale/bootstrap-table-zh-CN.js"></script>
