@@ -60,6 +60,7 @@ class SysMaintainController extends Controller
             $this->getMenuArrayList();
             $this->getMenuArrayListBx();
             $this->getUsedOrganArrayList($username);
+            $this->getSysNotice();
             $this->display();
         } else {
             $this->redirect('Index/index');
@@ -171,6 +172,103 @@ class SysMaintainController extends Controller
             $content .= '<option value="' . $select[$i]['ACCOUNT'] . '">' .'用户账号：'. $select[$i]['ACCOUNT'] . '   -    姓名：' . $select[$i]['USER_NAME'] . '</option>';
         }
         $this->assign('user_lists', $content);
+    }
+
+    public function getSysNotice(){
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_select = "SELECT * FROM SYS_NOTICE_RECORD";
+        $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
+        $user_result = $method->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        for ($i = 0; $i < sizeof($user_result); $i++) {
+            if((int)$user_result[$i]['IS_VAILD']==1){
+                $user_result[$i]['IS_VAILD'] = '是';
+            }else{
+                $user_result[$i]['IS_VAILD'] = '否';
+            }
+            $select[] = $user_result[$i];
+        }
+        $content = null;
+        for ($i = 0; $i < sizeof($select); $i++) {
+            $content .= '<option value="' . $select[$i]['NOTICE_ID'] . '">' .$select[$i]['NOTICE_ID'].': 通知内容：'. $select[$i]['NOTICE'] . '   -    是否有效：' . $select[$i]['IS_VAILD'] . '</option>';
+        }
+        $this->assign('notice_lists', $content);
+    }
+
+    public function getNoticeContent(){
+        $notice_id = I('post.notice_id');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $key_select = "SELECT * FROM SYS_NOTICE_RECORD WHERE NOTICE_ID = ".$notice_id."";
+        Log::write($notice_id.'系统通知查询：'.$key_select,'INFO');
+        $result_rows = oci_parse($conn, $key_select); // 配置SQL语句，执行SQL
+        $key_result = $method->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if(empty($key_result[0]['NOTICE'])){
+            $result['status'] = "failed";
+            Log::write($notice_id.'系统通知查询发生错误：'.$key_select,'ERROR');
+            $result['message'] = "系统查询时出现错误，请联系管理员重试！";
+        }else{
+            $result['status'] = "success";
+            $result['IS_VAILD'] = $key_result[0]['IS_VAILD'];
+            $result['TIMES'] = $key_result[0]['TIMES'];
+            $result['TEXT'] = $key_result[0]['NOTICE'];
+        }
+        exit(json_encode($result));
+    }
+
+    public function dealSysNotice(){
+        $is_valid  = I('post.is_valid');
+        $is_new  = I('post.is_new_notice');
+        $notice_id = I('post.notice_id');
+        $notice_content  = I('post.notice_content');
+        $notice_times  = I('post.notice_times');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        switch ((int)$is_new){
+            case 0:
+                $select_key_id = "SELECT MAX(NOTICE_ID)+1 AS NOTICE_ID FROM SYS_NOTICE_RECORD";
+                $result_rows = oci_parse($conn, $select_key_id); // 配置SQL语句，执行SQL
+                $key_id = $method->search_long($result_rows);
+                //新增
+                $modify_sql = "INSERT INTO SYS_NOTICE_RECORD(NOTICE_ID,NOTICE,TIMES,IS_VAILD) 
+                              VALUES(" . $key_id[0]['NOTICE_ID'] . ",'" . $notice_content . "'," . $notice_times .",'". $is_valid . "')";
+                Log::write('新增系统通知SQL：' . $modify_sql . "<br>", 'INFO');
+                break;
+            case 1:
+                //修改
+                $modify_sql = "UPDATE SYS_NOTICE_RECORD SET IS_VAILD = '" . $is_valid . "' , NOTICE = '" . $notice_content . "' , TIMES = " . $notice_times . " WHERE NOTICE_ID = " . $notice_id;
+                Log::write('修改系统通知SQL：' . $modify_sql . "<br>", 'INFO');
+                break;
+        }
+        $result_rows = oci_parse($conn, $modify_sql); // 配置SQL语句，执行SQL
+        if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
+            $result['status'] = "success";
+            switch ((int)$is_new){
+                case 0:
+                    $result['message'] = "系统通知新增成功！";
+                    break;
+                case 1:
+                    $result['message'] = "系统通知修改成功！";
+                    break;
+            }
+        } else {
+            $result['status'] = "failed";
+            switch ((int)$is_new){
+                case 0:
+                    $result['message'] = "系统通知新增失败！";
+                    break;
+                case 1:
+                    $result['message'] = "系统通知修改失败！";
+                    break;
+            }
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
     }
 
     public function getUsedOrganArrayListResult($username)
