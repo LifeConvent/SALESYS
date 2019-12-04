@@ -33,7 +33,7 @@ class SysNoticeController extends Controller
         $user_name = I('post.user_name');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-        $notice_select = "SELECT DISTINCT C.NOTICE_ID,C.NOTICE,C.TIMES,D.USER_ACCOUNT,D.NOTICE_TIMES FROM (SELECT * FROM TMP_DAYPOST_USER A,SYS_NOTICE_RECORD B) C
+        $notice_select = "SELECT DISTINCT C.NOTICE_ID,C.NOTICE,C.TIMES,D.USER_ACCOUNT,D.NOTICE_TIMES FROM (SELECT * FROM TMP_DAYPOST_USER A,SYS_NOTICE_RECORD B WHERE B.IS_VAILD = '1') C
                              LEFT JOIN USER_NOTICE_RECORD D ON C.ACCOUNT = D.USER_ACCOUNT AND C.NOTICE_ID = D.NOTICE_ID
                                    WHERE (C.ACCOUNT = '".$user_name."' AND D.NOTICE_TIMES < C.TIMES) OR 
                                    (C.ACCOUNT = '".$user_name."' AND D.USER_ACCOUNT IS NULL) ";
