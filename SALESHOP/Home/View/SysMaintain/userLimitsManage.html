@@ -529,6 +529,70 @@
                 </div>
             </div>
 
+            <div class="panel" id="sys_notice">
+                <header class="panel-heading">
+                    <span><strong>系统通知（通用）: <span class="red">对应修改，无需修改的可不处理</span></strong></span>
+                </header>
+                <div class="panel-body">
+                    <div class="col-sm-12" style="float: left;">
+
+                        <div class="col-sm-6"  style="margin-top: 10pt;clear:both" id="sys_notice_show">
+                            <div>
+                                <span class="red">*</span><span><strong>选择已有通知：<span id="notice_hint" class="red"></span></strong></span>
+                                <select id="notice_select" data-live-search="true" class="selectpicker show-tick form-control">
+                                    <option value="-1">==选择==</option>
+                                    {$notice_lists}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>设置通知状态（是否有效）: </strong></span>
+                            <select id="notice_is_valid" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-4" style="margin-top: 10pt;clear:both">
+                            <span class="red">*</span><span><strong>操作类型: </strong></span>
+                            <select id="is_new_notice" class="selectpicker show-tick form-control">
+                                <option disabled="" value="-1">==选择==</option>
+                                <option value="0">新增</option>
+                                <option value="1">修改</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6" style="margin-top: 10pt;clear:both">
+                            <div>
+                                <span class="red">*</span><span><strong>自定义通知内容： </strong></span>
+                                <textarea type="text" rows="15" class="form-control add_user" id="notice_content"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6" style="margin-top: 10pt;clear:both">
+                            <div>
+                                <span class="red">*</span><span><strong>限制通知查看次数： </strong></span>
+                                <select id="notice_times" class="selectpicker show-tick form-control">
+                                    <option disabled="" value="-1">==选择==</option>
+                                    <option value="1">1次</option>
+                                    <option value="2">2次</option>
+                                    <option value="3">3次</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-12" style="margin-top:20pt;margin-left:43.5%">
+                        <button type="button" id="modify_notice" class="btn btn-primary exportreport"
+                                style="margin-left: 10pt">修改/新增用户权限
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div id="user_limits_2">
                 <section class="panel">
                     <header class="panel-heading">

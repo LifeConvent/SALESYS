@@ -1560,6 +1560,40 @@ $("#key_user_select").change(function(){
     }
 });
 
+$('#notice_select').change(function(){
+    var notice_hint = $('#notice_select').val();
+    if(notice_hint=='-1'){
+        return;
+    }else{
+        $.ajax({
+            type: "POST", //用POST方式传输
+            url: HOST + "index.php/Home/SysMaintain/getNoticeContent", //目标地址.
+            dataType: "json", //数据格式:JSON
+            data: {
+                notice_hint: notice_hint
+            },
+            success: function (result) {
+                if (result.status == 'success') {
+                    debugger;
+                    $('#notice_is_valid').val(result.IS_VAILD);
+                    $('#notice_is_valid').selectpicker('refresh');
+                    $('#notice_content').val(result.TEXT);
+                    $('#notice_times').val(result.TIMES);
+                    $('#notice_times').selectpicker('refresh');
+                } else if (result.status == 'failed') {
+                    debugger;
+                    $('#key_id_hint').text(result.message);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest);
+                alert(textStatus);
+                alert(errorThrown);
+            }
+        });
+    }
+});
+
 $('#modify_user_key').click(function(){
     debugger;
     var is_new = $('#is_new').val();
@@ -1605,6 +1639,56 @@ $('#modify_user_key').click(function(){
                     alert(errorThrown);
                 }
             });
+        }
+    }
+});
+
+$('#modify_notice').click(function(){
+    debugger;
+    var is_new_notice = $('#is_new_notice').val();
+    if(is_new_notice!='0'&&is_new_notice!='1'){
+        $.scojs_message('修改密钥操作类型必须选择！',$.scojs_message.TYPE_ERROR);
+    }else{
+        var notice_id = $('#notice_select').val();
+        var is_valid = $('#notice_is_valid').val();
+        var notice_content = $('#notice_content').val();
+        var notice_times = $('#notice_times').val();
+        if(notice_content!=null||notice_times!='-1'){
+            $.ajax({
+                type: "POST", //用POST方式传输
+                url: HOST + "index.php/Home/SysMaintain/dealSysNotice", //目标地址.
+                dataType: "json", //数据格式:JSON
+                data: {
+                    is_valid: is_valid,
+                    is_new_notice: is_new_notice,
+                    notice_id: notice_id,
+                    notice_content: notice_content,
+                    notice_times:notice_times
+                },
+                success: function (result) {
+                    if (result.status == 'success') {
+                        debugger;
+                        $.scojs_message(result.message,$.scojs_message.TYPE_OK);
+                        $('#notice_select').val(-1);
+                        $('#notice_is_valid').val(-1);
+                        $('#notice_times').val(-1);
+                        $('#notice_select').selectpicker('refresh');
+                        $('#notice_is_valid').selectpicker('refresh');
+                        $('#notice_times').selectpicker('refresh');
+                        $('#notice_content').empty();
+                    } else if (result.status == 'failed') {
+                        debugger;
+                        $.scojs_message(result.message,$.scojs_message.TYPE_ERROR);
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest);
+                    alert(textStatus);
+                    alert(errorThrown);
+                }
+            });
+        }else{
+            $.scojs_message('必填项未填写完整！',$.scojs_message.TYPE_ERROR);
         }
     }
 });
