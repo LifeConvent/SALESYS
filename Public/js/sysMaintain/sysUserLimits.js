@@ -1647,7 +1647,7 @@ $('#modify_notice').click(function(){
     debugger;
     var is_new_notice = $('#is_new_notice').val();
     if(is_new_notice!='0'&&is_new_notice!='1'){
-        $.scojs_message('修改密钥操作类型必须选择！',$.scojs_message.TYPE_ERROR);
+        $.scojs_message('通知书修改操作类型必须选择！',$.scojs_message.TYPE_ERROR);
     }else{
         var notice_id = $('#notice_select').val();
         var is_valid = $('#notice_is_valid').val();
