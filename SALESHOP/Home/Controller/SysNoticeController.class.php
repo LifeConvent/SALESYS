@@ -47,7 +47,7 @@ class SysNoticeController extends Controller
                 $result['message'][$i] = $notice[$i]['NOTICE'];
                 $return[$i]['id'] = $notice[$i]['NOTICE_ID'];
                 //之前没通知过
-                if(empty($notice[$i]['USER_ACCOUNT'])||strcmp($notice[$i]['USER_ACCOUNT'],$user_name)){
+                if(empty($notice[$i]['USER_ACCOUNT'])){
                     //新增用户通知记录
                     $insert = "INSERT INTO USER_NOTICE_RECORD(NOTICE_ID,USER_ACCOUNT,NOTICE_TIMES) VALUES(".$notice[$i]['NOTICE_ID'].",'".$user_name."',1)";
                     Log::write('新增'.$user_name.'用户通知'.$notice[$i]['NOTICE_ID'].'SQL：' . $insert . "<br>", 'INFO');
