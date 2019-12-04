@@ -35,7 +35,7 @@ class SysNoticeController extends Controller
         $conn = $method->OracleOldDBCon();
         $notice_select = "SELECT DISTINCT A.NOTICE_ID,A.NOTICE,A.TIMES,B.USER_ACCOUNT,B.NOTICE_TIMES FROM SYS_NOTICE_RECORD A 
                                    LEFT JOIN USER_NOTICE_RECORD B
-                                      ON A.NOTICE_ID = B.NOTICE_ID
+                                      ON A.NOTICE_ID = B.NOTICE_ID AND A.IS_VAILD = '1'
                                WHERE (B.USER_ACCOUNT = '".$user_name."' AND B.NOTICE_TIMES < A.TIMES) OR B.USER_ACCOUNT IS NULL";
         Log::write('查询'.$user_name.'用户通知SQL：' . $notice_select . "<br>", 'INFO');
         $result_rows = oci_parse($conn, $notice_select); // 配置SQL语句，执行SQL
