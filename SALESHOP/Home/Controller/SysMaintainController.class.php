@@ -333,7 +333,7 @@ class SysMaintainController extends Controller
         }
         $content = null;
         for ($i = 0; $i < sizeof($select); $i++) {
-            $content .= '<option value="' . $select[$i]['NOTICE_ID'] . '">' .'通知内容：'. $select[$i]['NOTICE'] . '   -    是否有效：' . $select[$i]['IS_VAILD'] . '</option>';
+            $content .= '<option value="' . $select[$i]['NOTICE_ID'] . '">' .$select[$i]['NOTICE_ID'].': 通知内容：'. $select[$i]['NOTICE'] . '   -    是否有效：' . $select[$i]['IS_VAILD'] . '</option>';
         }
         $this->assign('notice_lists', $content);
     }
@@ -542,18 +542,18 @@ class SysMaintainController extends Controller
     }
 
     public function getNoticeContent(){
-        $notice_hint = I('post.notice_hint');
+        $notice_id = I('post.notice_id');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-        $key_select = "SELECT * FROM SYS_NOTICE_RECORD WHERE NOTICE_ID = '".$notice_hint."'";
-        Log::write($notice_hint.'系统通知查询：'.$key_select,'INFO');
+        $key_select = "SELECT * FROM SYS_NOTICE_RECORD WHERE NOTICE_ID = ".$notice_id."";
+        Log::write($notice_id.'系统通知查询：'.$key_select,'INFO');
         $result_rows = oci_parse($conn, $key_select); // 配置SQL语句，执行SQL
         $key_result = $method->search_long($result_rows);
         oci_free_statement($result_rows);
         oci_close($conn);
-        if(empty($key_result[0]['IS_VAILD'])){
+        if(empty($key_result[0]['NOTICE'])){
             $result['status'] = "failed";
-            Log::write($notice_hint.'系统通知查询发生错误：'.$key_select,'ERROR');
+            Log::write($notice_id.'系统通知查询发生错误：'.$key_select,'ERROR');
             $result['message'] = "系统查询时出现错误，请联系管理员重试！";
         }else{
             $result['status'] = "success";

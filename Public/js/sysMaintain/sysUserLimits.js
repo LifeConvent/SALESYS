@@ -1561,8 +1561,8 @@ $("#key_user_select").change(function(){
 });
 
 $('#notice_select').change(function(){
-    var notice_hint = $('#notice_select').val();
-    if(notice_hint=='-1'){
+    var notice_id = $('#notice_select').val();
+    if(notice_id=='-1'){
         return;
     }else{
         $.ajax({
@@ -1570,7 +1570,7 @@ $('#notice_select').change(function(){
             url: HOST + "index.php/Home/SysMaintain/getNoticeContent", //目标地址.
             dataType: "json", //数据格式:JSON
             data: {
-                notice_hint: notice_hint
+                notice_id: notice_id
             },
             success: function (result) {
                 if (result.status == 'success') {
