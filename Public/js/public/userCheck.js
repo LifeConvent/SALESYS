@@ -82,7 +82,6 @@ function showMenu(result){
             }
             break;
         }
-        debugger;
         $('#' + result[strs[i]]).show();
     }
 }

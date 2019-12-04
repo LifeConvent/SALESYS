@@ -33,10 +33,10 @@ class SysNoticeController extends Controller
         $user_name = I('post.user_name');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-        $notice_select = "SELECT DISTINCT A.NOTICE_ID,A.NOTICE,A.TIMES,B.USER_ACCOUNT,B.NOTICE_TIMES FROM SYS_NOTICE_RECORD A 
-                                   LEFT JOIN USER_NOTICE_RECORD B
-                                      ON A.NOTICE_ID = B.NOTICE_ID AND A.IS_VAILD = '1'
-                               WHERE (B.USER_ACCOUNT = '".$user_name."' AND B.NOTICE_TIMES < A.TIMES) OR B.USER_ACCOUNT IS NULL";
+        $notice_select = "SELECT DISTINCT C.NOTICE_ID,C.NOTICE,C.TIMES,D.USER_ACCOUNT,D.NOTICE_TIMES FROM (SELECT * FROM TMP_DAYPOST_USER A,SYS_NOTICE_RECORD B) C
+                             LEFT JOIN USER_NOTICE_RECORD D ON C.ACCOUNT = D.USER_ACCOUNT AND C.NOTICE_ID = D.NOTICE_ID
+                                   WHERE (C.ACCOUNT = '".$user_name."' AND D.NOTICE_TIMES < C.TIMES) OR 
+                                   (C.ACCOUNT = '".$user_name."' AND D.USER_ACCOUNT IS NULL) ";
         Log::write('查询'.$user_name.'用户通知SQL：' . $notice_select . "<br>", 'INFO');
         $result_rows = oci_parse($conn, $notice_select); // 配置SQL语句，执行SQL
         $notice = $method->search_long($result_rows);
@@ -47,9 +47,9 @@ class SysNoticeController extends Controller
                 $result['message'][$i] = $notice[$i]['NOTICE'];
                 $return[$i]['id'] = $notice[$i]['NOTICE_ID'];
                 //之前没通知过
-                if(empty($notice[$i]['USER_ACCOUNT'])){
+                if(empty($notice[$i]['USER_ACCOUNT'])||strcmp($notice[$i]['USER_ACCOUNT'],$user_name)){
                     //新增用户通知记录
-                    $insert = "INSERT INTO USER_NOTICE_RECORD(NOTICE_ID,USER_ACCOUNT,NOTICE_TIMES) VALUES(".$notice[$i]['NOTICE_ID'].",'".$user_name."',0)";
+                    $insert = "INSERT INTO USER_NOTICE_RECORD(NOTICE_ID,USER_ACCOUNT,NOTICE_TIMES) VALUES(".$notice[$i]['NOTICE_ID'].",'".$user_name."',1)";
                     Log::write('新增'.$user_name.'用户通知'.$notice[$i]['NOTICE_ID'].'SQL：' . $insert . "<br>", 'INFO');
                     $result_rows = oci_parse($conn, $insert); // 配置SQL语句，执行SQL
                     oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS);
