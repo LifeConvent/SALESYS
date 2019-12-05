@@ -1258,6 +1258,8 @@ class DataOutController extends Controller
                                PRODUCT_CODE_SYS,
                                PRODUCT_NAME_SYS,
                                AMOUNT,
+                               MASTER_BUSI,
+                               VALUE_PREM,
                                TOTAL_PREM_AF,
                                FEE_STATUS
                           FROM TMP_QDSX_NB_QD_TB
@@ -1293,6 +1295,8 @@ class DataOutController extends Controller
             $result[$i]['amount'] = $value['AMOUNT'];
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
+            $result[$i]['master_busi'] = $value['MASTER_BUSI'];
+            $result[$i]['value_prem'] = $value['VALUE_PREM'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -1345,7 +1349,9 @@ class DataOutController extends Controller
             array('product_name_sys', '险种名称'),
             array('amount', '保额'),
             array('total_prem_af', '保费'),
-            array('fee_status', '保费是否到账')
+            array('fee_status', '保费是否到账'),
+            array('master_busi', '主附险标识'),
+            array('value_prem', '价值保费')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -1410,6 +1416,8 @@ class DataOutController extends Controller
                                PRODUCT_NAME_SYS,
                                AMOUNT,
                                TOTAL_PREM_AF,
+                               MASTER_BUSI,
+                               VALUE_PREM,
                                FEE_STATUS
                           FROM TMP_QDSX_NB_QD_TB
                          WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
@@ -1443,6 +1451,8 @@ class DataOutController extends Controller
             $result[$i]['amount'] = $value['AMOUNT'];
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
+            $result[$i]['master_busi'] = $value['MASTER_BUSI'];
+            $result[$i]['value_prem'] = $value['VALUE_PREM'];
         }
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
@@ -1534,7 +1544,8 @@ class DataOutController extends Controller
                                AMOUNT,
                                TOTAL_PREM_AF,
                                FEE_STATUS,
-                               FYC
+                               FYC,
+                               VALUE_PREM
                           FROM TMP_QDSX_NB_QD_CB
                          WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
@@ -1577,6 +1588,7 @@ class DataOutController extends Controller
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
             $result[$i]['fyc'] = $value['FYC'];
+            $result[$i]['value_prem'] = $value['VALUE_PREM'];
         }
         ##########################################################dataExportNoShow#############################################################################
         oci_free_statement($result_rows);
@@ -2623,7 +2635,8 @@ class DataOutController extends Controller
             array('amount', '保额'),
             array('total_prem_af', '保费'),
             array('fee_status', '保费是否到账'),
-            array('fyc', 'FYC')
+            array('fyc', 'FYC'),
+            array('value_prem', '价值保费')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -2698,7 +2711,8 @@ class DataOutController extends Controller
                                AMOUNT,
                                TOTAL_PREM_AF,
                                FEE_STATUS,
-                               FYC
+                               FYC,
+                               VALUE_PREM
                           FROM TMP_QDSX_NB_QD_CB
                          WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
                          ORDER BY ISSUE_DATE,ORGAN_CODE,APPLY_CODE";
@@ -2741,6 +2755,7 @@ class DataOutController extends Controller
             $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
             $result[$i]['fyc'] = $value['FYC'];
+            $result[$i]['value_prem'] = $value['VALUE_PREM'];
         }
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];

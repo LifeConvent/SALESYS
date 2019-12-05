@@ -277,6 +277,20 @@ var TableInit = function () {
                 valign: 'middle',
                 title: '保费是否到账',
                 width:100
+            }, {
+                field: 'master_busi',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '主附险标识',
+                width:100
+            }, {
+                field: 'value_prem',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '价值保费',
+                width:100
             }]
         });
     };
