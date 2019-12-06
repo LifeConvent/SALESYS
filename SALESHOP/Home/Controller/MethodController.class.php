@@ -459,8 +459,27 @@ class MethodController extends Controller
 
     public function back()
     {
+        $token = $_SESSION['token'];
+        $token = $this->decode($token);
+        $info = explode('-', $token);
+        $this->unbindUserLog($info[0]);
         $_SESSION['token'] = '';
         $this->redirect('Index/index');
+    }
+
+    public function unbindUserLog($user_name){
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $update = "UPDATE USER_LOGIN_INFO SET IS_VAILD = '0' WHERE USER_ACCOUNT = '".$user_name."'";
+        Log::write($user_name.'登录更新 SQL：'.$update,'INFO');
+        $result_rows = oci_parse($conn, $update); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = "success";
+        }else{
+            $result['status'] = "failed";
+            $result['message'] = "更新登录信息失败，请联系管理员确认！";
+        }
+//        exit(json_encode($result));
     }
 
     public function getSysResponse()

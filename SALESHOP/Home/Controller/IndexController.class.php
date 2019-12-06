@@ -126,11 +126,33 @@ class IndexController extends Controller
 //        }
     }
 
+    function getip() {
+        static $realip;
+        if (isset($_SERVER)) {
+            if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $realip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            } else if (isset($_SERVER['HTTP_CLIENT_IP'])) {
+                $realip = $_SERVER['HTTP_CLIENT_IP'];
+            } else {
+                $realip = $_SERVER['REMOTE_ADDR'];
+            }
+        } else {
+            if (getenv('HTTP_X_FORWARDED_FOR')) {
+                $realip = getenv('HTTP_X_FORWARDED_FOR');
+            } else if (getenv('HTTP_CLIENT_IP')) {
+                $realip = getenv('HTTP_CLIENT_IP');
+            } else {
+                $realip = getenv('REMOTE_ADDR');
+            }
+        }
+        return $realip;
+    }
+
     public function recordLogInfo($username){
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         //获取用户IP进行存储以便登录时进行校验
-        $IP = $_SERVER["REMOTE_ADDR"];
+        $IP = $this->getip();
         $select_des = "SELECT * FROM USER_LOGIN_INFO WHERE IS_VAILD = '1' AND USER_ACCOUNT = '".$username."' ORDER BY LOG_TIME";
         Log::write($username.'登录查询 SQL：'.$select_des,'INFO');
         $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL

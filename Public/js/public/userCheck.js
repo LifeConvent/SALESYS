@@ -117,25 +117,16 @@ function sleep(numberMillis) {
 //     });
 // }
 //
-// $(window).bind('beforeunload', function(){
-//     //这里面写在关闭页面时，要调用的事件
-//     var user_name = $('#user_name').text();
-//     $.ajax({
-//         type: "POST", //用POST方式传输
-//         url: HOST + "index.php/Home/SysMaintain/unbindUserLog", //目标地址.
-//         dataType: "json", //数据格式:JSON
-//         data:{user_name:user_name},
-//         success: function (result) {
-//             if (result.status == 'success') {
-//                 debugger;
-//             }
-//         },
-//         error: function (XMLHttpRequest, textStatus, errorThrown) {
-//             alert(XMLHttpRequest);
-//             alert(textStatus);
-//             alert(errorThrown);
-//         }
-//     });
-//     alert("unload");
-//     $(window).unbind('beforeunload');//在不需要时解除绑定
-// });
+
+
+function unbindLog(){
+    //这里面写在关闭页面时，要调用的事件
+    // var user_name = $('#user_name').text();
+    // $.ajax({
+    //     type: "POST", //用POST方式传输
+    //     url: HOST + "index.php/Home/SysMaintain/unbindUserLog", //目标地址.
+    //     dataType: "json", //数据格式:JSON
+    //     data:{user_name:user_name}
+    // });
+    // $(window).unbind('beforeunload');//在不需要时解除绑定
+}

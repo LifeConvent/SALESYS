@@ -367,7 +367,7 @@ class SysMaintainController extends Controller
         $user_name = I('post.user_name');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-        $update = "UPDATE TABLE USER_LOGIN_INFO SET IS_VAILD = '0' WHERE USER_ACCOUNT = '".$user_name."'";
+        $update = "UPDATE USER_LOGIN_INFO SET IS_VAILD = '0' WHERE USER_ACCOUNT = '".$user_name."'";
         Log::write($user_name.'登录更新 SQL：'.$update,'INFO');
         $result_rows = oci_parse($conn, $update); // 配置SQL语句，执行SQL
         if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)){
@@ -376,7 +376,7 @@ class SysMaintainController extends Controller
             $result['status'] = "failed";
             $result['message'] = "更新登录信息失败，请联系管理员确认！";
         }
-        exit(json_encode($result));
+//        exit(json_encode($result));
     }
 
     public function getOrganSixLevel()
