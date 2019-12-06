@@ -463,6 +463,7 @@ $('#modify_user_limits_bx').click(function (){
         $.scojs_message("用户核对机构必须配置！", $.scojs_message.TYPE_ERROR);
     }
     var survey_search_group = $('#survey_search_group_bx').val();
+    debugger;
     var bx_list_type = survey_search_group.toString().replace(/,/g, '&');
     var sys_type = $('#user_sys_type_select_bx').val();
     var bx_daypost_organ = $('#user_daypost_organcode_select1_bx').val();
@@ -485,7 +486,7 @@ $('#modify_user_limits_bx').click(function (){
             set_organ_code: set_organ_code,
             user_organ_code: user_organ_code,
             hd_user_code: hd_user_code,
-            // bx_list_type: bx_list_type,
+            bx_list_type: bx_list_type,
             sys_type: sys_type,
             bx_daypost_organ: bx_daypost_organ,
             bx_daypost_organ_list: bx_daypost_organ_list,

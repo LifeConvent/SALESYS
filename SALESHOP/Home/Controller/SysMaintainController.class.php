@@ -646,6 +646,7 @@ class SysMaintainController extends Controller
         $user_organ_code = I('post.user_organ_code');
         $hd_user_code = I('post.hd_user_code');
         $sx_list_type = I('post.sx_list_type');
+        $sx_list_type = htmlspecialchars_decode($sx_list_type);
         $sys_type = I('post.sys_type');
         $channel_type = I('post.channel_type');
         $sx_daypost_organ = I('post.sx_daypost_organ');
@@ -678,7 +679,8 @@ class SysMaintainController extends Controller
         $set_organ_code = I('post.set_organ_code');
         $user_organ_code = I('post.user_organ_code');
         $hd_user_code = I('post.hd_user_code');
-//        $bx_list_type = I('post.bx_list_type');
+        $bx_list_type = I('post.bx_list_type');
+        $bx_list_type = htmlspecialchars_decode($bx_list_type);
         $sys_type = I('post.sys_type');
         $bx_daypost_organ = I('post.bx_daypost_organ');
         $bx_daypost_organ_list = I('post.bx_daypost_organ_list');
@@ -698,7 +700,7 @@ class SysMaintainController extends Controller
         $user_modify = "UPDATE TMP_DAYPOST_USER SET IS_LOCK = '" . $is_lock . "' , SET_ORGAN_CODE = '" . $set_organ_code . "' , USER_ORGAN_CODE = '" . $user_organ_code . "' , USER_ORGAN_NAME = '" . $set_organ[0]['ORGAN_NAME'] . "'
         , HD_USER_CODE = '" . $hd_user_code . "', SYS_TYPE = '". $sys_type . "' , IS_BX_DEFINE_USER = '" . $is_bx_define_user . "' , BX_DAYPOST_ORGAN = '" . $bx_daypost_organ . "' ,
          BX_DAYPOST_ORGAN_LIST = '" . $bx_daypost_organ_list . "',IS_BACK_USER = '" . $is_back_user . "', IS_REVIEWER = '" . $is_reviewer . "', IS_DELETE_APPLY = '" . $is_delete_apply . "'
-          , IS_DELETE_REVIEWER = '" . $is_delete_reviewer . "', IS_SYS_DELETE = '" . $is_sys_delete . "', IS_WORK_DELETE = '" . $is_work_delete . "'WHERE ACCOUNT = '" . $user_account . "'";
+          , IS_DELETE_REVIEWER = '" . $is_delete_reviewer . "', IS_SYS_DELETE = '" . $is_sys_delete . "', IS_WORK_DELETE = '" . $is_work_delete . "', BX_LIST_TYPE = '" . $bx_list_type . "' WHERE ACCOUNT = '" . $user_account . "'";
         Log::write('更新'.$user_account.'用户并行权限执行SQL：' . $user_modify . "<br>", 'INFO');
         $result_rows = oci_parse($conn, $user_modify); // 配置SQL语句，执行SQL
         if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
