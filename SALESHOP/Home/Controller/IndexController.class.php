@@ -83,9 +83,16 @@ class IndexController extends Controller
 //                $info = explode('-', $token);
 //                echo $token;
 //                dump($info);
-                $_SESSION["token"] = $token;
-                $result['status'] = 'success';
-                $result['hint'] = '登录成功！';
+                $res = $this->recordLogInfo($user);
+                if(strcmp($res,'true')==0){
+                    $_SESSION["token"] = $token;
+                    $result['status'] = 'success';
+                    $result['hint'] = '登录成功！';
+                }else{
+                    $result['status'] = 'failed';
+                    $result['hint'] = '该用户已在IP地址'.$res.'登录！';
+                    return $result;
+                }
             }
             return $result;
         }
