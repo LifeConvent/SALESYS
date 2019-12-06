@@ -4430,6 +4430,8 @@ class MethodController extends Controller
             } else {
                 $result['status'] = 'failed';
                 $result['message'] = '清空初始化失败，导入失败！';
+                $this->write($time, json_encode($result));
+                return;
             }
         }
         //data是EXCEL数据表的值
