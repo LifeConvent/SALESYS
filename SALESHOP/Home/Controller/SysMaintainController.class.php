@@ -571,6 +571,7 @@ class SysMaintainController extends Controller
         $user_organ_code = I('post.user_organ_code');
         $hd_user_code = I('post.hd_user_code');
         $sx_list_type = I('post.sx_list_type');
+        $sx_list_type = htmlspecialchars_decode($sx_list_type);
         $sys_type = I('post.sys_type');
         $channel_type = I('post.channel_type');
         $sx_daypost_organ = I('post.sx_daypost_organ');
