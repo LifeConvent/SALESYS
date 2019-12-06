@@ -5,7 +5,7 @@
 $(function () {
     $('#user').attr('class', 'active');
     $('#user_sub').css('display', 'block');
-    $('#table_manage').attr('class', 'active');
+    $('#table_manager').attr('class', 'active');
 
     //var i = 1;
     //var result = setInterval(function () {

@@ -47,7 +47,7 @@ $(function() {
                             },1000);
                         }else{
                             $('#sysNotice').modal('hide');
-                            sleep(2000);
+                            // sleep(2000);
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {

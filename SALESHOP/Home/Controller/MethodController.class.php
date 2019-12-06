@@ -405,7 +405,6 @@ class MethodController extends Controller
                 return false;
             }
         }
-
     }
 
     public function getUserType()
@@ -610,6 +609,81 @@ class MethodController extends Controller
             "MDM","合计"
         );
         return $org;
+    }
+
+    //获取数据库数据表结构
+    public function getUserTableStruct()
+    {
+        //查询获取所有用户可选择的数据表
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if((int)$userType==1){
+            $user = "'ADMIN','".$user_name."'";
+        }else{
+            $user = $user_name;
+        }
+        $select_table = "SELECT DISTINCT RECORD_ID,USER_ACCOUNT,TABLE_CODE,TABLE_NAME,DEAL_TYPE FROM TMP_USER_CONTROL_TABLE WHERE 1=1 AND USER_ACCOUNT IN ( 'PUBLIC',".$user.")";
+        $result_rows = oci_parse($conn, $select_table); // 配置SQL语句，执行SQL
+        $table_result = $method->search_long($result_rows);
+        Log::write($user_name . '用户可编辑数据表 数据库查询SQL：' . $select_table, 'INFO');
+        $col = null;
+        for($i=0;$i<sizeof($table_result);$i++){
+            $col[$i]['name'] = $table_result[$i]['TABLE_CODE'].'-'.$table_result[$i]['TABLE_NAME'];
+            $col[$i]['table'] = $table_result[$i]['TABLE_CODE'];
+            $col[$i]['id'] = $table_result[$i]['RECORD_ID'];
+            $col[$i]['table_code'] = $table_result[$i]['TABLE_CODE'];
+            $col[$i]['type'] = $table_result[$i]['DEAL_TYPE'];
+            $col[$i]['account'] = $table_result[$i]['USER_ACCOUNT'];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $col;
+    }
+
+    //获取数据库数据表字段
+    public function getTableFiled()
+    {
+        $field = I('post.table_name');
+        $file_name = I('post.file_name');
+        $data = $this->import_excel('Public/uploads/' . $file_name);
+        $result['status'] = 'success';
+        $result['file_field'] = $data[1];
+        $result['data'] = M($field)->getDbFields();
+        exit(json_encode($result));
+    }
+
+    //获取数据库数据表字段
+    public function getTableFiledSx()
+    {
+        $field = I('post.table_name');
+        $file_name = I('post.file_name');
+        $data = $this->import_excel('Public/uploads/' . $file_name);
+        $result['status'] = 'success';
+        $result['file_field'] = $data[1];
+        $result['data'] = $this->getDbFieldsByTable($field);
+        exit(json_encode($result));
+    }
+
+    public function getDbFieldsByTable($field){
+        $conn = $this->OracleOldDBCon();
+        $select_table = "select column_name from user_tab_columns where table_name= '".$field."'";
+        Log::write( '用户可编辑数据表列名查询 数据库查询SQL：' . $select_table, 'INFO');
+        $result_rows = oci_parse($conn, $select_table); // 配置SQL语句，执行SQL
+        $table_result = $this->search_long($result_rows);
+        $data = '';
+        for($i=0;$i<sizeof($table_result);$i++){
+            if($i==0){
+                $data = $table_result[$i]['COLUMN_NAME'];
+            }else{
+                $data .= ','.$table_result[$i]['COLUMN_NAME'];
+            }
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return $data;
     }
 
     //契约回执出单数据更新
@@ -4354,6 +4428,111 @@ class MethodController extends Controller
         exit(json_encode($result));
     }
 
+    //第二种方案.发过来数据(新增临时文件夹名称-时间戳)后断开连接,之后开始轮询请求查询取得文件中的数据解析,JOSN包含处理进度
+    public function startUploadsSx()
+    {
+        $time = I('post.time');
+        $file_name = I('post.f_n');
+        $table_name = I('post.t_n');
+        $match_relation = I('post.m_r');
+        $is_delete = I('post.is_delete');
+
+        $result['status'] = 'success';
+        $result['percent'] = '0%';
+        $this->write($time, json_encode($result));
+
+        //解析匹配关系
+        $match_relation = explode(',', $match_relation);
+        $data = $this->import_excel('Public/uploads/' . $file_name);
+//        dump($data);
+        $match = $field = $count = null;
+        foreach ($match_relation AS $key => $val) {
+            $match[$key] = explode('-', $val);
+        }
+        $num = 0;
+        //调整与EXCEL的对应关系
+        foreach ($data[1] AS $key => $val) {
+            foreach ($match AS $k => $v) {
+                if ($v[1] == $val) {
+                    $data[1][$key] = $val[0];
+                    $field[$num] = $v[0];
+                    $count[$num++] = $key;
+                }
+            }
+        }
+//        $table = M($table_name);
+        $result = null;
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        Log::write('数据表导入 表名称：' . $table_name, 'INFO');
+        if((int)$is_delete==0){
+            $delete =  "DELETE FROM ".$table_name;
+            Log::write('数据表导入 清空数据表：' . $delete, 'INFO');
+            $result_rows = oci_parse($conn, $delete); // 配置SQL语句，执行SQL
+            if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
+            } else {
+                $result['status'] = 'failed';
+                $result['message'] = '清空初始化失败，导入失败！';
+                $this->write($time, json_encode($result));
+                return;
+            }
+        }
+        //data是EXCEL数据表的值
+        for ($j = 2; $j < sizeof($data); $j++) {
+            $condition = null;
+            $select_where = '';$insert_be ='';$insert_af = '';
+            $count_i = 0;
+            //field是指数据库表头的名称
+            for ($i = 0; $i < sizeof($field); $i++) {
+//                $condition[$field[$i]] = $data[$j][$count[$i]];
+                $select_where .= " AND ".$field[$i]." = '".$data[$j][$count[$i]]."'";
+                if($count_i==0){
+                    $insert_be .= $field[$i];
+                    $insert_af .= "'".$data[$j][$count[$i]]."'";
+                    $count_i++;
+                }else{
+                    $insert_be .= ",".$field[$i];
+                    $insert_af .= ",'".$data[$j][$count[$i]]."'";
+                    $count_i++;
+                }
+            }
+            $percent = (float)$j / (sizeof($data) - 1);
+            //查询单行数据是否存在-缺少必导入项判断条件
+            $dg_select =  "SELECT * FROM ".$table_name." WHERE 1=1 ".$select_where;
+            $result_rows = oci_parse($conn, $dg_select); // 配置SQL语句，执行SQL
+            Log::write('数据表导入 数据库查询条件：' . $dg_select, 'INFO');
+            $dg = $method->search_long($result_rows);
+            Log::write('数据表导入 数据库查询结果：' . $dg[0], 'INFO');
+            if(empty($dg[0])){
+                //单行添加数据
+                $dg_add = "INSERT INTO ".$table_name." (".$insert_be.") 
+                                  VALUES(".$insert_af.")";
+                Log::write('数据表导入 数据库插入新增：' . $dg_add, 'INFO');
+                $result_rows = oci_parse($conn, $dg_add); // 配置SQL语句，执行SQL
+                if (oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)) {
+                    $result['status'] = 'success';
+                    $result['percent'] = ($percent * 100) . '%';
+                } else {
+                    $result['status'] = 'failed';
+                    $result['message'] = '数据导入出现未知错误，请联系管理员处理！';
+                    $this->write($time, json_encode($result));
+                    return;
+                }
+            }else{
+                $result['status'] = 'success';
+                $result['percent'] = ($percent * 100) . '%';
+            }
+        }
+        if ($result == null) {
+            $result['status'] = 'success';
+            $result['message'] = '无数据更新!';
+            $result['percent'] = '100%';
+            $this->write($time, json_encode($result));
+        }else{
+            $this->write($time, json_encode($result));
+        }
+    }
+
     public function deleteFile()
     {
         $time = I('post.time');
@@ -4386,18 +4565,6 @@ class MethodController extends Controller
             $col[$key] = $field;
         }
         return $col;
-    }
-
-    //获取数据库数据表字段
-    public function getTableFiled()
-    {
-        $field = I('post.table_name');
-        $file_name = I('post.file_name');
-        $data = $this->import_excel('Public/uploads/' . $file_name);
-        $result['status'] = 'success';
-        $result['file_field'] = $data[1];
-        $result['data'] = M($field)->getDbFields();
-        exit(json_encode($result));
     }
 
     public function outTest()
