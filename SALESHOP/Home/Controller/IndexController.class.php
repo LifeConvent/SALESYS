@@ -96,6 +96,7 @@ class IndexController extends Controller
             }
             return $result;
         }
+
 //
 //        $userAccount = M('per_user');//账户表 账户-ID
 //        $condition['user_account'] = "$user";
@@ -125,6 +126,56 @@ class IndexController extends Controller
 //            }
 //            return null;
 //        }
+    }
+
+    function getip() {
+        static $realip;
+        if (isset($_SERVER)) {
+            if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $realip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            } else if (isset($_SERVER['HTTP_CLIENT_IP'])) {
+                $realip = $_SERVER['HTTP_CLIENT_IP'];
+            } else {
+                $realip = $_SERVER['REMOTE_ADDR'];
+            }
+        } else {
+            if (getenv('HTTP_X_FORWARDED_FOR')) {
+                $realip = getenv('HTTP_X_FORWARDED_FOR');
+            } else if (getenv('HTTP_CLIENT_IP')) {
+                $realip = getenv('HTTP_CLIENT_IP');
+            } else {
+                $realip = getenv('REMOTE_ADDR');
+            }
+        }
+        return $realip;
+    }
+
+    public function recordLogInfo($username){
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        //获取用户IP进行存储以便登录时进行校验
+        $IP = $this->getip();
+        $select_des = "SELECT * FROM USER_LOGIN_INFO WHERE IS_VAILD = '1' AND USER_ACCOUNT = '".$username."' ORDER BY LOG_TIME";
+        Log::write($username.'登录查询 SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $method->search_long($result_rows);
+        if(empty($result[0]['IP'])||strcmp($IP,$result[0]['IP'])==0){
+            //新增登录信息
+            $time = date('Y-m-d H:i:s',time());
+            $insert = "INSERT INTO USER_LOGIN_INFO(USER_ACCOUNT,IS_VAILD,IP,LOG_TIME) VALUES('".$username."','1','".$IP."',TO_DATE('".$time."','YYYY-MM-DD HH24:mi:ss'))";
+            $result_rows = oci_parse($conn, $insert);
+            Log::write($username.'登录插入 SQL：'.$insert,'INFO');
+            if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)){
+                return 'true';
+            }else{
+                return $result[0]['IP'];
+            }
+        }else{
+            return $result[0]['IP'];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return 'true';
     }
 
     public function test(){
