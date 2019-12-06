@@ -74,7 +74,7 @@ class IndexController extends Controller
                     $result['hint'] = '该用户已锁定联系管理员确认！';
                     return $result;
                 }
-                $temp = $user.'-'.(string)time().'-success-'.$result['TYPE'];
+                $temp = $user.'-'.(string)time().'-success-'.$result['TYPE'].'-'.$_SERVER["REMOTE_ADDR"];
 //                dump($temp);
                 $token = $method->encode((string)$temp);
 //                echo $token;
@@ -82,9 +82,16 @@ class IndexController extends Controller
 //                $info = explode('-', $token);
 //                echo $token;
 //                dump($info);
-                $_SESSION["token"] = $token;
-                $result['status'] = 'success';
-                $result['hint'] = '登录成功！';
+                $res = $this->recordLogInfo($user);
+                if(strcmp($res,'true')==0){
+                    $_SESSION["token"] = $token;
+                    $result['status'] = 'success';
+                    $result['hint'] = '登录成功！';
+                }else{
+                    $result['status'] = 'failed';
+                    $result['hint'] = '该用户已在IP地址'.$res.'登录！';
+                    return $result;
+                }
             }
             return $result;
         }
@@ -117,6 +124,34 @@ class IndexController extends Controller
 //            }
 //            return null;
 //        }
+    }
+
+    public function recordLogInfo($username){
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        //获取用户IP进行存储以便登录时进行校验
+        $IP = $_SERVER["REMOTE_ADDR"];
+        $select_des = "SELECT * FROM USER_LOGIN_INFO WHERE IS_VAILD = '1' AND USER_ACCOUNT = '".$username."' ORDER BY LOG_TIME";
+        Log::write($username.'登录查询 SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $method->search_long($result_rows);
+        if(empty($result[0]['IP'])||strcmp($IP,$result[0]['IP'])==0){
+            //新增登录信息
+            $time = date('Y-m-d H:i:s',time());
+            $insert = "INSERT INTO USER_LOGIN_INFO(USER_ACCOUNT,IS_VAILD,IP,LOG_TIME) VALUES('".$username."','1','".$IP."',TO_DATE('".$time."','YYYY-MM-DD HH24:mi:ss'))";
+            $result_rows = oci_parse($conn, $insert);
+            Log::write($username.'登录插入 SQL：'.$insert,'INFO');
+            if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)){
+                return 'true';
+            }else{
+                return $result[0]['IP'];
+            }
+        }else{
+            return $result[0]['IP'];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return 'true';
     }
 
     public function test(){
