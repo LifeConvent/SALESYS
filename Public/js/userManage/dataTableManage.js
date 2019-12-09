@@ -275,7 +275,7 @@ function startMatch() {
                     });
                 }
             } else {
-                scojs_message(result.message, $.scojs_message.TYPE_ERROR);
+                $.scojs_message(result.message, $.scojs_message.TYPE_ERROR);
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

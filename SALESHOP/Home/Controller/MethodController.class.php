@@ -5,7 +5,6 @@
  * Date: 2016/11/24
  * Time: 下午1:32
  */
-
 namespace Home\Controller;
 use Think\Controller;
 use Think\Log;
@@ -4129,8 +4128,15 @@ class MethodController extends Controller
         ini_set('max_execution_time', '0');
         Vendor('PHPExcel.PHPExcel');
         // 判断使用哪种格式
-        $objReader = \PHPExcel_IOFactory::createReader($type);
-        $objPHPExcel = $objReader->load($file);
+        $extension = strtolower( pathinfo($file, PATHINFO_EXTENSION) );
+        if (strcmp($extension,'xlsx')==0) {
+//            $objReader = new PHPExcel_Reader_Excel2007();
+            $objReader = \PHPExcel_IOFactory::createReader('excel2007');;
+            $objPHPExcel = $objReader ->load($file,$encode='utf-8');
+        } else {
+            $objReader = \PHPExcel_IOFactory::createReader($type);
+            $objPHPExcel = $objReader->load($file);
+        }
         $sheet = $objPHPExcel->getSheet(0);
         // 取得总行数
         $highestRow = $sheet->getHighestRow();
@@ -4440,6 +4446,9 @@ class MethodController extends Controller
         $result = null;
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        $define =  "set  define  off";
+        $result_rows = oci_parse($conn, $define); // 配置SQL语句，执行SQL
+        oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS);
         Log::write('数据表导入 表名称：' . $table_name, 'INFO');
         if((int)$is_delete==0){
             $delete =  "DELETE FROM ".$table_name;
@@ -4450,6 +4459,8 @@ class MethodController extends Controller
                 $result['status'] = 'failed';
                 $result['message'] = '清空初始化失败，导入失败！';
                 $this->write($time, json_encode($result));
+                oci_free_statement($result_rows);
+                oci_close($conn);
                 return;
             }
         }
@@ -4490,8 +4501,10 @@ class MethodController extends Controller
                     $result['percent'] = ($percent * 100) . '%';
                 } else {
                     $result['status'] = 'failed';
-                    $result['message'] = '数据导入出现未知错误，请联系管理员处理！';
+                    $result['message'] = '第'.$j.'行，数据导入出现未知错误，请联系管理员处理！';
                     $this->write($time, json_encode($result));
+                    oci_free_statement($result_rows);
+                    oci_close($conn);
                     return;
                 }
             }else{
@@ -4507,6 +4520,9 @@ class MethodController extends Controller
         }else{
             $this->write($time, json_encode($result));
         }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        return;
     }
 
     public function deleteFile()
