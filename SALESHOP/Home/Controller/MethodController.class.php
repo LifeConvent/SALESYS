@@ -416,6 +416,7 @@ class MethodController extends Controller
         $info = explode('-', $token);
         if (strcmp($info[2],"success") == 0) {
             $admin = $info[0];
+            Log::write($admin.'用户登录session：'.$token."<br>",'INFO');
             Log::write($admin.'用户登录，登录时间：'.date("h:i:sa")."<br>",'INFO');
             if($this->publicCheck($admin)==1){
                 return false;
@@ -462,8 +463,10 @@ class MethodController extends Controller
         $token = $this->decode($token);
         $info = explode('-', $token);
         $this->unbindUserLog($info[0]);
-        $_SESSION['token'] = '';
+        $_SESSION['token'] = '';        
         $this->redirect('Index/index');
+//        header('location:http://10.1.188.232');
+//        exit;
     }
 
     public function unbindUserLog($user_name){
