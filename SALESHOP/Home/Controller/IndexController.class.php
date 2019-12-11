@@ -86,7 +86,7 @@ class IndexController extends Controller
 //                echo $token;
 //                dump($info);
                 $res = $this->recordLogInfo($user);
-                $res = 'true';//开门红期间暂时关闭
+//                $res = 'true';//开门红期间暂时关闭
                 if(strcmp($res,'true')==0){
                     $_SESSION["token"] = $token;
                     $result['status'] = 'success';
