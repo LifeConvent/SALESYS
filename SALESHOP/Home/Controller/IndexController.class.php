@@ -16,6 +16,9 @@ class IndexController extends Controller
     {
         $user = I('post.user');
         $pass = I('post.pass');
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+        header('Access-Control-Allow-Methods: GET, POST, PUT');
         if($user==null||$pass==null){
             $result['status'] = 'failed';
             $result['hint'] = '登录失败！';
