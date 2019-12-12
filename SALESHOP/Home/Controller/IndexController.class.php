@@ -93,6 +93,10 @@ class IndexController extends Controller
                     $_SESSION["token"] = $token;
                     $result['status'] = 'success';
                     $result['hint'] = '登录成功！';
+                }else if(strcmp($res,'empty')==0){
+                    $result['status'] = 'failed';
+                    $result['hint'] = '系统版本相差过多,请强制刷新后登录（CTRL+F5）！';
+                    return $result;
                 }else{
                     $result['status'] = 'failed';
 //                    $result['hint'] = '该用户已在IP地址'.$res.'登录！';
@@ -161,6 +165,9 @@ class IndexController extends Controller
         //获取用户IP进行存储以便登录时进行校验
 //        $IP = $this->getClientIp();
         $IP = $ip;
+        if(empty($IP)){
+            return 'empty';
+        }
         $select_des = "SELECT * FROM USER_LOGIN_INFO WHERE IS_VAILD = '1' AND USER_ACCOUNT = '".$username."' ORDER BY LOG_TIME";
         Log::write($username.'登录查询 SQL：'.$select_des,'INFO');
         $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
