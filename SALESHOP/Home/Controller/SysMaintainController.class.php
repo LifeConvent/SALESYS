@@ -408,7 +408,7 @@ class SysMaintainController extends Controller
     {
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-        $user_select = "SELECT * FROM TMP_SX_MENU_LIST";
+        $user_select = "SELECT * FROM TMP_SX_MENU_LIST ORDER BY MENU_INDEX";
         $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
         $menu_result = $method->search_long($result_rows);
         oci_free_statement($result_rows);
@@ -431,7 +431,7 @@ class SysMaintainController extends Controller
     {
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
-        $user_select = "SELECT * FROM TMP_SX_MENU_LIST";
+        $user_select = "SELECT * FROM TMP_SX_MENU_LIST ORDER BY MENU_INDEX";
         $result_rows = oci_parse($conn, $user_select); // 配置SQL语句，执行SQL
         $menu_result = $method->search_long($result_rows);
         oci_free_statement($result_rows);

@@ -31,6 +31,22 @@ class DataOutController extends Controller
         }
     }
 
+    public function largePolicy()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
+                $this->redirect('Index/errorSys');
+            }
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function scanList()
     {
         $username = '';
@@ -1130,11 +1146,19 @@ class DataOutController extends Controller
     {   //导出Excel
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
+        $policy_code = I('get.policy_code');
+        $agent_info = I('get.agent_info');
+        //督管信息
+        $risk_info = I('get.risk_info');
+        $is_self = I('get.is_self');
         //导出Excel
-        if (!empty($queryDateStart) && !empty($queryDateEnd)) {
-            $where_time_bqsl = " AND DUE_TIME BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd')";
-        } else {
-            $where_time_bqsl = "";
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(DUE_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND TRUNC(DUE_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else if (empty($policy_code) && empty($agent_info) && empty($risk_info) && empty($is_self)) {
+            $where_time_bqsl = " AND TRUNC(DUE_TIME) = TRUNC(SYSDATE) ";
         }
         $xlsName = "大额保单清单";
         $xlsTitle = "大额保单清单";
@@ -1172,6 +1196,18 @@ class DataOutController extends Controller
         } else if ((int)$userType == 3) {
             $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
         }
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND POLICY_CODE LIKE '%" . $policy_code . "%'";
+        }
+        if (!empty($is_self)) {
+            $where_type_fix .= " AND IS_SELF_INSURED LIKE '%" . $is_self . "%'";
+        }
+        if (!empty($agent_info)) {
+            $where_type_fix .= " AND (AGENT_CODE LIKE '%" . $agent_info . "%' OR AGENT_NAME LIKE '%" . $agent_info . "%')";
+        }
+        if (!empty($risk_info)) {
+            $where_type_fix .= " AND (CHECK_USER_CODE LIKE '%" . $risk_info . "%' OR CHECK_USER_NAME LIKE '%" . $risk_info . "%')";
+        }
         $select_bqsl = "SELECT A.POLICY_CODE, --保单号 
                                A.HOLDER_NAME, --投保人姓名
                                A.AGENT_CODE, --代理人编码
@@ -1194,7 +1230,7 @@ class DataOutController extends Controller
                            FROM T_LARGE_POLICY_FEE A
                           WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
-        Log::write($user_name . ' 预收清单 数据库查询条件：' . $select_bqsl, 'INFO');
+        Log::write($user_name . ' 大额保单清单 数据库查询条件：' . $select_bqsl, 'INFO');
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
@@ -1224,6 +1260,106 @@ class DataOutController extends Controller
         oci_free_statement($result_rows);
         oci_close($conn);
         $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
+    }
+
+    public function getLargerPolicy()
+    {   //导出Excel
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $policy_code = I('get.policy_code');
+        $agent_info = I('get.agent_info');
+        //督管信息
+        $risk_info = I('get.risk_info');
+        $is_self = I('get.is_self');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(DUE_TIME) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND TRUNC(DUE_TIME) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else if (empty($policy_code) && empty($agent_info) && empty($risk_info) && empty($is_self)) {
+            $where_time_bqsl = " AND TRUNC(DUE_TIME) = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if ((int)$userType == 1) {
+            $where_type_fix = "";
+        } else if ((int)$userType == 2) {
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+        }
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND POLICY_CODE LIKE '%" . $policy_code . "%'";
+        }
+        if (!empty($is_self)) {
+            $where_type_fix .= " AND IS_SELF_INSURED LIKE '%" . $is_self . "%'";
+        }
+        if (!empty($agent_info)) {
+            $where_type_fix .= " AND (AGENT_CODE LIKE '%" . $agent_info . "%' OR AGENT_NAME LIKE '%" . $agent_info . "%')";
+        }
+        if (!empty($risk_info)) {
+            $where_type_fix .= " AND (CHECK_USER_CODE LIKE '%" . $risk_info . "%' OR CHECK_USER_NAME LIKE '%" . $risk_info . "%')";
+        }
+        $select_bqsl = "SELECT A.POLICY_CODE, --保单号 
+                               A.HOLDER_NAME, --投保人姓名
+                               A.AGENT_CODE, --代理人编码
+                               A.AGENT_NAME, --代理人姓名
+                               A.SALES_CHANNEL_NAME, --代理人所属渠道
+                               A.POLICY_ORGAN_CODE, --保单所属机构
+                               --A.AREA_CODE, --营业区编码
+                               A.AREA_NAME, --营业区
+                               --A.PART_CODE, --营业部编码
+                               A.PART_NAME, --营业部
+                               --A.GROUP_CODE, --营业组编码
+                               A.GROUP_NAME, --营业组
+                               A.FEE_AMOUNT, --保费
+                               A.FEE_STATUS, --费用状态
+                               TO_CHAR(A.DUE_TIME,'YYYY-MM-DD') AS DUE_TIME, --应缴应付日
+                               A.POLICY_FLAG, --保单标识
+                               A.IS_SELF_INSURED, --自保互保标识
+                               A.CHECK_USER_CODE, --督管编码
+                               A.CHECK_USER_NAME --督管姓名
+                           FROM T_LARGE_POLICY_FEE A
+                          WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        Log::write($user_name . ' 大额保单清单 数据库查询条件：' . $select_bqsl, 'INFO');
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $res[] = $value;
+//            $res[$i]['APPLY_CODE'] = "'" . $value['APPLY_CODE'];
+            $res[$i]['POLICY_CODE'] = "'" . $value['POLICY_CODE'];
+//            $result[$i]['apply_code'] = "'".$value['APPLY_CODE'];
+//            $result[$i]['status_desc'] = $value['STATUS_DESC'];
+//            $result[$i]['winning_start_flag'] = $value['WINNING_START_FLAG'];
+//            $result[$i]['agent_code'] = $value['AGENT_CODE'];
+//            $result[$i]['agent_name'] = $value['AGENT_NAME'];
+//            $result[$i]['total_prem_af'] = $value['TOTAL_PREM_AF'];
+//            $result[$i]['fyc'] = $value['FYC'];
+//            $result[$i]['status_name'] = $value['STATUS_NAME'];
+//            $result[$i]['charge_year'] = $value['CHARGE_YEAR'];
+//            $result[$i]['validate_date'] = $value['VALIDATE_DATE'];
+//            $result[$i]['amount'] = $value['AMOUNT'];
+//            $result[$i]['master_busi_item_id'] = $value['MASTER_BUSI_ITEM_ID'];
+//            $result[$i]['busi_apply_date'] = $value['BUSI_APPLY_DATE'];
+//            $result[$i]['due_time'] = $value['DUE_TIME'];
+//            $result[$i]['apply_date'] = $value['APPLY_DATE'];
+//            $result[$i]['issue_date'] = $value['ISSUE_DATE'];
+        }
+//        for ($i = 0; $i < sizeof($result); $i++) {
+//            $res[] = $result[$i];
+//        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
     }
 
     public function getNbHz()

@@ -6,7 +6,7 @@ $(function () {
 
     $('#nb_post').attr('class','active');
     $('#nb_post_table').css('display','block');
-    $('#data_export_jx_ys').attr('class','active');
+    $('#data_export_large_policy').attr('class','active');
 
     $('#form_date2').datetimepicker({
         language:  'zh-CN',
@@ -49,20 +49,20 @@ $(function () {
 });
 
 function exportExcel() {
-    window.location.href = HOST + "index.php/Home/DataOut/expNbYs";
+    window.location.href = HOST + "index.php/Home/DataOut/expLargerPolicyNoShow";
 }
 
 function exportExcelByTime() {
     var policy_code = $("#policy_code").val();
-    var apply_channel = $("#apply_channel").val();
+    var is_self = $("#is_self").val();
     var risk_info = $("#risk_info").val();
     var agent_info = $("#agent_info").val();
     var fix = '';
     if(policy_code!=''&&policy_code!=null){
         fix += '&policy_code='+policy_code;
     }
-    if(apply_channel!=''&&apply_channel!=null){
-        fix += '&apply_channel='+apply_channel;
+    if(is_self!=''&&is_self!=null){
+        fix += '&is_self='+is_self;
     }
     if(risk_info!=''&&risk_info!=null){
         fix += '&risk_info='+risk_info;
@@ -70,20 +70,20 @@ function exportExcelByTime() {
     if(agent_info!=''&&agent_info!=null){
         fix += '&agent_info='+agent_info;
     }
-    window.location.href = HOST + "index.php/Home/DataOut/expNbYsNoShow?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix;
+    window.location.href = HOST + "index.php/Home/DataOut/expLargerPolicyNoShow?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix;
 }
 
 function refreshTable(){
     var policy_code = $("#policy_code").val();
-    var apply_channel = $("#apply_channel").val();
+    var is_self = $("#is_self").val();
     var risk_info = $("#risk_info").val();
     var agent_info = $("#agent_info").val();
     var fix = '';
     if(policy_code!=''&&policy_code!=null){
         fix += '&policy_code='+policy_code;
     }
-    if(apply_channel!=''&&apply_channel!=null){
-        fix += '&apply_channel='+apply_channel;
+    if(is_self!=''&&is_self!=null){
+        fix += '&is_self='+is_self;
     }
     if(risk_info!=''&&risk_info!=null){
         fix += '&risk_info='+risk_info;
@@ -92,15 +92,15 @@ function refreshTable(){
         fix += '&agent_info='+agent_info;
     }
     $('#daily_report2').bootstrapTable('removeAll');
-    $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getJxYs?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
-};
+    $('#daily_report2').bootstrapTable('refresh', {url: HOST + "index.php/Home/DataOut/getLargerPolicy?queryDateStart="+$('#dtp_input2').val()+"&queryDateEnd="+$('#dtp_input3').val()+fix});
+}
 
 var TableInit = function () {
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
         $('#daily_report2').bootstrapTable({
-            url: HOST + "index.php/Home/DataOut/getJxYs",   //请求后台的URL（*）
+            url: HOST + "index.php/Home/DataOut/getLargerPolicy",   //请求后台的URL（*）
             method: 'get',      //请求方式（*）
             cache: false,      //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             showExport: true,
@@ -150,13 +150,6 @@ var TableInit = function () {
                     return index+1;
                 }
             }, {
-                field: 'APPLY_CODE',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '投保单号',
-                width:140
-            }, {
                 field: 'POLICY_CODE',
                 sortable: true,
                 valign: 'middle',
@@ -164,117 +157,110 @@ var TableInit = function () {
                 title: '保单号',
                 width:120
             },{
-                field: 'BUSI_APPLY_DATE',
+                field: 'HOLDER_NAME',
                 sortable: true,
                 valign: 'middle',
                 align: 'center',
-                title: '预收日期',
+                title: '投保人姓名',
                 width:130
             }, {
-                field: 'STATUS_DESC',
-                sortable: true,
-                valign: 'middle',
-                align: 'center',
-                title: '投保单状态',
-                width:120
-            }, {
-                field: 'ORGAN_CODE_ZZ',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '中支代码',
-                width:120
-            },{
-                field: 'ORGAN_CODE',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '营销服务部机构代码',
-                width:100
-            }, {
-                field: 'BRANCH_ATTR',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '营业组代码',
-                width:100
-            },{
                 field: 'AGENT_CODE',
                 sortable: true,
-                align: 'center',
                 valign: 'middle',
-                title: '业务员代码',
-                width:100
+                align: 'center',
+                title: '代理人编码',
+                width:120
             }, {
                 field: 'AGENT_NAME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '姓名',
-                width:100
-            }, {
-                field: 'AGENT_GRADE',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '级别',
-                width:100
-            }, {
-                field: 'EMPLOYMENT_DATE',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '入司时间',
-                width:100
-            }, {
+                title: '代理人姓名',
+                width:120
+            },{
                 field: 'SALES_CHANNEL_NAME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '销售渠道',
+                title: '代理人所属渠道',
                 width:100
             }, {
-                field: 'PRODUCT_CODE_SYS',
+                field: 'POLICY_ORGAN_CODE',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '险种代码',
+                title: '保单所属机构',
+                width:100
+            },{
+                field: 'AREA_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '营业区',
                 width:100
             }, {
-                field: 'PRODUCT_NAME_SYS',
+                field: 'PART_NAME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '险种名称',
-                width:180
-            }, {
-                field: 'POLICY_JS',
-                sortable: true,
-                align: 'center',
-                valign: 'middle',
-                title: '保单件数',
+                title: '营业部',
                 width:100
             }, {
-                field: 'CHARGE_YEAR',
+                field: 'GROUP_NAME',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '缴费年期',
+                title: '营业组',
+                width:100
+            }, {
+                field: 'FEE_AMOUNT',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保费',
+                width:100
+            }, {
+                field: 'FEE_STATUS',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '费用状态',
+                width:100
+            }, {
+                field: 'DUE_TIME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '应缴应付日',
+                width:100
+            }, {
+                field: 'POLICY_FLAG',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '保单标识',
                 width:120
             }, {
-                field: 'TOTAL_PREM_AF',
+                field: 'IS_SELF_INSURED',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: '规模保费',
+                title: '自保互保标识',
                 width:120
             }, {
-                field: 'FYC',
+                field: 'CHECK_USER_CODE',
                 sortable: true,
                 align: 'center',
                 valign: 'middle',
-                title: 'FYC',
-                width:100
+                title: '督管编码',
+                width:120
+            }, {
+                field: 'CHECK_USER_NAME',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '督管姓名',
+                width:120
             }]
         });
     };
