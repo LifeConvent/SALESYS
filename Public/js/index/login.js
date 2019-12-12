@@ -2,6 +2,10 @@
  * Created by lawrance on 2016/11/24.
  */
 
+getUserIP(function(ip){
+    $('#ip').text(ip);
+});
+
 function login() {
     var userName = $('#user_name').val();
     var userPass = $('#user_pass').val();
@@ -18,7 +22,7 @@ function login() {
             url: HOST + "index.php/Home/Index/login", //目标地址.
             //url: "{:U('login')}", //目标地址.
             dataType: "JSON", //数据格式:JSON
-            data: {user: userName, pass: userPass,ip:ip},
+            data: {user: userName, pass: userPass, ip: ip},
             success: function (result) {
                 if (result.status == 'success') {
                     debugger;
@@ -37,7 +41,7 @@ function login() {
     }
 }
 
-$(function(){
+$(function () {
     document.onkeydown = function (e) {
         var ev = document.all ? window.event : e;
         if (ev.keyCode == 13) {
@@ -45,3 +49,36 @@ $(function(){
         }
     }
 });
+
+function getUserIP(onNewIP) { //  onNewIp - your listener function for new IPs
+    //compatibility for firefox and chrome
+    var myPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+    var pc = new myPeerConnection({
+            iceServers: []
+        }),
+        noop = function() {},
+        localIPs = {},
+        ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g,
+        key;
+    function iterateIP(ip) {
+        if (!localIPs[ip]) onNewIP(ip);
+        localIPs[ip] = true;
+    }
+    //create a bogus data channel
+    pc.createDataChannel("");
+    // create offer and set local description
+    pc.createOffer().then(function(sdp) {
+        sdp.sdp.split('\n').forEach(function(line) {
+            if (line.indexOf('candidate') < 0) return;
+            line.match(ipRegex).forEach(iterateIP);
+        });
+        pc.setLocalDescription(sdp, noop, noop);
+    }).catch(function(reason) {
+        // An error occurred, so handle the failure to connect
+    });
+    //sten for candidate events
+    pc.onicecandidate = function(ice) {
+        if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return;
+        ice.candidate.candidate.match(ipRegex).forEach(iterateIP);
+    };
+}

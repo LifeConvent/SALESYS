@@ -9,7 +9,7 @@ class IndexController extends Controller
     public function index()
     {
         $this->assign('TITLE', TITLE);
-        $this->assign('ip', $this->getip());
+        $this->assign('ip', $this->getClientIp());
         $this->display();
     }
 
@@ -159,8 +159,8 @@ class IndexController extends Controller
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         //获取用户IP进行存储以便登录时进行校验
-        $IP = $this->getClientIp();
-//        $IP = $ip;
+//        $IP = $this->getClientIp();
+        $IP = $ip;
         $select_des = "SELECT * FROM USER_LOGIN_INFO WHERE IS_VAILD = '1' AND USER_ACCOUNT = '".$username."' ORDER BY LOG_TIME";
         Log::write($username.'登录查询 SQL：'.$select_des,'INFO');
         $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
@@ -199,3 +199,4 @@ class IndexController extends Controller
     }
 
 }
+
