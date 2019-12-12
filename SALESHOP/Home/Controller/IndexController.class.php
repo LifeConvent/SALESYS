@@ -16,17 +16,18 @@ class IndexController extends Controller
     {
         $user = I('post.user');
         $pass = I('post.pass');
+        $ip = I('post.ip');
         if($user==null||$pass==null){
             $result['status'] = 'failed';
             $result['hint'] = '登录失败！';
         }else{
-            $result = $this->searchUser($user,$pass);
+            $result = $this->searchUser($user,$pass,$ip);
         }
         Log::write('管理员灌数'+json_encode($result),'INFO');
         exit(json_encode($result));
     }
 
-    public function searchUser($user,$pass){//登录账户用多种
+    public function searchUser($user,$pass,$ip){//登录账户用多种
         Log::write('用户开始登录','INFO');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -83,7 +84,7 @@ class IndexController extends Controller
 //                $info = explode('-', $token);
 //                echo $token;
 //                dump($info);
-                $res = $this->recordLogInfo($user);
+                $res = $this->recordLogInfo($user,$ip);
                 if(strcmp($res,'true')==0){
                     $_SESSION["token"] = $token;
                     $result['status'] = 'success';
@@ -150,11 +151,12 @@ class IndexController extends Controller
         return $realip;
     }
 
-    public function recordLogInfo($username){
+    public function recordLogInfo($username,$ip){
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         //获取用户IP进行存储以便登录时进行校验
-        $IP = $this->getip();
+//        $IP = $this->getip();
+        $IP = $ip;
         $select_des = "SELECT * FROM USER_LOGIN_INFO WHERE IS_VAILD = '1' AND USER_ACCOUNT = '".$username."' ORDER BY LOG_TIME";
         Log::write($username.'登录查询 SQL：'.$select_des,'INFO');
         $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
