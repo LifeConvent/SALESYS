@@ -79,6 +79,22 @@ class DataOutController extends Controller
         }
     }
 
+    public function jxOutYs()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
+                $this->redirect('Index/errorSys');
+            }
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function capNbNoArrive()
     {
         $username = '';
@@ -918,11 +934,18 @@ class DataOutController extends Controller
     {   //导出Excel
         $queryDateStart = I('get.queryDateStart');
         $queryDateEnd = I('get.queryDateEnd');
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
+        $risk_info = I('get.risk_info');
+        $agent_info = I('get.agent_info');
         //导出Excel
-        if (!empty($queryDateStart) && !empty($queryDateEnd)) {
-            $where_time_bqsl = " AND BUSI_APPLY_DATE BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd')";
-        } else {
-            $where_time_bqsl = "";
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else if (empty($policy_code) && empty($apply_channel)) {
+            $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) = TRUNC(SYSDATE) ";
         }
         $xlsName = "新契约预收清单";
         $xlsTitle = "新契约预收清单";
@@ -958,6 +981,18 @@ class DataOutController extends Controller
             $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
         } else if ((int)$userType == 3) {
             $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+        }
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR APPLY_CODE LIKE '%" . $policy_code . "%')";
+        }
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
+        }
+        if (!empty($agent_info)) {
+            $where_type_fix .= " AND (AGENT_CODE LIKE '%" . $agent_info . "%' OR AGENT_NAME LIKE '%" . $agent_info . "%')";
+        }
+        if (!empty($risk_info)) {
+            $where_type_fix .= " AND (PRODUCT_CODE_SYS LIKE '%" . $risk_info . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_info . "%')";
         }
         $select_bqsl = "SELECT DISTINCT APPLY_CODE,--投保单号,
                                    POLICY_CODE,--保单号,
@@ -1010,6 +1045,85 @@ class DataOutController extends Controller
         oci_free_statement($result_rows);
         oci_close($conn);
         $method->exportExcelNbYs($xlsTitle, $xlsCell, $res, $xlsName);
+    }
+
+    public function getJxYs()
+    {
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $policy_code = trim(I('get.policy_code'));
+        $apply_channel = trim(I('get.apply_channel'));
+        $risk_info = I('get.risk_info');
+        $agent_info = I('get.agent_info');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else if (empty($policy_code) && empty($apply_channel)) {
+            $where_time_bqsl = " AND TRUNC(BUSI_APPLY_DATE) = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        if ((int)$userType == 1) {
+            $where_type_fix = "";
+        } else if ((int)$userType == 2) {
+            $organCode = $method->getUserOrganCode();
+            $where_type_fix = " AND ORGAN_CODE LIKE '" . $organCode[$user_name] . "%'";
+        } else if ((int)$userType == 3) {
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+        }
+        if (!empty($policy_code)) {
+            $where_type_fix .= " AND (POLICY_CODE LIKE '%" . $policy_code . "%' OR APPLY_CODE LIKE '%" . $policy_code . "%')";
+        }
+        if (!empty($apply_channel)) {
+            $where_type_fix .= " AND SALES_CHANNEL_NAME LIKE '%" . $apply_channel . "%'";
+        }
+        if (!empty($agent_info)) {
+            $where_type_fix .= " AND (AGENT_CODE LIKE '%" . $agent_info . "%' OR AGENT_NAME LIKE '%" . $agent_info . "%')";
+        }
+        if (!empty($risk_info)) {
+            $where_type_fix .= " AND (PRODUCT_CODE_SYS LIKE '%" . $risk_info . "%' OR PRODUCT_NAME_SYS LIKE '%" . $risk_info . "%')";
+        }
+        $select_bqsl = "SELECT DISTINCT APPLY_CODE,--投保单号,
+                                   POLICY_CODE,--保单号,
+                                   TO_CHAR(BUSI_APPLY_DATE,'YYYY-MM-DD') AS BUSI_APPLY_DATE,--预收日期,
+                                   STATUS_DESC,--投保单状态,
+                                   ORGAN_CODE_ZZ,--中支代码,
+                                   ORGAN_CODE,--营销服务部机构代码,
+                                   BRANCH_ATTR,--营业组代码,
+                                   AGENT_CODE,--业务员代码,
+                                   AGENT_NAME,--姓名,
+                                   AGENT_GRADE,--级别,
+                                   TO_CHAR(EMPLOYMENT_DATE,'YYYY-MM-DD') AS EMPLOYMENT_DATE,--入司时间,
+                                   SALES_CHANNEL_NAME,--销售渠道,
+                                   PRODUCT_CODE_SYS,--险种代码,
+                                   PRODUCT_NAME_SYS,--险种名称,
+                                   POLICY_JS,--保单件数,
+                                   CHARGE_YEAR,--缴费年期,
+                                   TOTAL_PREM_AF,--规模保费,
+                                   FYC
+                          FROM TMP_SX_YS_JX
+                          WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        Log::write($user_name . ' 预收清单 数据库查询条件：' . $select_bqsl, 'INFO');
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $res[] = $value;
+//            $res[$i]['APPLY_CODE'] = "'" . $value['APPLY_CODE'];
+//            $res[$i]['POLICY_CODE'] = "'" . $value['POLICY_CODE'];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
     }
 
     public function expLargerPolicyNoShow()
