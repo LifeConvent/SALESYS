@@ -5,6 +5,7 @@
 function login() {
     var userName = $('#user_name').val();
     var userPass = $('#user_pass').val();
+    var ip = $('#ip').text();
     if (userName == '') {
         $.scojs_message('用户名不能为空！', $.scojs_message.TYPE_ERROR);
     } else if (userPass == '') {
@@ -17,7 +18,7 @@ function login() {
             url: HOST + "index.php/Home/Index/login", //目标地址.
             //url: "{:U('login')}", //目标地址.
             dataType: "JSON", //数据格式:JSON
-            data: {user: userName, pass: userPass},
+            data: {user: userName, pass: userPass,ip:ip},
             success: function (result) {
                 if (result.status == 'success') {
                     debugger;

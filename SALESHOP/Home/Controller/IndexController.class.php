@@ -9,6 +9,7 @@ class IndexController extends Controller
     public function index()
     {
         $this->assign('TITLE', TITLE);
+        $this->assign('ip', $this->getip());
         $this->display();
     }
 
@@ -16,6 +17,7 @@ class IndexController extends Controller
     {
         $user = I('post.user');
         $pass = I('post.pass');
+        $ip = I('post.ip');
         header('Access-Control-Allow-Origin: *');
         header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
         header('Access-Control-Allow-Methods: GET, POST, PUT');
@@ -23,12 +25,12 @@ class IndexController extends Controller
             $result['status'] = 'failed';
             $result['hint'] = '登录失败！';
         }else{
-            $result = $this->searchUser($user,$pass);
+            $result = $this->searchUser($user,$pass,$ip);
         }
         exit(json_encode($result));
     }
 
-    public function searchUser($user,$pass){//登录账户用多种
+    public function searchUser($user,$pass,$ip){//登录账户用多种
         Log::write('用户开始登录','INFO');
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -85,7 +87,7 @@ class IndexController extends Controller
 //                $info = explode('-', $token);
 //                echo $token;
 //                dump($info);
-                $res = $this->recordLogInfo($user);
+                $res = $this->recordLogInfo($user,$ip);
 //                $res = 'true';//开门红期间暂时关闭
                 if(strcmp($res,'true')==0){
                     $_SESSION["token"] = $token;
@@ -93,7 +95,8 @@ class IndexController extends Controller
                     $result['hint'] = '登录成功！';
                 }else{
                     $result['status'] = 'failed';
-                    $result['hint'] = '该用户已在IP地址'.$res.'登录！';
+//                    $result['hint'] = '该用户已在IP地址'.$res.'登录！';
+                    $result['hint'] = '该用户已登录,无法同时登录多个账号！';
                     return $result;
                 }
             }
@@ -130,7 +133,7 @@ class IndexController extends Controller
 //        }
     }
 
-    function getip() {
+    function getClientIp() {
         static $realip;
         if (isset($_SERVER)) {
             if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -152,11 +155,12 @@ class IndexController extends Controller
         return $realip;
     }
 
-    public function recordLogInfo($username){
+    public function recordLogInfo($username,$ip){
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         //获取用户IP进行存储以便登录时进行校验
-        $IP = $this->getip();
+        $IP = $this->getClientIp();
+//        $IP = $ip;
         $select_des = "SELECT * FROM USER_LOGIN_INFO WHERE IS_VAILD = '1' AND USER_ACCOUNT = '".$username."' ORDER BY LOG_TIME";
         Log::write($username.'登录查询 SQL：'.$select_des,'INFO');
         $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
