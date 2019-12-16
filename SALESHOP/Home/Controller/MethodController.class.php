@@ -575,8 +575,11 @@ class MethodController extends Controller
         putenv("NLS_LANG=AMERICAN_AMERICA.AL32UTF8");
         //取数据库参数 querybx/querybx@10.1.95.43:1521/DMGTSTdb3
         $db_host_name='10.1.95.43:1521/DMGTSTdb3';
+//        $db_host_name='10.1.168.5:1521/bxingdb';
         $db_user_name='querybx';
+//        $db_user_name='daily';
         $db_pwd='querybx';
+//        $db_pwd='daily#inq';
         //连接Oracle
         $conn = oci_connect($db_user_name,$db_pwd,$db_host_name);
         $user_name = $this->getUserName();
@@ -4494,7 +4497,7 @@ class MethodController extends Controller
             Log::write('数据表导入 数据库查询条件：' . $dg_select, 'INFO');
             $dg = $method->search_long($result_rows);
             Log::write('数据表导入 数据库查询结果：' . $dg[0], 'INFO');
-            if(empty($dg[0])){
+            if(empty($dg[0])||strcmp($dg[0]['ACCOUNT'],'')==0){
                 //单行添加数据
                 $dg_add = "INSERT INTO ".$table_name." (".$insert_be.") 
                                   VALUES(".$insert_af.")";

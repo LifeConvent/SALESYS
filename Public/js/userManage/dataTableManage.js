@@ -46,7 +46,7 @@ function upload_next(id) {
             var file_name = $('#list_output').val();
             $.ajax({
                 type: "POST", //用POST方式传输,获取数据表字段名的同时,获取上传文件的字段名
-                url: HOST + "index.php/Home/Method/getTableFiledSx", //目标地址.
+                url: HOSTLOCAL + "index.php/Home/Method/getTableFiledSx", //目标地址.
                 dataType: "JSON", //数据格式:JSON
                 data: {table_name: table_name, file_name: file_name},
                 success: function (result) {
@@ -182,7 +182,7 @@ $('#db_table').change(function(){
     //获取该数据表可操作权限
     $.ajax({
         type: "POST", //用POST方式传输
-        url: HOST + "index.php/Home/SysMaintain/getTableKLimits", //目标地址.
+        url: HOSTLOCAL + "index.php/Home/SysMaintain/getTableKLimits", //目标地址.
         dataType: "json", //数据格式:JSON
         data: {
             db_table: db_table
@@ -218,7 +218,7 @@ function startMatch() {
     //alert(table_name);
     $.ajax({
         type: "POST", //用POST方式传输
-        url: HOST + "index.php/Home/Method/startUploadsSx", //目标地址.
+        url: HOSTLOCAL + "index.php/Home/Method/startUploadsSx", //目标地址.
         dataType: "JSON", //数据格式:JSON
         data: {
             m_r: match_relation, f_n: file_name, t_n: table_name, time: time, is_delete:is_delete
@@ -227,7 +227,7 @@ function startMatch() {
     debugger;
     var ajaxData = {
         type: "POST",
-        url: HOST + "index.php/Home/Method/getFile",
+        url: HOSTLOCAL + "index.php/Home/Method/getFile",
         dataType: "JSON",
         data: {time: time},
         success: function (result) {
@@ -240,7 +240,7 @@ function startMatch() {
                     $('#uploadStep').modal('hide');
                     $.ajax({
                         type: "POST", //用POST方式传输
-                        url: HOST + "index.php/Home/Method/deleteFile", //目标地址.
+                        url: HOSTLOCAL + "index.php/Home/Method/deleteFile", //目标地址.
                         dataType: "JSON", //数据格式:JSON
                         data: {
                             f_n: file_name, time: time
@@ -262,7 +262,7 @@ function startMatch() {
                     $('#uploadStep').modal('hide');
                     $.ajax({
                         type: "POST", //用POST方式传输
-                        url: HOST + "index.php/Home/Method/deleteFile", //目标地址.
+                        url: HOSTLOCAL + "index.php/Home/Method/deleteFile", //目标地址.
                         dataType: "JSON", //数据格式:JSON
                         data: {
                             f_n: file_name, time: time
