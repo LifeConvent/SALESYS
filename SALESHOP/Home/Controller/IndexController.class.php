@@ -99,8 +99,8 @@ class IndexController extends Controller
                     return $result;
                 }else{
                     $result['status'] = 'failed';
-//                    $result['hint'] = '该用户已在IP地址'.$res.'登录！';
-                    $result['hint'] = '该用户已登录,无法同时登录多个账号！';
+                    $result['hint'] = '该用户已在IP地址'.$res.'登录！无法同时登录多个账号！';
+//                    $result['hint'] = '该用户已登录,无法同时登录多个账号！';
                     return $result;
                 }
             }

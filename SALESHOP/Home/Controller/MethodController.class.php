@@ -4468,7 +4468,8 @@ class MethodController extends Controller
             }
         }
         //data是EXCEL数据表的值
-        for ($j = 2; $j < sizeof($data); $j++) {
+        //EXXCEL从1开始计算行数比实际少一行
+        for ($j = 2; $j < sizeof($data)-1; $j++) {
             $condition = null;
             $select_where = '';$insert_be ='';$insert_af = '';
             $count_i = 0;
@@ -4622,6 +4623,7 @@ class MethodController extends Controller
     }
 
     public function getDbFieldsByTable($field){
+        header("Content-Type:text/html; charset=utf-8");
         $conn = $this->OracleOldDBCon();
         $select_table = "select column_name from user_tab_columns where table_name= '".$field."'";
         Log::write( '用户可编辑数据表列名查询 数据库查询SQL：' . $select_table, 'INFO');
