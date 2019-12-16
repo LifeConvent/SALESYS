@@ -4616,8 +4616,10 @@ class MethodController extends Controller
     //获取数据库数据表字段
     public function getTableFiledSx()
     {
-        $field = I('post.table_name');
-        $file_name = I('post.file_name');
+//        $field = I('post.table_name');
+//        $file_name = I('post.file_name');
+        $field = I('get.table_name');
+        $file_name = I('get.file_name');
         $data = $this->import_excel('Public/uploads/' . $file_name);
         $result['status'] = 'success';
         $result['file_field'] = $data[1];

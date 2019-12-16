@@ -43,7 +43,8 @@ function upload_next(id) {
                 return;
             }
             $('#table_name').text(table_name);
-            var file_name = $('#list_output').val();
+            debugger;
+            var file_name = $('#list_output').text();
             $.ajax({
                 type: "POST", //用POST方式传输,获取数据表字段名的同时,获取上传文件的字段名
                 url: HOSTLOCAL + "index.php/Home/Method/getTableFiledSx", //目标地址.
