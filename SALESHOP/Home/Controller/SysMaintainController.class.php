@@ -959,8 +959,8 @@ class SysMaintainController extends Controller
     }
 
     public function newInvoice(){
-        $invoice_code  = I('post.invoice_code');
-        $invoice_num  = I('post.invoice_num');
+        $invoice_code  = trim(I('post.invoice_code'));
+        $invoice_num  = trim(I('post.invoice_num'));
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         $user_name = "";
