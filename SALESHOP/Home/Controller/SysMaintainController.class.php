@@ -864,7 +864,7 @@ class SysMaintainController extends Controller
                            FROM TMP_INVOICE_RECORD A
                            LEFT JOIN TMP_DAYPOST_USER B
                            ON A.USER_NAME = B.ACCOUNT
-                          WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
+                          WHERE 1=1 AND A.IS_DEAL = '1' " . $where_type_fix . $where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         Log::write($user_name . ' 发票清单 数据库查询条件：' . $select_bqsl, 'INFO');
         $bqsl_result_time = $method->search_long($result_rows);
