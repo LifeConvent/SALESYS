@@ -29,6 +29,22 @@ class SysMaintainController extends Controller
         }
     }
 
+    public function showInvoice()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $method->assignPublic($username, $this);
+            if (!$method->getSystype($username)) {
+                $this->redirect('Index/errorSys');
+            }
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function menuManage()
     {
         $username = '';
@@ -790,6 +806,220 @@ class SysMaintainController extends Controller
                     $result['message'] = "系统通知修改失败！";
                     break;
             }
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
+    }
+
+    public function expInvoice(){
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $invoice_code  = I('get.invoice_code');
+        $invoice_num  = I('get.invoice_num');
+        $xlsName = "发票清单";
+        $xlsTitle = "发票清单";
+        $xlsCell = array( //设置字段名和列名的映射
+            array('invoice_code', '部门'),
+            array('name', '姓名'),
+            array('invoice_code', '发票代码'),
+            array('invoice_num', '发票号码')
+        );
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(INSERT_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND TRUNC(INSERT_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else if (empty($invoice_code) && empty($invoice_num)) {
+            $where_time_bqsl = " AND TRUNC(INSERT_DATE) = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        $type = $method->getInvoiceTypeBySql($user_name);
+        $office = $method->getOfficeBySql($user_name);
+        if ((int)$userType == 1||(int)$type == 99) {
+            $where_type_fix = "";
+        } else if((int)$type == 1){
+            //$where_type_fix = " AND OFFICE = '" . $office . "'";
+        }else{
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+        }
+        if (!empty($invoice_code)) {
+            $where_type_fix .= " AND INVOICE_CODE LIKE '%" . $invoice_code . "%'";
+        }
+        if (!empty($invoice_num)) {
+            $where_type_fix .= " AND INVOICE_NUM LIKE '%" . $invoice_num . "%'";
+        }
+        $select_bqsl = "SELECT A.INVOICE_CODE,  
+                               A.INVOICE_NUM,
+                               TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD HH24:mi:ss') AS INSERT_DATE, 
+                               A.IS_DEAL, 
+                               A.USER_NAME, 
+                               B.USER_NAME AS NAME, 
+                               B.IS_INVOICE,
+                               B.OFFICE
+                           FROM TMP_INVOICE_RECORD A
+                           LEFT JOIN TMP_DAYPOST_USER B
+                           ON A.USER_NAME = B.ACCOUNT
+                          WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        Log::write($user_name . ' 发票清单 数据库查询条件：' . $select_bqsl, 'INFO');
+        $bqsl_result_time = $method->search_long($result_rows);
+        $res = null;
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $res[$i]['invoice_code'] = $value['INVOICE_CODE'];
+            $res[$i]['department'] = 'PMO';
+            $res[$i]['invoice_num'] = $value['INVOICE_NUM'];
+            $res[$i]['insert_time'] = $value['INSERT_DATE'];
+            $res[$i]['is_deal'] = $value['IS_DEAL'];
+            $res[$i]['user_name'] = $value['USER_NAME'];
+            $res[$i]['name'] = $value['NAME'];
+            $res[$i]['is_invoice'] = $value['IS_INVOICE'];
+            $res[$i]['office'] = $value['OFFICE'];
+        }
+        for ($i = 0; $i < sizeof($res); $i++) {
+            $result[] = $res[$i];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        $method->exportExcel($xlsTitle, $xlsCell, $result, $xlsName);
+    }
+
+    public function getInvoice(){
+        $queryDateStart = I('get.queryDateStart');
+        $queryDateEnd = I('get.queryDateEnd');
+        $invoice_code  = I('get.invoice_code');
+        $invoice_num  = I('get.invoice_num');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        if (!empty($queryDateStart)) {
+            $where_time_bqsl = " AND TRUNC(INSERT_DATE) = to_date('" . $queryDateStart . "','yyyy-mm-dd')";
+            if (!empty($queryDateEnd)) {
+                $where_time_bqsl = " AND TRUNC(INSERT_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
+            }
+        } else if (empty($invoice_code) && empty($invoice_num)) {
+            $where_time_bqsl = " AND TRUNC(INSERT_DATE) = TRUNC(SYSDATE) ";
+        }
+        $user_name = "";
+        $method->checkIn($user_name);
+        $userType = $method->getUserType();
+        $type = $method->getInvoiceTypeBySql($user_name);
+        $office = $method->getOfficeBySql($user_name);
+        if ((int)$userType == 1||(int)$type == 99) {
+            $where_type_fix = "";
+        } else if((int)$type == 1){
+            //$where_type_fix = " AND OFFICE = '" . $office . "'";
+        }else{
+            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+        }
+        if (!empty($invoice_code)) {
+            $where_type_fix .= " AND INVOICE_CODE LIKE '%" . $invoice_code . "%'";
+        }
+        if (!empty($invoice_num)) {
+            $where_type_fix .= " AND INVOICE_NUM LIKE '%" . $invoice_num . "%'";
+        }
+        $select_bqsl = "SELECT A.INVOICE_CODE,  
+                               A.INVOICE_NUM,
+                               TO_CHAR(A.INSERT_DATE,'YYYY-MM-DD HH24:mi:ss') AS INSERT_DATE, 
+                               A.IS_DEAL, 
+                               A.USER_NAME, 
+                               B.USER_NAME AS NAME, 
+                               B.IS_INVOICE,
+                               B.OFFICE
+                           FROM TMP_INVOICE_RECORD A
+                           LEFT JOIN TMP_DAYPOST_USER B
+                           ON A.USER_NAME = B.ACCOUNT
+                          WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
+        $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
+        Log::write($user_name . ' 发票清单 数据库查询条件：' . $select_bqsl, 'INFO');
+        $bqsl_result_time = $method->search_long($result_rows);
+        for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
+            $value = $bqsl_result_time[$i];
+            $res[$i]['invoice_code'] = $value['INVOICE_CODE'];
+            $res[$i]['department'] = 'PMO';
+            $res[$i]['invoice_num'] = $value['INVOICE_NUM'];
+            $res[$i]['insert_time'] = $value['INSERT_DATE'];
+            $res[$i]['is_deal'] = $value['IS_DEAL'];
+            $res[$i]['user_name'] = $value['USER_NAME'];
+            $res[$i]['name'] = $value['NAME'];
+            $res[$i]['is_invoice'] = $value['IS_INVOICE'];
+            $res[$i]['office'] = $value['OFFICE'];
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function newInvoice(){
+        $invoice_code  = I('post.invoice_code');
+        $invoice_num  = I('post.invoice_num');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $user_name = "";
+        $method->checkIn($user_name);
+        $select_invoice = "SELECT * FROM TMP_INVOICE_RECORD WHERE INVOICE_CODE = '".$invoice_code."' AND INVOICE_NUM = '".$invoice_num."'";
+        Log::write($user_name . ' 发票查询条件：' . $select_invoice, 'INFO');
+        $result_rows = oci_parse($conn, $select_invoice); // 配置SQL语句，执行SQL
+        $invoice_res = $method->search_long($result_rows);
+        if(empty($invoice_res[0]['INVOICE_CODE'])){
+            $select_invoice = "INSERT INTO TMP_INVOICE_RECORD(INVOICE_CODE,INVOICE_NUM,USER_NAME) VALUES('" . $invoice_code . "','" . $invoice_num . "','".$user_name."')";
+            $result_rows = oci_parse($conn, $select_invoice); // 配置SQL语句，执行SQL
+            if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+                $result['status'] = "success";
+                $result['message'] = "发票新增成功！";
+            }else{
+                $result['status'] = "failed";
+                $result['message'] = "发票新增失败！";
+            }
+        }else{
+            $result['status'] = "failed";
+            $result['message'] = "发票".$invoice_num."已经存在提交记录，请确认是否正确！";
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
+    }
+    
+    public function updateInvoice(){
+        $invoice_code  = I('post.invoice_code');
+        $invoice_num  = I('post.invoice_num');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $select_invoice = "UPDATE TMP_INVOICE_RECORD SET IS_DEAL = '1' WHERE INVOICE_CODE = '".$invoice_code."' AND INVOICE_NUM = '".$invoice_num."'";
+        $result_rows = oci_parse($conn, $select_invoice); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = "success";
+            $result['message'] = "发票核销成功！";
+        }else{
+            $result['status'] = "failed";
+            $result['message'] = "发票核销失败，请联系管理员！";
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        exit(json_encode($result));
+    }
+    
+    public function deleteInvoice(){
+        $invoice_code  = I('post.invoice_code');
+        $invoice_num  = I('post.invoice_num');
+        $method = new MethodController();
+        $conn = $method->OracleOldDBCon();
+        $select_invoice = "DELETE FROM TMP_INVOICE_RECORD WHERE INVOICE_CODE = '".$invoice_code."' AND INVOICE_NUM = '".$invoice_num."'";
+        $result_rows = oci_parse($conn, $select_invoice); // 配置SQL语句，执行SQL
+        if(oci_execute($result_rows, OCI_COMMIT_ON_SUCCESS)){
+            $result['status'] = "success";
+            $result['message'] = "发票删除成功！";
+        }else{
+            $result['status'] = "failed";
+            $result['message'] = "发票删除失败，请联系管理员！";
         }
         oci_free_statement($result_rows);
         oci_close($conn);

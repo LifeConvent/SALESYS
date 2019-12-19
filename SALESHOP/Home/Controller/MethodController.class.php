@@ -34,6 +34,8 @@ class MethodController extends Controller
         $controller->assign('no_show_list',  $method->getNoShowListBySql($username));
         $controller->assign('bug_show',  $method->getBugShowBySql($username));
         $controller->assign('sx_list_type',  $method->getSxListTypeBySql($username));
+        $controller->assign('is_invoice',  $method->getIsInvoiceBySql($username));
+        $controller->assign('invoice_type',  $method->getInvoiceTypeBySql($username));
     }
 
     public function getSystype($username){
@@ -280,10 +282,46 @@ class MethodController extends Controller
         $result = $this->search_long($result_rows);
         oci_free_statement($result_rows);
         oci_close($conn);
-        Log::write($username.'用户缺陷列表清单权限：'.$result[0]['SX_LIST_TYPE'],'INFO');
+        Log::write($username.'用户上线清单权限：'.$result[0]['SX_LIST_TYPE'],'INFO');
         return $result[0]['SX_LIST_TYPE'];
     }
+    
+    public function getIsInvoiceBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_INVOICE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户发票核销权限：'.$result[0]['IS_INVOICE'],'INFO');
+        return $result[0]['IS_INVOICE'];
+    }
 
+    public function getInvoiceTypeBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.INVOICE_TYPE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户发票查询权限：'.$result[0]['INVOICE_TYPE'],'INFO');
+        return $result[0]['INVOICE_TYPE'];
+    }
+
+    public function getOfficeBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.OFFICE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户处室查询权限：'.$result[0]['OFFICE'],'INFO');
+        return $result[0]['OFFICE'];
+    }
+    
     public function getUserOrganCodeStr($username){
         $conn = $this->OracleOldDBCon();
         $select_des = "SELECT A.USER_ORGAN_CODE FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
