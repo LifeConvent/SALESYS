@@ -845,7 +845,7 @@ class SysMaintainController extends Controller
         } else if((int)$type == 1){
             //$where_type_fix = " AND OFFICE = '" . $office . "'";
         }else{
-            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
         if (!empty($invoice_code)) {
             $where_type_fix .= " AND INVOICE_CODE LIKE '%" . $invoice_code . "%'";
@@ -909,12 +909,12 @@ class SysMaintainController extends Controller
         $userType = $method->getUserType();
         $type = $method->getInvoiceTypeBySql($user_name);
         $office = $method->getOfficeBySql($user_name);
-        if ((int)$userType == 1||(int)$type == 99) {
+        if ((int)$userType == 1||strcmp($type,'99') == 0) {
             $where_type_fix = "";
         } else if((int)$type == 1){
             //$where_type_fix = " AND OFFICE = '" . $office . "'";
         }else{
-            $where_type_fix = " AND USER_NAME = '" . $user_name . "'";
+            $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
         if (!empty($invoice_code)) {
             $where_type_fix .= " AND INVOICE_CODE LIKE '%" . $invoice_code . "%'";
