@@ -820,7 +820,7 @@ class SysMaintainController extends Controller
         $xlsName = "发票清单";
         $xlsTitle = "发票清单";
         $xlsCell = array( //设置字段名和列名的映射
-            array('invoice_code', '部门'),
+            array('department', '部门'),
             array('name', '姓名'),
             array('invoice_code', '发票代码'),
             array('invoice_num', '发票号码')
