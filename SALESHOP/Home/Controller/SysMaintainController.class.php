@@ -833,14 +833,14 @@ class SysMaintainController extends Controller
                 $where_time_bqsl = " AND TRUNC(INSERT_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
         } else if (empty($invoice_code) && empty($invoice_num)) {
-            $where_time_bqsl = " AND TRUNC(INSERT_DATE) = TRUNC(SYSDATE) ";
+//            $where_time_bqsl = " AND TRUNC(INSERT_DATE) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
         $userType = $method->getUserType();
         $type = $method->getInvoiceTypeBySql($user_name);
         $office = $method->getOfficeBySql($user_name);
-        if ((int)$userType == 1||(int)$type == 99) {
+        if ((int)$userType == 1||strcmp($type,'99') == 0) {
             $where_type_fix = "";
         } else if((int)$type == 1){
             //$where_type_fix = " AND OFFICE = '" . $office . "'";
@@ -902,7 +902,7 @@ class SysMaintainController extends Controller
                 $where_time_bqsl = " AND TRUNC(INSERT_DATE) BETWEEN to_date('" . $queryDateStart . "','yyyy-mm-dd') AND to_date('" . $queryDateEnd . "','yyyy-mm-dd') ";
             }
         } else if (empty($invoice_code) && empty($invoice_num)) {
-            $where_time_bqsl = " AND TRUNC(INSERT_DATE) = TRUNC(SYSDATE) ";
+//            $where_time_bqsl = " AND TRUNC(INSERT_DATE) = TRUNC(SYSDATE) ";
         }
         $user_name = "";
         $method->checkIn($user_name);
