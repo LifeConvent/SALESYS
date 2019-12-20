@@ -871,9 +871,9 @@ class SysMaintainController extends Controller
         $res = null;
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
             $value = $bqsl_result_time[$i];
-            $res[$i]['invoice_code'] = $value['INVOICE_CODE'];
+            $res[$i]['invoice_code'] = "'".$value['INVOICE_CODE'];
             $res[$i]['department'] = 'PMO';
-            $res[$i]['invoice_num'] = $value['INVOICE_NUM'];
+            $res[$i]['invoice_num'] = "'".$value['INVOICE_NUM'];
             $res[$i]['insert_time'] = $value['INSERT_DATE'];
             $res[$i]['is_deal'] = $value['IS_DEAL'];
             $res[$i]['user_name'] = $value['USER_NAME'];
