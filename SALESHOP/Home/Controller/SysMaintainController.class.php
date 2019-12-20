@@ -843,7 +843,7 @@ class SysMaintainController extends Controller
         if ((int)$userType == 1||strcmp($type,'99') == 0) {
             $where_type_fix = "";
         } else if((int)$type == 1){
-            //$where_type_fix = " AND OFFICE = '" . $office . "'";
+            $where_type_fix = " AND B.OFFICE = (SELECT OFFICE FROM TMP_DAYPOST_USER WHERE ACCOUNT = '" . $user_name . "')";
         }else{
             $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
@@ -912,7 +912,7 @@ class SysMaintainController extends Controller
         if ((int)$userType == 1||strcmp($type,'99') == 0) {
             $where_type_fix = "";
         } else if((int)$type == 1){
-            //$where_type_fix = " AND OFFICE = '" . $office . "'";
+            $where_type_fix = " AND B.OFFICE = (SELECT OFFICE FROM TMP_DAYPOST_USER WHERE ACCOUNT = '" . $user_name . "')";
         }else{
             $where_type_fix = " AND A.USER_NAME = '" . $user_name . "'";
         }
