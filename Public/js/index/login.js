@@ -8,7 +8,7 @@ getUserIP(function(ip){
 function login() {
     var userName = $('#user_name').val();
     var userPass = $('#user_pass').val();
-    var ip = $('#ip').val();
+    var ip = $('#ip').text();
     if (userName == '') {
         $.scojs_message('用户名不能为空！', $.scojs_message.TYPE_ERROR);
     } else if (userPass == '') {
