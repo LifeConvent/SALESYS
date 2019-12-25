@@ -4511,7 +4511,7 @@ class MethodController extends Controller
             }
         }
         //data是EXCEL数据表的值
-        for ($j = 2; $j < sizeof($data); $j++) {
+        for ($j = 2; $j < sizeof($data)-1; $j++) {
             $condition = null;
             $select_where = '';$insert_be ='';$insert_af = '';
             $count_i = 0;
@@ -4536,7 +4536,7 @@ class MethodController extends Controller
             Log::write('数据表导入 数据库查询条件：' . $dg_select, 'INFO');
             $dg = $method->search_long($result_rows);
             Log::write('数据表导入 数据库查询结果：' . $dg[0], 'INFO');
-            if(empty($dg[0])){
+            if(empty($dg[0])||strcmp($dg[0]['ACCOUNT'],'')==0){
                 //单行添加数据
                 $dg_add = "INSERT INTO ".$table_name." (".$insert_be.") 
                                   VALUES(".$insert_af.")";
