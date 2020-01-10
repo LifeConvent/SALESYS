@@ -15,6 +15,7 @@ function login() {
     } else if (userPass == '') {
         $.scojs_message('密码不能为空！', $.scojs_message.TYPE_ERROR);
     } else {
+        debugger;
         userPass = hex_md5(userPass);
         // alert(HOST+ "index.php/Home/Home/postHome");
         $.ajax({

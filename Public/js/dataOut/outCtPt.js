@@ -223,6 +223,13 @@ var TableInit = function () {
                 title: '补退费金额',
                 width:140
             }, {
+                field: 'VALUE_PREM',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '价值保费',
+                width:140
+            }, {
                 field: 'SALES_CHANNEL_NAME',
                 sortable: true,
                 align: 'center',

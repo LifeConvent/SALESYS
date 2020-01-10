@@ -171,6 +171,13 @@ var TableInit = function () {
                 title: '预收日期',
                 width:130
             }, {
+                field: 'APPLY_DATE',
+                sortable: true,
+                valign: 'middle',
+                align: 'center',
+                title: '投保日期',
+                width:130
+            },{
                 field: 'STATUS_DESC',
                 sortable: true,
                 valign: 'middle',
@@ -274,6 +281,13 @@ var TableInit = function () {
                 align: 'center',
                 valign: 'middle',
                 title: 'FYC',
+                width:100
+            }, {
+                field: 'VALUE_PREM',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                title: '价值保费',
                 width:100
             }]
         });

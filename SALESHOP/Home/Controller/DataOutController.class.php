@@ -427,7 +427,8 @@ class DataOutController extends Controller
                            SERVICE_BANK_BRANCH,--   AS 银代银行网点代码,
                            BANK_BRANCH_NAME,--       AS 银代银行网点名称,
                            AGENT_CODE,--             AS 业务员代码,
-                           AGENT_NAME--             AS 业务员姓名
+                           AGENT_NAME,--             AS 业务员姓名
+                           VALUE_PREM
                       FROM TMP_SX_TJB_JX TJB
                      WHERE 1=1" . $where_type_fix . $where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
@@ -457,6 +458,7 @@ class DataOutController extends Controller
             $result[$i]['BANK_BRANCH_NAME'] = $value['BANK_BRANCH_NAME'];
             $result[$i]['AGENT_CODE'] = $value['AGENT_CODE'];
             $result[$i]['AGENT_NAME'] = $value['AGENT_NAME'];
+            $result[$i]['VALUE_PREM'] = $value['VALUE_PREM'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -969,6 +971,7 @@ class DataOutController extends Controller
             array('APPLY_CODE', '投保单号'),
             array('POLICY_CODE', '保单号'),
             array('BUSI_APPLY_DATE', '预收日期'),
+            array('APPLY_DATE', '投保日期'),
             array('STATUS_DESC', '投保单状态'),
             array('ORGAN_CODE_ZZ', '中支代码'),
             array('ORGAN_CODE', '营销服务部机构代码'),
@@ -983,7 +986,8 @@ class DataOutController extends Controller
             array('POLICY_JS', '保单件数'),
             array('CHARGE_YEAR', '缴费年期'),
             array('TOTAL_PREM_AF', '规模保费'),
-            array('FYC', 'FYC')
+            array('FYC', 'FYC'),
+            array('VALUE_PREM', '价值保费')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -1027,7 +1031,9 @@ class DataOutController extends Controller
                                    POLICY_JS,--保单件数,
                                    CHARGE_YEAR,--缴费年期,
                                    TOTAL_PREM_AF,--规模保费,
-                                   FYC
+                                   FYC,
+                                   TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,--入司时间,
+                                   VALUE_PREM
                           FROM TMP_SX_YS_JX
                           WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
@@ -1121,7 +1127,9 @@ class DataOutController extends Controller
                                    POLICY_JS,--保单件数,
                                    CHARGE_YEAR,--缴费年期,
                                    TOTAL_PREM_AF,--规模保费,
-                                   FYC
+                                   FYC,
+                                   TO_CHAR(APPLY_DATE,'YYYY-MM-DD') AS APPLY_DATE,--入司时间,
+                                   VALUE_PREM
                           FROM TMP_SX_YS_JX
                           WHERE 1=1 " . $where_type_fix . $where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
@@ -2206,6 +2214,7 @@ class DataOutController extends Controller
                                TOTAL_PREM_AF,
                                FEE_STATUS,
                                FYC,
+                               VALUE_PREM,
                                TO_CHAR(VALIDATE_TIME,'YYYY-MM-DD') AS VALIDATE_TIME
                           FROM TMP_SX_NB_JX_CBCS
                          WHERE 1=1 " . $where_time_bqsl . $where_type_fix . "
@@ -2249,6 +2258,7 @@ class DataOutController extends Controller
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
             $result[$i]['validate_tome'] = $value['VALIDATE_TIME'];
             $result[$i]['fyc'] = $value['FYC'];
+            $result[$i]['value_prem'] = $value['VALUE_PREM'];
         }
         #######################################################################################################################################
         oci_free_statement($result_rows);
@@ -3179,6 +3189,7 @@ class DataOutController extends Controller
             array('product_name_sys', '险种名称'),
             array('amount', '保额'),
             array('total_prem_af', '保费'),
+            array('value_prem', '价值保费'),
             array('fee_status', '保费是否到账'),
             array('fyc', 'FYC'),
             array('validate_time', '生效日期')
@@ -3256,6 +3267,7 @@ class DataOutController extends Controller
                                TOTAL_PREM_AF,
                                FEE_STATUS,
                                FYC,
+                               VALUE_PREM,
                                TO_CHAR(VALIDATE_TIME,'YYYY-MM-DD') AS VALIDATE_TIME
                           FROM TMP_SX_NB_JX_CBCS
                           WHERE 1=1 " . $where_type_fix . $where_time_bqsl . "
@@ -3300,6 +3312,7 @@ class DataOutController extends Controller
             $result[$i]['fee_status'] = $value['FEE_STATUS'];
             $result[$i]['fyc'] = $value['FYC'];
             $result[$i]['validate_time'] = $value['VALIDATE_TIME'];
+            $result[$i]['value_prem'] = $value['VALUE_PREM'];
         }
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];
@@ -3481,7 +3494,8 @@ class DataOutController extends Controller
             array('SERVICE_BANK_BRANCH', '银代银行网点代码'),
             array('BANK_BRANCH_NAME', '银代银行网点名称'),
             array('AGENT_CODE', '业务员代码'),
-            array('AGENT_NAME', '业务员姓名')
+            array('AGENT_NAME', '业务员姓名'),
+            array('VALUE_PREM', '价值保费')
         );
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
@@ -3535,7 +3549,8 @@ class DataOutController extends Controller
                            SERVICE_BANK_BRANCH,--   AS 银代银行网点代码,
                            BANK_BRANCH_NAME,--       AS 银代银行网点名称,
                            AGENT_CODE,--             AS 业务员代码,
-                           AGENT_NAME--             AS 业务员姓名
+                           AGENT_NAME,--             AS 业务员姓名
+                           VALUE_PREM
                       FROM TMP_SX_TJB_JX TJB
                      WHERE 1=1" . $where_type_fix . $where_time_bqsl;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
@@ -3565,6 +3580,7 @@ class DataOutController extends Controller
             $result[$i]['BANK_BRANCH_NAME'] = $value['BANK_BRANCH_NAME'];
             $result[$i]['AGENT_CODE'] = $value['AGENT_CODE'];
             $result[$i]['AGENT_NAME'] = $value['AGENT_NAME'];
+            $result[$i]['VALUE_PREM'] = $value['VALUE_PREM'];
         }
         for ($i = 0; $i < sizeof($result); $i++) {
             $res[] = $result[$i];

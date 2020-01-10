@@ -3007,34 +3007,20 @@ class MethodController extends Controller
     }
 
     public function test(){
-//        $xiaoji = 10 ;
-//        $heji = 15;
-//        $temp[$xiaoji][] = 0;
-//        $temp[$heji][] = 0;
-//        $tc_cursor = M();
-//        $tcSQl = $this->getTcSql();
-//        $objectIndex = $this->getObjectIndex();
-//        $res = $tc_cursor->query($tcSQl['pro_fix']);
-//        for($i=0;$i<sizeof($res);$i++){
-//            $col = $objectIndex[$res[$i]['value16']];//取得行索引
-//            if(strcmp($res[$i]['value17'],'保全')==0){
-//                $result[$col]['cs_profix_count'] = $res[$i]['num'];
-//                $temp[$xiaoji]['cs_profix_count'] += $res[$i]['num'];
-//            }else if(strcmp($res[$i]['value17'],'契约')==0){
-//                $result[$col]['nb_profix_count'] = $res[$i]['num'];
-//                $temp[$xiaoji]['nb_profix_count'] += $res[$i]['num'];
-//            }else if(strcmp($res[$i]['value17'],'理赔')==0){
-//                $result[$col]['clm_profix_count'] = $res[$i]['num'];
-//                $temp[$xiaoji]['clm_profix_count'] += $res[$i]['num'];
-//            }else if(strcmp($res[$i]['value17'],'核保')==0){
-//                $result[$col]['nb_profix_count'] = $res[$i]['num'];
-//                $temp[$heji]['nb_profix_count'] += $res[$i]['num'];
-//            }
-//            $temp[$heji]['nb_profix_count'] += $temp[$xiaoji]['clm_profix_count'];
-//        }
-//        dump($res);
-//        dump($result);
-//        dump($temp);
+        putenv("NLS_LANG=AMERICAN_AMERICA.AL32UTF8");
+        //取数据库参数 querybx/querybx@10.1.95.43:1521/DMGTSTdb3
+        $db_host_name='10.1.95.43:1521/DMGTSTdb3';
+//        $db_host_name='10.1.168.5:1521/bxingdb';
+        $db_user_name='querybx';
+//        $db_user_name='daily';
+        $db_pwd='querybx';
+//        $db_pwd='daily#inq';
+        //连接Oracle
+        $conn = oci_connect($db_user_name,$db_pwd,$db_host_name);
+        $notice_select  = "SELECT * FROM TMP_DATALOAD_REQUEST";
+        $result_rows = oci_parse($conn, $notice_select); // 配置SQL语句，执行SQL
+        $user_result =  $this->search_long($result_rows);
+        dump($user_result);
     }
 
     //数据库Orcale短查询

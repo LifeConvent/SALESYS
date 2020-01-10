@@ -382,6 +382,13 @@ var TableInit = function () {
                     title: '保费',
                     width:100
                 }, {
+                    field: 'value_prem',
+                    sortable: true,
+                    align: 'center',
+                    valign: 'middle',
+                    title: '价值保费',
+                    width:100
+                },{
                     field: 'fee_status',
                     sortable: true,
                     align: 'center',
