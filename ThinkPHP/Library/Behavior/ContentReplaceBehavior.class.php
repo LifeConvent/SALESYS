@@ -37,8 +37,8 @@ class ContentReplaceBehavior {
             '__URL__'       =>  __CONTROLLER__,
             '__PUBLIC__'    =>  __ROOT__.'/Public',// 站点公共目录
             '__KEY__'    =>  'Ia0CtpywryfU5VGNAlk23s8ctM-99v7we2HZmkVuh_szDz3dinL9aQ9gqslBTZk2',
-            '__HOST__'      => 'http://itwwn8.natappfree.cc/',
-//            '__HOST__'      => 'http://localhost/SALESYS/',
+            //'__HOST__'      => 'http://tjut.nat300.top/SALESYS/',
+            '__HOST__'      => 'http://localhost/SALESYS/',
             '__TITLE__'      => 'SALE-SHOP  门店销售系统',
         );
         // 允许用户自定义模板的字符串替换
