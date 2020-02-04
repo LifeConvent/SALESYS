@@ -2426,7 +2426,7 @@ class DataOutController extends Controller
 //            $where_type_fix =  " AND A.ORGAN_CODE NOT LIKE '8647%'";
 //        }
         Log::write($user_name . ' 数据库查询条件：' . $where_time_bqsl . $where_type_fix, 'INFO');
-        $select_bqsl = "SELECT * FROM  TMP_QDSX_CS_OUT_CT_DETAIL WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
+        $select_bqsl = "SELECT DISTINCT * FROM  TMP_QDSX_CS_OUT_CT_DETAIL WHERE 1=1 " . $where_time_bqsl . $where_type_fix;
         $result_rows = oci_parse($conn, $select_bqsl); // 配置SQL语句，执行SQL
         $bqsl_result_time = $method->search_long($result_rows);
         for ($i = 0; $i < sizeof($bqsl_result_time); $i++) {
