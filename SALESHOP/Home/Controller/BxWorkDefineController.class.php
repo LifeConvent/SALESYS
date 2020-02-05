@@ -2656,8 +2656,35 @@ class BxWorkDefineController extends Controller
         $is_no_deal = $_POST['is_no_deal'];
         $is_pass = $_POST['is_pass'];
         $no_pass_reason = $_POST['no_pass_reason'];//不通过时才会传值
+        $is_no_count = $_POST['is_no_count'];//不计入时才会传值
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
+        if((int)$is_no_count==1){//不计入流程
+            $select = "SELECT IS_NO_COUNT FROM TMP_BX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."' AND BUSINESS_NODE = '".$business_node."' AND TO_CHAR(BUSINESS_DATE,'YYYY-MM-DD') ='".$insert_date."'";
+            $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
+            $select_result = $method->search_long($result_rows1);
+            Log::write($user_name.(int)$select_result[0]['IS_NO_COUNT'].' 是否更新不计入结果SQL：'.$select,'INFO');
+            $result = null;
+            if((int)$select_result[0]['IS_NO_COUNT'] == 1){
+                $result['status'] = "failed";
+                $result['message'] = $user_name."您好，不计入结果已存在，无法修改。请联系管理员确认！";
+                exit(json_encode($result));
+            }
+            $update_sql = "UPDATE TMP_BX_DAYPOST_DESCRIPTION SET IS_NO_COUNT = '".$is_no_count."',NO_REASON = '".$no_pass_reason."', RESULT = '".$result_des."',IS_SUBMIT = '1', IS_PASS = '1',IS_REVIEW = '1' WHERE BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."'AND BUSINESS_NODE = '".$business_node."' AND TO_CHAR(BUSINESS_DATE,'YYYY-MM-DD') ='".$insert_date."'";
+            Log::write($user_name.' 更新是否不计入结果SQL：'.$update_sql,'INFO');
+            $result_rows = oci_parse($conn, $update_sql); // 配置SQL语句，执行SQL
+            if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)) {
+                $result['status'] = "success";
+                $result['message'] = "关键业务号：".$business_code."-业务号：".$policy_code." 不计入结论更新成功！";
+                Log::write($user_name.' 不计入结论更新SQL：'.$update_sql,'INFO');
+                exit(json_encode($result));
+            } else {
+                $result['status'] = "failed";
+                $result['message'] = $user_name."您好，不计入结论更新失败，请联系管理员确认！";
+                Log::write($user_name.' 不计入结论更新SQL：'.$update_sql,'INFO');
+                exit(json_encode($result));
+            }
+        }
         if((int)$is_pass==0){//审核不通过流程
             $select = "SELECT IS_SUBMIT FROM TMP_BX_DAYPOST_DESCRIPTION WHERE BUSINESS_CODE = '".$business_code."' AND POLICY_CODE = '".$policy_code."' AND BUSINESS_NODE = '".$business_node."' AND TO_CHAR(BUSINESS_DATE,'YYYY-MM-DD') ='".$insert_date."'";
             $result_rows1 = oci_parse($conn, $select); // 配置SQL语句，执行SQL
