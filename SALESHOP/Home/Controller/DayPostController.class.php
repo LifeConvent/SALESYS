@@ -109,6 +109,58 @@ class DayPostController extends Controller
         }
     }
 
+    public function dayPostKeyThis()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $method->assignPublic($username,$this);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
+    public function dayPostKeyAll()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $method->assignPublic($username,$this);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
+    public function dayPostKeyElse()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $method->assignPublic($username,$this);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
+    public function dayPostKeyChat()
+    {
+        $username = '';
+        $method = new MethodController();
+        $result = $method->checkIn($username);
+        if ($result) {
+            $method->assignPublic($username,$this);
+            $this->display();
+        } else {
+            $this->redirect('Index/index');
+        }
+    }
+
     public function dayPostTc()
     {
         $username = '';
@@ -148,6 +200,289 @@ class DayPostController extends Controller
         $type =  $method->getUserTypeBySql($username);
         echo $username;
         echo $type;
+    }
+
+
+    public function getDayPostKeyThis(){
+        //分子系统查询数据结果且按照标准直接插入
+        $username = '';
+        $method = new MethodController();
+        $method->checkIn($username);
+        $BxOrganCode = $method->getDayPostOrganBySql($username);
+        $conn = $method->OracleOldDBCon();
+        $queryDate = I('get.queryDate');
+        $type = I('get.type');
+        if(empty($queryDate)){
+            if((int)$type==2){
+                $queryDateStart = I('get.queryDateStart');
+                $queryDateEnd = I('get.queryDateEnd');
+                if(empty($queryDateEnd)){
+                    $sql_fix = " AND INSERT_DATE <= TRUNC(SYSDATE) ";
+                }else{
+                    $sql_fix = " AND INSERT_DATE BETWEEN TRUNC(TO_DATE('$queryDateStart','YYYY-MM-DD')) AND TRUNC(TO_DATE('$queryDateEnd','YYYY-MM-DD')) ";
+                }
+            }else{
+                $sql_fix = " AND INSERT_DATE = TRUNC(SYSDATE) ";
+            }
+        }else{
+            $sql_fix = " AND INSERT_DATE = TRUNC(TO_DATE('$queryDate','YYYY-MM-DD')) ";
+        }
+        if((int)$type==1){
+            $result = null;
+            $result_all = null;
+            $result_rows = null;
+            $select_nbuw = "SELECT B.ORDER_LIST,C.EXE_NAME,C.BUSI_TYPE_NAME AS EXE_TYPE,A.* 
+                                  FROM HXBX_KPI A 
+                                  LEFT JOIN TMP_CODE_MAP B 
+                                       ON A.BUSI_TYPE = B.CODE_TYPE 
+                                  LEFT JOIN HXBX_KPI_CODES C
+                                    ON A.BUSI_TYPE = C.BUSI_TYPE
+                                WHERE A.BUSI_TYPE LIKE '%$BxOrganCode%' ".$sql_fix."
+                                ORDER BY B.ORDER_LIST";
+            $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            Log::write($username.' 关键指标数据库查询SQL：'.$select_nbuw,'INFO');
+            foreach($result_all AS $exe){
+                $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
+                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
+                $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['OLD_NUM'];
+                $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NEW_NUM'];
+                $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
+                $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAMERATE'];
+                $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['OLD_AMOUNT'];
+                $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['NEW_AMOUNT'];
+                $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['AMOUNT_DIFF'];
+                $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['AMOUNT_SAMERATE'];
+            }
+            $select_nbuw = "SELECT B.ORDER_LIST,A.* 
+                                  FROM TMP_DAYPOST_BX_EXE A 
+                                  LEFT JOIN TMP_CODE_MAP B 
+                                       ON A.EXE_TYPE_CODE = B.CODE_TYPE 
+                                WHERE A.EXE_TYPE_CODE LIKE '%$BxOrganCode%' ".$sql_fix."
+                                ORDER BY B.ORDER_LIST";
+            $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            Log::write($username.' 批处理数据库查询SQL：'.$select_nbuw,'INFO');
+            foreach($result_all AS $exe){
+                $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
+                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
+                $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['NUM_OLD_SUM'];
+                $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NUM_NEW_SUM'];
+                $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
+                $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAME_RADIO'];
+                $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['FEE_OLD_SUM'];
+                $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['FEE_NEW_SUM'];
+                $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['FEE_DIFF'];
+                $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['FEE_SAME_RADIO'];
+            }
+        }else{
+            $select_nbuw = "SELECT MAX(B.ORDER_LIST) AS ORDER_LIST,
+                                    MAX(C.EXE_NAME) AS EXE_NAME,
+                                    MAX(C.BUSI_TYPE_NAME) AS EXE_TYPE,
+                                    SUM(OLD_NUM) AS OLD_NUM,
+                                    SUM(NEW_NUM) AS NEW_NUM,
+                                    SUM(NEW_NUM)-SUM(OLD_NUM) AS NUM_DIFF,
+                                    TO_CHAR(ROUND(1-ABS(NVL(SUM(NEW_NUM),0)-NVL(SUM(OLD_NUM),0))/DECODE(SUM(OLD_NUM),0,1,SUM(OLD_NUM)),4)*100,'fm9999990.9999')||'%' AS NUM_SAMERATE,
+                                    SUM(OLD_AMOUNT) AS OLD_AMOUNT,
+                                    SUM(NEW_AMOUNT) AS NEW_AMOUNT,
+                                    SUM(NEW_AMOUNT)-SUM(OLD_AMOUNT) AS AMOUNT_DIFF,
+                                    TO_CHAR(ROUND(1-ABS(NVL(SUM(NEW_AMOUNT),0)-NVL(SUM(OLD_AMOUNT),0))/ABS(DECODE(SUM(OLD_AMOUNT),0,1,SUM(OLD_AMOUNT))),4)*100,'fm9999990.9999')||'%' AS AMOUNT_SAMERATE
+                                  FROM HXBX_KPI A
+                                  LEFT JOIN TMP_CODE_MAP B
+                                      ON A.BUSI_TYPE = B.CODE_TYPE
+                                  LEFT JOIN HXBX_KPI_CODES C
+                                    ON A.BUSI_TYPE = C.BUSI_TYPE
+                                WHERE A.BUSI_TYPE LIKE '%$BxOrganCode%' ".$sql_fix."
+                                GROUP BY A.BUSI_TYPE 
+                                ORDER BY MAX(B.ORDER_LIST)";
+            $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            Log::write($username.' 关键指标数据库查询SQL：'.$select_nbuw,'INFO');
+            foreach($result_all AS $exe){
+                $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
+                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
+                $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['OLD_NUM'];
+                $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NEW_NUM'];
+                $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
+                $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAMERATE'];
+                $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['OLD_AMOUNT'];
+                $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['NEW_AMOUNT'];
+                $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['AMOUNT_DIFF'];
+                $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['AMOUNT_SAMERATE'];
+            }
+            $select_nbuw = "SELECT MAX(B.ORDER_LIST) AS ORDER_LIST,
+                                    MAX(A.EXE_NAME) AS EXE_NAME,
+                                    A.EXE_TYPE AS EXE_TYPE,
+                                    SUM(NUM_OLD_SUM) AS NUM_OLD_SUM,
+                                    SUM(NUM_NEW_SUM) AS NUM_NEW_SUM,
+                                    SUM(NUM_NEW_SUM)-SUM(NUM_OLD_SUM) AS NUM_DIFF,
+                                    TO_CHAR(ROUND(1-ABS(NVL(SUM(NUM_OLD_SUM),0)-NVL(SUM(NUM_NEW_SUM),0))/DECODE(SUM(NUM_OLD_SUM),0,1,SUM(NUM_OLD_SUM)),4)*100,'fm9999990.9999')||'%' AS NUM_SAME_RADIO,
+                                    SUM(FEE_OLD_SUM) AS FEE_OLD_SUM,
+                                    SUM(FEE_NEW_SUM) AS FEE_NEW_SUM,
+                                    SUM(FEE_NEW_SUM)-SUM(FEE_OLD_SUM) AS FEE_DIFF,
+                                    TO_CHAR(ROUND(1-ABS(NVL(SUM(FEE_OLD_SUM),0)-NVL(SUM(FEE_NEW_SUM),0))/DECODE(SUM(FEE_OLD_SUM),0,1,SUM(FEE_OLD_SUM)),4)*100,'fm9999990.9999')||'%' AS FEE_SAME_RADIO
+                                  FROM TMP_DAYPOST_BX_EXE A 
+                                  LEFT JOIN TMP_CODE_MAP B 
+                                       ON A.EXE_TYPE_CODE = B.CODE_TYPE 
+                                WHERE A.EXE_TYPE_CODE LIKE '%$BxOrganCode%' ".$sql_fix."
+                                GROUP BY EXE_TYPE ORDER BY MAX(B.ORDER_LIST)";
+            $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+            $result_all = $method->search_long($result_rows);
+            Log::write($username.' 批处理数据库查询SQL：'.$select_nbuw,'INFO');
+            foreach($result_all AS $exe){
+                $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
+                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
+                $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['NUM_OLD_SUM'];
+                $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NUM_NEW_SUM'];
+                $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
+                $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAME_RADIO'];
+                $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['FEE_OLD_SUM'];
+                $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['FEE_NEW_SUM'];
+                $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['FEE_DIFF'];
+                $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['FEE_SAME_RADIO'];
+            }
+        }
+//        for($i=0;$i<sizeof($result);$i++){
+//            $res[] = $result[$i];
+//        }
+        foreach($result AS $item){
+            $res[] = $item;
+        }
+        $item = null;
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($res);
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getDayPostKeyElse(){
+        //分子系统查询数据结果且按照标准直接插入
+        $username = '';
+        $method = new MethodController();
+        $method->checkIn($username);
+        $BxOrganCode = $method->getDayPostOrganBySql($username);
+        $conn = $method->OracleOldDBCon();
+        $queryDate = I('get.queryDate');
+        $type = I('get.type');
+        if(empty($queryDate)){
+            if((int)$type==2){
+                $queryDateStart = I('get.queryDateStart');
+                $queryDateEnd = I('get.queryDateEnd');
+                if(empty($queryDateEnd)){
+                    $sql_fix = " AND INSERT_DATE <= TRUNC(SYSDATE) ";
+                }else{
+                    $sql_fix = " AND INSERT_DATE BETWEEN TRUNC(TO_DATE('$queryDateStart','YYYY-MM-DD')) AND TRUNC(TO_DATE('$queryDateEnd','YYYY-MM-DD')) ";
+                }
+            }else{
+                $sql_fix = " AND INSERT_DATE = TRUNC(SYSDATE) ";
+            }
+        }else{
+            $sql_fix = " AND INSERT_DATE = TRUNC(TO_DATE('$queryDate','YYYY-MM-DD')) ";
+        }
+        $select_nbuw = "SELECT DISTINCT TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD') AS CHECK_DATE,
+                                    A.CHECK_SUM,
+                                    A.PRO_SUM,
+                                    A.FINISH_RADIO,
+                                    B.CHECK_SUM AS CAP_CHECK_SUM,
+                                    B.PRO_SUM AS CAP_PRO_SUM,
+                                    B.FINISH_RADIO AS CAP_FINISH_RADIO
+                                  FROM TMP_DAYPOST_BX_POLICY A
+                                  LEFT JOIN TMP_DAYPOST_CAP_BD B 
+                                  ON A.CHECK_DATE = B.CHECK_DATE
+                                WHERE 1=1 
+                                  ORDER BY TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD')";
+        $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+        $result_all = $method->search_long($result_rows);
+        Log::write($username.' 关键指标数据库查询SQL：'.$select_nbuw,'INFO');
+        for($i=0;$i<sizeof($result_all);$i++){
+            $result[$i]['check_date'] = $result_all[$i]['CHECK_DATE'];
+            $result[$i]['policy_check_sum'] = $result_all[$i]['CHECK_SUM'];
+            $result[$i]['policy_pro_sum'] = $result_all[$i]['PRO_SUM'];
+            $result[$i]['policy_is_same'] = $result_all[$i]['FINISH_RADIO'];
+            $result[$i]['cap_check_sum'] = $result_all[$i]['CAP_CHECK_SUM'];
+            $result[$i]['cap_pro_sum'] = $result_all[$i]['CAP_PRO_SUM'];
+            $result[$i]['cap_is_same'] = $result_all[$i]['CAP_FINISH_RADIO'];
+        }
+        foreach($result AS $item){
+            $res[] = $item;
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($res);
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
+    }
+
+    public function getDayPostKeyChat(){
+        //分子系统查询数据结果且按照标准直接插入
+        $username = '';
+        $method = new MethodController();
+        $method->checkIn($username);
+        $BxOrganCode = $method->getDayPostOrganBySql($username);
+        $conn = $method->OracleOldDBCon();
+        $queryDate = I('get.queryDate');
+        $type = I('get.type');
+//        if(empty($queryDate)){
+//            if((int)$type==2){
+//                $queryDateStart = I('get.queryDateStart');
+//                $queryDateEnd = I('get.queryDateEnd');
+//                if(empty($queryDateEnd)){
+//                    $sql_fix = " AND INSERT_DATE <= TRUNC(SYSDATE) ";
+//                }else{
+//                    $sql_fix = " AND INSERT_DATE BETWEEN TRUNC(TO_DATE('$queryDateStart','YYYY-MM-DD')) AND TRUNC(TO_DATE('$queryDateEnd','YYYY-MM-DD')) ";
+//                }
+//            }else{
+//                $sql_fix = " AND INSERT_DATE = TRUNC(SYSDATE) ";
+//            }
+//        }else{
+//            $sql_fix = " AND INSERT_DATE = TRUNC(TO_DATE('$queryDate','YYYY-MM-DD')) ";
+//        }
+        $select_nbuw = "SELECT DISTINCT TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD') AS CHECK_DATE,
+                                  A.CLM_CHECK_SUM AS CLM_CHECK_SUM,
+                                  A.CLM_PRO_SUM AS CLM_PRO_SUM,
+                                  A.CLM_IS_SAME AS CLM_IS_SAME,
+                                  A.CS_CHECK_SUM AS CS_CHECK_SUM,
+                                  A.CS_PRO_SUM AS CS_PRO_SUM,
+                                  A.CS_IS_SAME AS CS_IS_SAME,
+                                  A.DZ_CHECK_SUM AS DZ_CHECK_SUM,
+                                  A.DZ_PRO_SUM AS DZ_PRO_SUM,
+                                  A.DZ_IS_SAME AS DZ_IS_SAME
+                    FROM TMP_DAYPOST_BX_CHAT_CLM A
+                                WHERE 1=1 
+                                  ORDER BY TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD')";
+        $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
+        $result_all = $method->search_long($result_rows);
+        Log::write($username.' 关键指标数据库查询SQL：'.$select_nbuw,'INFO');
+        for($i=0;$i<sizeof($result_all);$i++){
+            $result[$i]['check_date'] = $result_all[$i]['CHECK_DATE'];
+            $result[$i]['clm_check_sum'] = $result_all[$i]['CLM_CHECK_SUM'];
+            $result[$i]['clm_pro_sum'] = $result_all[$i]['CLM_PRO_SUM'];
+            $result[$i]['clm_is_same'] = $result_all[$i]['CLM_IS_SAME'];
+            $result[$i]['cs_check_sum'] = $result_all[$i]['CS_CHECK_SUM'];
+            $result[$i]['cs_pro_sum'] = $result_all[$i]['CS_PRO_SUM'];
+            $result[$i]['cs_is_same'] = $result_all[$i]['CS_IS_SAME'];
+            $result[$i]['dz_check_sum'] = $result_all[$i]['DZ_CHECK_SUM'];
+            $result[$i]['dz_pro_sum'] = $result_all[$i]['DZ_PRO_SUM'];
+            $result[$i]['dz_is_same'] = $result_all[$i]['DZ_IS_SAME'];
+        }
+        foreach($result AS $item){
+            $res[] = $item;
+        }
+        oci_free_statement($result_rows);
+        oci_close($conn);
+//        dump($res);
+        if ($res) {
+            exit(json_encode($res));
+        } else {
+            exit(json_encode(''));
+        }
     }
 
     public function getTcCondition(){
