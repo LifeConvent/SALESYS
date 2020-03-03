@@ -38,7 +38,7 @@ class ContentReplaceBehavior {
             '__PUBLIC__'    =>  __ROOT__.'/Public',// 站点公共目录
             '__KEY__'    =>  'Ia0CtpywryfU5VGNAlk23s8ctM-99v7we2HZmkVuh_szDz3dinL9aQ9gqslBTZk2',
             '__HOSTLOCAL__'  => 'http://10.8.56.52/',
-            '__HOST__'       => 'http://10.1.56.52/',
+            '__HOST__'       => 'http://10.8.56.52/',
             '__TITLE__'      => 'DAY-POST  日报系统',
         );
         // 允许用户自定义模板的字符串替换

@@ -231,28 +231,27 @@ class DayPostController extends Controller
             $result = null;
             $result_all = null;
             $result_rows = null;
-            $select_nbuw = "SELECT B.ORDER_LIST,C.EXE_NAME,C.BUSI_TYPE_NAME AS EXE_TYPE,A.* 
-                                  FROM HXBX_KPI A 
-                                  LEFT JOIN TMP_CODE_MAP B 
-                                       ON A.BUSI_TYPE = B.CODE_TYPE 
-                                  LEFT JOIN HXBX_KPI_CODES C
-                                    ON A.BUSI_TYPE = C.BUSI_TYPE
-                                WHERE A.BUSI_TYPE LIKE '%$BxOrganCode%' ".$sql_fix."
-                                ORDER BY B.ORDER_LIST";
+            $select_nbuw = "SELECT T1.INSERT_DATE,
+                                   T1.ORGAN_CODE,
+                                   T1.BUSI_TYPE,
+                                   T2.EXE_NAME,
+                                   T2.BUSI_TYPE_NAME,
+                                   T1.TOTAL_NUM,
+                                   T1.TOTAL_AMOUNT,
+                                   T2.SORT AS ORDER_LIST
+                              FROM T_BUSI_VOLUME_YL T1
+                              LEFT JOIN T_BUSI_CODES T2
+                                ON T1.BUSI_TYPE = T2.BUSI_TYPE
+                             WHERE ORGAN_CODE LIKE '%$BxOrganCode%' ".$sql_fix."
+                             ORDER BY T2.SORT";
             $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
             $result_all = $method->search_long($result_rows);
             Log::write($username.' 关键指标数据库查询SQL：'.$select_nbuw,'INFO');
             foreach($result_all AS $exe){
                 $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
-                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
-                $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['OLD_NUM'];
-                $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NEW_NUM'];
-                $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
-                $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAMERATE'];
-                $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['OLD_AMOUNT'];
-                $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['NEW_AMOUNT'];
-                $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['AMOUNT_DIFF'];
-                $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['AMOUNT_SAMERATE'];
+                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['BUSI_TYPE_NAME'];
+                $result[$exe['ORDER_LIST']]['NUM_SUM'] = $exe['TOTAL_NUM'];
+                $result[$exe['ORDER_LIST']]['FEE_SUM'] = $exe['TOTAL_AMOUNT'];
             }
             $select_nbuw = "SELECT B.ORDER_LIST,A.* 
                                   FROM TMP_DAYPOST_BX_EXE A 
@@ -265,15 +264,9 @@ class DayPostController extends Controller
             Log::write($username.' 批处理数据库查询SQL：'.$select_nbuw,'INFO');
             foreach($result_all AS $exe){
                 $result[$exe['ORDER_LIST']]['ZB_NAME'] = $exe['EXE_NAME'];
-                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['EXE_TYPE'];
-                $result[$exe['ORDER_LIST']]['NUM_OLD_SUM'] = $exe['NUM_OLD_SUM'];
-                $result[$exe['ORDER_LIST']]['NUM_NEW_SUM'] = $exe['NUM_NEW_SUM'];
-                $result[$exe['ORDER_LIST']]['NUM_DIFF'] = $exe['NUM_DIFF'];
-                $result[$exe['ORDER_LIST']]['NUM_SAME_RADIO'] = $exe['NUM_SAME_RADIO'];
-                $result[$exe['ORDER_LIST']]['FEE_OLD_SUM'] = $exe['FEE_OLD_SUM'];
-                $result[$exe['ORDER_LIST']]['FEE_NEW_SUM'] = $exe['FEE_NEW_SUM'];
-                $result[$exe['ORDER_LIST']]['FEE_DIFF'] = $exe['FEE_DIFF'];
-                $result[$exe['ORDER_LIST']]['FEE_SAME_RADIO'] = $exe['FEE_SAME_RADIO'];
+                $result[$exe['ORDER_LIST']]['ZB_TYPE'] = $exe['BUSI_TYPE_NAME'];
+                $result[$exe['ORDER_LIST']]['NUM_SUM'] = $exe['TOTAL_NUM'];
+                $result[$exe['ORDER_LIST']]['FEE_SUM'] = $exe['TOTAL_AMOUNT'];
             }
         }else{
             $select_nbuw = "SELECT MAX(B.ORDER_LIST) AS ORDER_LIST,

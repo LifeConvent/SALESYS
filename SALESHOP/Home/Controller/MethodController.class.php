@@ -608,6 +608,18 @@ class MethodController extends Controller
         }
     }
 
+    public function getDayPostOrganBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.BX_DAYPOST_ORGAN FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户并行日报查询默认机构：'.$result[0]['LIST_TYPE'],'INFO');
+        return $result[0]['BX_DAYPOST_ORGAN'];
+    }
+
     public function OracleOldDBCon()
     {
         putenv("NLS_LANG=AMERICAN_AMERICA.AL32UTF8");
