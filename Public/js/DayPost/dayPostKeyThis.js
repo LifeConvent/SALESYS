@@ -107,12 +107,8 @@ var TableInit = function () {
                     align : 'center',
                     valign: 'middle'
                 },{
-                    title : '件数',
-                    colspan: 4,
-                    align : 'center'
-                },{
-                    title : '金额',
-                    colspan: 4,
+                    title : '指标明细',
+                    colspan: 2,
                     align : 'center'
                 }
                 ],
@@ -129,43 +125,13 @@ var TableInit = function () {
                     align : 'center',
                     valign: 'middle'
                 },{
-                    field : 'NUM_OLD_SUM',
-                    title : '老核心',
+                    field : 'NUM_SUM',
+                    title : '件数',
                     colspan: 1,
                     align : 'center'
                 },{
-                    field : 'NUM_NEW_SUM',
-                    title : '新核心',
-                    colspan: 1,
-                    align : 'center'
-                },{
-                    field : 'NUM_DIFF',
-                    title : '差异',
-                    colspan: 1,
-                    align : 'center'
-                },{
-                    field : 'NUM_SAME_RADIO',
-                    title : '一致率',
-                    colspan: 1,
-                    align : 'center'
-                },{
-                    field : 'FEE_OLD_SUM',
-                    title : '老核心',
-                    colspan: 1,
-                    align : 'center'
-                },{
-                    field : 'FEE_NEW_SUM',
-                    title : '新核心',
-                    colspan: 1,
-                    align : 'center'
-                },{
-                    field : 'FEE_DIFF',
-                    title : '差异',
-                    colspan: 1,
-                    align : 'center'
-                },{
-                    field : 'FEE_SAME_RADIO',
-                    title : '一致率',
+                    field : 'FEE_SUM',
+                    title : '金额',
                     colspan: 1,
                     align : 'center'
                 }]
