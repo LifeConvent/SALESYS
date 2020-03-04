@@ -625,7 +625,7 @@ class MethodController extends Controller
         putenv("NLS_LANG=AMERICAN_AMERICA.AL32UTF8");
         //取数据库参数 querybx/querybx@10.1.95.43:1521/DMGTSTdb3
         $db_host_name='10.1.95.43:1521/DMGTSTdb3';
-//        $db_host_name='10.1.168.5:1521/bxingdb';
+//        $db_host_name='10.1.168.5:1521/bxinqdb';
         $db_user_name='querybx';
 //        $db_user_name='daily';
         $db_pwd='querybx';
