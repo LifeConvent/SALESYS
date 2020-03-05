@@ -448,7 +448,7 @@ class MethodController extends Controller
         $method = new MethodController();
         $conn = $method->OracleOldDBCon();
         $update = "UPDATE USER_LOGIN_INFO SET IS_VAILD = '0' WHERE USER_ACCOUNT = '".$user_name."'";
-        Log::write($user_name.'登录更新 SQL：'.$update,'INFO');
+        Log::write($user_name.'退出更新 SQL：'.$update,'INFO');
         $result_rows = oci_parse($conn, $update); // 配置SQL语句，执行SQL
         if(oci_execute($result_rows,OCI_COMMIT_ON_SUCCESS)){
             $result['status'] = "success";
