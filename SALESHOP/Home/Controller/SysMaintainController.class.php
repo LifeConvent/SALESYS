@@ -696,7 +696,9 @@ class SysMaintainController extends Controller
         $user_organ_code = I('post.user_organ_code');
         $hd_user_code = I('post.hd_user_code');
         $bx_list_type = I('post.bx_list_type');
+        Log::write($user_account.'用户并行清单权限：' . $bx_list_type . "<br>", 'INFO');
         $bx_list_type = htmlspecialchars_decode($bx_list_type);
+        Log::write($user_account.'用户并行清单权限处理后：' . $bx_list_type . "<br>", 'INFO');
         $sys_type = I('post.sys_type');
         $bx_daypost_organ = I('post.bx_daypost_organ');
         $bx_daypost_organ_list = I('post.bx_daypost_organ_list');
