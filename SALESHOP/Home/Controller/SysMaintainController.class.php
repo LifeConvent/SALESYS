@@ -149,7 +149,7 @@ class SysMaintainController extends Controller
         $this->assign('sx_daypost_organ', $method->getSxDayPostOrganCode($username));
         $this->assign('sx_daypost_organ_list', $method->getSxDayPostOrganList($username));
         $this->assign('channel_type', $method->getChannelTypeBySql($username));
-        $this->assign('bx_list_type', $method->getSxListTypeBySql($username));
+        $this->assign('bx_list_type', $method->getBxListTypeBySql($username));
         $this->assign('user_organ_code', $method->getUserOrganCodeStr($username));
         $this->assign('set_organ_code', $method->getSetOrganCode($username));
         $this->getUserLists();
