@@ -378,12 +378,19 @@ class DayPostController extends Controller
                 $result[$exe['ORDER_LIST']]['NUM_SUM'] = $exe['TOTAL_NUM'];
                 $result[$exe['ORDER_LIST']]['FEE_SUM'] = $exe['TOTAL_AMOUNT'];
             }
-            $select_nbuw = "SELECT B.ORDER_LIST,A.* 
-                                  FROM TMP_DAYPOST_BX_EXE A 
-                                  LEFT JOIN TMP_CODE_MAP B 
-                                       ON A.EXE_TYPE_CODE = B.CODE_TYPE 
-                                WHERE A.EXE_TYPE_CODE LIKE '%$BxOrganCode%' ".$sql_fix."
-                                ORDER BY B.ORDER_LIST";
+            $select_nbuw = "SELECT T1.INSERT_DATE,
+                                   T1.ORGAN_CODE,
+                                   T1.BUSI_TYPE,
+                                   T2.EXE_NAME,
+                                   T2.BUSI_TYPE_NAME,
+                                   T1.QUANTITY AS TOTAL_NUM,
+                                   T1.AMOUNT AS TOTAL_AMOUNT,
+                                   T2.SORT AS ORDER_LIST
+                              FROM TEMP_BATCH_VOLUME_YL T1
+                              LEFT JOIN T_BUSI_CODES T2
+                                ON T1.BUSI_TYPE = T2.BUSI_TYPE
+                                WHERE ORGAN_CODE LIKE '%$BxOrganCode%' ".$sql_fix."
+                                ORDER BY T2.SORT";
             $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
             $result_all = $method->search_long($result_rows);
             Log::write($username.' 批处理数据库查询SQL：'.$select_nbuw,'INFO');
