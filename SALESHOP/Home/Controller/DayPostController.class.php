@@ -512,7 +512,7 @@ class DayPostController extends Controller
                                   LEFT JOIN TMP_DAYPOST_CAP_BD B 
                                   ON A.CHECK_DATE = B.CHECK_DATE
                                 WHERE 1=1 
-                                  ORDER BY TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD')";
+                                  ORDER BY TO_CHAR(A.CHECK_DATE,'YYYY-MM-DD') DESC";
             $result_rows = oci_parse($conn, $select_nbuw); // 配置SQL语句，执行SQL
             $result_all = $method->search_long($result_rows);
             Log::write($username.' 关键指标数据库查询SQL：'.$select_nbuw,'INFO');
