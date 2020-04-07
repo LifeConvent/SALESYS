@@ -47,6 +47,7 @@ class MethodController extends Controller
         $controller->assign('is_dz_chat',  $method->getIsDzChatBySql($username));
         $controller->assign('is_back_user',  $method->getIsBackUserBySql($username));
         $controller->assign('bx_list_type',  $method->getBxListTypeBySql($username));
+        $controller->assign('is_bx_define_user',  $method->getBxDefineUserBySql($username));
     }
 
     public function getSystype($username){
@@ -201,6 +202,18 @@ class MethodController extends Controller
         oci_close($conn);
         Log::write($username.'用户并行清单权限：'.$result[0]['BX_LIST_TYPE'],'INFO');
         return $result[0]['BX_LIST_TYPE'];
+    }
+
+    public function getBxDefineUserBySql($username){
+        $conn = $this->OracleOldDBCon();
+        $select_des = "SELECT A.IS_BX_DEFINE_USER FROM TMP_DAYPOST_USER A WHERE ACCOUNT = '".$username."'";
+        Log::write($username.'用户查询SQL：'.$select_des,'INFO');
+        $result_rows = oci_parse($conn, $select_des); // 配置SQL语句，执行SQL
+        $result = $this->search_long($result_rows);
+        oci_free_statement($result_rows);
+        oci_close($conn);
+        Log::write($username.'用户并行核对申请权限：'.$result[0]['IS_BX_DEFINE_USER'],'INFO');
+        return $result[0]['IS_BX_DEFINE_USER'];
     }
 
     public function getUserCNNameBySql($username){
@@ -3035,6 +3048,7 @@ class MethodController extends Controller
 //        dump($res);
 //        dump($result);
 //        dump($temp);
+        echo phpinfo();
     }
 
     //数据库Orcale短查询

@@ -1070,8 +1070,8 @@ function publicMenuLimitsArray(result) {
     var list_type = resultUserLimitsObject.LIST_TYPE;
     var bx_list_type = resultUserLimitsObject.BX_LIST_TYPE;
     //上线菜单权限
-    var strs = sx_list_type.split("&"); //字符分割
-    $('#survey_search_group').val(strs);
+    // var strs = sx_list_type.split("&"); //字符分割
+    // $('#survey_search_group').val(strs);
     //并行权限应该是用的list_type，具体逻辑还没有验证
     var strs_bx = bx_list_type.split("&"); //字符分割
     $('#survey_search_group_bx').val(strs_bx);
