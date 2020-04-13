@@ -2403,7 +2403,8 @@ class MethodController extends Controller
 									(CASE WHEN cfvt.value20 IN ('2-需求差异','3-操作差异') THEN '1' ELSE '0' END) AS pro_nature
                     from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
                     where ut.id = bt.reporter_id and bt.id = cfvt.bug_id 
-										and tp.plname = 'bug_table_status' and tp.tx_value = bt.status";
+										and tp.plname = 'bug_table_status' and tp.tx_value = bt.status
+										and date_format(bt.date_submitted,'%Y-%m-%d') >= '2020-04-13'";
         //查询TC数据
         $tc_cursor = M();
         $res = $tc_cursor->query($queryTc);
