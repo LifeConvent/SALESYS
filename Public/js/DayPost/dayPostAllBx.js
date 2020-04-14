@@ -88,7 +88,7 @@ var TableInit = function () {
             queryParams: oTableInit.queryParams,//传递参数（*）
 //                sidePagination: "server",   //分页方式：client客户端分页，server服务端分页（*）
             pageNumber: 1,      //初始化加载第一页，默认第一页
-            pageSize: 16,      //每页的记录行数（*）
+            pageSize: 20,      //每页的记录行数（*）
             search: true,      //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
             strictSearch: false,
             showColumns: true,     //是否显示所有的列
@@ -115,7 +115,7 @@ var TableInit = function () {
             columns : [
                 [{
                     title :  '累计作业核对情况',
-                    colspan: 20,
+                    colspan: 23,
                     align : 'center'
                 }],[{
                     title :  '区域',
@@ -123,15 +123,15 @@ var TableInit = function () {
                     align : 'center'
                 },{
                     title : '契约作业/核保作业',
-                    colspan: 6,
-                    align : 'center'
-                },{
-                    title : '保全作业',
                     colspan: 7,
                     align : 'center'
                 },{
+                    title : '保全作业',
+                    colspan: 8,
+                    align : 'center'
+                },{
                     title : '理赔作业',
-                    colspan: 6,
+                    colspan: 7,
                     align : 'center'
                 }
                 ],[{
@@ -144,6 +144,20 @@ var TableInit = function () {
                     title : '老核<br>心作<br>业量',
                     footerFormatter:countFooter,
                     align : 'center'
+                },{
+                    title : '新核<br>心应<br>作业',
+                    align : 'center',
+                    formatter:function(value, row, index){
+                        if(row.ORGAN_NAME=='分公司核保室'||row.ORGAN_NAME=='作业中心'){
+                            $('#jishu').text(parseInt($('#jishu').text()) + parseInt(new Number(row.NBUW_OLD_NUM/2).toFixed(0)));
+                            return new Number(row.NBUW_OLD_NUM/2).toFixed(0);
+                        }else if(row.ORGAN_NAME=='小计'){
+                            $('#jishu').text(parseInt($('#jishu').text()) + parseInt(new Number(row.NBUW_OLD_NUM).toFixed(0)));
+                        }else if(row.ORGAN_NAME=='总计'){
+                            return $('#jishu').text();
+                        }
+                        return row.NBUW_OLD_NUM;
+                    }
                 },{
                     field : 'NBUW_NEW_NUM',
                     title : '新核<br>心作<br>业量',
@@ -180,6 +194,12 @@ var TableInit = function () {
                     title : '老核<br>心作<br>业量',
                     footerFormatter:countFooter,
                     align : 'center'
+                },{
+                    title : '新核<br>心应<br>作业',
+                    align : 'center',
+                    formatter:function(value, row, index){
+                        return new Number(row.CS_OLD_NUM/2).toFixed(0);
+                    }
                 },{
                     field : 'CS_NEW_NUM',
                     title : '新核<br>心作<br>业量',
@@ -219,6 +239,12 @@ var TableInit = function () {
                     title : '老核<br>心作<br>业量',
                     footerFormatter:countFooter,
                     align : 'center'
+                },{
+                    title : '新核<br>心应<br>作业',
+                    align : 'center',
+                    formatter:function(value, row, index){
+                        return new Number(row.CLM_OLD_NUM/2).toFixed(0);
+                    }
                 },{
                     field : 'CLM_NEW_NUM',
                     title : '新核<br>心作<br>业量',

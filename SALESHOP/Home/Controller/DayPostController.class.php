@@ -827,7 +827,8 @@ class DayPostController extends Controller
                 where ut.id = bt.reporter_id 
                     and bt.id = cfvt.bug_id 
                     and tp.plname = 'bug_table_status' 
-										and date_format(bt.date_submitted,'%Y-%m-%d') >= '2020-04-13'
+										and date_format(bt.date_submitted,'%Y-%m-%d') >= '2020-04-13' 
+										and bt.project_id <> '-1'
                     and tp.tx_value = bt.status ".$where."
                 GROUP BY cfvt.value3";
         Log::write("BUG查询SQL ：".$queryTc."<br> ");
