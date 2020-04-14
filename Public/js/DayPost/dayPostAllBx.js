@@ -156,6 +156,7 @@ var TableInit = function () {
                         }else if(row.ORGAN_NAME=='总计'){
                             var sum =  $('#jishu').text();
                             $('#jishu').text(0);
+                            return sum;
                         }
                         return row.NBUW_OLD_NUM;
                     }
