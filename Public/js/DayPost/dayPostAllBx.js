@@ -154,7 +154,8 @@ var TableInit = function () {
                         }else if(row.ORGAN_NAME=='小计'){
                             $('#jishu').text(parseInt($('#jishu').text()) + parseInt(new Number(row.NBUW_OLD_NUM).toFixed(0)));
                         }else if(row.ORGAN_NAME=='总计'){
-                            return $('#jishu').text();
+                            var sum =  $('#jishu').text();
+                            $('#jishu').text(0);
                         }
                         return row.NBUW_OLD_NUM;
                     }
