@@ -148,7 +148,7 @@ var TableInit = function () {
                     title : '新核<br>心应<br>作业',
                     align : 'center',
                     formatter:function(value, row, index){
-                        if(row.ORGAN_NAME=='分公司核保室'||row.ORGAN_NAME=='作业中心'){
+                        if(row.ORGAN_NAME=='分公司核保室'){
                             $('#jishu').text(parseInt($('#jishu').text()) + parseInt(new Number(row.NBUW_OLD_NUM/2).toFixed(0)));
                             return new Number(row.NBUW_OLD_NUM/2).toFixed(0);
                         }else if(row.ORGAN_NAME=='小计'){
@@ -157,6 +157,8 @@ var TableInit = function () {
                             var sum =  $('#jishu').text();
                             $('#jishu').text(0);
                             return sum;
+                        }else if(row.ORGAN_NAME=='作业中心'){
+                            return '-';
                         }
                         return row.NBUW_OLD_NUM;
                     }
@@ -180,7 +182,13 @@ var TableInit = function () {
                     field : 'NBUW_FINISH_RADIO',
                     title : '任务<br>完成率',
                     align : 'center',
-                    valign: 'middle'
+                    valign: 'middle',
+                    formatter:function(value, row, index){
+                        if(row.ORGAN_NAME=='作业中心'){
+                            return '-';
+                        }
+                        return row.NBUW_FINISH_RADIO;
+                    }
                 },{
                     field : 'NBUW_SAME_RADIO',
                     title : '一<br>致<br>率',
