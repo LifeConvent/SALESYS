@@ -2400,11 +2400,13 @@ class MethodController extends Controller
         //重加载TC数据
 //        $tc_fix = $this->getTcFix();
         $queryTc = "select bt.bug_new_id as tc_id,ut.username as tc_user_name,TRIM(cfvt.value18) AS business_code,bt.date_submitted as create_date,cfvt.value21 as description,bt.status as status,tp.tx_desc as status_desc,cfvt.value17 as find_node,cfvt.value16 as local,bt.severity,cfvt.value3 as sys,
-									(CASE WHEN cfvt.value20 IN ('2-需求差异','3-操作差异') THEN '1' ELSE '0' END) AS pro_nature
+									(CASE WHEN cfvt.value20 IN ('2-需求差异','3-操作差异') THEN '1' ELSE '0' END) AS pro_nature,
+									(CASE WHEN cfvt.value20 IN ('3-操作差异') THEN '1' ELSE '0' END) AS opera_diff
                     from bug_table bt,custom_field_value_table cfvt,`user_table` ut,tx_pklistmemo tp   
                     where ut.id = bt.reporter_id and bt.id = cfvt.bug_id 
 										and tp.plname = 'bug_table_status' and tp.tx_value = bt.status
-										and date_format(bt.date_submitted,'%Y-%m-%d') >= '2020-04-13'";
+										and date_format(bt.date_submitted,'%Y-%m-%d') >= '2020-04-13'
+										and bt.project_id <> '-1'";
         //查询TC数据
         $tc_cursor = M();
         $res = $tc_cursor->query($queryTc);
@@ -2421,6 +2423,7 @@ class MethodController extends Controller
             $result[$i]['STATUS_DESC'] = $res[$i]['status_desc'];
             $result[$i]['SYS'] = $res[$i]['sys'];
             $result[$i]['PRO_NATURE'] = $res[$i]['pro_nature'];
+            $result[$i]['OPERA_DIFF'] = $res[$i]['opera_diff'];
         }
         //连接数据库
         $conn = $this->OracleOldDBCon();
@@ -2447,7 +2450,8 @@ class MethodController extends Controller
             $STATUS_DESC = $value['STATUS_DESC'];
             $SYS = $value['SYS'];
             $PRO_NATURE = $value['PRO_NATURE'];
-            $query_insert = "INSERT INTO TMP_QDSX_TC_BUG(TC_ID,CREATE_DATE,TC_USER_NAME,BUSINESS_CODE,DESCRIPTION,STATUS,FIND_NODE,LOCAL,PONDERANCE,STATUS_DESC,SYS,PRO_NATURE) VALUES('".$TC_ID."',to_date('".$CREATE_DATE."','YYYY/MM/DD hh24:mi:ss'),'".$TC_USER_NAME."','".$BUSINESS_CODE."','".$DESCRIPTION."','".$STATUS."','".$FIND_NODE."','".$LOCAL."','".$PONDERANCE."','".$STATUS_DESC."','".$SYS."','".$PRO_NATURE."')";
+            $OPERA_DIFF = $value['OPERA_DIFF'];
+            $query_insert = "INSERT INTO TMP_QDSX_TC_BUG(TC_ID,CREATE_DATE,TC_USER_NAME,BUSINESS_CODE,DESCRIPTION,STATUS,FIND_NODE,LOCAL,PONDERANCE,STATUS_DESC,SYS,PRO_NATURE,OPERA_DIFF) VALUES('".$TC_ID."',to_date('".$CREATE_DATE."','YYYY/MM/DD hh24:mi:ss'),'".$TC_USER_NAME."','".$BUSINESS_CODE."','".$DESCRIPTION."','".$STATUS."','".$FIND_NODE."','".$LOCAL."','".$PONDERANCE."','".$STATUS_DESC."','".$SYS."','".$PRO_NATURE."','".$OPERA_DIFF."')";
 //          echo $query_insert;
             $statement = oci_parse($conn,$query_insert);
             echo $TC_ID."单条插入 执行结果：".oci_execute($statement,OCI_COMMIT_ON_SUCCESS)." - ";
